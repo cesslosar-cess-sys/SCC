@@ -1,6 +1,6 @@
 {
   "activeSheet": "20-10-2026",
-  "lastSync": "2026-10-31T18:22:48.905Z",
+  "lastSync": "2026-11-09T22:54:59.509Z",
   "catalog": {
     "0": {
       "id": "0",
@@ -17,7 +17,7 @@
       "unidad": "PZ",
       "precio_unitario": 80,
       "stock_inicial": 5,
-      "stock_actual": 13,
+      "stock_actual": 19,
       "foto_referencia": "/uploads/ref_0_1793745843773.jpg"
     },
     "105": {
@@ -69,7 +69,7 @@
       "unidad": "PZ",
       "precio_unitario": 42,
       "stock_inicial": 32,
-      "stock_actual": 41
+      "stock_actual": 40
     },
     "194": {
       "id": "194",
@@ -123,7 +123,7 @@
       "unidad": "PZ",
       "precio_unitario": 16.8,
       "stock_inicial": 28,
-      "stock_actual": 35
+      "stock_actual": 34
     },
     "786": {
       "id": "786",
@@ -174,7 +174,7 @@
       "unidad": "PZ",
       "precio_unitario": 210,
       "stock_inicial": 12,
-      "stock_actual": 10
+      "stock_actual": 8
     },
     "1176": {
       "id": "1176",
@@ -1022,7 +1022,7 @@
       "unidad": "PZ",
       "precio_unitario": 11,
       "stock_inicial": 30,
-      "stock_actual": 39
+      "stock_actual": 38
     },
     "28200": {
       "id": "28200",
@@ -1107,7 +1107,7 @@
       "unidad": "PZ",
       "precio_unitario": 298,
       "stock_inicial": 0,
-      "stock_actual": 1
+      "stock_actual": 2
     },
     "35058": {
       "id": "35058",
@@ -1135,9 +1135,9 @@
         "Retén Scotseal delantero"
       ],
       "unidad": "PZ",
-      "precio_unitario": 480,
+      "precio_unitario": 420,
       "stock_inicial": 29,
-      "stock_actual": 42
+      "stock_actual": 53
     },
     "44345": {
       "id": "44345",
@@ -1275,7 +1275,7 @@
       "unidad": "PZ",
       "precio_unitario": 0,
       "stock_inicial": 6,
-      "stock_actual": 12,
+      "stock_actual": 16,
       "foto_referencia": "/uploads/foto_1793664793759_20434.jpg"
     },
     "51600": {
@@ -1348,7 +1348,7 @@
       "unidad": "PZ",
       "precio_unitario": 1250,
       "stock_inicial": 10,
-      "stock_actual": 14
+      "stock_actual": 18
     },
     "65485": {
       "id": "65485",
@@ -1575,7 +1575,7 @@
       "unidad": "PZ",
       "precio_unitario": 1676,
       "stock_inicial": 10,
-      "stock_actual": 12,
+      "stock_actual": 11,
       "foto_referencia": "/uploads/ref_81001_1793976144625.jpg"
     },
     "81504": {
@@ -3485,7 +3485,7 @@
       "unidad": "PZ",
       "precio_unitario": 12.6,
       "stock_inicial": 19,
-      "stock_actual": 17
+      "stock_actual": 16
     },
     "12162197": {
       "id": "12162197",
@@ -3508,7 +3508,7 @@
       "unidad": "PZ",
       "precio_unitario": 309,
       "stock_inicial": 1,
-      "stock_actual": 4,
+      "stock_actual": 5,
       "almacen": "Almacén de Refacciones",
       "almacen_id": "refacciones",
       "creado_en_salida": true,
@@ -3759,7 +3759,7 @@
       "unidad": "PZ",
       "precio_unitario": 934.3739999999999,
       "stock_inicial": 4,
-      "stock_actual": 2
+      "stock_actual": 0
     },
     "60961040": {
       "id": "60961040",
@@ -3932,7 +3932,7 @@
       "unidad": "PZ",
       "precio_unitario": 46.2,
       "stock_inicial": 9,
-      "stock_actual": 17
+      "stock_actual": 25
     },
     "322130419": {
       "id": "322130419",
@@ -4605,7 +4605,7 @@
       "unidad": "PZA",
       "precio_unitario": 78.5,
       "stock_inicial": 0,
-      "stock_actual": 45,
+      "stock_actual": 50,
       "foto_referencia": "/uploads/foto_1792693971398_57043.jpg",
       "almacen_id": "refacciones",
       "almacen": "Almacén de Refacciones"
@@ -4637,7 +4637,7 @@
       "unidad": "PZA",
       "precio_unitario": 35,
       "stock_inicial": 0,
-      "stock_actual": 64,
+      "stock_actual": 72,
       "foto_referencia": "/uploads/foto_1792701817767_29490.jpg",
       "almacen_id": "refacciones",
       "almacen": "Almacén de Refacciones"
@@ -4652,7 +4652,7 @@
       "unidad": "PZA",
       "precio_unitario": 70,
       "stock_inicial": 0,
-      "stock_actual": 64,
+      "stock_actual": 72,
       "foto_referencia": "/uploads/foto_1792701817767_29490.jpg",
       "almacen_id": "refacciones",
       "almacen": "Almacén de Refacciones"
@@ -4708,7 +4708,7 @@
       "unidad": "PZA",
       "precio_unitario": 485,
       "stock_inicial": 0,
-      "stock_actual": 6,
+      "stock_actual": 8,
       "foto_referencia": "/uploads/foto_1792791629307_1481.jpeg",
       "almacen_id": "refacciones",
       "almacen": "Almacén de Refacciones"
@@ -4779,7 +4779,7 @@
       "unidad": "PZ",
       "precio_unitario": 53.33,
       "stock_inicial": 0,
-      "stock_actual": 24,
+      "stock_actual": 32,
       "almacen": "Almacén de Refacciones",
       "almacen_id": "refacciones"
     },
@@ -4851,7 +4851,7 @@
       "unidad": "PZA",
       "precio_unitario": 107,
       "stock_inicial": 0,
-      "stock_actual": 2,
+      "stock_actual": 3,
       "foto_referencia": "/uploads/foto_1793134577331_30565.jpg",
       "almacen_id": "refacciones",
       "almacen": "Almacén de Refacciones"
@@ -4866,7 +4866,7 @@
       "unidad": "PZA",
       "precio_unitario": 211.25,
       "stock_inicial": 0,
-      "stock_actual": 8,
+      "stock_actual": 15,
       "foto_referencia": "/uploads/foto_1793134577331_30565.jpg",
       "almacen_id": "refacciones",
       "almacen": "Almacén de Refacciones"
@@ -4881,7 +4881,7 @@
       "unidad": "PZA",
       "precio_unitario": 1439.98,
       "stock_inicial": 0,
-      "stock_actual": 3,
+      "stock_actual": 4,
       "foto_referencia": "/uploads/foto_1793919159344_78612.jpg",
       "almacen_id": "refacciones",
       "almacen": "Almacén de Refacciones",
@@ -4898,7 +4898,7 @@
       "unidad": "PZA",
       "precio_unitario": 479.78,
       "stock_inicial": 0,
-      "stock_actual": 3,
+      "stock_actual": 4,
       "foto_referencia": "/uploads/foto_1793919159374_91254.jpg",
       "almacen_id": "refacciones",
       "almacen": "Almacén de Refacciones",
@@ -4915,7 +4915,7 @@
       "unidad": "PZA",
       "precio_unitario": 1719,
       "stock_inicial": 0,
-      "stock_actual": 3,
+      "stock_actual": 4,
       "foto_referencia": "/uploads/foto_1793919159378_32488.jpg",
       "almacen_id": "refacciones",
       "almacen": "Almacén de Refacciones"
@@ -4930,7 +4930,7 @@
       "unidad": "PZA",
       "precio_unitario": 303.98,
       "stock_inicial": 0,
-      "stock_actual": 4,
+      "stock_actual": 6,
       "foto_referencia": "/uploads/foto_1793919159336_87074.jpg",
       "almacen_id": "refacciones",
       "almacen": "Almacén de Refacciones",
@@ -4997,7 +4997,7 @@
       "unidad": "PZA",
       "precio_unitario": 950,
       "stock_inicial": 0,
-      "stock_actual": 4,
+      "stock_actual": 6,
       "foto_referencia": "/uploads/foto_1793136644997_61763.jpg",
       "almacen_id": "refacciones",
       "almacen": "Almacén de Refacciones"
@@ -5061,7 +5061,7 @@
       "unidad": "PZ",
       "precio_unitario": 5200,
       "stock_inicial": 0,
-      "stock_actual": 6,
+      "stock_actual": 9,
       "almacen": "Almacén de Refacciones",
       "almacen_id": "refacciones"
     },
@@ -5077,7 +5077,7 @@
       "unidad": "PZ",
       "precio_unitario": 4800,
       "stock_inicial": 0,
-      "stock_actual": 2,
+      "stock_actual": 3,
       "almacen": "Almacén de Refacciones",
       "almacen_id": "refacciones"
     },
@@ -5145,7 +5145,7 @@
       "unidad": "PZA",
       "precio_unitario": 75,
       "stock_inicial": 0,
-      "stock_actual": 6,
+      "stock_actual": 9,
       "foto_referencia": "/uploads/foto_1793467573911_17266.jpg",
       "almacen_id": "refacciones",
       "almacen": "Almacén de Refacciones"
@@ -5160,7 +5160,7 @@
       "unidad": "PZA",
       "precio_unitario": 90,
       "stock_inicial": 0,
-      "stock_actual": 4,
+      "stock_actual": 6,
       "foto_referencia": "/uploads/foto_1793467573917_57369.jpg",
       "almacen_id": "refacciones",
       "almacen": "Almacén de Refacciones"
@@ -5180,7 +5180,7 @@
       "unidad": "PZ",
       "precio_unitario": 450,
       "stock_inicial": 0,
-      "stock_actual": 1
+      "stock_actual": 2
     },
     "WV-40010": {
       "id": "WV-40010",
@@ -5214,7 +5214,7 @@
       "unidad": "PZ",
       "precio_unitario": 386,
       "stock_inicial": 4,
-      "stock_actual": 8
+      "stock_actual": 12
     },
     "ZQ361B14T13F6": {
       "id": "ZQ361B14T13F6",
@@ -5589,7 +5589,7 @@
       "unidad": "PZ",
       "precio_unitario": 100.05,
       "stock_inicial": 4,
-      "stock_actual": 3,
+      "stock_actual": 2,
       "foto_referencia": "/uploads/ref_UNIDAD_RAPIDA_1_4_567_1793638538613.jpg"
     },
     "UNIDAD_RAPIDA_3_8_568": {
@@ -5607,7 +5607,7 @@
       "unidad": "PZ",
       "precio_unitario": 123.66,
       "stock_inicial": 5,
-      "stock_actual": 4
+      "stock_actual": 3
     },
     "UNIDAD_RAPIDA_1_2_569": {
       "id": "UNIDAD_RAPIDA_1_2_569",
@@ -5692,7 +5692,7 @@
       "unidad": "PZ",
       "precio_unitario": 81.54,
       "stock_inicial": 5,
-      "stock_actual": 4
+      "stock_actual": 3
     },
     "CODO_TUERCA_BARRIL_1_574": {
       "id": "CODO_TUERCA_BARRIL_1_574",
@@ -5709,7 +5709,7 @@
       "unidad": "PZ",
       "precio_unitario": 145.71,
       "stock_inicial": 5,
-      "stock_actual": 3
+      "stock_actual": 1
     },
     "CODO_TUERCA_BARRIL_1_575": {
       "id": "CODO_TUERCA_BARRIL_1_575",
@@ -5811,7 +5811,7 @@
       "unidad": "PZ",
       "precio_unitario": 142.02,
       "stock_inicial": 5,
-      "stock_actual": 4
+      "stock_actual": 3
     },
     "CODO_3_8___11_CONEXI_582": {
       "id": "CODO_3_8___11_CONEXI_582",
@@ -5981,7 +5981,7 @@
       "unidad": "PZ",
       "precio_unitario": 25.2,
       "stock_inicial": 7,
-      "stock_actual": 6
+      "stock_actual": 5
     },
     "ACUMULADOR___BATERIA_871": {
       "id": "ACUMULADOR___BATERIA_871",
@@ -6076,7 +6076,7 @@
       "unidad": "PZ",
       "precio_unitario": 890,
       "stock_inicial": 19,
-      "stock_actual": 26
+      "stock_actual": 34
     },
     "A1422076000": {
       "id": "A1422076000",
@@ -6146,7 +6146,7 @@
       "unidad": "PZ",
       "precio_unitario": 350,
       "stock_inicial": 0,
-      "stock_actual": 7,
+      "stock_actual": 14,
       "foto_referencia": ""
     },
     "A0660973000": {
@@ -6837,7 +6837,7 @@
       "unidad": "PZ",
       "precio_unitario": 1781,
       "stock_inicial": 2,
-      "stock_actual": 7,
+      "stock_actual": 14,
       "foto_referencia": "/uploads/foto_1793919159361_53425.jpg"
     },
     "P954933": {
@@ -6853,9 +6853,9 @@
       "equivalencias": [],
       "alias": [],
       "unidad": "PZ",
-      "precio_unitario": 330,
+      "precio_unitario": 193.75,
       "stock_inicial": 2,
-      "stock_actual": 3
+      "stock_actual": 4
     },
     "P168475": {
       "id": "P168475",
@@ -6928,7 +6928,7 @@
       ],
       "alias": [],
       "unidad": "PZ",
-      "precio_unitario": 1470.2687999999998,
+      "precio_unitario": 1447.03,
       "stock_inicial": 0,
       "stock_actual": 0,
       "foto_referencia": "/uploads/foto_1793919159385_92559.jpg"
@@ -7135,7 +7135,7 @@
       "unidad": "PZ",
       "precio_unitario": 1325,
       "stock_inicial": 3,
-      "stock_actual": 3
+      "stock_actual": 2
     },
     "A4721506333": {
       "id": "A4721506333",
@@ -7361,7 +7361,7 @@
       "unidad": "PZ",
       "precio_unitario": 1295.9436,
       "stock_inicial": 5,
-      "stock_actual": 4,
+      "stock_actual": 3,
       "foto_referencia": "/uploads/ref_A4700781810_1793976376600.jpg"
     },
     "A1859704000": {
@@ -7435,7 +7435,7 @@
       "unidad": "PZ",
       "precio_unitario": 1250,
       "stock_inicial": 0,
-      "stock_actual": 4
+      "stock_actual": 8
     },
     "A1720380006": {
       "id": "A1720380006",
@@ -9417,7 +9417,7 @@
       "unidad": "PZ",
       "precio_unitario": 2666.76,
       "stock_inicial": 2,
-      "stock_actual": 4
+      "stock_actual": 6
     },
     "FS19932": {
       "id": "FS19932",
@@ -9451,7 +9451,7 @@
       "unidad": "PZ",
       "precio_unitario": 1008.168,
       "stock_inicial": 5,
-      "stock_actual": 2
+      "stock_actual": 0
     },
     "FS1029": {
       "id": "FS1029",
@@ -9485,7 +9485,7 @@
       "unidad": "PZ",
       "precio_unitario": 721.7868,
       "stock_inicial": 6,
-      "stock_actual": 4
+      "stock_actual": 2
     },
     "LF3620": {
       "id": "LF3620",
@@ -9590,7 +9590,7 @@
       "unidad": "PZ",
       "precio_unitario": 734.3027999999999,
       "stock_inicial": 1,
-      "stock_actual": 2
+      "stock_actual": 3
     },
     "P552100": {
       "id": "P552100",
@@ -9661,7 +9661,7 @@
       "unidad": "PZ",
       "precio_unitario": 210.42000000000002,
       "stock_inicial": 4,
-      "stock_actual": 5,
+      "stock_actual": 6,
       "foto_referencia": "/uploads/foto_1793664550151_5478.jpg"
     },
     "MSFAPM12": {
@@ -9886,7 +9886,7 @@
       "unidad": "PZ",
       "precio_unitario": 1875.8621,
       "stock_inicial": 2,
-      "stock_actual": 3
+      "stock_actual": 4
     },
     "P243HUSMRR": {
       "id": "P243HUSMRR",
@@ -10039,7 +10039,7 @@
       "unidad": "PZ",
       "precio_unitario": 42,
       "stock_inicial": 3,
-      "stock_actual": 2
+      "stock_actual": 1
     },
     "8061R": {
       "id": "8061R",
@@ -10443,7 +10443,7 @@
       "unidad": "PZ",
       "precio_unitario": 42,
       "stock_inicial": 5,
-      "stock_actual": 3
+      "stock_actual": 2
     },
     "084010K2": {
       "id": "084010K2",
@@ -10565,7 +10565,7 @@
       "unidad": "PZ",
       "precio_unitario": 126,
       "stock_inicial": 1,
-      "stock_actual": 2,
+      "stock_actual": 3,
       "foto_referencia": "/uploads/foto_1793664550151_5478.jpg"
     },
     "AF0299": {
@@ -10851,7 +10851,7 @@
       "unidad": "PZ",
       "precio_unitario": 4.2,
       "stock_inicial": 29,
-      "stock_actual": 23
+      "stock_actual": 19
     },
     "9507A": {
       "id": "9507A",
@@ -10902,7 +10902,7 @@
       "unidad": "PZ",
       "precio_unitario": 58.8,
       "stock_inicial": 10,
-      "stock_actual": 7
+      "stock_actual": 5
     },
     "PSX26W_H17": {
       "id": "PSX26W_H17",
@@ -12849,7 +12849,7 @@
       "unidad": "PZ",
       "precio_unitario": 1638.42,
       "stock_inicial": 0,
-      "stock_actual": 2,
+      "stock_actual": 4,
       "foto_referencia": "/uploads/foto_1793639825146_54802.jpg"
     },
     "83002HD": {
@@ -13194,7 +13194,7 @@
       "unidad": "PZ",
       "precio_unitario": 58.8,
       "stock_inicial": 15,
-      "stock_actual": 2
+      "stock_actual": 0
     },
     "PJ613": {
       "id": "PJ613",
@@ -14415,7 +14415,7 @@
       "unidad": "PZ",
       "precio_unitario": 25.2,
       "stock_inicial": 7,
-      "stock_actual": 6
+      "stock_actual": 5
     },
     "X00500A": {
       "id": "X00500A",
@@ -14639,7 +14639,7 @@
       "unidad": "PZ",
       "precio_unitario": 45,
       "stock_inicial": 48,
-      "stock_actual": 72
+      "stock_actual": 96
     },
     "part_1793664647209_0_1030": {
       "id": "part_1793664647209_0_1030",
@@ -26553,17 +26553,15 @@
     {
       "id": "refacciones",
       "nombre": "Almacén de Refacciones",
-      "hoja": "20-10-2026",
-      "esFecha": true,
+      "codigo": "REF",
       "icono": "Package",
       "color": "#2563EB",
-      "descripcion": "Almacén principal de refacciones"
+      "descripcion": "Almacén central y de refacciones diésel"
     },
     {
       "id": "llantas",
       "nombre": "Llantas",
-      "hoja": "ALMACEN LLANTAS",
-      "esFecha": false,
+      "codigo": "LLAN",
       "icono": "Disc",
       "color": "#D97706",
       "descripcion": "Neumáticos, rines y cascos de tracto y remolque"
@@ -26571,8 +26569,7 @@
     {
       "id": "ferreteria",
       "nombre": "Ferretería",
-      "hoja": "ALMACEN 2",
-      "esFecha": false,
+      "codigo": "FERR",
       "icono": "Wrench",
       "color": "#059669",
       "descripcion": "Tornillería, abrazaderas, ferretería y misceláneos"

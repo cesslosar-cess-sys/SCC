@@ -52,23 +52,78 @@ const EXCEL_FILE = path.join(__dirname, 'Taller Flotilla-v2.xlsx');
 const ALMACEN_DB_FILE = fs.existsSync(path.join(__dirname, 'almacen_datos.json'))
     ? path.join(__dirname, 'almacen_datos.json')
     : path.join(__dirname, 'almacen-app', 'almacen_datos.json');
-const PREVENTIVOS_FILE = fs.existsSync(path.join(__dirname, 'taller_preventivos.json'))
-    ? path.join(__dirname, 'taller_preventivos.json')
-    : path.join(__dirname, 'diesel_local_cache.json');
+const PREVENTIVOS_FILE = path.join(__dirname, 'taller_preventivos.json');
 const RESCATES_FILE = path.join(__dirname, 'taller_rescates.json');
+const TITULOS_COLUMNAS_FILE = path.join(__dirname, 'taller_config_columnas.json');
+
+function getTitulosColumnas() {
+    const defaultTitulos = {
+        considerar: "A Considerar / Detecciones",
+        mayor: "Reparación Mayor / Presupuesto",
+        proceso: "En Reparación Activa",
+        listo: "Listas para Entrega"
+    };
+    if (!fs.existsSync(TITULOS_COLUMNAS_FILE)) return defaultTitulos;
+    try {
+        return { ...defaultTitulos, ...JSON.parse(fs.readFileSync(TITULOS_COLUMNAS_FILE, 'utf8')) };
+    } catch(e) {
+        return defaultTitulos;
+    }
+}
+
+function saveTitulosColumnas(titulos) {
+    try {
+        fs.writeFileSync(TITULOS_COLUMNAS_FILE, JSON.stringify(titulos, null, 2), 'utf8');
+        return true;
+    } catch(e) {
+        return false;
+    }
+}
 
 function getPreventivos() {
-    if (!fs.existsSync(PREVENTIVOS_FILE)) return [];
-    try {
-        const content = fs.readFileSync(PREVENTIVOS_FILE, 'utf8');
-        const json = JSON.parse(content);
-        if (Array.isArray(json)) return json;
-        if (json && Array.isArray(json.preventivos)) return json.preventivos;
-        return [];
-    } catch (e) {
-        console.error('Error leyendo preventivos:', e);
-        return [];
+    const dieselCachePath = path.join(__dirname, 'diesel_local_cache.json');
+    const preventivosJsonPath = path.join(__dirname, 'taller_preventivos.json');
+    let rawList = [];
+
+    // Priorizar diesel_local_cache.json si existe para datos frescos de kilometraje
+    if (fs.existsSync(dieselCachePath)) {
+        try {
+            const cache = JSON.parse(fs.readFileSync(dieselCachePath, 'utf8'));
+            if (cache && Array.isArray(cache.preventivos) && cache.preventivos.length > 0) {
+                rawList = cache.preventivos;
+            }
+        } catch(e) {}
     }
+
+    if (rawList.length === 0 && fs.existsSync(preventivosJsonPath)) {
+        try {
+            const p = JSON.parse(fs.readFileSync(preventivosJsonPath, 'utf8'));
+            if (Array.isArray(p)) rawList = p;
+        } catch(e) {}
+    }
+
+    return rawList.map(p => {
+        const kmActual = Number(p.km_actual) || 0;
+        const proxKm = Number(p.proximo_mtto_km || p.km_proximo_servicio) || 0;
+        const ultKm = Number(p.km_mtto_anterior || p.km_ultimo_servicio) || 0;
+        const kmRest = p.km_restantes !== undefined ? Number(p.km_restantes) : (proxKm - kmActual);
+
+        let est = 'VIGENTE';
+        if (kmRest < 0) est = 'VENCIDO';
+        else if (kmRest <= 3000) est = 'PROXIMO';
+
+        return {
+            unidad: String(p.unidad || '').trim(),
+            division: p.division || 'Foráneo',
+            km_actual: kmActual,
+            km_ultimo_servicio: ultKm,
+            fecha_ultimo_servicio: p.fecha_realizado || p.fecha_ultimo_servicio || '--',
+            km_proximo_servicio: proxKm,
+            km_restantes: kmRest,
+            estatus: est,
+            estatus_label: est === 'VENCIDO' ? 'Vencido' : (est === 'PROXIMO' ? 'Próximo' : 'Al Día')
+        };
+    });
 }
 
 function getRescates() {
@@ -2463,9 +2518,124 @@ app.get('/api/preventivos', (req, res) => {
 
     res.json({
         success: true,
+        data: list,
+        preventivos: list,
         stats,
-        count: list.length,
-        preventivos: list
+        resumen: stats,
+        count: list.length
+    });
+});
+
+// --- GESTOR DE TÍTULOS DE COLUMNAS DEL TABLERO ---
+app.get('/api/columnas/titulos', (req, res) => {
+    res.json({ success: true, titulos: getTitulosColumnas() });
+});
+
+app.post('/api/columnas/titulos', (req, res) => {
+    const titulos = req.body;
+    if (!titulos || typeof titulos !== 'object') {
+        return res.status(400).json({ success: false, error: 'Datos de títulos inválidos' });
+    }
+    const current = getTitulosColumnas();
+    const updated = { ...current, ...titulos };
+    saveTitulosColumnas(updated);
+    broadcastSSE('columnas_updated', { titulos: updated });
+    res.json({ success: true, titulos: updated });
+});
+
+// --- REGISTRO DE NUEVA DETECCIÓN / UNIDAD A CONSIDERAR ---
+app.post('/api/unidad/deteccion', (req, res) => {
+    const { unidad, sucursal, situacion, refacciones, trabajos, prioridad, reportado_por, costo_estimado } = req.body;
+    if (!unidad) {
+        return res.status(400).json({ success: false, error: 'Número de unidad requerido' });
+    }
+
+    const unidades = getUnidades();
+    let u = unidades.find(x => String(x.id).trim() === String(unidad).trim());
+    const hora = new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+    const fecha = new Date().toLocaleDateString('es-MX');
+
+    const descDeteccion = `[DETECCIÓN ${prioridad || 'MEDIA'}] ${situacion || ''}\nRefacciones: ${refacciones || 'Por evaluar'}\nTrabajos: ${trabajos || 'Revisión en patio'}\nReportó: ${reportado_por || 'Supervisor'}`;
+
+    if (u) {
+        u.estado = 'considerar';
+        u.sucursal = sucursal || u.sucursal || 'Apodaca';
+        u.reporte = descDeteccion;
+        u.defecto = situacion || u.defecto;
+        u.situacion_detectada = situacion;
+        u.refacciones_requeridas = refacciones;
+        u.trabajos_requeridos = trabajos;
+        u.prioridad = prioridad || 'MEDIA';
+        u.reportado_por = reportado_por || 'Supervisor';
+        if (costo_estimado) u.costo = Number(costo_estimado);
+        if (!Array.isArray(u.historial)) u.historial = [];
+        u.historial.push({
+            fecha: `${fecha} ${hora}`,
+            accion: `Nueva Detección registrada para evaluación: ${situacion}`,
+            usuario: reportado_por || 'Supervisor'
+        });
+    } else {
+        u = {
+            id: String(unidad).trim(),
+            sucursal: sucursal || 'Apodaca',
+            estado: 'considerar',
+            defecto: situacion || 'Situación detectada para evaluación',
+            reporte: descDeteccion,
+            situacion_detectada: situacion,
+            refacciones_requeridas: refacciones,
+            trabajos_requeridos: trabajos,
+            prioridad: prioridad || 'MEDIA',
+            reportado_por: reportado_por || 'Supervisor',
+            costo: Number(costo_estimado) || 0,
+            piezas: [],
+            avances: [],
+            historial: [{
+                fecha: `${fecha} ${hora}`,
+                accion: `Ingreso a Considerar / Detecciones: ${situacion}`,
+                usuario: reportado_por || 'Supervisor'
+            }]
+        };
+        unidades.push(u);
+    }
+
+    saveUnidades(unidades);
+    broadcastSSE('units_updated', { units: unidades, autor: reportado_por || 'Supervisor' });
+    res.json({ success: true, unidad: u });
+});
+
+// --- CONSULTA DETALLADA DE FOLIO DE ALMACÉN ---
+app.get('/api/almacen/folio/:folio/detalle', (req, res) => {
+    const folio = String(req.params.folio).trim();
+    const data = getAlmacenData();
+    const movimientos = data.movimientos || data.salidas || [];
+
+    const matches = movimientos.filter(m => String(m.folio).trim() === folio);
+    if (matches.length === 0) {
+        return res.status(404).json({ success: false, error: 'Folio no encontrado en Almacén CESS' });
+    }
+
+    const items = matches.map(m => ({
+        id_item: m.id || m.numero_parte,
+        numero_parte: m.numero_parte || '--',
+        descripcion: m.descripcion || m.concepto || 'Refacción',
+        cantidad: Number(m.cantidad) || 1,
+        precio_unitario: Number(m.precio_unitario || m.costo_unitario) || 0,
+        total_costo: (Number(m.cantidad) || 1) * (Number(m.precio_unitario || m.costo_unitario) || 0),
+        fecha: m.fecha || m.fecha_salida || '--',
+        solicitante: m.solicitante || m.entregado_a || '--',
+        unidad: m.unidad_camion || m.unidad || '--'
+    }));
+
+    const costoTotal = items.reduce((acc, it) => acc + it.total_costo, 0);
+
+    res.json({
+        success: true,
+        folio,
+        unidad: matches[0].unidad_camion || matches[0].unidad || '--',
+        solicitante: matches[0].solicitante || matches[0].entregado_a || '--',
+        fecha: matches[0].fecha || matches[0].fecha_salida || '--',
+        items,
+        costo_total: costoTotal
     });
 });
 

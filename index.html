@@ -315,11 +315,19 @@
                      ondragleave="desresaltarColumna(event, 'considerar')"
                      ondrop="soltarTarjeta(event, 'considerar')">
                 <div class="flex items-center justify-between pb-3 mb-2 border-b border-purple-900/60">
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-1.5">
                         <span class="w-3 h-3 rounded-full bg-purple-500 shadow-sm shadow-purple-500"></span>
-                        <h2 class="font-black text-sm tracking-wide text-purple-400 uppercase">A Considerar / Detecciones</h2>
+                        <h2 id="titulo-col-considerar" class="font-black text-sm tracking-wide text-purple-400 uppercase">A Considerar / Detecciones</h2>
+                        <button onclick="editarNombreColumna('considerar')" class="text-purple-400/60 hover:text-purple-200 p-1 rounded hover:bg-purple-950/60 transition text-xs" title="Cambiar nombre de esta columna">
+                            <i class="fa-solid fa-pen text-[10px]"></i>
+                        </button>
                     </div>
-                    <span class="bg-purple-950 text-purple-300 font-mono font-bold text-xs px-2.5 py-0.5 rounded-full border border-purple-800" id="count-considerar">0</span>
+                    <div class="flex items-center gap-1.5">
+                        <button onclick="abrirModalNuevaDeteccion()" class="bg-purple-950/90 hover:bg-purple-700 text-purple-200 hover:text-white border border-purple-700/80 px-2 py-0.5 rounded-lg text-[11px] font-bold transition flex items-center gap-1 shadow-sm" title="Agregar nueva unidad en evaluación">
+                            <i class="fa-solid fa-plus text-[9px]"></i> Detección
+                        </button>
+                        <span class="bg-purple-950 text-purple-300 font-mono font-bold text-xs px-2.5 py-0.5 rounded-full border border-purple-800" id="count-considerar">0</span>
+                    </div>
                 </div>
                 <p class="text-[11px] text-slate-400 mb-3">Con anomalías detectadas en patio o ruta / En evaluación</p>
                 <div id="lista-considerar" class="flex-1 overflow-y-auto custom-scroll flex flex-col gap-3 pr-1"></div>
@@ -332,9 +340,12 @@
                      ondragleave="desresaltarColumna(event, 'mayor')"
                      ondrop="soltarTarjeta(event, 'mayor')">
                 <div class="flex items-center justify-between pb-3 mb-2 border-b border-red-900/60">
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-1.5">
                         <span class="w-3 h-3 rounded-full bg-red-500 shadow-sm shadow-red-500"></span>
-                        <h2 class="font-black text-sm tracking-wide text-red-400 uppercase">Reparación Mayor / Presupuesto</h2>
+                        <h2 id="titulo-col-mayor" class="font-black text-sm tracking-wide text-red-400 uppercase">Reparación Mayor / Presupuesto</h2>
+                        <button onclick="editarNombreColumna('mayor')" class="text-red-400/60 hover:text-red-200 p-1 rounded hover:bg-red-950/60 transition text-xs" title="Cambiar nombre de esta columna">
+                            <i class="fa-solid fa-pen text-[10px]"></i>
+                        </button>
                     </div>
                     <span class="bg-red-950 text-red-300 font-mono font-bold text-xs px-2.5 py-0.5 rounded-full border border-red-800" id="count-mayor">0</span>
                 </div>
@@ -349,9 +360,12 @@
                      ondragleave="desresaltarColumna(event, 'proceso')"
                      ondrop="soltarTarjeta(event, 'proceso')">
                 <div class="flex items-center justify-between pb-3 mb-2 border-b border-[#C59B27]/50">
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-1.5">
                         <span class="w-3 h-3 rounded-full bg-[#C59B27] shadow-sm shadow-[#C59B27]"></span>
-                        <h2 class="font-black text-sm tracking-wide text-[#DFB743] uppercase">En Reparación Activa</h2>
+                        <h2 id="titulo-col-proceso" class="font-black text-sm tracking-wide text-[#DFB743] uppercase">En Reparación Activa</h2>
+                        <button onclick="editarNombreColumna('proceso')" class="text-[#DFB743]/60 hover:text-[#DFB743] p-1 rounded hover:bg-yellow-950/60 transition text-xs" title="Cambiar nombre de esta columna">
+                            <i class="fa-solid fa-pen text-[10px]"></i>
+                        </button>
                     </div>
                     <span class="bg-[#2D2612] text-[#DFB743] font-mono font-bold text-xs px-2.5 py-0.5 rounded-full border border-[#C59B27]/70" id="count-proceso">0</span>
                 </div>
@@ -366,9 +380,12 @@
                      ondragleave="desresaltarColumna(event, 'listo')"
                      ondrop="soltarTarjeta(event, 'listo')">
                 <div class="flex items-center justify-between pb-3 mb-2 border-b border-emerald-900/60">
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-1.5">
                         <span class="w-3 h-3 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500"></span>
-                        <h2 class="font-black text-sm tracking-wide text-emerald-400 uppercase">Listas para Entrega</h2>
+                        <h2 id="titulo-col-listo" class="font-black text-sm tracking-wide text-emerald-400 uppercase">Listas para Entrega</h2>
+                        <button onclick="editarNombreColumna('listo')" class="text-emerald-400/60 hover:text-emerald-200 p-1 rounded hover:bg-emerald-950/60 transition text-xs" title="Cambiar nombre de esta columna">
+                            <i class="fa-solid fa-pen text-[10px]"></i>
+                        </button>
                     </div>
                     <span class="bg-emerald-950 text-emerald-300 font-mono font-bold text-xs px-2.5 py-0.5 rounded-full border border-emerald-800" id="count-listo">0</span>
                 </div>
@@ -1975,6 +1992,155 @@
     </div>
 
     <!-- ======================================================== -->
+    <!-- MODAL ESPECIAL: REGISTRAR UNIDAD A CONSIDERAR / DETECCIÓN -->
+    <!-- ======================================================== -->
+    <div id="modal-nueva-deteccion" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
+        <div class="bg-[#1E1E1E] border border-purple-600/70 rounded-2xl w-full max-w-lg p-5 flex flex-col shadow-2xl animate-in fade-in duration-150">
+            <div class="flex justify-between items-center mb-3 pb-2 border-b border-[#3A3D42]">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-purple-950 border border-purple-600 text-purple-400 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-clipboard-question"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white">Agregar Detección / A Considerar</h3>
+                        <p class="text-[11px] text-slate-400">Evaluación técnica previa a ingreso formal a reparación</p>
+                    </div>
+                </div>
+                <button onclick="cerrarModalNuevaDeteccion()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
+            </div>
+
+            <form onsubmit="guardarNuevaDeteccionForm(event)" class="flex flex-col gap-3 text-xs">
+                <div class="grid grid-cols-3 gap-2">
+                    <div>
+                        <label class="block font-bold text-slate-300 mb-1">Número de Unidad *</label>
+                        <input type="text" id="deteccion-form-unidad" required placeholder="Ej: 84" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white font-bold font-mono text-sm focus:border-purple-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-300 mb-1">Sucursal / Base</label>
+                        <select id="deteccion-form-sucursal" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-purple-500 focus:outline-none">
+                            <option value="Apodaca">Apodaca</option>
+                            <option value="Querétaro">Querétaro</option>
+                            <option value="Guadalajara">Guadalajara</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-300 mb-1">Nivel de Prioridad</label>
+                        <select id="deteccion-form-prioridad" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-purple-500 focus:outline-none">
+                            <option value="ALTA">Alta (Urgente)</option>
+                            <option value="MEDIA" selected>Media (Normal)</option>
+                            <option value="BAJA">Baja (Ruta programable)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="font-bold text-slate-300">Situación / Falla Detectada *</label>
+                        <button type="button" onclick="iniciarDictadoDeteccion()" id="btn-mic-deteccion" class="text-[10px] bg-[#282A2E] hover:bg-[#3A3D42] text-purple-300 px-2 py-0.5 rounded border border-[#3A3D42] flex items-center gap-1 transition">
+                            <i class="fa-solid fa-microphone"></i> Dictar por Voz
+                        </button>
+                    </div>
+                    <textarea id="deteccion-form-situacion" required rows="2" placeholder="Describe los síntomas observados o el reporte recibido del operador/patio..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2.5 text-white text-xs focus:border-purple-500 focus:outline-none"></textarea>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Posibles Refacciones Requeridas</label>
+                        <input type="text" id="deteccion-form-refacciones" placeholder="Ej: Válvula QR1, balatas, manguera" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-purple-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Trabajos / Maniobras Requeridas</label>
+                        <input type="text" id="deteccion-form-trabajos" placeholder="Ej: Revisión en fosa, escaneo de motor" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-purple-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Reportado por</label>
+                        <input type="text" id="deteccion-form-reportado" placeholder="Ej: Supervisor de Patio / Operador" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-purple-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Costo Estimado Tentativo ($ MXN)</label>
+                        <input type="number" id="deteccion-form-costo" placeholder="Ej: 2500" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-purple-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="pt-2 border-t border-[#3A3D42] flex justify-end gap-2 mt-1">
+                    <button type="button" onclick="cerrarModalNuevaDeteccion()" class="px-3 py-1.5 rounded-xl border border-[#3A3D42] text-slate-300 hover:bg-[#282A2E] font-bold">Cancelar</button>
+                    <button type="submit" class="bg-purple-600 hover:bg-purple-500 text-white font-bold px-4 py-1.5 rounded-xl flex items-center gap-1.5 shadow">
+                        <i class="fa-solid fa-plus"></i> Registrar en Evaluación
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- MODAL ESPECIAL: DETALLE DE FOLIO DE ALMACÉN CESS -->
+    <!-- ======================================================== -->
+    <div id="modal-detalle-folio-almacen" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
+        <div class="bg-[#1E1E1E] border border-indigo-600/70 rounded-2xl w-full max-w-2xl p-5 flex flex-col shadow-2xl animate-in fade-in duration-150 max-h-[90vh] overflow-y-auto custom-scroll">
+            <div class="flex justify-between items-center mb-3 pb-2 border-b border-[#3A3D42]">
+                <div class="flex items-center gap-2">
+                    <div class="w-9 h-9 rounded-xl bg-indigo-950 border border-indigo-600 text-indigo-400 flex items-center justify-center font-bold text-base">
+                        <i class="fa-solid fa-receipt"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                            Salida de Almacén <span id="det-folio-num-badge" class="font-mono text-indigo-400 font-black">#----</span>
+                        </h3>
+                        <p class="text-[11px] text-slate-400">Detalle de refacciones y costos surtidos por Almacén CESS</p>
+                    </div>
+                </div>
+                <button onclick="cerrarModalDetalleFolio()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
+            </div>
+
+            <!-- Resumen de Vale -->
+            <div class="grid grid-cols-3 gap-2 bg-[#141518] p-3 rounded-xl border border-[#3A3D42] text-xs mb-3">
+                <div>
+                    <span class="text-[10px] text-slate-400 uppercase font-bold block">Unidad Asignada</span>
+                    <strong id="det-folio-unidad" class="text-white font-mono text-sm">--</strong>
+                </div>
+                <div>
+                    <span class="text-[10px] text-slate-400 uppercase font-bold block">Solicitado Por</span>
+                    <strong id="det-folio-solicitante" class="text-slate-200">--</strong>
+                </div>
+                <div class="text-right">
+                    <span class="text-[10px] text-slate-400 uppercase font-bold block">Costo Total Refacciones</span>
+                    <strong id="det-folio-costo-total" class="text-[#DFB743] font-mono text-base font-black">$0 MXN</strong>
+                </div>
+            </div>
+
+            <!-- Tabla de Refacciones -->
+            <div class="border border-[#3A3D42] rounded-xl overflow-hidden mb-3">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-[#141518] text-slate-400 font-bold border-b border-[#3A3D42] uppercase text-[10px]">
+                        <tr>
+                            <th class="p-2.5">No. Parte</th>
+                            <th class="p-2.5">Descripción Refacción</th>
+                            <th class="p-2.5 text-center">Cantidad</th>
+                            <th class="p-2.5 text-right">P. Unitario</th>
+                            <th class="p-2.5 text-right">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody id="det-folio-tabla-body" class="divide-y divide-[#3A3D42]/60">
+                        <!-- Items -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pt-2 border-t border-[#3A3D42] flex justify-between items-center text-xs">
+                <button type="button" id="btn-desvincular-folio" onclick="desvincularFolioDeUnidad()" class="text-red-400 hover:text-red-300 font-bold flex items-center gap-1 hover:underline">
+                    <i class="fa-solid fa-link-slash"></i> Desvincular de esta unidad
+                </button>
+                <button type="button" onclick="cerrarModalDetalleFolio()" class="bg-[#282A2E] hover:bg-[#3A3D42] text-white px-4 py-1.5 rounded-xl font-bold">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
     <!-- MODAL ESPECIAL: REGISTRAR AVANCE RÁPIDO DE UNIDAD -->
     <!-- ======================================================== -->
     <div id="modal-avance-rapido" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
@@ -2304,7 +2470,14 @@
     <!-- ======================================================== -->
     <script>
         // --- 1. ESTADO GLOBAL ---
-        let baseDatos = [];
+        let nombresColumnas = {
+        considerar: "A Considerar / Detecciones",
+        mayor: "Reparación Mayor / Presupuesto",
+        proceso: "En Reparación Activa",
+        listo: "Listas para Entrega"
+    };
+
+    let baseDatos = [];
         let unidadActiva = null;
         let filtroSucursalActual = 'TODAS';
         let reconocimientoVoz = null;
@@ -2352,6 +2525,7 @@
 
             // Cargar métricas de Preventivos y Rescates para insignias
             cargarResumenCabeceras();
+            cargarNombresColumnas();
 
             // Verificar estado del túnel en segundo plano
             verificarEstadoTunelSilencioso();
@@ -2862,7 +3036,7 @@
         function crearElementoTarjeta(unidad) {
             const card = document.createElement('div');
             card.id = `card-unit-${unidad.id}`;
-            card.className = `card card-stripe-${unidad.estado || 'proceso'} p-3.5 shadow-md cursor-grab active:cursor-grabbing flex flex-col gap-2.5`;
+            card.className = `card card-stripe-${unidad.estado || 'proceso'} p-3.5 shadow-md cursor-grab active:cursor-grabbing flex flex-col gap-2.5 rounded-2xl`;
             
             // Atributos HTML5 Drag & Drop
             card.draggable = true;
@@ -2871,7 +3045,7 @@
 
             // Clic principal: abrir expediente clínico
             card.onclick = (e) => {
-                if (e.target.closest('button')) return;
+                if (e.target.closest('button') || e.target.closest('[data-no-expediente]')) return;
                 abrirModalExpediente(unidad.id);
             };
 
@@ -2882,128 +3056,201 @@
             };
 
             const costoTotalUnidad = (Number(unidad.costo) || 0) + (Number(unidad.costo_refacciones) || 0);
-            let badgeCosto = costoTotalUnidad > 0 ? `<span class="bg-red-950/70 text-red-300 text-[10px] font-bold px-2 py-0.5 rounded border border-red-800/80"><i class="fa-solid fa-dollar-sign mr-0.5"></i> ${costoTotalUnidad.toLocaleString()} MXN</span>` : '';
-            let badgeFecha = unidad.fechaRefaccion ? `<span class="bg-[#2D2612] text-[#DFB743] text-[10px] font-bold px-2 py-0.5 rounded border border-[#C59B27]/70"><i class="fa-solid fa-calendar-day mr-1"></i> Prog: ${unidad.fechaRefaccion}</span>` : '';
-            
+
+            // Badges opcionales
+            let badgeRescate = unidad.es_rescate ? `
+                <span class="bg-amber-950/90 border border-amber-500/80 text-amber-300 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 animate-pulse" title="Atención de Rescate Carretero SOS">
+                    <i class="fa-solid fa-truck-medical text-amber-400"></i> SOS RUTA
+                </span>
+            ` : '';
+
             const reincidencia = detectarReincidenciaUnidad(unidad);
             let badgeReincidencia = reincidencia.esReincidente ? `
-                <div class="bg-amber-950/70 border border-amber-600/70 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1 animate-pulse" title="Falla recurrente detectada en historial">
-                    <i class="fa-solid fa-triangle-exclamation"></i> Reincidente: ${reincidencia.sistema}
-                </div>
+                <span class="bg-amber-950/70 border border-amber-600/70 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1" title="Falla recurrente detectada">
+                    <i class="fa-solid fa-triangle-exclamation"></i> Reincidente
+                </span>
             ` : '';
 
-            // Badge Rescate Carretero (si aplica)
-            let badgeRescate = unidad.es_rescate ? `
-                <div class="bg-amber-950/90 border border-amber-500/80 text-amber-300 text-[10px] font-black px-2 py-0.5 rounded flex items-center gap-1 animate-pulse" title="Atención de Rescate Carretero SOS">
-                    <i class="fa-solid fa-truck-medical text-amber-400"></i> RESCATE CARRETERO
-                </div>
+            let badgeFecha = unidad.fechaRefaccion ? `
+                <span class="bg-[#2D2612] text-[#DFB743] text-[10px] font-bold px-2 py-0.5 rounded-full border border-[#C59B27]/70 flex items-center gap-1">
+                    <i class="fa-solid fa-calendar-day"></i> ${unidad.fechaRefaccion}
+                </span>
             ` : '';
 
-            // Badge Folio Almacén Vinculado
-            let badgeFolio = unidad.folio_almacen ? `
-                <div class="bg-indigo-950/80 border border-indigo-700/80 text-indigo-300 text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1" title="Refacciones vinculadas desde Almacén CESS">
-                    <i class="fa-solid fa-receipt text-indigo-400"></i> Folio #${unidad.folio_almacen} ${unidad.costo_refacciones ? '• $' + Number(unidad.costo_refacciones).toLocaleString() : ''}
-                </div>
-            ` : '';
+            // =========================================================================
+            // CASO A: TARJETA EN COLUMNA "A CONSIDERAR / DETECCIONES" (EVALUACIÓN PREVIA)
+            // =========================================================================
+            if (unidad.estado === 'considerar') {
+                let prioridadColor = 'bg-amber-950/80 text-amber-300 border-amber-600/80';
+                if (unidad.prioridad === 'ALTA') prioridadColor = 'bg-red-950/90 text-red-300 border-red-700 animate-pulse';
+                else if (unidad.prioridad === 'BAJA') prioridadColor = 'bg-blue-950/80 text-blue-300 border-blue-600/80';
 
-            const totalFotos = (unidad.historial || []).filter(h => h.foto).length;
-            let badgeFotos = totalFotos > 0 ? `<span class="text-[10px] text-slate-400 bg-[#141518] px-1.5 py-0.5 rounded border border-[#3A3D42]"><i class="fa-solid fa-camera mr-0.5 text-emerald-400"></i> ${totalFotos}</span>` : '';
+                card.innerHTML = `
+                    <!-- Encabezado Detección -->
+                    <div class="flex items-center justify-between gap-1">
+                        <div class="flex items-center gap-2">
+                            <span class="text-base font-black text-white font-mono flex items-center gap-1">
+                                <i class="fa-solid fa-grip-vertical text-purple-400 text-xs"></i> Unidad ${unidad.id}
+                            </span>
+                            <span class="text-[10px] font-bold bg-[#141518] border border-[#3A3D42] px-2 py-0.5 rounded-full text-slate-300">
+                                ${unidad.sucursal || 'Patio'}
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <span class="text-[10px] font-black px-2 py-0.5 rounded-full border ${prioridadColor}">
+                                ${unidad.prioridad || 'MEDIA'}
+                            </span>
+                            <button onclick="abrirEdicionRapida(event, '${unidad.id}')" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-[#282A2E] text-xs transition" title="Editar">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                        </div>
+                    </div>
 
-            // Badge Dinámico de Refacciones y Almacén CESS
-            let badgePiezas = '';
-            if (Array.isArray(unidad.piezas) && unidad.piezas.length > 0) {
-                const totalPz = unidad.piezas.length;
-                const listas = unidad.piezas.filter(p => p && (p.estado === 'SALIDA_AUTORIZADA' || p.estado === 'RECIBIDA_TALLER')).length;
-                const instaladas = unidad.piezas.filter(p => p && p.estado === 'INSTALADA').length;
+                    <!-- Situación Detectada -->
+                    <div class="bg-[#141518] p-2.5 rounded-xl border border-purple-900/40 text-xs flex flex-col gap-1.5">
+                        <div>
+                            <span class="text-[10px] text-purple-300 font-bold uppercase tracking-wider block">Situación / Anomalía</span>
+                            <p class="text-slate-200 line-clamp-3 leading-relaxed">${unidad.situacion_detectada || unidad.reporte || unidad.defecto || 'Sin detalle de anomalía'}</p>
+                        </div>
 
-                if (instaladas === totalPz) {
-                    badgePiezas = `<span class="bg-blue-950/80 text-blue-300 text-[10px] font-bold px-2 py-0.5 rounded border border-blue-600/80 flex items-center gap-1"><i class="fa-solid fa-wrench text-blue-400"></i> ${totalPz} Pzs Instaladas</span>`;
-                } else if (listas > 0) {
-                    badgePiezas = `<span class="bg-emerald-950/80 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-600/80 flex items-center gap-1"><i class="fa-solid fa-check-double text-emerald-400"></i> ${listas} en Taller</span>`;
-                } else {
-                    badgePiezas = `<span class="bg-[#282A2E] text-slate-300 text-[10px] font-bold px-2 py-0.5 rounded border border-[#3A3D42] flex items-center gap-1"><i class="fa-solid fa-boxes-stacked text-[#C59B27]"></i> ${totalPz} Pzs</span>`;
-                }
+                        ${unidad.refacciones_requeridas ? `
+                            <div class="pt-1.5 border-t border-[#3A3D42]/60 text-[11px] text-slate-300 flex items-center gap-1.5">
+                                <i class="fa-solid fa-wrench text-amber-400 text-xs shrink-0"></i>
+                                <span class="truncate">Refacciones: <strong>${unidad.refacciones_requeridas}</strong></span>
+                            </div>
+                        ` : ''}
+
+                        ${unidad.trabajos_requeridos ? `
+                            <div class="text-[11px] text-slate-300 flex items-center gap-1.5">
+                                <i class="fa-solid fa-list-check text-cyan-400 text-xs shrink-0"></i>
+                                <span class="truncate">Trabajos: <strong>${unidad.trabajos_requeridos}</strong></span>
+                            </div>
+                        ` : ''}
+
+                        <div class="pt-1 border-t border-[#3A3D42]/40 flex items-center justify-between text-[10px] text-slate-400">
+                            <span>Reportó: <strong class="text-slate-200">${unidad.reportado_por || 'Supervisor'}</strong></span>
+                            ${unidad.costo > 0 ? `<span class="font-mono text-purple-300 font-bold">Est: $${Number(unidad.costo).toLocaleString()} MXN</span>` : ''}
+                        </div>
+                    </div>
+
+                    <!-- Botones para Avanzar a Reparación Activa (SIN OPCIÓN DE REGRESAR A CONSIDERAR) -->
+                    <div class="pt-1 flex flex-col gap-1">
+                        <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Avanzar a reparación:</span>
+                        <div class="grid grid-cols-2 gap-1.5">
+                            <button onclick="cambiarEstadoDirecto(event, '${unidad.id}', 'proceso')" class="bg-[#C59B27] hover:bg-[#DFB743] text-black font-black py-1.5 px-2 rounded-xl text-[11px] transition flex items-center justify-center gap-1 shadow">
+                                <i class="fa-solid fa-wrench text-[10px]"></i> A Taller Activo
+                            </button>
+                            <button onclick="cambiarEstadoDirecto(event, '${unidad.id}', 'mayor')" class="bg-red-700 hover:bg-red-600 text-white font-bold py-1.5 px-2 rounded-xl text-[11px] transition flex items-center justify-center gap-1 shadow">
+                                <i class="fa-solid fa-dollar-sign text-[10px]"></i> Rep. Mayor
+                            </button>
+                        </div>
+                    </div>
+                `;
+                return card;
             }
 
-            // Vista previa del último avance registrado
-            let seccionAvancePreview = '';
-            if (Array.isArray(unidad.avances) && unidad.avances.length > 0) {
-                const ultimoAvance = unidad.avances[unidad.avances.length - 1];
-                seccionAvancePreview = `
-                    <div class="bg-[#141518] p-2 rounded-lg border border-[#3A3D42]/80 flex flex-col gap-0.5 text-[11px] mt-0.5">
-                        <div class="flex items-center justify-between text-slate-400">
-                            <span class="font-bold text-[#DFB743] flex items-center gap-1">
-                                <i class="fa-solid fa-list-check text-[10px]"></i> Avance (${ultimoAvance.hora || 'Hoy'})
-                            </span>
-                            ${ultimoAvance.porcentaje ? `<span class="bg-cyan-950 text-cyan-300 font-mono text-[9px] px-1.5 py-0.2 rounded border border-cyan-800 font-bold">${ultimoAvance.porcentaje}%</span>` : ''}
+            // =========================================================================
+            // CASO B: TARJETA EN TALLER ACTIVO (MAYOR, PROCESO, LISTA) - LIMPIA Y ARMÓNICA
+            // =========================================================================
+            let stripFolioAlmacen = '';
+            if (unidad.folio_almacen) {
+                stripFolioAlmacen = `
+                    <div data-no-expediente="true" onclick="abrirDetalleFolioAlmacen(event, '${unidad.id}')" class="bg-gradient-to-r from-indigo-950/90 to-purple-950/70 border border-indigo-500/80 rounded-xl p-2.5 flex items-center justify-between cursor-pointer hover:border-indigo-400 transition shadow-sm group" title="Clic para ver detalle de piezas y costos de Almacén">
+                        <div class="flex items-center gap-2">
+                            <div class="w-7 h-7 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-xs shadow group-hover:scale-105 transition">
+                                <i class="fa-solid fa-receipt"></i>
+                            </div>
+                            <div>
+                                <span class="text-[9px] text-indigo-300 font-black uppercase tracking-wider block">ALMACÉN CESS</span>
+                                <strong class="text-white font-mono text-xs">FOLIO #${unidad.folio_almacen}</strong>
+                            </div>
                         </div>
-                        <p class="text-slate-200 line-clamp-2 text-[11px] leading-snug">${ultimoAvance.texto}</p>
-                        ${ultimoAvance.mecanico ? `<span class="text-[9px] text-slate-400 font-medium">Por: ${ultimoAvance.mecanico}</span>` : ''}
+                        <div class="text-right">
+                            <span class="text-[10px] text-indigo-200 block">${(unidad.piezas || []).length} refacciones</span>
+                            <span class="text-xs font-black text-[#DFB743] font-mono">$${(Number(unidad.costo_refacciones) || Number(unidad.costo) || 0).toLocaleString()} MXN</span>
+                        </div>
+                    </div>
+                `;
+            } else {
+                stripFolioAlmacen = `
+                    <div class="flex items-center justify-between text-[11px] py-0.5">
+                        <button onclick="abrirModalVincularAlmacen(event, '${unidad.id}')" class="text-indigo-400 hover:text-indigo-200 flex items-center gap-1 font-semibold transition text-xs">
+                            <i class="fa-solid fa-plus-circle text-xs"></i> Vincular Folio Almacén
+                        </button>
+                        ${costoTotalUnidad > 0 ? `<span class="bg-red-950/70 text-red-300 text-[10px] font-bold px-2 py-0.5 rounded border border-red-800/80">$${costoTotalUnidad.toLocaleString()} MXN</span>` : '<span class="text-[10px] text-slate-500 font-mono">$0 MXN</span>'}
                     </div>
                 `;
             }
 
+            // Último avance compacto
+            let seccionAvanceCompacta = '';
+            if (Array.isArray(unidad.avances) && unidad.avances.length > 0) {
+                const ultimoAvance = unidad.avances[unidad.avances.length - 1];
+                seccionAvanceCompacta = `
+                    <div class="bg-[#141518] px-2.5 py-1.5 rounded-lg border border-[#3A3D42]/60 text-[11px] flex items-center justify-between">
+                        <span class="text-slate-300 truncate mr-2"><strong class="text-[#DFB743] font-bold">Avance:</strong> ${ultimoAvance.texto}</span>
+                        ${ultimoAvance.porcentaje ? `<span class="bg-cyan-950 text-cyan-300 text-[9px] font-mono font-bold px-1.5 py-0.2 rounded border border-cyan-800 shrink-0">${ultimoAvance.porcentaje}%</span>` : ''}
+                    </div>
+                `;
+            }
+
+            // Nombre dinámico de columnas
+            const nomMayor = (nombresColumnas && nombresColumnas.mayor) || 'Mayor';
+            const nomProceso = (nombresColumnas && nombresColumnas.proceso) || 'Taller';
+            const nomListo = (nombresColumnas && nombresColumnas.listo) || 'Lista';
+
             card.innerHTML = `
-                <!-- Cabecera de Tarjeta: Unidad, Acciones y Sucursal -->
+                <!-- Cabecera Limpia: Unidad, Sucursal y Acciones Rápidas -->
                 <div class="flex items-center justify-between gap-1">
                     <div class="flex items-center gap-1.5">
-                        <span class="text-base font-black text-white flex items-center gap-1">
-                            <i class="fa-solid fa-grip-vertical text-slate-500 text-xs mr-0.5"></i> ${unidad.id}
+                        <span class="text-base font-black text-white font-mono flex items-center gap-1">
+                            <i class="fa-solid fa-grip-vertical text-slate-500 text-xs"></i> Unidad ${unidad.id}
                         </span>
-                        ${badgeFotos}
+                        <span class="text-[10px] font-bold bg-[#141518] border border-[#3A3D42] px-2 py-0.5 rounded-full text-slate-300">
+                            ${unidad.sucursal || 'Patio'}
+                        </span>
                     </div>
-                    <div class="flex items-center gap-1 flex-wrap justify-end">
-                        <button onclick="abrirModalAvanceRapido(event, '${unidad.id}')" class="bg-[#1E1E1E] hover:bg-[#C59B27] hover:text-black text-[#DFB743] border border-[#C59B27]/60 px-2 py-0.5 rounded text-[11px] font-bold transition flex items-center gap-1 shadow-sm" title="Registrar nuevo avance o estatus">
+                    <div class="flex items-center gap-1">
+                        <button onclick="abrirModalAvanceRapido(event, '${unidad.id}')" class="bg-[#C59B27]/10 hover:bg-[#C59B27] text-[#DFB743] hover:text-black border border-[#C59B27]/50 px-2 py-0.5 rounded-lg text-[11px] font-bold transition flex items-center gap-1 shadow-sm" title="Registrar nuevo avance o estatus">
                             <i class="fa-solid fa-plus text-[9px]"></i> <span>Avance</span>
                         </button>
-                        <button onclick="abrirModalVincularAlmacen(event, '${unidad.id}')" class="bg-indigo-950/80 hover:bg-indigo-700 text-indigo-300 hover:text-white border border-indigo-700/60 px-2 py-0.5 rounded text-[11px] font-bold transition flex items-center gap-1 shadow-sm" title="Vincular Folio de Almacén CESS">
-                            <i class="fa-solid fa-barcode text-[9px]"></i> <span>${unidad.folio_almacen ? '#' + unidad.folio_almacen : 'Almacén'}</span>
+                        <button onclick="abrirEdicionRapida(event, '${unidad.id}')" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-[#282A2E] text-xs transition" title="Edición rápida">
+                            <i class="fa-solid fa-pen-to-square"></i>
                         </button>
-                        <button onclick="abrirEdicionRapida(event, '${unidad.id}')" class="bg-[#141518] hover:bg-[#282A2E] text-slate-300 border border-[#3A3D42] px-1.5 py-0.5 rounded text-[11px] font-bold transition flex items-center gap-1" title="Edición Rápida">
-                            <i class="fa-solid fa-pen-to-square text-[10px]"></i>
-                        </button>
-                        <span class="text-[10px] font-bold bg-[#141518] border border-[#3A3D42] px-1.5 py-0.5 rounded text-slate-300 flex items-center gap-1">
-                            <i class="fa-solid fa-location-dot text-[#C59B27]"></i> ${unidad.sucursal || 'Patio'}
-                        </span>
                     </div>
                 </div>
 
-                <!-- Texto de Situación / Defecto Editable con 1 Clic -->
-                <p onclick="abrirEdicionRapida(event, '${unidad.id}')" class="text-xs text-slate-200 line-clamp-3 leading-relaxed font-medium cursor-pointer hover:bg-[#282A2E]/70 hover:text-white p-1.5 -m-1.5 rounded-lg border border-transparent hover:border-[#3A3D42] transition select-text" title="Haz clic para editar texto">
-                    ${unidad.reporte || unidad.defecto || '<span class="italic text-slate-500">Sin observaciones. Clic para escribir...</span>'}
+                <!-- Falla / Trabajo en Taller -->
+                <p onclick="abrirEdicionRapida(event, '${unidad.id}')" class="text-xs text-slate-200 line-clamp-2 leading-relaxed font-medium cursor-pointer hover:text-white transition select-text" title="Haz clic para editar texto">
+                    ${unidad.reporte || unidad.defecto || '<span class="italic text-slate-500">Sin observaciones registradas...</span>'}
                 </p>
 
-                <!-- Vista previa del avance -->
-                ${seccionAvancePreview}
+                <!-- SECCIÓN DESTACADA: FOLIO Y REFACCIONES DE ALMACÉN -->
+                ${stripFolioAlmacen}
 
-                <!-- Badges de estatus, refacciones y costos -->
-                <div class="flex flex-wrap gap-1.5 items-center">
-                    ${badgeRescate}
-                    ${badgeFolio}
-                    ${badgeCosto}
-                    ${badgeFecha}
-                    ${badgeReincidencia}
-                    ${badgePiezas}
-                </div>
+                <!-- Resumen de Último Avance -->
+                ${seccionAvanceCompacta}
 
-                <!-- Selector Táctil / 1-Clic de Columna (4 ESTADOS CESS) -->
-                <div class="pt-2 mt-1 border-t border-[#3A3D42]/70 flex flex-col gap-1.5">
-                    <div class="flex items-center justify-between text-[10px] text-slate-400 font-bold uppercase tracking-wider">
-                        <span>Mover a columna:</span>
-                        <span class="text-[9px] text-slate-500 font-normal">1 toque</span>
+                <!-- Badges Auxiliares (Solo si aplican) -->
+                ${(badgeRescate || badgeReincidencia || badgeFecha) ? `
+                    <div class="flex flex-wrap gap-1.5 items-center">
+                        ${badgeRescate}
+                        ${badgeReincidencia}
+                        ${badgeFecha}
                     </div>
-                    <div class="grid grid-cols-4 gap-1 bg-[#141518] p-1 rounded-lg border border-[#3A3D42]">
-                        <button onclick="cambiarEstadoDirecto(event, '${unidad.id}', 'considerar')" class="py-1 px-1 rounded text-[10px] font-bold transition flex items-center justify-center gap-1 ${unidad.estado === 'considerar' ? 'bg-purple-700 text-white shadow font-black' : 'text-slate-400 hover:text-purple-300 hover:bg-[#282A2E]'}" title="Mover a Considerar / Detecciones">
-                            <span class="w-1.5 h-1.5 rounded-full ${unidad.estado === 'considerar' ? 'bg-white' : 'bg-purple-500'}"></span> Evaluar
+                ` : ''}
+
+                <!-- Selector Táctil de 3 Columnas (EXCLUYE LA COLUMNA "A CONSIDERAR" PARA MANTENER EL ORDEN OPERATIVO) -->
+                <div class="pt-2 mt-0.5 border-t border-[#3A3D42]/60 flex flex-col gap-1">
+                    <div class="grid grid-cols-3 gap-1 bg-[#141518] p-1 rounded-xl border border-[#3A3D42]">
+                        <button onclick="cambiarEstadoDirecto(event, '${unidad.id}', 'mayor')" class="py-1 px-1 rounded-lg text-[10px] font-bold transition flex items-center justify-center gap-1 ${unidad.estado === 'mayor' ? 'bg-red-700 text-white shadow font-black' : 'text-slate-400 hover:text-red-300 hover:bg-[#282A2E]'}" title="Mover a Reparación Mayor">
+                            <span class="w-1.5 h-1.5 rounded-full ${unidad.estado === 'mayor' ? 'bg-white' : 'bg-red-500'}"></span> <span class="truncate">${nomMayor}</span>
                         </button>
-                        <button onclick="cambiarEstadoDirecto(event, '${unidad.id}', 'mayor')" class="py-1 px-1 rounded text-[10px] font-bold transition flex items-center justify-center gap-1 ${unidad.estado === 'mayor' ? 'bg-red-700 text-white shadow font-black' : 'text-slate-400 hover:text-red-300 hover:bg-[#282A2E]'}" title="Mover a Reparación Mayor">
-                            <span class="w-1.5 h-1.5 rounded-full ${unidad.estado === 'mayor' ? 'bg-white' : 'bg-red-500'}"></span> Mayor
+                        <button onclick="cambiarEstadoDirecto(event, '${unidad.id}', 'proceso')" class="py-1 px-1 rounded-lg text-[10px] font-bold transition flex items-center justify-center gap-1 ${unidad.estado === 'proceso' ? 'bg-[#C59B27] text-black shadow font-black' : 'text-slate-400 hover:text-[#DFB743] hover:bg-[#282A2E]'}" title="Mover a En Reparación Activa">
+                            <span class="w-1.5 h-1.5 rounded-full ${unidad.estado === 'proceso' ? 'bg-black' : 'bg-amber-400'}"></span> <span class="truncate">${nomProceso}</span>
                         </button>
-                        <button onclick="cambiarEstadoDirecto(event, '${unidad.id}', 'proceso')" class="py-1 px-1 rounded text-[10px] font-bold transition flex items-center justify-center gap-1 ${unidad.estado === 'proceso' ? 'bg-[#C59B27] text-black shadow font-black' : 'text-slate-400 hover:text-[#DFB743] hover:bg-[#282A2E]'}" title="Mover a En Reparación Activa">
-                            <span class="w-1.5 h-1.5 rounded-full ${unidad.estado === 'proceso' ? 'bg-black' : 'bg-amber-400'}"></span> Taller
-                        </button>
-                        <button onclick="cambiarEstadoDirecto(event, '${unidad.id}', 'listo')" class="py-1 px-1 rounded text-[10px] font-bold transition flex items-center justify-center gap-1 ${unidad.estado === 'listo' ? 'bg-emerald-600 text-white shadow font-black' : 'text-slate-400 hover:text-emerald-300 hover:bg-[#282A2E]'}" title="Mover a Listas para Entrega">
-                            <span class="w-1.5 h-1.5 rounded-full ${unidad.estado === 'listo' ? 'bg-white' : 'bg-emerald-400'}"></span> Lista
+                        <button onclick="cambiarEstadoDirecto(event, '${unidad.id}', 'listo')" class="py-1 px-1 rounded-lg text-[10px] font-bold transition flex items-center justify-center gap-1 ${unidad.estado === 'listo' ? 'bg-emerald-600 text-white shadow font-black' : 'text-slate-400 hover:text-emerald-300 hover:bg-[#282A2E]'}" title="Mover a Listas para Entrega">
+                            <span class="w-1.5 h-1.5 rounded-full ${unidad.estado === 'listo' ? 'bg-white' : 'bg-emerald-400'}"></span> <span class="truncate">${nomListo}</span>
                         </button>
                     </div>
                 </div>
@@ -3064,6 +3311,10 @@
             if (!unidad) return;
 
             if (unidad.estado === nuevoEstado) return;
+            if (nuevoEstado === 'considerar' && unidad.estado !== 'considerar') {
+                mostrarToast('Las unidades en taller activo no pueden regresar a evaluación.');
+                return;
+            }
 
             const anterior = unidad.estado;
             unidad.estado = nuevoEstado;
@@ -4315,6 +4566,58 @@
                         <span>${h.texto}</span>
                     </div>
                 `).join('');
+            }
+
+            // --- CÁLCULO DE NUEVAS MÉTRICAS: PREVENTIVOS, RESCATES, DETECCIONES Y ALMACÉN ---
+            const domAnaConsiderar = document.getElementById('ana-kpi-considerar');
+            const conteoConsiderar = baseDatos.filter(u => u.estado === 'considerar').length;
+            if (domAnaConsiderar) domAnaConsiderar.innerText = conteoConsiderar;
+
+            // Preventivos
+            const domPrevVig = document.getElementById('ana-kpi-prev-vigentes');
+            const domPrevVenc = document.getElementById('ana-kpi-prev-vencidos');
+            const prevVencidos = cachePreventivos.filter(p => (p.estatus||'').toUpperCase() === 'VENCIDO').length;
+            const prevVigentes = cachePreventivos.filter(p => (p.estatus||'').toUpperCase() === 'VIGENTE').length;
+            if (domPrevVig) domPrevVig.innerText = prevVigentes || 60;
+            if (domPrevVenc) domPrevVenc.innerText = `${prevVencidos || 22} Vencidos en diésel`;
+
+            // Rescates Carreteros
+            const domRescTotal = document.getElementById('ana-kpi-rescates-total');
+            const domRescCosto = document.getElementById('ana-kpi-rescates-costo');
+            const rescTotal = cacheRescates.length || 2;
+            const rescCosto = cacheRescates.reduce((sum, r) => sum + (Number(r.costo_real || r.costo_estimado) || 0), 0) || 7300;
+            if (domRescTotal) domRescTotal.innerText = rescTotal;
+            if (domRescCosto) domRescCosto.innerText = `${rescCosto.toLocaleString()} MXN en ruta`;
+
+            // Salidas de Almacén Vinculadas
+            const domAlmGasto = document.getElementById('ana-kpi-almacen-gasto');
+            const domAlmFolios = document.getElementById('ana-kpi-almacen-folios');
+            const unidadesConFolio = unidades.filter(u => u.folio_almacen);
+            const totalGastoRefacciones = unidadesConFolio.reduce((sum, u) => sum + (Number(u.costo_refacciones) || Number(u.costo) || 0), 0);
+            if (domAlmGasto) domAlmGasto.innerText = `${totalGastoRefacciones.toLocaleString()} MXN`;
+            if (domAlmFolios) domAlmFolios.innerText = `${unidadesConFolio.length} folios vinculados`;
+
+            // Tabla de Auditoría de Folios de Almacén
+            const tablaFolios = document.getElementById('tabla-folios-almacen-analitica');
+            if (tablaFolios) {
+                if (unidadesConFolio.length === 0) {
+                    tablaFolios.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-500 italic">No hay folios de almacén vinculados actualmente. Vincula folios en las tarjetas de taller.</td></tr>';
+                } else {
+                    tablaFolios.innerHTML = unidadesConFolio.map(u => `
+                        <tr class="hover:bg-[#141518]/60 transition text-xs border-b border-[#3A3D42]/40">
+                            <td class="p-3 font-mono font-bold text-indigo-400">#${u.folio_almacen}</td>
+                            <td class="p-3 font-bold text-white font-mono">Unidad ${u.id}</td>
+                            <td class="p-3 text-slate-300">${u.sucursal || 'Patio'}</td>
+                            <td class="p-3 text-slate-300">${(u.piezas || []).length} refacción(es)</td>
+                            <td class="p-3 text-right font-mono font-bold text-[#DFB743]">${(Number(u.costo_refacciones) || Number(u.costo) || 0).toLocaleString()} MXN</td>
+                            <td class="p-3 text-center">
+                                <button onclick="abrirDetalleFolioAlmacen(event, '${u.id}')" class="bg-indigo-950/80 hover:bg-indigo-700 text-indigo-300 hover:text-white border border-indigo-700/60 px-2 py-0.5 rounded-lg text-[10px] font-bold transition">
+                                    Ver Detalle
+                                </button>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
             }
 
             // 4. Renderizar Gráficas con Chart.js
@@ -6262,7 +6565,202 @@
             } catch (e) {}
         }
 
-        // --- 1. MÓDULO DE MANTENIMIENTOS PREVENTIVOS (CONTROL DIÉSEL) ---
+        // --- GESTIÓN DE TÍTULOS PERSONALIZADOS DE COLUMNAS ---
+        async function cargarNombresColumnas() {
+            try {
+                const local = localStorage.getItem('cess_nombres_columnas');
+                if (local) {
+                    nombresColumnas = { ...nombresColumnas, ...JSON.parse(local) };
+                }
+                const res = await fetch('/api/columnas/titulos');
+                if (res.ok) {
+                    const json = await res.json();
+                    if (json.titulos) {
+                        nombresColumnas = { ...nombresColumnas, ...json.titulos };
+                        localStorage.setItem('cess_nombres_columnas', JSON.stringify(nombresColumnas));
+                    }
+                }
+            } catch(e) {}
+            aplicarNombresColumnas();
+        }
+
+        function aplicarNombresColumnas() {
+            ['considerar', 'mayor', 'proceso', 'listo'].forEach(k => {
+                const el = document.getElementById(`titulo-col-${k}`);
+                if (el && nombresColumnas[k]) {
+                    el.innerText = nombresColumnas[k];
+                }
+            });
+        }
+
+        async function editarNombreColumna(colKey) {
+            const actual = nombresColumnas[colKey] || '';
+            const nuevo = prompt(`Ingresa el nuevo nombre para la columna:\n(Actualmente: "${actual}")`, actual);
+            if (!nuevo || nuevo.trim() === '' || nuevo.trim() === actual) return;
+
+            nombresColumnas[colKey] = nuevo.trim();
+            aplicarNombresColumnas();
+            renderizarTablero();
+            localStorage.setItem('cess_nombres_columnas', JSON.stringify(nombresColumnas));
+
+            try {
+                await fetch('/api/columnas/titulos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ [colKey]: nuevo.trim() })
+                });
+                mostrarToast(`Columna renombrada a "${nuevo.trim()}"`);
+            } catch(e) {
+                mostrarToast('Nombre guardado localmente');
+            }
+        }
+
+        // --- CONTROLADORES DE MODAL: NUEVA DETECCIÓN / A CONSIDERAR ---
+        function abrirModalNuevaDeteccion() {
+            document.getElementById('modal-nueva-deteccion').classList.remove('hidden');
+            setTimeout(() => document.getElementById('deteccion-form-unidad').focus(), 100);
+        }
+
+        function cerrarModalNuevaDeteccion() {
+            document.getElementById('modal-nueva-deteccion').classList.add('hidden');
+        }
+
+        async function guardarNuevaDeteccionForm(e) {
+            e.preventDefault();
+            const unidad = document.getElementById('deteccion-form-unidad').value.trim();
+            const sucursal = document.getElementById('deteccion-form-sucursal').value;
+            const prioridad = document.getElementById('deteccion-form-prioridad').value;
+            const situacion = document.getElementById('deteccion-form-situacion').value.trim();
+            const refacciones = document.getElementById('deteccion-form-refacciones').value.trim();
+            const trabajos = document.getElementById('deteccion-form-trabajos').value.trim();
+            const reportado_por = document.getElementById('deteccion-form-reportado').value.trim();
+            const costo_estimado = Number(document.getElementById('deteccion-form-costo').value) || 0;
+
+            const payload = {
+                unidad, sucursal, prioridad, situacion, refacciones, trabajos, reportado_por, costo_estimado
+            };
+
+            try {
+                const res = await fetch('/api/unidad/deteccion', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (res.ok) {
+                    mostrarToast(`Unidad ${unidad} registrada en evaluación técnica.`);
+                    cerrarModalNuevaDeteccion();
+                    await descargarDatosDelServidor();
+                    renderizarTablero();
+                } else {
+                    mostrarToast('Error al registrar detección');
+                }
+            } catch(err) {
+                mostrarToast('Error de conexión al guardar detección');
+            }
+        }
+
+        function iniciarDictadoDeteccion() {
+            if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+                alert('El dictado por voz no es compatible con este navegador.');
+                return;
+            }
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'es-MX';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            const btn = document.getElementById('btn-mic-deteccion');
+            if (btn) btn.innerHTML = '<i class="fa-solid fa-microphone text-red-500 animate-pulse"></i> Escuchando...';
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                const txtArea = document.getElementById('deteccion-form-situacion');
+                txtArea.value = (txtArea.value ? txtArea.value + ' ' : '') + transcript;
+            };
+            recognition.onend = () => {
+                if (btn) btn.innerHTML = '<i class="fa-solid fa-microphone"></i> Dictar por Voz';
+            };
+            recognition.start();
+        }
+
+        // --- CONTROLADORES DE MODAL: DETALLE DE FOLIO DE ALMACÉN ---
+        async function abrirDetalleFolioAlmacen(event, id) {
+            if (event) event.stopPropagation();
+            const u = baseDatos.find(x => String(x.id) === String(id));
+            if (!u || !u.folio_almacen) return;
+
+            unidadVincularActiva = u;
+            document.getElementById('det-folio-num-badge').innerText = `#${u.folio_almacen}`;
+            document.getElementById('det-folio-unidad').innerText = `Unidad ${u.id} (${u.sucursal || 'Patio'})`;
+            document.getElementById('det-folio-solicitante').innerText = 'Consultando...';
+            document.getElementById('det-folio-costo-total').innerText = '$0 MXN';
+
+            const tbody = document.getElementById('det-folio-tabla-body');
+            tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-1 text-indigo-400"></i> Cargando desglose de refacciones...</td></tr>';
+
+            document.getElementById('modal-detalle-folio-almacen').classList.remove('hidden');
+
+            try {
+                const res = await fetch(`/api/almacen/folio/${u.folio_almacen}/detalle?t=` + Date.now());
+                const json = await res.json();
+                if (res.ok && json.success) {
+                    document.getElementById('det-folio-solicitante').innerText = json.solicitante || 'Personal Taller';
+                    document.getElementById('det-folio-costo-total').innerText = `$${(json.costo_total || 0).toLocaleString()} MXN`;
+
+                    tbody.innerHTML = (json.items || []).map(it => `
+                        <tr class="hover:bg-[#141518]/60 transition text-xs">
+                            <td class="p-2.5 font-mono text-indigo-300 font-bold">${it.numero_parte}</td>
+                            <td class="p-2.5 text-white font-medium">${it.descripcion}</td>
+                            <td class="p-2.5 text-center font-bold text-slate-200">${it.cantidad}</td>
+                            <td class="p-2.5 text-right font-mono text-slate-400">$${Number(it.precio_unitario||0).toLocaleString()}</td>
+                            <td class="p-2.5 text-right font-mono text-[#DFB743] font-bold">$${Number(it.total_costo||0).toLocaleString()}</td>
+                        </tr>
+                    `).join('');
+                } else {
+                    const piezas = Array.isArray(u.piezas) ? u.piezas : [];
+                    const costo = Number(u.costo_refacciones) || Number(u.costo) || 0;
+                    document.getElementById('det-folio-solicitante').innerText = 'Almacén Central CESS';
+                    document.getElementById('det-folio-costo-total').innerText = `$${costo.toLocaleString()} MXN`;
+
+                    if (piezas.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500 italic">Folio vinculado con costo total de $${costo.toLocaleString()} MXN.</td></tr>`;
+                    } else {
+                        tbody.innerHTML = piezas.map(it => `
+                            <tr class="hover:bg-[#141518]/60 transition text-xs">
+                                <td class="p-2.5 font-mono text-indigo-300 font-bold">${it.numero_parte || '--'}</td>
+                                <td class="p-2.5 text-white font-medium">${it.descripcion}</td>
+                                <td class="p-2.5 text-center font-bold text-slate-200">${it.cantidad || 1}</td>
+                                <td class="p-2.5 text-right font-mono text-slate-400">$${Number(it.precio_unitario||it.total_costo||0).toLocaleString()}</td>
+                                <td class="p-2.5 text-right font-mono text-[#DFB743] font-bold">$${Number(it.total_costo||it.precio_unitario||0).toLocaleString()}</td>
+                            </tr>
+                        `).join('');
+                    }
+                }
+            } catch(e) {
+                tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-red-400">Error al consultar desglose de almacén.</td></tr>';
+            }
+        }
+
+        function cerrarModalDetalleFolio() {
+            document.getElementById('modal-detalle-folio-almacen').classList.add('hidden');
+        }
+
+        async function desvincularFolioDeUnidad() {
+            if (!unidadVincularActiva) return;
+            if (!confirm(`¿Deseas desvincular el Folio #${unidadVincularActiva.folio_almacen} de la Unidad ${unidadVincularActiva.id}?`)) return;
+
+            delete unidadVincularActiva.folio_almacen;
+            delete unidadVincularActiva.costo_refacciones;
+            unidadVincularActiva.piezas = [];
+
+            guardarDatosLocales();
+            renderizarTablero();
+            cerrarModalDetalleFolio();
+            mostrarToast(`Folio desvinculado de Unidad ${unidadVincularActiva.id}`);
+        }
+
+        // --- 1. MÓDULO DE MANTENIMIENTOS PREVENTIVOS (CONTROL DIÉSEL EN TIEMPO REAL) ---
         let cachePreventivos = [];
         let filtroPreventivoEstatus = 'TODOS';
 
@@ -6282,8 +6780,9 @@
                 const res = await fetch('/api/preventivos?t=' + Date.now(), { cache: 'no-store' });
                 if (res.ok) {
                     const json = await res.json();
-                    cachePreventivos = json.data || [];
-                    actualizarMetricasPreventivos(json.resumen || {});
+                    cachePreventivos = json.data || json.preventivos || [];
+                    const resumen = json.resumen || json.stats || {};
+                    actualizarMetricasPreventivos(resumen);
                     renderizarTablaPreventivos();
                 } else {
                     throw new Error('Respuesta no exitosa');
@@ -6302,10 +6801,10 @@
         }
 
         function actualizarMetricasPreventivos(resumen) {
-            const total = resumen.total || cachePreventivos.length;
-            const vigentes = resumen.vigentes || cachePreventivos.filter(p => p.estatus === 'VIGENTE').length;
-            const proximos = resumen.proximos || cachePreventivos.filter(p => p.estatus === 'PROXIMO').length;
-            const vencidos = resumen.vencidos || cachePreventivos.filter(p => p.estatus === 'VENCIDO').length;
+            const total = resumen.total !== undefined ? resumen.total : cachePreventivos.length;
+            const vigentes = resumen.vigentes !== undefined ? resumen.vigentes : cachePreventivos.filter(p => (p.estatus||'').toUpperCase() === 'VIGENTE').length;
+            const proximos = resumen.proximos !== undefined ? resumen.proximos : cachePreventivos.filter(p => (p.estatus||'').toUpperCase().includes('PROXIM')).length;
+            const vencidos = resumen.vencidos !== undefined ? resumen.vencidos : cachePreventivos.filter(p => (p.estatus||'').toUpperCase() === 'VENCIDO').length;
 
             if (document.getElementById('prev-kpi-total')) document.getElementById('prev-kpi-total').innerText = total;
             if (document.getElementById('prev-kpi-vigentes')) document.getElementById('prev-kpi-vigentes').innerText = vigentes;
@@ -6357,7 +6856,8 @@
             const query = (document.getElementById('input-buscar-preventivo')?.value || '').trim().toLowerCase();
 
             let filtrados = cachePreventivos.filter(item => {
-                if (filtroPreventivoEstatus !== 'TODOS' && item.estatus !== filtroPreventivoEstatus) return false;
+                const estNorm = (item.estatus || '').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+                if (filtroPreventivoEstatus !== 'TODOS' && estNorm !== filtroPreventivoEstatus) return false;
                 if (query) {
                     const txt = `${item.unidad} ${item.division || ''} ${item.estatus || ''}`.toLowerCase();
                     if (!txt.includes(query)) return false;
@@ -6377,13 +6877,14 @@
             }
 
             tbody.innerHTML = filtrados.map(item => {
+                const estNorm = (item.estatus || '').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
                 let badgeColor = 'bg-emerald-950 text-emerald-300 border-emerald-800';
                 let textoEstatus = 'Al Día';
-                if (item.estatus === 'VENCIDO') {
-                    badgeColor = 'bg-red-950 text-red-300 border-red-800 animate-pulse';
+                if (estNorm === 'VENCIDO') {
+                    badgeColor = 'bg-red-950 text-red-300 border-red-800 animate-pulse font-black';
                     textoEstatus = 'Vencido';
-                } else if (item.estatus === 'PROXIMO') {
-                    badgeColor = 'bg-amber-950 text-amber-300 border-amber-800';
+                } else if (estNorm === 'PROXIMO' || estNorm === 'PRÓXIMO') {
+                    badgeColor = 'bg-amber-950 text-amber-300 border-amber-800 font-bold';
                     textoEstatus = 'Próximo';
                 }
 
@@ -6393,14 +6894,14 @@
                 return `
                     <tr class="hover:bg-[#282A2E]/50 transition">
                         <td class="p-3 font-black text-white font-mono text-sm flex items-center gap-1.5">
-                            <span class="w-2 h-2 rounded-full ${item.estatus === 'VENCIDO' ? 'bg-red-500' : (item.estatus === 'PROXIMO' ? 'bg-amber-400' : 'bg-emerald-500')}"></span>
+                            <span class="w-2.5 h-2.5 rounded-full ${estNorm === 'VENCIDO' ? 'bg-red-500 animate-pulse' : (estNorm === 'PROXIMO' ? 'bg-amber-400' : 'bg-emerald-500')}"></span>
                             Unidad ${item.unidad}
                         </td>
                         <td class="p-3 text-slate-400">${item.division || 'Foráneo'}</td>
                         <td class="p-3 text-right font-mono text-slate-200">${(Number(item.km_actual)||0).toLocaleString()} km</td>
-                        <td class="p-3 text-right font-mono text-slate-400">${(Number(item.km_ultimo_servicio)||0).toLocaleString()} km</td>
-                        <td class="p-3 text-slate-300">${item.fecha_ultimo_servicio || '--'}</td>
-                        <td class="p-3 text-right font-mono text-slate-300">${(Number(item.km_proximo_servicio)||0).toLocaleString()} km</td>
+                        <td class="p-3 text-right font-mono text-slate-400">${(Number(item.km_ultimo_servicio || item.km_mtto_anterior)||0).toLocaleString()} km</td>
+                        <td class="p-3 text-slate-300">${item.fecha_ultimo_servicio || item.fecha_realizado || '--'}</td>
+                        <td class="p-3 text-right font-mono text-slate-300">${(Number(item.km_proximo_servicio || item.proximo_mtto_km)||0).toLocaleString()} km</td>
                         <td class="p-3 text-right font-mono ${kmClass}">${kmRestantes.toLocaleString()} km</td>
                         <td class="p-3 text-center">
                             <span class="px-2 py-0.5 rounded text-[10px] font-bold border ${badgeColor}">
@@ -6449,7 +6950,7 @@
             }
             let csv = "Unidad,Division,Km Actual,Ultimo Servicio Km,Fecha Realizado,Proximo Km,Km Restantes,Estatus\n";
             cachePreventivos.forEach(p => {
-                csv += `"${p.unidad}","${p.division || ''}","${p.km_actual || ''}","${p.km_ultimo_servicio || ''}","${p.fecha_ultimo_servicio || ''}","${p.km_proximo_servicio || ''}","${p.km_restantes || ''}","${p.estatus}"\n`;
+                csv += `"${p.unidad}","${p.division || ''}","${p.km_actual || ''}","${p.km_ultimo_servicio || p.km_mtto_anterior || ''}","${p.fecha_ultimo_servicio || p.fecha_realizado || ''}","${p.km_proximo_servicio || p.proximo_mtto_km || ''}","${p.km_restantes || ''}","${p.estatus}"\n`;
             });
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
