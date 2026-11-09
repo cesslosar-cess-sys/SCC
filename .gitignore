@@ -1,0 +1,7 @@
+node_modules/
+npm-debug.log
+uploads/*.tmp
+.DS_Store
+.env
+cloudflared_taller.log
+active_taller_tunnel_url.txt

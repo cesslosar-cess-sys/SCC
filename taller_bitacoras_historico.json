@@ -1,0 +1,2646 @@
+[
+  {
+    "id": "snap_20261106_2359",
+    "fecha": "2026-11-06",
+    "hora": "23:59:59",
+    "titulo": "Cierre Oficial de Bitácora - viernes, 6 de noviembre de 2026",
+    "responsable": "Cierre Automático de Medianoche (00:00 hrs)",
+    "resumen": {
+      "total": 20,
+      "mayor": 4,
+      "proceso": 8,
+      "listo": 8,
+      "costo_acumulado": 62274
+    },
+    "notas_cierre": "Corte automático de medianoche (12:00 AM). Las unidades continúan su ciclo de trabajo hacia el nuevo día.",
+    "movimientos": [
+      {
+        "id": "mov_1794000799058_522",
+        "fecha": "2026-11-06",
+        "hora": "03:33:19 p.m.",
+        "unidad_id": "40",
+        "tipo": "actualizacion",
+        "descripcion": "Unidad 40: Mantenimento cambio de aceite  y filtros\nValbula QR1\nEncendedor con daño",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1794000383791_625",
+        "fecha": "2026-11-06",
+        "hora": "03:26:23 p.m.",
+        "unidad_id": "42",
+        "tipo": "actualizacion",
+        "descripcion": "Unidad 42: Daño en defensa  y tuba burros por golpe ocacionado por el operador  Revicion de potenciometo y parametos y reparacion de clima",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793984216647_533",
+        "fecha": "2026-11-06",
+        "hora": "10:56:56 a.m.",
+        "unidad_id": "96",
+        "tipo": "movimiento_kanban",
+        "descripcion": "Movimiento rápido: De 'Reparación Mayor ($$)' a 'Reparación Mayor ($$)'",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793984194478_227",
+        "fecha": "2026-11-06",
+        "hora": "10:56:34 a.m.",
+        "unidad_id": "96",
+        "tipo": "movimiento_kanban",
+        "descripcion": "Movimiento rápido: De 'Listas para Entrega' a 'Listas para Entrega'",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_init_1793944813788",
+        "hora": "00:00:00",
+        "unidad_id": "TODAS",
+        "tipo": "apertura",
+        "descripcion": "Apertura de jornada diaria. Se arranca con el estatus del cierre de ayer (2026-11-05).",
+        "autor": "Sistema Taller Pro"
+      }
+    ],
+    "unidades": [
+      {
+        "id": "40",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Mantenimento cambio de aceite  y filtros\nValbula QR1\nEncendedor con daño",
+        "notas": "",
+        "reporte": "Mantenimento cambio de aceite  y filtros\nValbula QR1\nEncendedor con daño",
+        "costo": 0,
+        "fechaRefaccion": "2026-06-11"
+      },
+      {
+        "id": "83",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Luces de stop , juego en el volante ,  cambio de colchon y revicion de codigos",
+        "notas": "",
+        "reporte": "Luces de stop , juego en el volante ,  cambio de colchon y revicion de codigos",
+        "costo": 0,
+        "fechaRefaccion": "2026-06-11"
+      },
+      {
+        "id": "42",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Daño en defensa  y tuba burros por golpe ocacionado por el operador  Revicion de potenciometo y parametos y reparacion de clima",
+        "notas": "",
+        "reporte": "Daño en defensa  y tuba burros por golpe ocacionado por el operador  Revicion de potenciometo y parametos y reparacion de clima",
+        "costo": 0,
+        "fechaRefaccion": "2026-05-12"
+      },
+      {
+        "id": "004",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Unidad lista y limpia por dntro",
+        "notas": "",
+        "reporte": "Unidad lista y limpia por dntro",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "68",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Unidad lista y limpia por dntro",
+        "notas": "",
+        "reporte": "Unidad lista y limpia por dntro",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "92",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Unidad lista y limpia por dntro",
+        "notas": "",
+        "reporte": "Unidad lista y limpia por dntro",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "43",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Uidad lista y limpia pror dentro",
+        "notas": "",
+        "reporte": "Uidad lista y limpia pror dentro",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "85",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Unidad lista y limpia por dntro",
+        "notas": "",
+        "reporte": "Unidad lista y limpia por dntro",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "96",
+        "sucursal": "Querétaro",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Pendiente por compra de motor",
+        "reporte": "Falla de motor • Pendiente por compra de motor",
+        "costo": 1290,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "90",
+        "sucursal": "Apodaca",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Pendiente por compra de motor",
+        "reporte": "Falla de motor • Pendiente por compra de motor",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "91",
+        "sucursal": "Querétaro",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Refacciones (mangas, empaques, ligas e inyectores) asciende a $60,984 MXN (compras al 16/11/26)",
+        "reporte": "Falla de motor • Refacciones (mangas, empaques, ligas e inyectores) asciende a $60,984 MXN (compras al 16/11/26)",
+        "costo": 60984,
+        "fechaRefaccion": "2026-11-16"
+      },
+      {
+        "id": "97",
+        "sucursal": "Apodaca",
+        "estado": "mayor",
+        "defecto": "Bomba de aceite y cálipers",
+        "notas": "Motor montado; pendiente bomba de aceite, cálipers delanteros y revisión traseros (compras 23/11/26)",
+        "reporte": "Bomba de aceite y cálipers • Motor montado; pendiente bomba de aceite, cálipers delanteros y revisión traseros (compras 23/11/26)",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-23"
+      },
+      {
+        "id": "11",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Calentamiento de motor",
+        "notas": "Pendiente ingresar a agencia Sitrak. Falla al accionar el retardador",
+        "reporte": "Calentamiento de motor • Pendiente ingresar a agencia Sitrak. Falla al accionar el retardador",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "74",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Cálipers traseros",
+        "notas": "Compra programada para el 09/11/26",
+        "reporte": "Cálipers traseros • Compra programada para el 09/11/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-09"
+      },
+      {
+        "id": "94",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Filtro de gases del EGR",
+        "notas": "Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer",
+        "reporte": "Filtro de gases del EGR • Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "81",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Enllantado pendiente • Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+        "notas": "Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+        "reporte": "Enllantado pendiente • Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "41",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "unidad lista para entrega y limpia por dentro",
+        "notas": "En proceso de compra. Fecha estimada de entrega: 29/10/26",
+        "reporte": "unidad lista para entrega y limpia por dentro",
+        "costo": 0,
+        "fechaRefaccion": "2026-05-11"
+      },
+      {
+        "id": "63",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Revision de cabeza de motor por paso de combustible al aceite",
+        "notas": "En proceso de cambio de válvula niveladora suspensión, amortiguadores delanteros y enllantado",
+        "reporte": "Revision de cabeza de motor por paso de combustible al aceite",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "75",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "unidad lista para ntrega y limpia por detro",
+        "notas": "En proceso de conseguir. Fecha de entrega: 30/10/26",
+        "reporte": "unidad lista para ntrega y limpia por detro",
+        "costo": 0,
+        "fechaRefaccion": "2026-05-11"
+      },
+      {
+        "id": "18",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "unidad disponible para entrega para pato ya que ya trae daño en anillos (COMPRECION VOLTEADA)",
+        "notas": "",
+        "reporte": "unidad disponible para entrega para pato ya que ya trae daño en anillos (COMPRECION VOLTEADA)",
+        "costo": 0,
+        "fechaRefaccion": ""
+      }
+    ]
+  },
+  {
+    "id": "snap_20261105_2359",
+    "fecha": "2026-11-05",
+    "hora": "23:59:59",
+    "titulo": "Cierre Oficial de Bitácora - jueves, 5 de noviembre de 2026",
+    "responsable": "Cierre Automático de Medianoche (00:00 hrs)",
+    "resumen": {
+      "total": 18,
+      "mayor": 4,
+      "proceso": 5,
+      "listo": 9,
+      "costo_acumulado": 62274
+    },
+    "notas_cierre": "Corte automático de medianoche (12:00 AM). Las unidades continúan su ciclo de trabajo hacia el nuevo día.",
+    "movimientos": [
+      {
+        "id": "mov_1793920261860_283",
+        "fecha": "2026-11-05",
+        "hora": "05:11:01 p.m.",
+        "unidad_id": "067",
+        "tipo": "movimiento_kanban",
+        "descripcion": "Movimiento rápido: De 'Listas para Entrega' a 'Listas para Entrega'",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793918826493_801",
+        "fecha": "2026-11-05",
+        "hora": "04:47:06 p.m.",
+        "unidad_id": "89",
+        "tipo": "movimiento_kanban",
+        "descripcion": "Movimiento rápido: De 'Listas para Entrega' a 'Listas para Entrega'",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793918796046_590",
+        "fecha": "2026-11-05",
+        "hora": "04:46:36 p.m.",
+        "unidad_id": "89",
+        "tipo": "movimiento_kanban",
+        "descripcion": "Movimiento rápido: De 'Listas para Entrega' a 'En Reparación Activa'",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793918794211_441",
+        "fecha": "2026-11-05",
+        "hora": "04:46:34 p.m.",
+        "unidad_id": "89",
+        "tipo": "movimiento_kanban",
+        "descripcion": "Movimiento rápido: De 'Listas para Entrega' a 'Listas para Entrega'",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793912025873_288",
+        "fecha": "2026-11-05",
+        "hora": "02:53:45 p.m.",
+        "unidad_id": "89",
+        "tipo": "actualizacion",
+        "descripcion": "Unidad 89: MANTENIMIENT CAMBIO DE ACEITE Y FILTROS",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793911105351_868",
+        "fecha": "2026-11-05",
+        "hora": "02:38:25 p.m.",
+        "unidad_id": "899",
+        "tipo": "movimiento_kanban",
+        "descripcion": "Movimiento rápido: De 'Listas para Entrega' a 'En Reparación Activa'",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793911102252_51",
+        "fecha": "2026-11-05",
+        "hora": "02:38:22 p.m.",
+        "unidad_id": "899",
+        "tipo": "movimiento_kanban",
+        "descripcion": "Movimiento rápido: De 'Listas para Entrega' a 'Listas para Entrega'",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793902444886_457",
+        "fecha": "2026-11-05",
+        "hora": "12:14:04 p.m.",
+        "unidad_id": "004",
+        "tipo": "movimiento_kanban",
+        "descripcion": "Movimiento rápido: De 'Listas para Entrega' a 'Listas para Entrega'",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793902377566_996",
+        "fecha": "2026-11-05",
+        "hora": "12:12:57 p.m.",
+        "unidad_id": "68",
+        "tipo": "movimiento_kanban",
+        "descripcion": "Movimiento rápido: De 'Listas para Entrega' a 'Listas para Entrega'",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793902313730_132",
+        "fecha": "2026-11-05",
+        "hora": "12:11:53 p.m.",
+        "unidad_id": "92",
+        "tipo": "movimiento_kanban",
+        "descripcion": "Movimiento rápido: De 'En Reparación Activa' a 'Listas para Entrega'",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793902311784_242",
+        "fecha": "2026-11-05",
+        "hora": "12:11:51 p.m.",
+        "unidad_id": "92",
+        "tipo": "actualizacion",
+        "descripcion": "Unidad 92: Unidad lista y limpia por dntro",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793902219496_510",
+        "fecha": "2026-11-05",
+        "hora": "12:10:19 p.m.",
+        "unidad_id": "43",
+        "tipo": "actualizacion",
+        "descripcion": "Unidad 43: Uidad lista y limpia pror dentro",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793902097092_267",
+        "fecha": "2026-11-05",
+        "hora": "12:08:17 p.m.",
+        "unidad_id": "85",
+        "tipo": "movimiento_kanban",
+        "descripcion": "Movimiento rápido: De 'En Reparación Activa' a 'Listas para Entrega'",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793899859661_769",
+        "fecha": "2026-11-05",
+        "hora": "11:30:59 a.m.",
+        "unidad_id": "18",
+        "tipo": "actualizacion",
+        "descripcion": "Unidad 18: unidad disponible para entrega para pato ya que ya trae daño en anillos (COMPRECION VOLTEADA)",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793899118164_557",
+        "fecha": "2026-11-05",
+        "hora": "11:18:38 a.m.",
+        "unidad_id": "41",
+        "tipo": "actualizacion",
+        "descripcion": "Unidad 41: unidad lista para entrega y limpia por dentro",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793899054870_608",
+        "fecha": "2026-11-05",
+        "hora": "11:17:34 a.m.",
+        "unidad_id": "75",
+        "tipo": "actualizacion",
+        "descripcion": "Unidad 75: unidad lista para ntrega y limpia por detro",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793898428605_223",
+        "fecha": "2026-11-05",
+        "hora": "11:07:08 a.m.",
+        "unidad_id": "81",
+        "tipo": "actualizacion",
+        "descripcion": "Unidad 81: Enllantado pendiente • Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793898412253_124",
+        "fecha": "2026-11-05",
+        "hora": "11:06:52 a.m.",
+        "unidad_id": "63",
+        "tipo": "actualizacion",
+        "descripcion": "Unidad 63: Revision de cabeza de motor por paso de combustible al aceite",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793898112375_90",
+        "fecha": "2026-11-05",
+        "hora": "11:01:52 a.m.",
+        "unidad_id": "75",
+        "tipo": "movimiento_kanban",
+        "descripcion": "Movimiento rápido: De 'Listas para Entrega' a 'Listas para Entrega'",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793897905473_560",
+        "fecha": "2026-11-05",
+        "hora": "10:58:25 a.m.",
+        "unidad_id": "41",
+        "tipo": "actualizacion",
+        "descripcion": "Unidad 41: unidad lista para entrega ly limpia por dentro",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793896101160_638",
+        "fecha": "2026-11-05",
+        "hora": "10:28:21 a.m.",
+        "unidad_id": "41",
+        "tipo": "movimiento_kanban",
+        "descripcion": "Movimiento rápido: De 'En Reparación Activa' a 'Listas para Entrega'",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793896071810_899",
+        "fecha": "2026-11-05",
+        "hora": "10:27:51 a.m.",
+        "unidad_id": "41",
+        "tipo": "movimiento_kanban",
+        "descripcion": "Movimiento rápido: De 'Listas para Entrega' a 'En Reparación Activa'",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793896061509_213",
+        "fecha": "2026-11-05",
+        "hora": "10:27:41 a.m.",
+        "unidad_id": "41",
+        "tipo": "movimiento_kanban",
+        "descripcion": "Movimiento rápido: De 'Listas para Entrega' a 'Listas para Entrega'",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_init_1793889855036",
+        "hora": "00:00:00",
+        "unidad_id": "TODAS",
+        "tipo": "apertura",
+        "descripcion": "Apertura de jornada diaria. Se arranca con el estatus del cierre de ayer (2026-11-04).",
+        "autor": "Sistema Taller Pro"
+      }
+    ],
+    "unidades": [
+      {
+        "id": "067",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "unidad de prueba 067 entre taller por motivos de fugas de aceite en Carter",
+        "notas": "",
+        "reporte": "unidad de prueba 067 entre taller por motivos de fugas de aceite en Carter",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "004",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Unidad lista y limpia por dntro",
+        "notas": "",
+        "reporte": "Unidad lista y limpia por dntro",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "68",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Unidad lista y limpia por dntro",
+        "notas": "",
+        "reporte": "Unidad lista y limpia por dntro",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "92",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Unidad lista y limpia por dntro",
+        "notas": "",
+        "reporte": "Unidad lista y limpia por dntro",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "43",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Uidad lista y limpia pror dentro",
+        "notas": "",
+        "reporte": "Uidad lista y limpia pror dentro",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "85",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Unidad lista y limpia por dntro",
+        "notas": "",
+        "reporte": "Unidad lista y limpia por dntro",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "96",
+        "sucursal": "Querétaro",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Pendiente por compra de motor",
+        "reporte": "Falla de motor • Pendiente por compra de motor",
+        "costo": 1290,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "90",
+        "sucursal": "Apodaca",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Pendiente por compra de motor",
+        "reporte": "Falla de motor • Pendiente por compra de motor",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "91",
+        "sucursal": "Querétaro",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Refacciones (mangas, empaques, ligas e inyectores) asciende a $60,984 MXN (compras al 16/11/26)",
+        "reporte": "Falla de motor • Refacciones (mangas, empaques, ligas e inyectores) asciende a $60,984 MXN (compras al 16/11/26)",
+        "costo": 60984,
+        "fechaRefaccion": "2026-11-16"
+      },
+      {
+        "id": "97",
+        "sucursal": "Apodaca",
+        "estado": "mayor",
+        "defecto": "Bomba de aceite y cálipers",
+        "notas": "Motor montado; pendiente bomba de aceite, cálipers delanteros y revisión traseros (compras 23/11/26)",
+        "reporte": "Bomba de aceite y cálipers • Motor montado; pendiente bomba de aceite, cálipers delanteros y revisión traseros (compras 23/11/26)",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-23"
+      },
+      {
+        "id": "11",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Calentamiento de motor",
+        "notas": "Pendiente ingresar a agencia Sitrak. Falla al accionar el retardador",
+        "reporte": "Calentamiento de motor • Pendiente ingresar a agencia Sitrak. Falla al accionar el retardador",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "74",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Cálipers traseros",
+        "notas": "Compra programada para el 09/11/26",
+        "reporte": "Cálipers traseros • Compra programada para el 09/11/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-09"
+      },
+      {
+        "id": "94",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Filtro de gases del EGR",
+        "notas": "Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer",
+        "reporte": "Filtro de gases del EGR • Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "81",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Enllantado pendiente • Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+        "notas": "Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+        "reporte": "Enllantado pendiente • Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "41",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "unidad lista para entrega y limpia por dentro",
+        "notas": "En proceso de compra. Fecha estimada de entrega: 29/10/26",
+        "reporte": "unidad lista para entrega y limpia por dentro",
+        "costo": 0,
+        "fechaRefaccion": "2026-05-11"
+      },
+      {
+        "id": "63",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Revision de cabeza de motor por paso de combustible al aceite",
+        "notas": "En proceso de cambio de válvula niveladora suspensión, amortiguadores delanteros y enllantado",
+        "reporte": "Revision de cabeza de motor por paso de combustible al aceite",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "75",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "unidad lista para ntrega y limpia por detro",
+        "notas": "En proceso de conseguir. Fecha de entrega: 30/10/26",
+        "reporte": "unidad lista para ntrega y limpia por detro",
+        "costo": 0,
+        "fechaRefaccion": "2026-05-11"
+      },
+      {
+        "id": "18",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "unidad disponible para entrega para pato ya que ya trae daño en anillos (COMPRECION VOLTEADA)",
+        "notas": "",
+        "reporte": "unidad disponible para entrega para pato ya que ya trae daño en anillos (COMPRECION VOLTEADA)",
+        "costo": 0,
+        "fechaRefaccion": ""
+      }
+    ]
+  },
+  {
+    "id": "snap_20261104_2359",
+    "fecha": "2026-11-04",
+    "hora": "23:59:59",
+    "titulo": "Cierre Oficial de Bitácora - miércoles, 4 de noviembre de 2026",
+    "responsable": "Cierre Automático de Medianoche (00:00 hrs)",
+    "resumen": {
+      "total": 23,
+      "mayor": 4,
+      "proceso": 8,
+      "listo": 11,
+      "costo_acumulado": 62274
+    },
+    "notas_cierre": "Corte automático de medianoche (12:00 AM). Las unidades continúan su ciclo de trabajo hacia el nuevo día.",
+    "movimientos": [
+      {
+        "id": "mov_init_1793819722324",
+        "hora": "00:00:00",
+        "unidad_id": "TODAS",
+        "tipo": "apertura",
+        "descripcion": "Apertura de jornada diaria. Se arranca con el estatus del cierre de ayer (2026-11-03).",
+        "autor": "Sistema Taller Pro"
+      }
+    ],
+    "unidades": [
+      {
+        "id": "8",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "FUGA DE AIRE Y LUCES DE REMOLQUE NO ENCENDIAN",
+        "notas": "SE LE CAMBIARON 3 CONEXIONES Y AJUSTARON LOS FUSIBLES",
+        "reporte": "FUGA DE AIRE Y LUCES DE REMOLQUE NO ENCENDIAN • SE LE CAMBIARON 3 CONEXIONES Y AJUSTARON LOS FUSIBLES",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "76",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Unidad 76: Unidad 76 entra a taller por servicio de mantenimiento",
+        "notas": "",
+        "reporte": "Unidad 76: Unidad 76 entra a taller por servicio de mantenimiento",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "96",
+        "sucursal": "Querétaro",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Pendiente por compra de motor",
+        "reporte": "Falla de motor • Pendiente por compra de motor",
+        "costo": 1290,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "90",
+        "sucursal": "Apodaca",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Pendiente por compra de motor",
+        "reporte": "Falla de motor • Pendiente por compra de motor",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "91",
+        "sucursal": "Querétaro",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Refacciones (mangas, empaques, ligas e inyectores) asciende a $60,984 MXN (compras al 16/11/26)",
+        "reporte": "Falla de motor • Refacciones (mangas, empaques, ligas e inyectores) asciende a $60,984 MXN (compras al 16/11/26)",
+        "costo": 60984,
+        "fechaRefaccion": "2026-11-16"
+      },
+      {
+        "id": "97",
+        "sucursal": "Apodaca",
+        "estado": "mayor",
+        "defecto": "Bomba de aceite y cálipers",
+        "notas": "Motor montado; pendiente bomba de aceite, cálipers delanteros y revisión traseros (compras 23/11/26)",
+        "reporte": "Bomba de aceite y cálipers • Motor montado; pendiente bomba de aceite, cálipers delanteros y revisión traseros (compras 23/11/26)",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-23"
+      },
+      {
+        "id": "11",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Calentamiento de motor",
+        "notas": "Pendiente ingresar a agencia Sitrak. Falla al accionar el retardador",
+        "reporte": "Calentamiento de motor • Pendiente ingresar a agencia Sitrak. Falla al accionar el retardador",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "74",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Cálipers traseros",
+        "notas": "Compra programada para el 09/11/26",
+        "reporte": "Cálipers traseros • Compra programada para el 09/11/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-09"
+      },
+      {
+        "id": "94",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Filtro de gases del EGR",
+        "notas": "Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer",
+        "reporte": "Filtro de gases del EGR • Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "81",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Enllantado pendiente",
+        "notas": "Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+        "reporte": "Enllantado pendiente • Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "45",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Soportes cabina, amortiguadores",
+        "notas": "Finalizado. Fecha de entrega: 28/10/26",
+        "reporte": "Soportes cabina, amortiguadores • Finalizado. Fecha de entrega: 28/10/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-10-28"
+      },
+      {
+        "id": "41",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Válvula de caudal",
+        "notas": "En proceso de compra. Fecha estimada de entrega: 29/10/26",
+        "reporte": "Válvula de caudal • En proceso de compra. Fecha estimada de entrega: 29/10/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-10-29"
+      },
+      {
+        "id": "63",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Válvula niveladora, amortiguadores",
+        "notas": "En proceso de cambio de válvula niveladora suspensión, amortiguadores delanteros y enllantado",
+        "reporte": "Válvula niveladora, amortiguadores • En proceso de cambio de válvula niveladora suspensión, amortiguadores delanteros y enllantado",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "75",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Base de fan clutch",
+        "notas": "En proceso de conseguir. Fecha de entrega: 30/10/26",
+        "reporte": "Base de fan clutch • En proceso de conseguir. Fecha de entrega: 30/10/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-10-30"
+      },
+      {
+        "id": "99",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Empacado de jaula",
+        "notas": "Programada para ingresar a taller",
+        "reporte": "Empacado de jaula • Programada para ingresar a taller",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "92",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Mantenimiento de clima",
+        "notas": "Programado para el 02/11/26",
+        "reporte": "Mantenimiento de clima • Programado para el 02/11/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-02"
+      },
+      {
+        "id": "93",
+        "sucursal": "Querétaro",
+        "estado": "listo",
+        "defecto": "Sistema hidráulico",
+        "notas": "Atendida en patio Querétaro",
+        "reporte": "Sistema hidráulico • Atendida en patio Querétaro",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "71",
+        "sucursal": "Querétaro",
+        "estado": "listo",
+        "defecto": "Sistema de aire",
+        "notas": "Atendida en patio Querétaro",
+        "reporte": "Sistema de aire • Atendida en patio Querétaro",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "59",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Servicio motor, tanque y amort.",
+        "notas": "Servicio finalizado, cambio amortiguadores y reparación tanque. Entrega 28/10/26",
+        "reporte": "Servicio motor, tanque y amort. • Servicio finalizado, cambio amortiguadores y reparación tanque. Entrega 28/10/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-10-28"
+      },
+      {
+        "id": "18",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Ninguno",
+        "notas": "",
+        "reporte": "Ninguno",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "83",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Ninguno",
+        "notas": "",
+        "reporte": "Ninguno",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "21",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Ninguno",
+        "notas": "",
+        "reporte": "Ninguno",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "0004",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Ninguno",
+        "notas": "",
+        "reporte": "Ninguno",
+        "costo": 0,
+        "fechaRefaccion": ""
+      }
+    ]
+  },
+  {
+    "id": "snap_20261103_2359",
+    "fecha": "2026-11-03",
+    "hora": "23:59:59",
+    "titulo": "Cierre Oficial de Bitácora - martes, 3 de noviembre de 2026",
+    "responsable": "Cierre Automático de Medianoche (00:00 hrs)",
+    "resumen": {
+      "total": 23,
+      "mayor": 4,
+      "proceso": 8,
+      "listo": 11,
+      "costo_acumulado": 62274
+    },
+    "notas_cierre": "Corte automático de medianoche (12:00 AM). Las unidades continúan su ciclo de trabajo hacia el nuevo día.",
+    "movimientos": [
+      {
+        "id": "mov_init_1793719776344",
+        "hora": "00:00:00",
+        "unidad_id": "TODAS",
+        "tipo": "apertura",
+        "descripcion": "Apertura de jornada diaria. Se arranca con el estatus del cierre de ayer (2026-11-02).",
+        "autor": "Sistema Taller Pro"
+      }
+    ],
+    "unidades": [
+      {
+        "id": "8",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "FUGA DE AIRE Y LUCES DE REMOLQUE NO ENCENDIAN",
+        "notas": "SE LE CAMBIARON 3 CONEXIONES Y AJUSTARON LOS FUSIBLES",
+        "reporte": "FUGA DE AIRE Y LUCES DE REMOLQUE NO ENCENDIAN • SE LE CAMBIARON 3 CONEXIONES Y AJUSTARON LOS FUSIBLES",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "76",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Unidad 76: Unidad 76 entra a taller por servicio de mantenimiento",
+        "notas": "",
+        "reporte": "Unidad 76: Unidad 76 entra a taller por servicio de mantenimiento",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "96",
+        "sucursal": "Querétaro",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Pendiente por compra de motor",
+        "reporte": "Falla de motor • Pendiente por compra de motor",
+        "costo": 1290,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "90",
+        "sucursal": "Apodaca",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Pendiente por compra de motor",
+        "reporte": "Falla de motor • Pendiente por compra de motor",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "91",
+        "sucursal": "Querétaro",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Refacciones (mangas, empaques, ligas e inyectores) asciende a $60,984 MXN (compras al 16/11/26)",
+        "reporte": "Falla de motor • Refacciones (mangas, empaques, ligas e inyectores) asciende a $60,984 MXN (compras al 16/11/26)",
+        "costo": 60984,
+        "fechaRefaccion": "2026-11-16"
+      },
+      {
+        "id": "97",
+        "sucursal": "Apodaca",
+        "estado": "mayor",
+        "defecto": "Bomba de aceite y cálipers",
+        "notas": "Motor montado; pendiente bomba de aceite, cálipers delanteros y revisión traseros (compras 23/11/26)",
+        "reporte": "Bomba de aceite y cálipers • Motor montado; pendiente bomba de aceite, cálipers delanteros y revisión traseros (compras 23/11/26)",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-23"
+      },
+      {
+        "id": "11",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Calentamiento de motor",
+        "notas": "Pendiente ingresar a agencia Sitrak. Falla al accionar el retardador",
+        "reporte": "Calentamiento de motor • Pendiente ingresar a agencia Sitrak. Falla al accionar el retardador",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "74",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Cálipers traseros",
+        "notas": "Compra programada para el 09/11/26",
+        "reporte": "Cálipers traseros • Compra programada para el 09/11/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-09"
+      },
+      {
+        "id": "94",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Filtro de gases del EGR",
+        "notas": "Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer",
+        "reporte": "Filtro de gases del EGR • Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "81",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Enllantado pendiente",
+        "notas": "Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+        "reporte": "Enllantado pendiente • Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "45",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Soportes cabina, amortiguadores",
+        "notas": "Finalizado. Fecha de entrega: 28/10/26",
+        "reporte": "Soportes cabina, amortiguadores • Finalizado. Fecha de entrega: 28/10/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-10-28"
+      },
+      {
+        "id": "41",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Válvula de caudal",
+        "notas": "En proceso de compra. Fecha estimada de entrega: 29/10/26",
+        "reporte": "Válvula de caudal • En proceso de compra. Fecha estimada de entrega: 29/10/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-10-29"
+      },
+      {
+        "id": "63",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Válvula niveladora, amortiguadores",
+        "notas": "En proceso de cambio de válvula niveladora suspensión, amortiguadores delanteros y enllantado",
+        "reporte": "Válvula niveladora, amortiguadores • En proceso de cambio de válvula niveladora suspensión, amortiguadores delanteros y enllantado",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "75",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Base de fan clutch",
+        "notas": "En proceso de conseguir. Fecha de entrega: 30/10/26",
+        "reporte": "Base de fan clutch • En proceso de conseguir. Fecha de entrega: 30/10/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-10-30"
+      },
+      {
+        "id": "99",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Empacado de jaula",
+        "notas": "Programada para ingresar a taller",
+        "reporte": "Empacado de jaula • Programada para ingresar a taller",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "92",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Mantenimiento de clima",
+        "notas": "Programado para el 02/11/26",
+        "reporte": "Mantenimiento de clima • Programado para el 02/11/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-02"
+      },
+      {
+        "id": "93",
+        "sucursal": "Querétaro",
+        "estado": "listo",
+        "defecto": "Sistema hidráulico",
+        "notas": "Atendida en patio Querétaro",
+        "reporte": "Sistema hidráulico • Atendida en patio Querétaro",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "71",
+        "sucursal": "Querétaro",
+        "estado": "listo",
+        "defecto": "Sistema de aire",
+        "notas": "Atendida en patio Querétaro",
+        "reporte": "Sistema de aire • Atendida en patio Querétaro",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "59",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Servicio motor, tanque y amort.",
+        "notas": "Servicio finalizado, cambio amortiguadores y reparación tanque. Entrega 28/10/26",
+        "reporte": "Servicio motor, tanque y amort. • Servicio finalizado, cambio amortiguadores y reparación tanque. Entrega 28/10/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-10-28"
+      },
+      {
+        "id": "18",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Ninguno",
+        "notas": "",
+        "reporte": "Ninguno",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "83",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Ninguno",
+        "notas": "",
+        "reporte": "Ninguno",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "21",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Ninguno",
+        "notas": "",
+        "reporte": "Ninguno",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "0004",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Ninguno",
+        "notas": "",
+        "reporte": "Ninguno",
+        "costo": 0,
+        "fechaRefaccion": ""
+      }
+    ]
+  },
+  {
+    "id": "snap_20261102_2359",
+    "fecha": "2026-11-02",
+    "hora": "23:59:59",
+    "titulo": "Cierre Oficial de Bitácora - lunes, 2 de noviembre de 2026",
+    "responsable": "Cierre Automático de Medianoche (00:00 hrs)",
+    "resumen": {
+      "total": 23,
+      "mayor": 4,
+      "proceso": 8,
+      "listo": 11,
+      "costo_acumulado": 62274
+    },
+    "notas_cierre": "Corte automático de medianoche (12:00 AM). Las unidades continúan su ciclo de trabajo hacia el nuevo día.",
+    "movimientos": [
+      {
+        "id": "mov_1793629891900_703",
+        "fecha": "2026-11-02",
+        "hora": "08:31:31 a.m.",
+        "unidad_id": "76",
+        "tipo": "movimiento_kanban",
+        "descripcion": "Movimiento rápido: De 'Listas para Entrega' a 'Listas para Entrega'",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_init_1793599202883",
+        "hora": "00:00:00",
+        "unidad_id": "TODAS",
+        "tipo": "apertura",
+        "descripcion": "Apertura de jornada diaria. Se arranca con el estatus del cierre de ayer (2026-11-01).",
+        "autor": "Sistema Taller Pro"
+      }
+    ],
+    "unidades": [
+      {
+        "id": "8",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "FUGA DE AIRE Y LUCES DE REMOLQUE NO ENCENDIAN",
+        "notas": "SE LE CAMBIARON 3 CONEXIONES Y AJUSTARON LOS FUSIBLES",
+        "reporte": "FUGA DE AIRE Y LUCES DE REMOLQUE NO ENCENDIAN • SE LE CAMBIARON 3 CONEXIONES Y AJUSTARON LOS FUSIBLES",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "76",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Unidad 76: Unidad 76 entra a taller por servicio de mantenimiento",
+        "notas": "",
+        "reporte": "Unidad 76: Unidad 76 entra a taller por servicio de mantenimiento",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "96",
+        "sucursal": "Querétaro",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Pendiente por compra de motor",
+        "reporte": "Falla de motor • Pendiente por compra de motor",
+        "costo": 1290,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "90",
+        "sucursal": "Apodaca",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Pendiente por compra de motor",
+        "reporte": "Falla de motor • Pendiente por compra de motor",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "91",
+        "sucursal": "Querétaro",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Refacciones (mangas, empaques, ligas e inyectores) asciende a $60,984 MXN (compras al 16/11/26)",
+        "reporte": "Falla de motor • Refacciones (mangas, empaques, ligas e inyectores) asciende a $60,984 MXN (compras al 16/11/26)",
+        "costo": 60984,
+        "fechaRefaccion": "2026-11-16"
+      },
+      {
+        "id": "97",
+        "sucursal": "Apodaca",
+        "estado": "mayor",
+        "defecto": "Bomba de aceite y cálipers",
+        "notas": "Motor montado; pendiente bomba de aceite, cálipers delanteros y revisión traseros (compras 23/11/26)",
+        "reporte": "Bomba de aceite y cálipers • Motor montado; pendiente bomba de aceite, cálipers delanteros y revisión traseros (compras 23/11/26)",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-23"
+      },
+      {
+        "id": "11",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Calentamiento de motor",
+        "notas": "Pendiente ingresar a agencia Sitrak. Falla al accionar el retardador",
+        "reporte": "Calentamiento de motor • Pendiente ingresar a agencia Sitrak. Falla al accionar el retardador",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "74",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Cálipers traseros",
+        "notas": "Compra programada para el 09/11/26",
+        "reporte": "Cálipers traseros • Compra programada para el 09/11/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-09"
+      },
+      {
+        "id": "94",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Filtro de gases del EGR",
+        "notas": "Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer",
+        "reporte": "Filtro de gases del EGR • Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "81",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Enllantado pendiente",
+        "notas": "Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+        "reporte": "Enllantado pendiente • Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "45",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Soportes cabina, amortiguadores",
+        "notas": "Finalizado. Fecha de entrega: 28/10/26",
+        "reporte": "Soportes cabina, amortiguadores • Finalizado. Fecha de entrega: 28/10/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-10-28"
+      },
+      {
+        "id": "41",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Válvula de caudal",
+        "notas": "En proceso de compra. Fecha estimada de entrega: 29/10/26",
+        "reporte": "Válvula de caudal • En proceso de compra. Fecha estimada de entrega: 29/10/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-10-29"
+      },
+      {
+        "id": "63",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Válvula niveladora, amortiguadores",
+        "notas": "En proceso de cambio de válvula niveladora suspensión, amortiguadores delanteros y enllantado",
+        "reporte": "Válvula niveladora, amortiguadores • En proceso de cambio de válvula niveladora suspensión, amortiguadores delanteros y enllantado",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "75",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Base de fan clutch",
+        "notas": "En proceso de conseguir. Fecha de entrega: 30/10/26",
+        "reporte": "Base de fan clutch • En proceso de conseguir. Fecha de entrega: 30/10/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-10-30"
+      },
+      {
+        "id": "99",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Empacado de jaula",
+        "notas": "Programada para ingresar a taller",
+        "reporte": "Empacado de jaula • Programada para ingresar a taller",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "92",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Mantenimiento de clima",
+        "notas": "Programado para el 02/11/26",
+        "reporte": "Mantenimiento de clima • Programado para el 02/11/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-02"
+      },
+      {
+        "id": "93",
+        "sucursal": "Querétaro",
+        "estado": "listo",
+        "defecto": "Sistema hidráulico",
+        "notas": "Atendida en patio Querétaro",
+        "reporte": "Sistema hidráulico • Atendida en patio Querétaro",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "71",
+        "sucursal": "Querétaro",
+        "estado": "listo",
+        "defecto": "Sistema de aire",
+        "notas": "Atendida en patio Querétaro",
+        "reporte": "Sistema de aire • Atendida en patio Querétaro",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "59",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Servicio motor, tanque y amort.",
+        "notas": "Servicio finalizado, cambio amortiguadores y reparación tanque. Entrega 28/10/26",
+        "reporte": "Servicio motor, tanque y amort. • Servicio finalizado, cambio amortiguadores y reparación tanque. Entrega 28/10/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-10-28"
+      },
+      {
+        "id": "18",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Ninguno",
+        "notas": "",
+        "reporte": "Ninguno",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "83",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Ninguno",
+        "notas": "",
+        "reporte": "Ninguno",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "21",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Ninguno",
+        "notas": "",
+        "reporte": "Ninguno",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "0004",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Ninguno",
+        "notas": "",
+        "reporte": "Ninguno",
+        "costo": 0,
+        "fechaRefaccion": ""
+      }
+    ]
+  },
+  {
+    "id": "snap_20261101_2359",
+    "fecha": "2026-11-01",
+    "hora": "23:59:59",
+    "titulo": "Cierre Oficial de Bitácora - domingo, 1 de noviembre de 2026",
+    "responsable": "Cierre Automático de Medianoche (00:00 hrs)",
+    "resumen": {
+      "total": 23,
+      "mayor": 4,
+      "proceso": 9,
+      "listo": 10,
+      "costo_acumulado": 62274
+    },
+    "notas_cierre": "Corte automático de medianoche (12:00 AM). Las unidades continúan su ciclo de trabajo hacia el nuevo día.",
+    "movimientos": [
+      {
+        "id": "mov_init_1793512810998",
+        "hora": "00:00:00",
+        "unidad_id": "TODAS",
+        "tipo": "apertura",
+        "descripcion": "Apertura de jornada diaria. Se arranca con el estatus del cierre de ayer (2026-10-31).",
+        "autor": "Sistema Taller Pro"
+      }
+    ],
+    "unidades": [
+      {
+        "id": "8",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "FUGA DE AIRE Y LUCES DE REMOLQUE NO ENCENDIAN",
+        "notas": "SE LE CAMBIARON 3 CONEXIONES Y AJUSTARON LOS FUSIBLES",
+        "reporte": "FUGA DE AIRE Y LUCES DE REMOLQUE NO ENCENDIAN • SE LE CAMBIARON 3 CONEXIONES Y AJUSTARON LOS FUSIBLES",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "76",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Unidad 76: Unidad 76 entra a taller por servicio de mantenimiento",
+        "notas": "",
+        "reporte": "Unidad 76: Unidad 76 entra a taller por servicio de mantenimiento",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "96",
+        "sucursal": "Querétaro",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Pendiente por compra de motor",
+        "reporte": "Falla de motor • Pendiente por compra de motor",
+        "costo": 1290,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "90",
+        "sucursal": "Apodaca",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Pendiente por compra de motor",
+        "reporte": "Falla de motor • Pendiente por compra de motor",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "91",
+        "sucursal": "Querétaro",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Refacciones (mangas, empaques, ligas e inyectores) asciende a $60,984 MXN (compras al 16/11/26)",
+        "reporte": "Falla de motor • Refacciones (mangas, empaques, ligas e inyectores) asciende a $60,984 MXN (compras al 16/11/26)",
+        "costo": 60984,
+        "fechaRefaccion": "2026-11-16"
+      },
+      {
+        "id": "97",
+        "sucursal": "Apodaca",
+        "estado": "mayor",
+        "defecto": "Bomba de aceite y cálipers",
+        "notas": "Motor montado; pendiente bomba de aceite, cálipers delanteros y revisión traseros (compras 23/11/26)",
+        "reporte": "Bomba de aceite y cálipers • Motor montado; pendiente bomba de aceite, cálipers delanteros y revisión traseros (compras 23/11/26)",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-23"
+      },
+      {
+        "id": "11",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Calentamiento de motor",
+        "notas": "Pendiente ingresar a agencia Sitrak. Falla al accionar el retardador",
+        "reporte": "Calentamiento de motor • Pendiente ingresar a agencia Sitrak. Falla al accionar el retardador",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "74",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Cálipers traseros",
+        "notas": "Compra programada para el 09/11/26",
+        "reporte": "Cálipers traseros • Compra programada para el 09/11/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-09"
+      },
+      {
+        "id": "94",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Filtro de gases del EGR",
+        "notas": "Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer",
+        "reporte": "Filtro de gases del EGR • Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "81",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Enllantado pendiente",
+        "notas": "Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+        "reporte": "Enllantado pendiente • Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "45",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Soportes cabina, amortiguadores",
+        "notas": "Finalizado. Fecha de entrega: 28/10/26",
+        "reporte": "Soportes cabina, amortiguadores • Finalizado. Fecha de entrega: 28/10/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-10-28"
+      },
+      {
+        "id": "41",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Válvula de caudal",
+        "notas": "En proceso de compra. Fecha estimada de entrega: 29/10/26",
+        "reporte": "Válvula de caudal • En proceso de compra. Fecha estimada de entrega: 29/10/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-10-29"
+      },
+      {
+        "id": "63",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Válvula niveladora, amortiguadores",
+        "notas": "En proceso de cambio de válvula niveladora suspensión, amortiguadores delanteros y enllantado",
+        "reporte": "Válvula niveladora, amortiguadores • En proceso de cambio de válvula niveladora suspensión, amortiguadores delanteros y enllantado",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "75",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Base de fan clutch",
+        "notas": "En proceso de conseguir. Fecha de entrega: 30/10/26",
+        "reporte": "Base de fan clutch • En proceso de conseguir. Fecha de entrega: 30/10/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-10-30"
+      },
+      {
+        "id": "99",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Empacado de jaula",
+        "notas": "Programada para ingresar a taller",
+        "reporte": "Empacado de jaula • Programada para ingresar a taller",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "92",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Mantenimiento de clima",
+        "notas": "Programado para el 02/11/26",
+        "reporte": "Mantenimiento de clima • Programado para el 02/11/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-02"
+      },
+      {
+        "id": "93",
+        "sucursal": "Querétaro",
+        "estado": "listo",
+        "defecto": "Sistema hidráulico",
+        "notas": "Atendida en patio Querétaro",
+        "reporte": "Sistema hidráulico • Atendida en patio Querétaro",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "71",
+        "sucursal": "Querétaro",
+        "estado": "listo",
+        "defecto": "Sistema de aire",
+        "notas": "Atendida en patio Querétaro",
+        "reporte": "Sistema de aire • Atendida en patio Querétaro",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "59",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Servicio motor, tanque y amort.",
+        "notas": "Servicio finalizado, cambio amortiguadores y reparación tanque. Entrega 28/10/26",
+        "reporte": "Servicio motor, tanque y amort. • Servicio finalizado, cambio amortiguadores y reparación tanque. Entrega 28/10/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-10-28"
+      },
+      {
+        "id": "18",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Ninguno",
+        "notas": "",
+        "reporte": "Ninguno",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "83",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Ninguno",
+        "notas": "",
+        "reporte": "Ninguno",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "21",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Ninguno",
+        "notas": "",
+        "reporte": "Ninguno",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "0004",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Ninguno",
+        "notas": "",
+        "reporte": "Ninguno",
+        "costo": 0,
+        "fechaRefaccion": ""
+      }
+    ]
+  },
+  {
+    "id": "snap_20261031_2359",
+    "fecha": "2026-10-31",
+    "hora": "23:59:59",
+    "titulo": "Cierre Oficial de Bitácora - sábado, 31 de octubre de 2026",
+    "responsable": "Cierre Automático de Medianoche (00:00 hrs)",
+    "resumen": {
+      "total": 23,
+      "mayor": 4,
+      "proceso": 9,
+      "listo": 10,
+      "costo_acumulado": 62274
+    },
+    "notas_cierre": "Corte automático de medianoche (12:00 AM). Las unidades continúan su ciclo de trabajo hacia el nuevo día.",
+    "movimientos": [
+      {
+        "id": "mov_1793472813967_547",
+        "fecha": "2026-10-31",
+        "hora": "12:53:33 p.m.",
+        "unidad_id": "96",
+        "tipo": "orden_compra",
+        "descripcion": "🛒 Requisición de compra (OC-2026-002): 2x LUBRIPLATE (P/N: 105). Pieza sin existencia en almacén.",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793470576607_718",
+        "fecha": "2026-10-31",
+        "hora": "12:16:16 p.m.",
+        "unidad_id": "96",
+        "tipo": "pieza_instalada",
+        "descripcion": "🔧 Refacción INSTALADA en camión: 1x LUBRIPLATE GREASE (P/N: 105) instalada por Mecánico Juan Pérez.",
+        "autor": "Mecánico Juan Pérez"
+      },
+      {
+        "id": "mov_1793470576576_370",
+        "fecha": "2026-10-31",
+        "hora": "12:16:16 p.m.",
+        "unidad_id": "96",
+        "tipo": "recepcion_taller",
+        "descripcion": "📥 Refacción RECIBIDA EN TALLER: 1x LUBRIPLATE GREASE (OC: OC-2026-002). Lista para instalación en Unidad 96.",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793470576518_568",
+        "fecha": "2026-10-31",
+        "hora": "12:16:16 p.m.",
+        "unidad_id": "96",
+        "tipo": "orden_compra",
+        "descripcion": "🛒 Requisición de compra (OC-2026-002): 1x LUBRIPLATE GREASE (P/N: 105). Pieza sin existencia en almacén.",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793470576453_969",
+        "fecha": "2026-10-31",
+        "hora": "12:16:16 p.m.",
+        "unidad_id": "96",
+        "tipo": "salida_autorizada",
+        "descripcion": "🔑 Salida de Almacén AUTORIZADA por Encargado de Inventario: 2x LIMPIAPARABRISAS 22\" (Folio SAL-576427) despachada hacia Taller.",
+        "autor": "Encargado de Inventario"
+      },
+      {
+        "id": "mov_1793470576375_809",
+        "fecha": "2026-10-31",
+        "hora": "12:16:16 p.m.",
+        "unidad_id": "96",
+        "tipo": "solicitud_almacen",
+        "descripcion": "🟡 Refacción solicitada a Almacén: 2x LIMPIAPARABRISAS 22\" (P/N: 0) en espera de autorización de salida.",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793460280289_323",
+        "fecha": "2026-10-31",
+        "hora": "09:24:40 a.m.",
+        "unidad_id": "8",
+        "tipo": "dictado_voz",
+        "descripcion": "Unidad 8: Unidad 8 entra a taller a revisión de luces",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793459738112_737",
+        "fecha": "2026-10-31",
+        "hora": "09:15:38 a.m.",
+        "unidad_id": "76",
+        "tipo": "dictado_voz",
+        "descripcion": "Unidad 76: Unidad 76 entra a taller por servicio de mantenimiento",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793459732157_972",
+        "fecha": "2026-10-31",
+        "hora": "09:15:32 a.m.",
+        "unidad_id": "76",
+        "tipo": "dictado_voz",
+        "descripcion": "Unidad 76: Unidad 76",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793459726791_501",
+        "fecha": "2026-10-31",
+        "hora": "09:15:26 a.m.",
+        "unidad_id": "76",
+        "tipo": "dictado_voz",
+        "descripcion": "Unidad 76: Unidad 76 entra mantenimiento",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793459717103_647",
+        "fecha": "2026-10-31",
+        "hora": "09:15:17 a.m.",
+        "unidad_id": "76",
+        "tipo": "dictado_voz",
+        "descripcion": "Unidad 76: Unidad 76 en servicio de mantenimiento",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793459709024_428",
+        "fecha": "2026-10-31",
+        "hora": "09:15:08 a.m.",
+        "unidad_id": "76",
+        "tipo": "dictado_voz",
+        "descripcion": "Unidad 76: Unidad 76 entra a taller",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_init_1793427732370",
+        "hora": "00:00:00",
+        "unidad_id": "TODAS",
+        "tipo": "apertura",
+        "descripcion": "Apertura de jornada diaria. Se arranca con el estatus del cierre de ayer (2026-10-30).",
+        "autor": "Sistema Taller Pro"
+      }
+    ],
+    "unidades": [
+      {
+        "id": "8",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "FUGA DE AIRE Y LUCES DE REMOLQUE NO ENCENDIAN",
+        "notas": "SE LE CAMBIARON 3 CONEXIONES Y AJUSTARON LOS FUSIBLES",
+        "reporte": "FUGA DE AIRE Y LUCES DE REMOLQUE NO ENCENDIAN • SE LE CAMBIARON 3 CONEXIONES Y AJUSTARON LOS FUSIBLES",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "76",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Unidad 76: Unidad 76 entra a taller por servicio de mantenimiento",
+        "notas": "",
+        "reporte": "Unidad 76: Unidad 76 entra a taller por servicio de mantenimiento",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "96",
+        "sucursal": "Querétaro",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Pendiente por compra de motor",
+        "reporte": "Falla de motor • Pendiente por compra de motor",
+        "costo": 1290,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "90",
+        "sucursal": "Apodaca",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Pendiente por compra de motor",
+        "reporte": "Falla de motor • Pendiente por compra de motor",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "91",
+        "sucursal": "Querétaro",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Refacciones (mangas, empaques, ligas e inyectores) asciende a $60,984 MXN (compras al 16/11/26)",
+        "reporte": "Falla de motor • Refacciones (mangas, empaques, ligas e inyectores) asciende a $60,984 MXN (compras al 16/11/26)",
+        "costo": 60984,
+        "fechaRefaccion": "2026-11-16"
+      },
+      {
+        "id": "97",
+        "sucursal": "Apodaca",
+        "estado": "mayor",
+        "defecto": "Bomba de aceite y cálipers",
+        "notas": "Motor montado; pendiente bomba de aceite, cálipers delanteros y revisión traseros (compras 23/11/26)",
+        "reporte": "Bomba de aceite y cálipers • Motor montado; pendiente bomba de aceite, cálipers delanteros y revisión traseros (compras 23/11/26)",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-23"
+      },
+      {
+        "id": "11",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Calentamiento de motor",
+        "notas": "Pendiente ingresar a agencia Sitrak. Falla al accionar el retardador",
+        "reporte": "Calentamiento de motor • Pendiente ingresar a agencia Sitrak. Falla al accionar el retardador",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "74",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Cálipers traseros",
+        "notas": "Compra programada para el 09/11/26",
+        "reporte": "Cálipers traseros • Compra programada para el 09/11/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-09"
+      },
+      {
+        "id": "94",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Filtro de gases del EGR",
+        "notas": "Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer",
+        "reporte": "Filtro de gases del EGR • Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "81",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Enllantado pendiente",
+        "notas": "Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+        "reporte": "Enllantado pendiente • Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "45",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Soportes cabina, amortiguadores",
+        "notas": "Finalizado. Fecha de entrega: 28/10/26",
+        "reporte": "Soportes cabina, amortiguadores • Finalizado. Fecha de entrega: 28/10/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-10-28"
+      },
+      {
+        "id": "41",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Válvula de caudal",
+        "notas": "En proceso de compra. Fecha estimada de entrega: 29/10/26",
+        "reporte": "Válvula de caudal • En proceso de compra. Fecha estimada de entrega: 29/10/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-10-29"
+      },
+      {
+        "id": "63",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Válvula niveladora, amortiguadores",
+        "notas": "En proceso de cambio de válvula niveladora suspensión, amortiguadores delanteros y enllantado",
+        "reporte": "Válvula niveladora, amortiguadores • En proceso de cambio de válvula niveladora suspensión, amortiguadores delanteros y enllantado",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "75",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Base de fan clutch",
+        "notas": "En proceso de conseguir. Fecha de entrega: 30/10/26",
+        "reporte": "Base de fan clutch • En proceso de conseguir. Fecha de entrega: 30/10/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-10-30"
+      },
+      {
+        "id": "99",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Empacado de jaula",
+        "notas": "Programada para ingresar a taller",
+        "reporte": "Empacado de jaula • Programada para ingresar a taller",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "92",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Mantenimiento de clima",
+        "notas": "Programado para el 02/11/26",
+        "reporte": "Mantenimiento de clima • Programado para el 02/11/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-02"
+      },
+      {
+        "id": "93",
+        "sucursal": "Querétaro",
+        "estado": "listo",
+        "defecto": "Sistema hidráulico",
+        "notas": "Atendida en patio Querétaro",
+        "reporte": "Sistema hidráulico • Atendida en patio Querétaro",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "71",
+        "sucursal": "Querétaro",
+        "estado": "listo",
+        "defecto": "Sistema de aire",
+        "notas": "Atendida en patio Querétaro",
+        "reporte": "Sistema de aire • Atendida en patio Querétaro",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "59",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Servicio motor, tanque y amort.",
+        "notas": "Servicio finalizado, cambio amortiguadores y reparación tanque. Entrega 28/10/26",
+        "reporte": "Servicio motor, tanque y amort. • Servicio finalizado, cambio amortiguadores y reparación tanque. Entrega 28/10/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-10-28"
+      },
+      {
+        "id": "18",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Ninguno",
+        "notas": "",
+        "reporte": "Ninguno",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "83",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Ninguno",
+        "notas": "",
+        "reporte": "Ninguno",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "21",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Ninguno",
+        "notas": "",
+        "reporte": "Ninguno",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "0004",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Ninguno",
+        "notas": "",
+        "reporte": "Ninguno",
+        "costo": 0,
+        "fechaRefaccion": ""
+      }
+    ]
+  },
+  {
+    "id": "snap_20261030_2359",
+    "fecha": "2026-10-30",
+    "hora": "23:59:59",
+    "titulo": "Cierre Oficial de Bitácora - viernes, 30 de octubre de 2026",
+    "responsable": "Cierre Automático de Medianoche (00:00 hrs)",
+    "resumen": {
+      "total": 21,
+      "mayor": 4,
+      "proceso": 8,
+      "listo": 9,
+      "costo_acumulado": 60984
+    },
+    "notas_cierre": "Corte automático de medianoche (12:00 AM). Las unidades continúan su ciclo de trabajo hacia el nuevo día.",
+    "movimientos": [
+      {
+        "id": "mov_1793403831054_484",
+        "fecha": "2026-10-30",
+        "hora": "05:43:51 p.m.",
+        "unidad_id": "45",
+        "tipo": "dictado_voz",
+        "descripcion": "Unidad 45: Unidad 45 listo",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793403691118_896",
+        "fecha": "2026-10-30",
+        "hora": "05:41:30 p.m.",
+        "unidad_id": "45",
+        "tipo": "dictado_voz",
+        "descripcion": "Unidad 45: Unidad 45 lista",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1793400436049_310",
+        "fecha": "2026-10-30",
+        "hora": "04:47:16 p.m.",
+        "unidad_id": "97",
+        "tipo": "movimiento_kanban",
+        "descripcion": "Movimiento rápido: De 'Reparación Mayor ($$)' a 'Reparación Mayor ($$)'",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_30_1",
+        "hora": "08:00:00",
+        "unidad_id": "TODAS",
+        "tipo": "apertura",
+        "descripcion": "Apertura de jornada diaria. Se arranca con el estatus del cierre de ayer (29 de Octubre).",
+        "autor": "Sistema Taller Pro"
+      },
+      {
+        "id": "mov_30_2",
+        "hora": "08:45:10",
+        "unidad_id": "91",
+        "tipo": "compras",
+        "descripcion": "Confirmación de compras: Proveedor programa entrega de refacciones (,984 MXN) para el 16/11/26.",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_30_3",
+        "hora": "09:15:00",
+        "unidad_id": "96",
+        "tipo": "revision",
+        "descripcion": "Revisión en patio Querétaro: Unidad 96 en espera de autorización de orden de compra para motor.",
+        "autor": "Jefe de Taller Querétaro"
+      },
+      {
+        "id": "mov_30_4",
+        "hora": "10:30:25",
+        "unidad_id": "97",
+        "tipo": "mecanica",
+        "descripcion": "Verificación de torques en motor montado. Todo listo para recibir bomba de aceite.",
+        "autor": "Mecánico Patio Apodaca"
+      },
+      {
+        "id": "mov_30_5",
+        "hora": "12:10:00",
+        "unidad_id": "41",
+        "tipo": "refaccion",
+        "descripcion": "Válvula de caudal en camino por paquetería para instalación.",
+        "autor": "Almacén CESS"
+      }
+    ],
+    "unidades": [
+      {
+        "id": "96",
+        "sucursal": "Querétaro",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Pendiente por compra de motor",
+        "reporte": "Falla de motor • Pendiente por compra de motor",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "90",
+        "sucursal": "Apodaca",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Pendiente por compra de motor",
+        "reporte": "Falla de motor • Pendiente por compra de motor",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "91",
+        "sucursal": "Querétaro",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Refacciones (mangas, empaques, ligas e inyectores) asciende a $60,984 MXN (compras al 16/11/26)",
+        "reporte": "Falla de motor • Refacciones (mangas, empaques, ligas e inyectores) asciende a $60,984 MXN (compras al 16/11/26)",
+        "costo": 60984,
+        "fechaRefaccion": "2026-11-16"
+      },
+      {
+        "id": "97",
+        "sucursal": "Apodaca",
+        "estado": "mayor",
+        "defecto": "Bomba de aceite y cálipers",
+        "notas": "Motor montado; pendiente bomba de aceite, cálipers delanteros y revisión traseros (compras 23/11/26)",
+        "reporte": "Bomba de aceite y cálipers • Motor montado; pendiente bomba de aceite, cálipers delanteros y revisión traseros (compras 23/11/26)",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-23"
+      },
+      {
+        "id": "11",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Calentamiento de motor",
+        "notas": "Pendiente ingresar a agencia Sitrak. Falla al accionar el retardador",
+        "reporte": "Calentamiento de motor • Pendiente ingresar a agencia Sitrak. Falla al accionar el retardador",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "74",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Cálipers traseros",
+        "notas": "Compra programada para el 09/11/26",
+        "reporte": "Cálipers traseros • Compra programada para el 09/11/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-09"
+      },
+      {
+        "id": "94",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Filtro de gases del EGR",
+        "notas": "Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer",
+        "reporte": "Filtro de gases del EGR • Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "81",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Enllantado pendiente",
+        "notas": "Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+        "reporte": "Enllantado pendiente • Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "45",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Soportes cabina, amortiguadores",
+        "notas": "Finalizado. Fecha de entrega: 28/10/26",
+        "reporte": "Unidad 45: Unidad 45 listo",
+        "costo": 0,
+        "fechaRefaccion": "2026-10-28"
+      },
+      {
+        "id": "41",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Válvula de caudal",
+        "notas": "En proceso de compra. Fecha estimada de entrega: 29/10/26",
+        "reporte": "Válvula de caudal • En proceso de compra. Fecha estimada de entrega: 29/10/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-10-29"
+      },
+      {
+        "id": "63",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Válvula niveladora, amortiguadores",
+        "notas": "En proceso de cambio de válvula niveladora suspensión, amortiguadores delanteros y enllantado",
+        "reporte": "Válvula niveladora, amortiguadores • En proceso de cambio de válvula niveladora suspensión, amortiguadores delanteros y enllantado",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "75",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Base de fan clutch",
+        "notas": "En proceso de conseguir. Fecha de entrega: 30/10/26",
+        "reporte": "Base de fan clutch • En proceso de conseguir. Fecha de entrega: 30/10/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-10-30"
+      },
+      {
+        "id": "99",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Empacado de jaula",
+        "notas": "Programada para ingresar a taller",
+        "reporte": "Empacado de jaula • Programada para ingresar a taller",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "92",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Mantenimiento de clima",
+        "notas": "Programado para el 02/11/26",
+        "reporte": "Mantenimiento de clima • Programado para el 02/11/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-02"
+      },
+      {
+        "id": "93",
+        "sucursal": "Querétaro",
+        "estado": "listo",
+        "defecto": "Sistema hidráulico",
+        "notas": "Atendida en patio Querétaro",
+        "reporte": "Sistema hidráulico • Atendida en patio Querétaro",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "71",
+        "sucursal": "Querétaro",
+        "estado": "listo",
+        "defecto": "Sistema de aire",
+        "notas": "Atendida en patio Querétaro",
+        "reporte": "Sistema de aire • Atendida en patio Querétaro",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "59",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Servicio motor, tanque y amort.",
+        "notas": "Servicio finalizado, cambio amortiguadores y reparación tanque. Entrega 28/10/26",
+        "reporte": "Servicio motor, tanque y amort. • Servicio finalizado, cambio amortiguadores y reparación tanque. Entrega 28/10/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-10-28"
+      },
+      {
+        "id": "18",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Ninguno",
+        "notas": "",
+        "reporte": "Ninguno",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "83",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Ninguno",
+        "notas": "",
+        "reporte": "Ninguno",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "21",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Ninguno",
+        "notas": "",
+        "reporte": "Ninguno",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "0004",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Ninguno",
+        "notas": "",
+        "reporte": "Ninguno",
+        "costo": 0,
+        "fechaRefaccion": ""
+      }
+    ]
+  },
+  {
+    "id": "snap_20261029_2359",
+    "fecha": "2026-10-29",
+    "hora": "23:59:59",
+    "titulo": "Cierre Diario de Bitácora - Jueves 29 de Octubre 2026",
+    "responsable": "Cierre Automático de Medianoche (00:00 hrs)",
+    "resumen": {
+      "total": 21,
+      "mayor": 3,
+      "proceso": 10,
+      "listo": 8,
+      "costo_acumulado": 60984
+    },
+    "notas_cierre": "Cierre oficial del día. Unidad 96 diagnosticada y enviada a compras. Unidad 91 con refacciones autorizadas. Unidad 97 con motor montado.",
+    "movimientos": [
+      {
+        "hora": "09:00:15",
+        "unidad_id": "96",
+        "tipo": "mecanica",
+        "descripcion": "Desarmado de cabeza y cárter para inspección de cilindros y cigüeñal."
+      },
+      {
+        "hora": "14:20:00",
+        "unidad_id": "91",
+        "tipo": "cotizacion",
+        "descripcion": "Cotización autorizada por compras: ,984 MXN para 4 refacciones mayores."
+      },
+      {
+        "hora": "15:10:45",
+        "unidad_id": "97",
+        "tipo": "mecanica",
+        "descripcion": "Revisión de frenos: cálipers delanteros amarrados, programado reemplazo."
+      },
+      {
+        "hora": "16:45:10",
+        "unidad_id": "96",
+        "tipo": "presupuesto",
+        "descripcion": "Solicitud enviada a compras para cotización de motor 3/4."
+      }
+    ],
+    "unidades": [
+      {
+        "id": "96",
+        "sucursal": "Querétaro",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Pendiente por compra de motor",
+        "costo": 0
+      },
+      {
+        "id": "90",
+        "sucursal": "Apodaca",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Pendiente por compra de motor",
+        "costo": 0
+      },
+      {
+        "id": "91",
+        "sucursal": "Querétaro",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Refacciones ,984 MXN (compras al 16/11/26)",
+        "costo": 60984
+      },
+      {
+        "id": "97",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Bomba de aceite y cálipers",
+        "notas": "Motor montado; compras al 23/11/26",
+        "costo": 0
+      },
+      {
+        "id": "11",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Calentamiento de motor",
+        "notas": "Pendiente ingresar a agencia Sitrak",
+        "costo": 0
+      },
+      {
+        "id": "74",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Cálipers traseros",
+        "notas": "Compra programada para el 09/11/26",
+        "costo": 0
+      },
+      {
+        "id": "45",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Soportes cabina, amortiguadores",
+        "notas": "Finalizado. Fecha de entrega: 28/10/26",
+        "costo": 0
+      },
+      {
+        "id": "59",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Servicio motor, tanque y amort.",
+        "notas": "Servicio finalizado, cambio amortiguadores y reparación tanque",
+        "costo": 0
+      },
+      {
+        "id": "93",
+        "sucursal": "Querétaro",
+        "estado": "listo",
+        "defecto": "Sistema hidráulico",
+        "notas": "Atendida en patio Querétaro",
+        "costo": 0
+      },
+      {
+        "id": "71",
+        "sucursal": "Querétaro",
+        "estado": "listo",
+        "defecto": "Sistema de aire",
+        "notas": "Atendida en patio Querétaro",
+        "costo": 0
+      }
+    ]
+  },
+  {
+    "id": "snap_20261027_1700",
+    "fecha": "2026-10-27",
+    "hora": "17:00:00",
+    "titulo": "Cierre Diario de Bitácora - 27 de Octubre 2026",
+    "responsable": "Jefe de Taller (Patio Central)",
+    "resumen": {
+      "total": 21,
+      "mayor": 4,
+      "proceso": 11,
+      "listo": 6,
+      "costo_acumulado": 60984
+    },
+    "notas_cierre": "Se avanzó con el montaje de motor en Unidad 97. Unidad 45 y 59 en pruebas finales de suspensión.",
+    "unidades": [
+      {
+        "id": "96",
+        "sucursal": "Querétaro",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Pendiente por compra de motor",
+        "costo": 0
+      },
+      {
+        "id": "90",
+        "sucursal": "Apodaca",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Pendiente por compra de motor",
+        "costo": 0
+      },
+      {
+        "id": "91",
+        "sucursal": "Querétaro",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Refacciones cotizadas por $60,984 MXN",
+        "costo": 60984
+      },
+      {
+        "id": "97",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Bomba de aceite y cálipers",
+        "notas": "Montaje de motor al 80%",
+        "costo": 0
+      },
+      {
+        "id": "45",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Soportes cabina, amortiguadores",
+        "notas": "Instalación de amortiguadores en progreso",
+        "costo": 0
+      },
+      {
+        "id": "59",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Servicio motor, tanque",
+        "notas": "Cambio de amortiguadores y reparación tanque",
+        "costo": 0
+      },
+      {
+        "id": "93",
+        "sucursal": "Querétaro",
+        "estado": "listo",
+        "defecto": "Sistema hidráulico",
+        "notas": "Atendida en patio Querétaro",
+        "costo": 0
+      },
+      {
+        "id": "71",
+        "sucursal": "Querétaro",
+        "estado": "listo",
+        "defecto": "Sistema de aire",
+        "notas": "Atendida en patio Querétaro",
+        "costo": 0
+      }
+    ]
+  },
+  {
+    "id": "snap_20261028_1700",
+    "fecha": "2026-10-28",
+    "hora": "17:00:00",
+    "titulo": "Cierre Diario de Bitácora - 28 de Octubre 2026",
+    "responsable": "Jefe de Taller (Patio Central)",
+    "resumen": {
+      "total": 21,
+      "mayor": 3,
+      "proceso": 10,
+      "listo": 8,
+      "costo_acumulado": 60984
+    },
+    "notas_cierre": "Unidades 45 y 59 entregadas con éxito. Se confirmaron fechas de compras para unidades 91, 97 y 74.",
+    "unidades": [
+      {
+        "id": "96",
+        "sucursal": "Querétaro",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Pendiente por compra de motor",
+        "costo": 0
+      },
+      {
+        "id": "90",
+        "sucursal": "Apodaca",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Pendiente por compra de motor",
+        "costo": 0
+      },
+      {
+        "id": "91",
+        "sucursal": "Querétaro",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Refacciones $60,984 MXN programadas para 16/11/26",
+        "costo": 60984
+      },
+      {
+        "id": "97",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Bomba de aceite y cálipers",
+        "notas": "Motor montado; compras al 23/11/26",
+        "costo": 0
+      },
+      {
+        "id": "45",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Soportes cabina, amortiguadores",
+        "notas": "Finalizado. Entregada el 28/10/26",
+        "costo": 0
+      },
+      {
+        "id": "59",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Servicio motor, tanque y amort.",
+        "notas": "Servicio finalizado. Entregada el 28/10/26",
+        "costo": 0
+      }
+    ]
+  }
+]

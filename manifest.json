@@ -1,0 +1,19 @@
+{
+  "name": "Taller Diésel Pro • Control CESS",
+  "short_name": "Taller Diésel",
+  "description": "Sistema Móvil de Gestión de Taller, Reparaciones y Bitácora Diaria para Flotillas",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0b0f19",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

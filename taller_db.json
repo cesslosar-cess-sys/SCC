@@ -1,0 +1,1164 @@
+[
+  {
+    "id": "008",
+    "sucursal": "Apodaca",
+    "estado": "proceso",
+    "defecto": "MTTO a agencia SITRAK",
+    "notas": "",
+    "reporte": "MTTO a agencia SITRAK",
+    "costo": 0,
+    "fechaRefaccion": "2026-11-09",
+    "categoriaFalla": "Motor",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "9/11/2026, 12:28:11 p.m.",
+        "evento": "Unidad registrada en taller (En Proceso (Taller))",
+        "tipo": "alta"
+      }
+    ]
+  },
+  {
+    "id": "003",
+    "sucursal": "Apodaca",
+    "estado": "listo",
+    "defecto": "unidad lista recien salida de agencia Sitrak",
+    "notas": "",
+    "reporte": "unidad lista recien salida de agencia Sitrak",
+    "costo": 0,
+    "fechaRefaccion": "2026-11-09",
+    "categoriaFalla": "Motor",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "9/11/2026, 12:23:50 p.m.",
+        "evento": "Cambio de estatus: De 'En Proceso (Taller)' a 'Listas para Entrega'",
+        "tipo": "cambio_estatus",
+        "foto": null
+      },
+      {
+        "fecha": "9/11/2026, 12:23:43 p.m.",
+        "evento": "Unidad registrada en taller (En Proceso (Taller))",
+        "tipo": "alta"
+      }
+    ],
+    "estadoModificadoManualmente": true
+  },
+  {
+    "id": "83",
+    "sucursal": "Apodaca",
+    "estado": "proceso",
+    "defecto": "bujes y pernos de direccion",
+    "notas": "",
+    "reporte": "bujes y pernos de direccion",
+    "costo": 0,
+    "fechaRefaccion": "2026-06-11",
+    "categoriaFalla": "Motor",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "9/11/2026, 12:22:25 p.m.",
+        "evento": "Edición rápida: bujes y pernos de direccion",
+        "tipo": "edicion_rapida",
+        "foto": null
+      },
+      {
+        "fecha": "6/11/2026, 3:31:06 p.m.",
+        "evento": "Unidad registrada en taller (En Proceso (Taller))",
+        "tipo": "alta"
+      }
+    ],
+    "estadoModificadoManualmente": true
+  },
+  {
+    "id": "42",
+    "sucursal": "Apodaca",
+    "estado": "proceso",
+    "defecto": "Daño en defensa  y tuba burros por golpe ocacionado por el operador  Revicion de potenciometo y parametos y reparacion de clima",
+    "notas": "",
+    "reporte": "Daño en defensa  y tuba burros por golpe ocacionado por el operador  Revicion de potenciometo y parametos y reparacion de clima",
+    "costo": 0,
+    "fechaRefaccion": "2026-05-12",
+    "categoriaFalla": "Motor",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "6/11/2026, 3:26:25 p.m.",
+        "evento": "Edición rápida: Daño en defensa  y tuba burros por golpe ocacionado por el operador  Revicion de potenciometo y parametos y reparacion de clima",
+        "tipo": "edicion_rapida",
+        "foto": null
+      },
+      {
+        "fecha": "6/11/2026, 11:42:29 a.m.",
+        "evento": "Unidad registrada en taller (En Proceso (Taller))",
+        "tipo": "alta"
+      }
+    ],
+    "estadoModificadoManualmente": true
+  },
+  {
+    "id": "004",
+    "sucursal": "Apodaca",
+    "estado": "listo",
+    "defecto": "Unidad lista y limpia por dntro\nOJO pendiente entrar a MTTO SITRAK",
+    "notas": "",
+    "reporte": "Unidad lista y limpia por dntro\nOJO pendiente entrar a MTTO SITRAK",
+    "costo": 0,
+    "fechaRefaccion": "2026-11-09",
+    "categoriaFalla": "Motor",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "9/11/2026, 12:59:43 p.m.",
+        "evento": "Edición rápida: Unidad lista y limpia por dntro\nOJO pendiente entrar a MTTO SITRAK",
+        "tipo": "edicion_rapida",
+        "foto": null
+      },
+      {
+        "fecha": "5/11/2026, 12:14:04 p.m.",
+        "evento": "Movimiento rápido: De 'Listas para Entrega' a 'Listas para Entrega'",
+        "tipo": "movimiento_kanban",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "fecha": "5/11/2026, 12:14:06 p.m.",
+        "evento": "Cambio de estatus: De 'En Proceso (Taller)' a 'Listas para Entrega'",
+        "tipo": "cambio_estatus",
+        "foto": null
+      },
+      {
+        "fecha": "5/11/2026, 12:13:59 p.m.",
+        "evento": "Unidad registrada en taller (En Proceso (Taller))",
+        "tipo": "alta"
+      }
+    ],
+    "estadoModificadoManualmente": true
+  },
+  {
+    "id": "68",
+    "sucursal": "Apodaca",
+    "estado": "mayor",
+    "defecto": "Unidad lista y limpia por dntro",
+    "notas": "",
+    "reporte": "Unidad lista y limpia por dntro",
+    "costo": 0,
+    "fechaRefaccion": "",
+    "categoriaFalla": "Motor",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "9/11/2026, 12:56:12 p.m.",
+        "evento": "Cambio de estatus: De 'Listas para Entrega' a 'Reparación Mayor ($$)'",
+        "tipo": "cambio_estatus",
+        "foto": null
+      },
+      {
+        "fecha": "5/11/2026, 12:12:57 p.m.",
+        "evento": "Movimiento rápido: De 'Listas para Entrega' a 'Listas para Entrega'",
+        "tipo": "movimiento_kanban",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "fecha": "5/11/2026, 12:12:59 p.m.",
+        "evento": "Cambio de estatus: De 'En Proceso (Taller)' a 'Listas para Entrega'",
+        "tipo": "cambio_estatus",
+        "foto": null
+      },
+      {
+        "fecha": "5/11/2026, 12:12:55 p.m.",
+        "evento": "Unidad registrada en taller (En Proceso (Taller))",
+        "tipo": "alta"
+      }
+    ],
+    "estadoModificadoManualmente": true
+  },
+  {
+    "id": "92",
+    "sucursal": "Apodaca",
+    "estado": "listo",
+    "defecto": "Unidad lista y limpia por dntro",
+    "notas": "",
+    "reporte": "Unidad lista y limpia por dntro",
+    "costo": 0,
+    "fechaRefaccion": "",
+    "categoriaFalla": "Motor",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "5/11/2026, 12:11:55 p.m.",
+        "evento": "Cambio de estatus: De 'En Proceso (Taller)' a 'Listas para Entrega'",
+        "tipo": "cambio_estatus",
+        "foto": null
+      },
+      {
+        "fecha": "5/11/2026, 12:11:53 p.m.",
+        "evento": "Edición rápida: Unidad lista y limpia por dntro",
+        "tipo": "edicion_rapida",
+        "foto": null
+      },
+      {
+        "fecha": "5/11/2026, 12:11:03 p.m.",
+        "evento": "Unidad registrada en taller (En Proceso (Taller))",
+        "tipo": "alta"
+      }
+    ],
+    "estadoModificadoManualmente": true
+  },
+  {
+    "id": "85",
+    "sucursal": "Apodaca",
+    "estado": "listo",
+    "defecto": "Unidad lista y limpia por dntro",
+    "notas": "",
+    "reporte": "Unidad lista y limpia por dntro",
+    "costo": 0,
+    "fechaRefaccion": "",
+    "categoriaFalla": "Motor",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "5/11/2026, 12:08:18 p.m.",
+        "evento": "Cambio de estatus: De 'En Proceso (Taller)' a 'Listas para Entrega'",
+        "tipo": "cambio_estatus",
+        "foto": null
+      },
+      {
+        "fecha": "5/11/2026, 12:07:59 p.m.",
+        "evento": "Unidad registrada en taller (En Proceso (Taller))",
+        "tipo": "alta"
+      }
+    ],
+    "estadoModificadoManualmente": true
+  },
+  {
+    "id": "96",
+    "sucursal": "Querétaro",
+    "estado": "mayor",
+    "defecto": "Falla de motor",
+    "notas": "Pendiente por compra de motor",
+    "reporte": "Falla de motor • Pendiente por compra de motor",
+    "categoriaFalla": "Motor",
+    "costo": 1290,
+    "fechaRefaccion": "",
+    "piezas": [
+      {
+        "id": "pz_1793470576303_1cnyx",
+        "id_pieza": "0",
+        "descripcion": "LIMPIAPARABRISAS 22\"",
+        "numero_parte": "0",
+        "marca": "PWR PRO",
+        "cantidad": 2,
+        "unidad_medida": "PZ",
+        "precio_unitario": 120,
+        "costo_total": 240,
+        "rack": "Rack 6",
+        "nivel": "Nivel 4",
+        "stock_disponible": 3,
+        "estado": "SALIDA_AUTORIZADA",
+        "fecha_solicitud": "2026-10-31T18:16:16.303Z",
+        "folio_oc": "",
+        "proveedor_oc": "PWR PRO",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "Encargado de Inventario",
+        "fecha_autorizacion": "2026-10-31T18:16:16.451Z",
+        "recibido_por": "",
+        "fecha_recepcion": "",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "pz_1793470576513_lbc2d",
+        "id_pieza": "105",
+        "descripcion": "LUBRIPLATE GREASE",
+        "numero_parte": "105",
+        "marca": "GREASE",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 350,
+        "costo_total": 350,
+        "rack": "Rack 7",
+        "nivel": "Nivel 2",
+        "stock_disponible": 0,
+        "estado": "RECIBIDA_TALLER",
+        "fecha_solicitud": "2026-10-31T18:16:16.513Z",
+        "folio_oc": "OC-2026-002",
+        "proveedor_oc": "GREASE",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "Gabriel (Jefe de Taller)",
+        "fecha_recepcion": "2026-10-31T18:53:34.003Z",
+        "instalado_por": "Mecánico Juan Pérez",
+        "fecha_instalacion": "2026-10-31T18:16:16.604Z",
+        "notas": ""
+      },
+      {
+        "id": "pz_1793472813965_zw1wc",
+        "id_pieza": "105",
+        "descripcion": "LUBRIPLATE",
+        "numero_parte": "105",
+        "marca": "GREASE",
+        "cantidad": 2,
+        "unidad_medida": "PZ",
+        "precio_unitario": 350,
+        "costo_total": 700,
+        "rack": "Rack 7",
+        "nivel": "Nivel 2",
+        "stock_disponible": 0,
+        "estado": "RECIBIDA_TALLER",
+        "fecha_solicitud": "2026-10-31T18:53:33.965Z",
+        "folio_oc": "OC-2026-002",
+        "proveedor_oc": "GREASE",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "Gabriel (Jefe de Taller)",
+        "fecha_recepcion": "2026-10-31T18:53:34.003Z",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      }
+    ],
+    "historial": [
+      {
+        "fecha": "6/11/2026, 10:56:56 a.m.",
+        "evento": "Movimiento rápido: De 'Reparación Mayor ($$)' a 'Reparación Mayor ($$)'",
+        "tipo": "movimiento_kanban",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "fecha": "6/11/2026, 10:56:56 a.m.",
+        "evento": "Cambio de estatus: De 'Listas para Entrega' a 'Reparación Mayor ($$)'",
+        "tipo": "cambio_estatus",
+        "foto": null
+      },
+      {
+        "fecha": "6/11/2026, 10:56:34 a.m.",
+        "evento": "Movimiento rápido: De 'Listas para Entrega' a 'Listas para Entrega'",
+        "tipo": "movimiento_kanban",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "fecha": "6/11/2026, 10:56:33 a.m.",
+        "evento": "Cambio de estatus: De 'Reparación Mayor ($$)' a 'Listas para Entrega'",
+        "tipo": "cambio_estatus",
+        "foto": null
+      },
+      {
+        "fecha": "31/10/2026, 12:53:34 p.m.",
+        "evento": "📥 Refacción RECIBIDA EN TALLER: 2x LUBRIPLATE (OC: OC-2026-002). Surtida y lista para montaje en Unidad 96.",
+        "tipo": "recepcion_almacen",
+        "autor": "Gabriel (Jefe de Taller)"
+      },
+      {
+        "fecha": "31/10/2026, 12:53:34 p.m.",
+        "evento": "📥 Refacción RECIBIDA EN TALLER: 1x LUBRIPLATE GREASE (OC: OC-2026-002). Surtida y lista para montaje en Unidad 96.",
+        "tipo": "recepcion_almacen",
+        "autor": "Gabriel (Jefe de Taller)"
+      },
+      {
+        "fecha": "31/10/2026, 12:53:33 p.m.",
+        "evento": "🛒 Requisición de compra (OC-2026-002): 2x LUBRIPLATE (P/N: 105). Pieza sin existencia en almacén.",
+        "tipo": "orden_compra",
+        "autor": "Jefe de Taller",
+        "costo": 700
+      },
+      {
+        "fecha": "31/10/2026, 12:16:16 p.m.",
+        "evento": "🔧 Refacción INSTALADA en camión: 1x LUBRIPLATE GREASE (P/N: 105) instalada por Mecánico Juan Pérez.",
+        "tipo": "pieza_instalada",
+        "autor": "Mecánico Juan Pérez"
+      },
+      {
+        "fecha": "31/10/2026, 12:16:16 p.m.",
+        "evento": "📥 Refacción RECIBIDA EN TALLER: 1x LUBRIPLATE GREASE (OC: OC-2026-002). Lista para instalación en Unidad 96.",
+        "tipo": "recepcion_taller",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "fecha": "31/10/2026, 12:16:16 p.m.",
+        "evento": "🛒 Requisición de compra (OC-2026-002): 1x LUBRIPLATE GREASE (P/N: 105). Pieza sin existencia en almacén.",
+        "tipo": "orden_compra",
+        "autor": "Jefe de Taller",
+        "costo": 350
+      },
+      {
+        "fecha": "31/10/2026, 12:16:16 p.m.",
+        "evento": "🔑 Salida de Almacén AUTORIZADA por Encargado de Inventario: 2x LIMPIAPARABRISAS 22\" (Folio SAL-576427) despachada hacia Taller.",
+        "tipo": "salida_autorizada",
+        "autor": "Encargado de Inventario"
+      },
+      {
+        "fecha": "31/10/2026, 12:16:16 p.m.",
+        "evento": "🟡 Refacción solicitada a Almacén: 2x LIMPIAPARABRISAS 22\" (P/N: 0) en espera de autorización de salida.",
+        "tipo": "solicitud_almacen",
+        "autor": "Jefe de Taller",
+        "costo": 240
+      },
+      {
+        "fecha": "30/10/2026, 09:15:00",
+        "evento": "Jornada activa: Unidad continúa detenida en patio Querétaro en espera de autorización de presupuesto para compra de motor.",
+        "tipo": "estatus_diario",
+        "autor": "Jefe de Taller",
+        "categoria": "Motor"
+      },
+      {
+        "fecha": "29/10/2026, 16:45:00",
+        "evento": "Revisión concluida: Se detecta daño estructural en cigüeñal y biela desbocada. Se envía solicitud formal a Compras para cotización de motor 3/4.",
+        "tipo": "mecanica",
+        "autor": "Jefe de Taller Querétaro",
+        "categoria": "Motor"
+      },
+      {
+        "fecha": "29/10/2026, 10:30:00",
+        "evento": "Desarmado de cabeza y retiro de cárter para inspección interna de cilindros y metales.",
+        "tipo": "mecanica",
+        "autor": "Mecánico de Patio",
+        "categoria": "Motor"
+      },
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Ingreso al patio Querétaro: Falla severa de motor con golpeteo y pérdida total de compresión. Pasa a Reparación Mayor ().",
+        "tipo": "alta",
+        "autor": "Bitácora Inicial",
+        "categoria": "Motor"
+      }
+    ],
+    "estadoModificadoManualmente": true
+  },
+  {
+    "id": "90",
+    "sucursal": "Apodaca",
+    "estado": "mayor",
+    "defecto": "Falla de motor",
+    "notas": "Pendiente por compra de motor",
+    "reporte": "Falla de motor • Pendiente por compra de motor",
+    "categoriaFalla": "Motor",
+    "costo": 0,
+    "fechaRefaccion": "",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Falla de motor)",
+        "tipo": "sistema",
+        "categoria": "Motor",
+        "autor": "Excel Taller Flotilla"
+      }
+    ]
+  },
+  {
+    "id": "91",
+    "sucursal": "Querétaro",
+    "estado": "mayor",
+    "defecto": "Falla de motor",
+    "notas": "Refacciones (mangas, empaques, ligas e inyectores) asciende a $60,984 MXN (compras al 16/11/26)",
+    "reporte": "Falla de motor • Refacciones (mangas, empaques, ligas e inyectores) asciende a $60,984 MXN (compras al 16/11/26)",
+    "categoriaFalla": "Motor",
+    "costo": 60984,
+    "fechaRefaccion": "2026-11-16",
+    "piezas": [
+      {
+        "id": "pz_leg_0_1793470576282",
+        "id_pieza": null,
+        "descripcion": "Mangas de inyección",
+        "numero_parte": "",
+        "marca": "",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 0,
+        "costo_total": 0,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "SOLICITADA_ALMACEN",
+        "fecha_solicitud": "2026-10-31T18:16:16.282Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "pz_leg_1_1793470576282",
+        "id_pieza": null,
+        "descripcion": "Empaques de cabeza",
+        "numero_parte": "",
+        "marca": "",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 0,
+        "costo_total": 0,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "SOLICITADA_ALMACEN",
+        "fecha_solicitud": "2026-10-31T18:16:16.282Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "pz_leg_2_1793470576282",
+        "id_pieza": null,
+        "descripcion": "Ligas de camisa",
+        "numero_parte": "",
+        "marca": "",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 0,
+        "costo_total": 0,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "SOLICITADA_ALMACEN",
+        "fecha_solicitud": "2026-10-31T18:16:16.282Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "pz_leg_3_1793470576282",
+        "id_pieza": null,
+        "descripcion": "Inyectores diésel",
+        "numero_parte": "",
+        "marca": "",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 0,
+        "costo_total": 0,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "SOLICITADA_ALMACEN",
+        "fecha_solicitud": "2026-10-31T18:16:16.282Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      }
+    ],
+    "historial": [
+      {
+        "fecha": "30/10/2026, 08:45:00",
+        "evento": "Jornada activa: Refacciones confirmadas por Compras con fecha estimada de entrega al 16/11/26. Unidad lista para armado en cuanto arriben piezas.",
+        "tipo": "estatus_diario",
+        "autor": "Jefe de Taller",
+        "categoria": "Motor"
+      },
+      {
+        "fecha": "29/10/2026, 14:20:00",
+        "evento": "Cotización autorizada por compras y gerencia: ,984 MXN para 4 refacciones mayores (mangas, empaques, ligas e inyectores).",
+        "tipo": "cotizacion",
+        "costo": 60984,
+        "autor": "Compras CESS",
+        "categoria": "Motor"
+      },
+      {
+        "fecha": "28/10/2026, 08:15:00",
+        "evento": "Ingreso a taller Querétaro: Falla en sistema de inyección y sobrecalentamiento. Desarmado para cotización de piezas.",
+        "tipo": "alta",
+        "autor": "Bitácora Inicial",
+        "categoria": "Motor"
+      }
+    ]
+  },
+  {
+    "id": "97",
+    "sucursal": "Apodaca",
+    "estado": "mayor",
+    "defecto": "Bomba de aceite y cálipers",
+    "notas": "Motor montado; pendiente bomba de aceite, cálipers delanteros y revisión traseros (compras 23/11/26)",
+    "reporte": "Bomba de aceite y cálipers • Motor montado; pendiente bomba de aceite, cálipers delanteros y revisión traseros (compras 23/11/26)",
+    "categoriaFalla": "Motor",
+    "costo": 0,
+    "fechaRefaccion": "2026-11-23",
+    "piezas": [
+      {
+        "id": "pz_leg_0_1793470576282",
+        "id_pieza": null,
+        "descripcion": "Bomba de aceite",
+        "numero_parte": "",
+        "marca": "",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 0,
+        "costo_total": 0,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "SOLICITADA_ALMACEN",
+        "fecha_solicitud": "2026-10-31T18:16:16.282Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "pz_leg_1_1793470576282",
+        "id_pieza": null,
+        "descripcion": "Cálipers delanteros",
+        "numero_parte": "",
+        "marca": "",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 0,
+        "costo_total": 0,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "SOLICITADA_ALMACEN",
+        "fecha_solicitud": "2026-10-31T18:16:16.282Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "pz_leg_2_1793470576282",
+        "id_pieza": null,
+        "descripcion": "Cálipers traseros",
+        "numero_parte": "",
+        "marca": "",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 0,
+        "costo_total": 0,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "SOLICITADA_ALMACEN",
+        "fecha_solicitud": "2026-10-31T18:16:16.282Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      }
+    ],
+    "historial": [
+      {
+        "fecha": "30/10/2026, 4:47:15 p.m.",
+        "evento": "Movimiento rápido: De 'Reparación Mayor ($$)' a 'Reparación Mayor ($$)'",
+        "tipo": "movimiento_kanban",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "fecha": "30/10/2026, 4:47:15 p.m.",
+        "evento": "Movimiento Kanban: Arrastrado de 'En Reparación Activa' a 'Reparación Mayor ($$)'",
+        "tipo": "movimiento_kanban",
+        "foto": null
+      },
+      {
+        "fecha": "30/10/2026, 08:30:00",
+        "evento": "Jornada activa: Motor montado en chasis. Esperando llegada de bomba de aceite (compras 23/11/26) para cerrar cárter y purgar fluidos.",
+        "tipo": "estatus_diario",
+        "autor": "Jefe de Taller Apodaca",
+        "categoria": "Motor"
+      },
+      {
+        "fecha": "29/10/2026, 15:10:00",
+        "evento": "Revisión del sistema de frenos: Cálipers delanteros atascados/amarrados con desgaste asimétrico de balatas. Se programa reemplazo.",
+        "tipo": "mecanica",
+        "autor": "Mecánico Apodaca",
+        "categoria": "Frenos"
+      },
+      {
+        "fecha": "28/10/2026, 16:45:00",
+        "evento": "Motor montado exitosamente en chasis con torques especificados.",
+        "tipo": "mecanica",
+        "autor": "Jefe de Taller Apodaca",
+        "categoria": "Motor"
+      },
+      {
+        "fecha": "12/09/2026, 10:15:00",
+        "evento": "Historial previo: Reparación de cáliper delantero derecho por atascamiento y calentamiento de balatas.",
+        "tipo": "reparacion_previa",
+        "autor": "Bitácora Anterior",
+        "categoria": "Frenos"
+      }
+    ],
+    "estadoModificadoManualmente": true
+  },
+  {
+    "id": "11",
+    "sucursal": "Apodaca",
+    "estado": "proceso",
+    "defecto": "Calentamiento de motor",
+    "notas": "Pendiente ingresar a agencia Sitrak. Falla al accionar el retardador",
+    "reporte": "Calentamiento de motor • Pendiente ingresar a agencia Sitrak. Falla al accionar el retardador",
+    "categoriaFalla": "Motor",
+    "costo": 0,
+    "fechaRefaccion": "",
+    "piezas": [
+      {
+        "id": "pz_leg_0_1793470576282",
+        "id_pieza": null,
+        "descripcion": "Retardador hidráulico",
+        "numero_parte": "",
+        "marca": "",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 0,
+        "costo_total": 0,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "SOLICITADA_ALMACEN",
+        "fecha_solicitud": "2026-10-31T18:16:16.282Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "pz_leg_1_1793470576282",
+        "id_pieza": null,
+        "descripcion": "Sensor de temperatura",
+        "numero_parte": "",
+        "marca": "",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 0,
+        "costo_total": 0,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "SOLICITADA_ALMACEN",
+        "fecha_solicitud": "2026-10-31T18:16:16.282Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      }
+    ],
+    "historial": [
+      {
+        "fecha": "18/09/2026, 14:00:00",
+        "evento": "Historial previo: Purgado de sistema de enfriamiento y cambio de termostato por aviso de alta temperatura",
+        "tipo": "reparacion_previa",
+        "categoria": "Motor",
+        "autor": "Bitácora Anterior"
+      },
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Calentamiento de motor)",
+        "tipo": "sistema",
+        "categoria": "Motor",
+        "autor": "Excel Taller Flotilla"
+      }
+    ]
+  },
+  {
+    "id": "74",
+    "sucursal": "Apodaca",
+    "estado": "proceso",
+    "defecto": "Cálipers traseros",
+    "notas": "Compra programada para el 09/11/26",
+    "reporte": "Cálipers traseros • Compra programada para el 09/11/26",
+    "categoriaFalla": "Frenos",
+    "costo": 0,
+    "fechaRefaccion": "2026-11-09",
+    "piezas": [
+      {
+        "id": "pz_leg_0_1793470576282",
+        "id_pieza": null,
+        "descripcion": "Cálipers traseros",
+        "numero_parte": "",
+        "marca": "",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 0,
+        "costo_total": 0,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "SOLICITADA_ALMACEN",
+        "fecha_solicitud": "2026-10-31T18:16:16.282Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      }
+    ],
+    "historial": [
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Cálipers traseros)",
+        "tipo": "sistema",
+        "categoria": "Frenos",
+        "autor": "Excel Taller Flotilla"
+      }
+    ]
+  },
+  {
+    "id": "94",
+    "sucursal": "Apodaca",
+    "estado": "listo",
+    "defecto": "Filtro de gases del EGR • Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer\n\nUnidad en preuba ya que ya se remplazo el bote del EGR",
+    "notas": "Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer",
+    "reporte": "Filtro de gases del EGR • Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer\n\nUnidad en preuba ya que ya se remplazo el bote del EGR",
+    "categoriaFalla": "Neumático/Emisiones",
+    "costo": 0,
+    "fechaRefaccion": "2026-11-09",
+    "piezas": [
+      {
+        "id": "pz_leg_0_1793470576282",
+        "id_pieza": null,
+        "descripcion": "Filtro de gases EGR",
+        "numero_parte": "",
+        "marca": "",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 0,
+        "costo_total": 0,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "SOLICITADA_ALMACEN",
+        "fecha_solicitud": "2026-10-31T18:16:16.282Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "pz_leg_1_1793470576282",
+        "id_pieza": null,
+        "descripcion": "Válvula de recirculación",
+        "numero_parte": "",
+        "marca": "",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 0,
+        "costo_total": 0,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "SOLICITADA_ALMACEN",
+        "fecha_solicitud": "2026-10-31T18:16:16.282Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      }
+    ],
+    "historial": [
+      {
+        "fecha": "9/11/2026, 3:25:06 p.m.",
+        "evento": "Edición rápida: Filtro de gases del EGR • Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer\n\nUnidad en preuba ya que ya se remplazo el bote del EGR",
+        "tipo": "edicion_rapida",
+        "foto": null
+      },
+      {
+        "fecha": "9/11/2026, 3:22:42 p.m.",
+        "evento": "Cambio de estatus: De 'En Proceso (Taller)' a 'Listas para Entrega'",
+        "tipo": "cambio_estatus",
+        "foto": null
+      },
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Filtro de gases del EGR)",
+        "tipo": "sistema",
+        "categoria": "Neumático/Emisiones",
+        "autor": "Excel Taller Flotilla"
+      }
+    ],
+    "estadoModificadoManualmente": true
+  },
+  {
+    "id": "81",
+    "sucursal": "Apodaca",
+    "estado": "proceso",
+    "defecto": "Enllantado pendiente • Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+    "notas": "Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+    "reporte": "Enllantado pendiente • Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+    "categoriaFalla": "Motor",
+    "costo": 0,
+    "fechaRefaccion": "",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "5/11/2026, 11:07:09 a.m.",
+        "evento": "Edición rápida: Enllantado pendiente • Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+        "tipo": "edicion_rapida",
+        "foto": null
+      },
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Enllantado pendiente)",
+        "tipo": "sistema",
+        "categoria": "Motor",
+        "autor": "Excel Taller Flotilla"
+      }
+    ],
+    "estadoModificadoManualmente": true
+  },
+  {
+    "id": "41",
+    "sucursal": "Apodaca",
+    "estado": "listo",
+    "defecto": "unidad lista para entrega y limpia por dentro",
+    "notas": "En proceso de compra. Fecha estimada de entrega: 29/10/26",
+    "reporte": "unidad lista para entrega y limpia por dentro",
+    "categoriaFalla": "Neumático/Emisiones",
+    "costo": 0,
+    "fechaRefaccion": "2026-05-11",
+    "piezas": [
+      {
+        "id": "pz_leg_0_1793470576282",
+        "id_pieza": null,
+        "descripcion": "Válvula de caudal",
+        "numero_parte": "",
+        "marca": "",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 0,
+        "costo_total": 0,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "SOLICITADA_ALMACEN",
+        "fecha_solicitud": "2026-10-31T18:16:16.282Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      }
+    ],
+    "historial": [
+      {
+        "fecha": "5/11/2026, 11:18:39 a.m.",
+        "evento": "Edición rápida: unidad lista para entrega y limpia por dentro",
+        "tipo": "edicion_rapida",
+        "foto": null
+      },
+      {
+        "fecha": "5/11/2026, 10:58:26 a.m.",
+        "evento": "Edición rápida: unidad lista para entrega ly limpia por dentro",
+        "tipo": "edicion_rapida",
+        "foto": null
+      },
+      {
+        "fecha": "5/11/2026, 10:28:22 a.m.",
+        "evento": "Cambio de estatus: De 'En Proceso (Taller)' a 'Listas para Entrega'",
+        "tipo": "cambio_estatus",
+        "foto": null
+      },
+      {
+        "fecha": "5/11/2026, 10:27:53 a.m.",
+        "evento": "Cambio de estatus: De 'Listas para Entrega' a 'En Proceso (Taller)'",
+        "tipo": "cambio_estatus",
+        "foto": null
+      },
+      {
+        "fecha": "5/11/2026, 10:27:41 a.m.",
+        "evento": "Movimiento rápido: De 'Listas para Entrega' a 'Listas para Entrega'",
+        "tipo": "movimiento_kanban",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "fecha": "5/11/2026, 10:27:42 a.m.",
+        "evento": "Cambio de estatus: De 'En Proceso (Taller)' a 'Listas para Entrega'",
+        "tipo": "cambio_estatus",
+        "foto": null
+      },
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Válvula de caudal)",
+        "tipo": "sistema",
+        "categoria": "Neumático/Emisiones",
+        "autor": "Excel Taller Flotilla"
+      }
+    ],
+    "estadoModificadoManualmente": true
+  },
+  {
+    "id": "63",
+    "sucursal": "Apodaca",
+    "estado": "proceso",
+    "defecto": "Revision de cabeza de motor por paso de combustible al aceite",
+    "notas": "En proceso de cambio de válvula niveladora suspensión, amortiguadores delanteros y enllantado",
+    "reporte": "Revision de cabeza de motor por paso de combustible al aceite",
+    "categoriaFalla": "Suspensión",
+    "costo": 0,
+    "fechaRefaccion": "",
+    "piezas": [
+      {
+        "id": "pz_leg_0_1793470576282",
+        "id_pieza": null,
+        "descripcion": "Válvula niveladora suspensión",
+        "numero_parte": "",
+        "marca": "",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 0,
+        "costo_total": 0,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "SOLICITADA_ALMACEN",
+        "fecha_solicitud": "2026-10-31T18:16:16.282Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "pz_leg_1_1793470576282",
+        "id_pieza": null,
+        "descripcion": "Amortiguadores delanteros",
+        "numero_parte": "",
+        "marca": "",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 0,
+        "costo_total": 0,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "SOLICITADA_ALMACEN",
+        "fecha_solicitud": "2026-10-31T18:16:16.282Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      }
+    ],
+    "historial": [
+      {
+        "fecha": "5/11/2026, 11:06:53 a.m.",
+        "evento": "Edición rápida: Revision de cabeza de motor por paso de combustible al aceite",
+        "tipo": "edicion_rapida",
+        "foto": null
+      },
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Válvula niveladora, amortiguadores)",
+        "tipo": "sistema",
+        "categoria": "Suspensión",
+        "autor": "Excel Taller Flotilla"
+      }
+    ],
+    "estadoModificadoManualmente": true
+  },
+  {
+    "id": "18",
+    "sucursal": "Apodaca",
+    "estado": "listo",
+    "defecto": "unidad disponible para entrega para pato ya que ya trae daño en anillos (COMPRECION VOLTEADA)",
+    "notas": "",
+    "reporte": "unidad disponible para entrega para pato ya que ya trae daño en anillos (COMPRECION VOLTEADA)",
+    "categoriaFalla": "General",
+    "costo": 0,
+    "fechaRefaccion": "",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "5/11/2026, 11:31:00 a.m.",
+        "evento": "Edición rápida: unidad disponible para entrega para pato ya que ya trae daño en anillos (COMPRECION VOLTEADA)",
+        "tipo": "edicion_rapida",
+        "foto": null
+      },
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Ninguno)",
+        "tipo": "sistema",
+        "categoria": "General",
+        "autor": "Excel Taller Flotilla"
+      }
+    ],
+    "estadoModificadoManualmente": true
+  }
+]

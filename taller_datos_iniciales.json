@@ -1,0 +1,443 @@
+[
+  {
+    "id": "96",
+    "sucursal": "Querétaro",
+    "estado": "mayor",
+    "defecto": "Falla de motor",
+    "notas": "Pendiente por compra de motor",
+    "reporte": "Falla de motor • Pendiente por compra de motor",
+    "categoriaFalla": "Motor",
+    "costo": 0,
+    "fechaRefaccion": "",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Falla de motor)",
+        "tipo": "sistema",
+        "categoria": "Motor",
+        "autor": "Excel Taller Flotilla"
+      }
+    ]
+  },
+  {
+    "id": "90",
+    "sucursal": "Apodaca",
+    "estado": "mayor",
+    "defecto": "Falla de motor",
+    "notas": "Pendiente por compra de motor",
+    "reporte": "Falla de motor • Pendiente por compra de motor",
+    "categoriaFalla": "Motor",
+    "costo": 0,
+    "fechaRefaccion": "",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Falla de motor)",
+        "tipo": "sistema",
+        "categoria": "Motor",
+        "autor": "Excel Taller Flotilla"
+      }
+    ]
+  },
+  {
+    "id": "91",
+    "sucursal": "Querétaro",
+    "estado": "mayor",
+    "defecto": "Falla de motor",
+    "notas": "Refacciones (mangas, empaques, ligas e inyectores) asciende a $60,984 MXN (compras al 16/11/26)",
+    "reporte": "Falla de motor • Refacciones (mangas, empaques, ligas e inyectores) asciende a $60,984 MXN (compras al 16/11/26)",
+    "categoriaFalla": "Motor",
+    "costo": 60984,
+    "fechaRefaccion": "2026-11-16",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Falla de motor)",
+        "tipo": "sistema",
+        "categoria": "Motor",
+        "autor": "Excel Taller Flotilla"
+      }
+    ]
+  },
+  {
+    "id": "97",
+    "sucursal": "Apodaca",
+    "estado": "proceso",
+    "defecto": "Bomba de aceite y cálipers",
+    "notas": "Motor montado; pendiente bomba de aceite, cálipers delanteros y revisión traseros (compras 23/11/26)",
+    "reporte": "Bomba de aceite y cálipers • Motor montado; pendiente bomba de aceite, cálipers delanteros y revisión traseros (compras 23/11/26)",
+    "categoriaFalla": "Motor",
+    "costo": 0,
+    "fechaRefaccion": "2026-11-23",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Bomba de aceite y cálipers)",
+        "tipo": "sistema",
+        "categoria": "Motor",
+        "autor": "Excel Taller Flotilla"
+      }
+    ]
+  },
+  {
+    "id": "11",
+    "sucursal": "Apodaca",
+    "estado": "proceso",
+    "defecto": "Calentamiento de motor",
+    "notas": "Pendiente ingresar a agencia Sitrak. Falla al accionar el retardador",
+    "reporte": "Calentamiento de motor • Pendiente ingresar a agencia Sitrak. Falla al accionar el retardador",
+    "categoriaFalla": "Motor",
+    "costo": 0,
+    "fechaRefaccion": "",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Calentamiento de motor)",
+        "tipo": "sistema",
+        "categoria": "Motor",
+        "autor": "Excel Taller Flotilla"
+      }
+    ]
+  },
+  {
+    "id": "74",
+    "sucursal": "Apodaca",
+    "estado": "proceso",
+    "defecto": "Cálipers traseros",
+    "notas": "Compra programada para el 09/11/26",
+    "reporte": "Cálipers traseros • Compra programada para el 09/11/26",
+    "categoriaFalla": "Frenos",
+    "costo": 0,
+    "fechaRefaccion": "2026-11-09",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Cálipers traseros)",
+        "tipo": "sistema",
+        "categoria": "Frenos",
+        "autor": "Excel Taller Flotilla"
+      }
+    ]
+  },
+  {
+    "id": "94",
+    "sucursal": "Apodaca",
+    "estado": "proceso",
+    "defecto": "Filtro de gases del EGR",
+    "notas": "Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer",
+    "reporte": "Filtro de gases del EGR • Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer",
+    "categoriaFalla": "Neumático/Emisiones",
+    "costo": 0,
+    "fechaRefaccion": "",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Filtro de gases del EGR)",
+        "tipo": "sistema",
+        "categoria": "Neumático/Emisiones",
+        "autor": "Excel Taller Flotilla"
+      }
+    ]
+  },
+  {
+    "id": "81",
+    "sucursal": "Apodaca",
+    "estado": "proceso",
+    "defecto": "Enllantado pendiente",
+    "notas": "Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+    "reporte": "Enllantado pendiente • Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+    "categoriaFalla": "Motor",
+    "costo": 0,
+    "fechaRefaccion": "",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Enllantado pendiente)",
+        "tipo": "sistema",
+        "categoria": "Motor",
+        "autor": "Excel Taller Flotilla"
+      }
+    ]
+  },
+  {
+    "id": "45",
+    "sucursal": "Apodaca",
+    "estado": "listo",
+    "defecto": "Soportes cabina, amortiguadores",
+    "notas": "Finalizado. Fecha de entrega: 28/10/26",
+    "reporte": "Soportes cabina, amortiguadores • Finalizado. Fecha de entrega: 28/10/26",
+    "categoriaFalla": "Suspensión",
+    "costo": 0,
+    "fechaRefaccion": "2026-10-28",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Soportes cabina, amortiguadores)",
+        "tipo": "sistema",
+        "categoria": "Suspensión",
+        "autor": "Excel Taller Flotilla"
+      }
+    ]
+  },
+  {
+    "id": "41",
+    "sucursal": "Apodaca",
+    "estado": "proceso",
+    "defecto": "Válvula de caudal",
+    "notas": "En proceso de compra. Fecha estimada de entrega: 29/10/26",
+    "reporte": "Válvula de caudal • En proceso de compra. Fecha estimada de entrega: 29/10/26",
+    "categoriaFalla": "Neumático/Emisiones",
+    "costo": 0,
+    "fechaRefaccion": "2026-10-29",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Válvula de caudal)",
+        "tipo": "sistema",
+        "categoria": "Neumático/Emisiones",
+        "autor": "Excel Taller Flotilla"
+      }
+    ]
+  },
+  {
+    "id": "63",
+    "sucursal": "Apodaca",
+    "estado": "proceso",
+    "defecto": "Válvula niveladora, amortiguadores",
+    "notas": "En proceso de cambio de válvula niveladora suspensión, amortiguadores delanteros y enllantado",
+    "reporte": "Válvula niveladora, amortiguadores • En proceso de cambio de válvula niveladora suspensión, amortiguadores delanteros y enllantado",
+    "categoriaFalla": "Suspensión",
+    "costo": 0,
+    "fechaRefaccion": "",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Válvula niveladora, amortiguadores)",
+        "tipo": "sistema",
+        "categoria": "Suspensión",
+        "autor": "Excel Taller Flotilla"
+      }
+    ]
+  },
+  {
+    "id": "75",
+    "sucursal": "Apodaca",
+    "estado": "proceso",
+    "defecto": "Base de fan clutch",
+    "notas": "En proceso de conseguir. Fecha de entrega: 30/10/26",
+    "reporte": "Base de fan clutch • En proceso de conseguir. Fecha de entrega: 30/10/26",
+    "categoriaFalla": "Motor",
+    "costo": 0,
+    "fechaRefaccion": "2026-10-30",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Base de fan clutch)",
+        "tipo": "sistema",
+        "categoria": "Motor",
+        "autor": "Excel Taller Flotilla"
+      }
+    ]
+  },
+  {
+    "id": "99",
+    "sucursal": "Apodaca",
+    "estado": "proceso",
+    "defecto": "Empacado de jaula",
+    "notas": "Programada para ingresar a taller",
+    "reporte": "Empacado de jaula • Programada para ingresar a taller",
+    "categoriaFalla": "General",
+    "costo": 0,
+    "fechaRefaccion": "",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Empacado de jaula)",
+        "tipo": "sistema",
+        "categoria": "General",
+        "autor": "Excel Taller Flotilla"
+      }
+    ]
+  },
+  {
+    "id": "92",
+    "sucursal": "Apodaca",
+    "estado": "proceso",
+    "defecto": "Mantenimiento de clima",
+    "notas": "Programado para el 02/11/26",
+    "reporte": "Mantenimiento de clima • Programado para el 02/11/26",
+    "categoriaFalla": "Clima",
+    "costo": 0,
+    "fechaRefaccion": "2026-11-02",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Mantenimiento de clima)",
+        "tipo": "sistema",
+        "categoria": "Clima",
+        "autor": "Excel Taller Flotilla"
+      }
+    ]
+  },
+  {
+    "id": "93",
+    "sucursal": "Querétaro",
+    "estado": "listo",
+    "defecto": "Sistema hidráulico",
+    "notas": "Atendida en patio Querétaro",
+    "reporte": "Sistema hidráulico • Atendida en patio Querétaro",
+    "categoriaFalla": "Hidráulico",
+    "costo": 0,
+    "fechaRefaccion": "",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Sistema hidráulico)",
+        "tipo": "sistema",
+        "categoria": "Hidráulico",
+        "autor": "Excel Taller Flotilla"
+      }
+    ]
+  },
+  {
+    "id": "71",
+    "sucursal": "Querétaro",
+    "estado": "listo",
+    "defecto": "Sistema de aire",
+    "notas": "Atendida en patio Querétaro",
+    "reporte": "Sistema de aire • Atendida en patio Querétaro",
+    "categoriaFalla": "Neumático/Emisiones",
+    "costo": 0,
+    "fechaRefaccion": "",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Sistema de aire)",
+        "tipo": "sistema",
+        "categoria": "Neumático/Emisiones",
+        "autor": "Excel Taller Flotilla"
+      }
+    ]
+  },
+  {
+    "id": "59",
+    "sucursal": "Apodaca",
+    "estado": "listo",
+    "defecto": "Servicio motor, tanque y amort.",
+    "notas": "Servicio finalizado, cambio amortiguadores y reparación tanque. Entrega 28/10/26",
+    "reporte": "Servicio motor, tanque y amort. • Servicio finalizado, cambio amortiguadores y reparación tanque. Entrega 28/10/26",
+    "categoriaFalla": "Motor",
+    "costo": 0,
+    "fechaRefaccion": "2026-10-28",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Servicio motor, tanque y amort.)",
+        "tipo": "sistema",
+        "categoria": "Motor",
+        "autor": "Excel Taller Flotilla"
+      }
+    ]
+  },
+  {
+    "id": "18",
+    "sucursal": "Apodaca",
+    "estado": "listo",
+    "defecto": "Ninguno",
+    "notas": "",
+    "reporte": "Ninguno",
+    "categoriaFalla": "General",
+    "costo": 0,
+    "fechaRefaccion": "",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Ninguno)",
+        "tipo": "sistema",
+        "categoria": "General",
+        "autor": "Excel Taller Flotilla"
+      }
+    ]
+  },
+  {
+    "id": "83",
+    "sucursal": "Apodaca",
+    "estado": "listo",
+    "defecto": "Ninguno",
+    "notas": "",
+    "reporte": "Ninguno",
+    "categoriaFalla": "General",
+    "costo": 0,
+    "fechaRefaccion": "",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Ninguno)",
+        "tipo": "sistema",
+        "categoria": "General",
+        "autor": "Excel Taller Flotilla"
+      }
+    ]
+  },
+  {
+    "id": "21",
+    "sucursal": "Apodaca",
+    "estado": "listo",
+    "defecto": "Ninguno",
+    "notas": "",
+    "reporte": "Ninguno",
+    "categoriaFalla": "General",
+    "costo": 0,
+    "fechaRefaccion": "",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Ninguno)",
+        "tipo": "sistema",
+        "categoria": "General",
+        "autor": "Excel Taller Flotilla"
+      }
+    ]
+  },
+  {
+    "id": "0004",
+    "sucursal": "Apodaca",
+    "estado": "listo",
+    "defecto": "Ninguno",
+    "notas": "",
+    "reporte": "Ninguno",
+    "categoriaFalla": "General",
+    "costo": 0,
+    "fechaRefaccion": "",
+    "piezas": [],
+    "historial": [
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Ninguno)",
+        "tipo": "sistema",
+        "categoria": "General",
+        "autor": "Excel Taller Flotilla"
+      }
+    ]
+  }
+]
