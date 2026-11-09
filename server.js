@@ -52,6 +52,47 @@ const EXCEL_FILE = path.join(__dirname, 'Taller Flotilla-v2.xlsx');
 const ALMACEN_DB_FILE = fs.existsSync(path.join(__dirname, 'almacen_datos.json'))
     ? path.join(__dirname, 'almacen_datos.json')
     : path.join(__dirname, 'almacen-app', 'almacen_datos.json');
+const PREVENTIVOS_FILE = fs.existsSync(path.join(__dirname, 'taller_preventivos.json'))
+    ? path.join(__dirname, 'taller_preventivos.json')
+    : path.join(__dirname, 'diesel_local_cache.json');
+const RESCATES_FILE = path.join(__dirname, 'taller_rescates.json');
+
+function getPreventivos() {
+    if (!fs.existsSync(PREVENTIVOS_FILE)) return [];
+    try {
+        const content = fs.readFileSync(PREVENTIVOS_FILE, 'utf8');
+        const json = JSON.parse(content);
+        if (Array.isArray(json)) return json;
+        if (json && Array.isArray(json.preventivos)) return json.preventivos;
+        return [];
+    } catch (e) {
+        console.error('Error leyendo preventivos:', e);
+        return [];
+    }
+}
+
+function getRescates() {
+    if (!fs.existsSync(RESCATES_FILE)) return [];
+    try {
+        return JSON.parse(fs.readFileSync(RESCATES_FILE, 'utf8'));
+    } catch (e) {
+        console.error('Error leyendo taller_rescates.json:', e);
+        return [];
+    }
+}
+
+function saveRescates(rescates) {
+    try {
+        fs.writeFileSync(RESCATES_FILE, JSON.stringify(rescates, null, 2), 'utf8');
+        if (typeof broadcastSSE === 'function') {
+            broadcastSSE('rescates_updated', { rescates, count: rescates.length });
+        }
+        return true;
+    } catch (e) {
+        console.error('Error guardando taller_rescates.json:', e);
+        return false;
+    }
+}
 
 // --- Helper Funciones de Base de Datos y Fechas ---
 function getFechaActualISO() {
@@ -2036,13 +2077,19 @@ async function verificarSiTunelEstaVivo(url) {
     });
 }
 
-async function iniciarTunelAutomatico() {
+let tunnelFailCount = 0;
+function iniciarTunelAutomatico() {
     // 1. Si ya tenemos una URL guardada en archivo y el proceso sigue corriendo, conservarlo
     if (tunnelProcess) return;
 
     const cloudflaredPath = path.join(__dirname, 'almacen-app', 'cloudflared.exe');
-    if (!fs.existsSync(cloudflaredPath)) {
-        console.warn('[Cloudflare] No se encontró cloudflared.exe en almacen-app');
+    if (!fs.existsSync(cloudflaredPath) || process.env.RENDER || process.env.IS_CLOUD) {
+        return;
+    }
+
+    if (tunnelFailCount > 5) {
+        // Pausar reintentos agresivos para evitar sobrecarga si no hay salida a internet
+        setTimeout(() => { tunnelFailCount = 0; iniciarTunelAutomatico(); }, 60000);
         return;
     }
 
@@ -2101,9 +2148,10 @@ async function iniciarTunelAutomatico() {
         tunnelProcess.stderr.on('data', checkOutput);
 
         tunnelProcess.on('close', () => {
-            console.log('[Cloudflare Tunnel] El proceso del túnel se cerró. Reconectando en 3 segundos...');
+            tunnelFailCount++;
+            console.log('[Cloudflare Tunnel] Proceso finalizado. Reintento en 5s...');
             tunnelProcess = null;
-            setTimeout(() => iniciarTunelAutomatico(), 3000);
+            setTimeout(() => iniciarTunelAutomatico(), 5000);
         });
     } catch (e) {
         console.warn('[Cloudflare] Error iniciando túnel automático:', e.message);
@@ -2112,6 +2160,8 @@ async function iniciarTunelAutomatico() {
 
 // Monitor no destructivo: NUNCA matar el proceso cloudflared. Cloudflare es auto-recuperable.
 setInterval(() => {
+    const cloudflaredPath = path.join(__dirname, 'almacen-app', 'cloudflared.exe');
+    if (!fs.existsSync(cloudflaredPath) || process.env.RENDER || process.env.IS_CLOUD) return;
     if (!tunnelProcess) {
         iniciarTunelAutomatico();
     }
@@ -2204,7 +2254,7 @@ app.post('/api/iniciar-tunel', async (req, res) => {
 app.post('/api/unidad/:id/mover', (req, res) => {
     const unitId = String(req.params.id).trim();
     const { nuevoEstado } = req.body;
-    if (!['mayor', 'proceso', 'listo'].includes(nuevoEstado)) {
+    if (!['considerar', 'mayor', 'proceso', 'listo'].includes(nuevoEstado)) {
         return res.status(400).json({ error: 'Estado inválido' });
     }
 
@@ -2216,8 +2266,13 @@ app.post('/api/unidad/:id/mover', (req, res) => {
     unidad.estado = nuevoEstado;
     unidad.estadoModificadoManualmente = true;
 
-    const nombres = { mayor: 'Reparación Mayor ($$)', proceso: 'En Reparación Activa', listo: 'Listas para Entrega' };
-    const desc = `Movimiento rápido: De '${nombres[anterior]}' a '${nombres[nuevoEstado]}'`;
+    const nombres = {
+        considerar: 'A Considerar / En Evaluación',
+        mayor: 'Reparación Mayor ($$)',
+        proceso: 'En Reparación Activa',
+        listo: 'Listas para Entrega'
+    };
+    const desc = `Movimiento rápido: De '${nombres[anterior] || anterior}' a '${nombres[nuevoEstado]}'`;
 
     if (!unidad.historial) unidad.historial = [];
     unidad.historial.unshift({
@@ -2231,6 +2286,291 @@ app.post('/api/unidad/:id/mover', (req, res) => {
     registrarMovimientoJornada(unitId, 'movimiento_kanban', desc, req.body.autor || 'Jefe de Taller');
 
     res.json({ success: true, unidad });
+});
+
+// --- 21. REGISTRO RÁPIDO DE AVANCES EN TARJETAS ---
+app.post('/api/unidad/:id/avance', (req, res) => {
+    const unitId = String(req.params.id).trim();
+    const { texto, mecanico, porcentaje, autor } = req.body;
+    if (!texto || !texto.trim()) {
+        return res.status(400).json({ error: 'El texto del avance es requerido' });
+    }
+
+    let unidades = getUnidades();
+    let unidad = unidades.find(u => String(u.id) === unitId);
+    if (!unidad) return res.status(404).json({ error: 'Unidad no encontrada' });
+
+    if (!Array.isArray(unidad.avances)) unidad.avances = [];
+    const now = new Date();
+    const hora = now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+    const fecha = now.toLocaleDateString('es-MX');
+
+    const nuevoAvance = {
+        id: `av_${Date.now()}_${Math.random().toString(36).substr(2, 4)}`,
+        texto: texto.trim(),
+        mecanico: (mecanico || '').trim(),
+        porcentaje: Number(porcentaje) || null,
+        autor: autor || 'Jefe de Taller',
+        fecha,
+        hora,
+        timestamp: Date.now()
+    };
+
+    unidad.avances.unshift(nuevoAvance);
+    unidad.ultimo_avance = {
+        texto: nuevoAvance.texto,
+        mecanico: nuevoAvance.mecanico,
+        hora: nuevoAvance.hora,
+        fecha: nuevoAvance.fecha,
+        porcentaje: nuevoAvance.porcentaje
+    };
+
+    if (!Array.isArray(unidad.historial)) unidad.historial = [];
+    unidad.historial.unshift({
+        fecha: now.toLocaleString('es-MX'),
+        evento: `Avance registrado: "${nuevoAvance.texto}"${nuevoAvance.mecanico ? ' (Mec: ' + nuevoAvance.mecanico + ')' : ''}`,
+        tipo: 'avance_reparacion',
+        autor: nuevoAvance.autor
+    });
+
+    saveUnidades(unidades);
+    registrarMovimientoJornada(unitId, 'avance_reparacion', `Avance: ${nuevoAvance.texto}`, nuevoAvance.autor);
+
+    res.json({ success: true, unidad, avance: nuevoAvance });
+});
+
+// --- 22. VINCULACIÓN DE FOLIOS DE ALMACÉN Y COSTOS POR UNIDAD ---
+app.get('/api/almacen/folio/:folio', (req, res) => {
+    const folioBuscado = String(req.params.folio || '').trim();
+    if (!folioBuscado) return res.status(400).json({ error: 'Folio requerido' });
+
+    const almacenData = getAlmacenData();
+    const movimientos = (almacenData.movimientos || []).filter(m => 
+        String(m.folio || '').trim() === folioBuscado && (m.tipo === 'S' || !m.tipo)
+    );
+
+    const catalog = almacenData.catalog || {};
+    let costoTotal = 0;
+    const items = movimientos.map(m => {
+        const itemCat = catalog[m.id_pieza] || {};
+        const pu = Number(m.precio_unitario || itemCat.precio_unitario || 0);
+        const cant = Number(m.cantidad) || 1;
+        const total = pu * cant;
+        costoTotal += total;
+        return {
+            ...m,
+            descripcion: m.descripcion || itemCat.descripcion || 'Refacción sin descripción',
+            numero_parte: m.numero_parte || itemCat.numero_parte || '',
+            marca: m.marca || itemCat.marca || '',
+            precio_unitario: pu,
+            costo_total: total
+        };
+    });
+
+    res.json({
+        success: true,
+        folio: folioBuscado,
+        count: items.length,
+        costoTotal,
+        items,
+        unidad_camion: items[0]?.unidad_camion || null,
+        solicitante: items[0]?.solicitante || null,
+        fecha: items[0]?.fecha || null
+    });
+});
+
+app.post('/api/unidad/:id/vincular-folio', (req, res) => {
+    const unitId = String(req.params.id).trim();
+    const { folio } = req.body;
+    if (!folio) return res.status(400).json({ error: 'Folio requerido' });
+
+    let unidades = getUnidades();
+    let unidad = unidades.find(u => String(u.id) === unitId);
+    if (!unidad) return res.status(404).json({ error: 'Unidad no encontrada' });
+
+    const almacenData = getAlmacenData();
+    const movimientos = (almacenData.movimientos || []).filter(m => 
+        String(m.folio || '').trim() === String(folio).trim()
+    );
+
+    const catalog = almacenData.catalog || {};
+    let costoRefacciones = 0;
+    const piezasSurtidas = movimientos.map((m, idx) => {
+        const itemCat = catalog[m.id_pieza] || {};
+        const pu = Number(m.precio_unitario || itemCat.precio_unitario || 0);
+        const cant = Number(m.cantidad) || 1;
+        const total = pu * cant;
+        costoRefacciones += total;
+        return {
+            id: `pz_alm_${m.id || Date.now()}_${idx}`,
+            id_pieza: m.id_pieza,
+            descripcion: m.descripcion || itemCat.descripcion || 'Refacción',
+            numero_parte: m.numero_parte || itemCat.numero_parte || '',
+            marca: m.marca || itemCat.marca || '',
+            cantidad: cant,
+            unidad_medida: m.unidad || 'PZ',
+            precio_unitario: pu,
+            costo_total: total,
+            folio_almacen: folio,
+            estado: 'RECIBIDA_TALLER',
+            fecha_recepcion: m.fecha || new Date().toISOString()
+        };
+    });
+
+    unidad.folio_almacen = String(folio).trim();
+    unidad.costo_refacciones = costoRefacciones;
+    if (!Array.isArray(unidad.piezas)) unidad.piezas = [];
+
+    // Agregar piezas sin duplicar por id_pieza y folio
+    piezasSurtidas.forEach(np => {
+        const yaExiste = unidad.piezas.some(p => p.id_pieza === np.id_pieza && p.folio_almacen === folio);
+        if (!yaExiste) unidad.piezas.push(np);
+    });
+
+    // Actualizar costo total de la unidad
+    unidad.costo = (Number(unidad.costo_mano_obra) || 0) + costoRefacciones;
+
+    const desc = `Vinculado Folio Almacén #${folio}: ${piezasSurtidas.length} refacciones ($${costoRefacciones.toLocaleString()} MXN)`;
+    if (!Array.isArray(unidad.historial)) unidad.historial = [];
+    unidad.historial.unshift({
+        fecha: new Date().toLocaleString('es-MX'),
+        evento: desc,
+        tipo: 'vinculacion_almacen',
+        autor: req.body.autor || 'Encargado de Taller'
+    });
+
+    saveUnidades(unidades);
+    registrarMovimientoJornada(unitId, 'vinculacion_almacen', desc, req.body.autor || 'Encargado de Taller');
+
+    res.json({ success: true, unidad, itemsVinculados: piezasSurtidas.length, costoRefacciones });
+});
+
+// --- 23. MÓDULO DE MANTENIMIENTOS PREVENTIVOS (CONTROL CESS DIESEL) ---
+app.get('/api/preventivos', (req, res) => {
+    const list = getPreventivos();
+    const stats = {
+        total: list.length,
+        vigentes: list.filter(p => (p.estatus || '').toUpperCase() === 'VIGENTE').length,
+        vencidos: list.filter(p => (p.estatus || '').toUpperCase() === 'VENCIDO').length,
+        proximos: list.filter(p => (p.estatus || '').toUpperCase() === 'PRÓXIMO' || (p.estatus || '').toUpperCase() === 'PROXIMO').length
+    };
+    
+    const unidadParam = req.query.unidad ? String(req.query.unidad).trim() : null;
+    if (unidadParam) {
+        const item = list.find(p => String(p.unidad).trim() === unidadParam);
+        return res.json({ success: true, item: item || null });
+    }
+
+    res.json({
+        success: true,
+        stats,
+        count: list.length,
+        preventivos: list
+    });
+});
+
+// --- 24. MÓDULO DE RESCATES CARRETEROS (AUXILIO EN RUTA) ---
+app.get('/api/rescates', (req, res) => {
+    const list = getRescates();
+    const activos = list.filter(r => r.estado !== 'CONCLUIDO');
+    const concluidos = list.filter(r => r.estado === 'CONCLUIDO');
+    const costoTotal = list.reduce((acc, r) => acc + (Number(r.costo_real || r.costo_estimado) || 0), 0);
+
+    res.json({
+        success: true,
+        stats: {
+            total: list.length,
+            activos: activos.length,
+            concluidos: concluidos.length,
+            costoTotal
+        },
+        rescates: list
+    });
+});
+
+app.post('/api/rescates', (req, res) => {
+    const data = req.body;
+    if (!data.unidad || !data.carretera) {
+        return res.status(400).json({ error: 'Unidad y Carretera son campos obligatorios' });
+    }
+
+    const list = getRescates();
+    const now = new Date();
+    const id = data.id || `rc_${Date.now()}`;
+    const folio = data.folio || `RC-${Math.floor(1000 + Math.random() * 9000)}`;
+
+    const nuevoRescate = {
+        id,
+        folio,
+        unidad: String(data.unidad).trim(),
+        operador: data.operador || 'Operador CESS',
+        telefono_operador: data.telefono_operador || '',
+        fecha: data.fecha || now.toLocaleDateString('es-MX'),
+        hora_reporte: data.hora_reporte || now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
+        carretera: data.carretera,
+        kilometro: data.kilometro || '',
+        tramo: data.tramo || '',
+        sentido: data.sentido || 'Norte a Sur',
+        falla_reportada: data.falla_reportada || 'Falla mecánica en carretera',
+        tipo_falla: data.tipo_falla || 'Mecánica',
+        estado: data.estado || 'EN_CAMINO',
+        mecanico_asignado: data.mecanico_asignado || 'Auxilio Móvil CESS',
+        proveedor_externo: data.proveedor_externo || '',
+        costo_estimado: Number(data.costo_estimado) || 0,
+        costo_real: Number(data.costo_real) || 0,
+        tiempo_llegada: data.tiempo_llegada || 'En trayecto',
+        tiempo_resolucion: data.tiempo_resolucion || 'En proceso',
+        hora_conclusion: data.hora_conclusion || null,
+        notas: data.notas || '',
+        sucursal: data.sucursal || 'Apodaca'
+    };
+
+    const idx = list.findIndex(r => r.id === id);
+    if (idx >= 0) {
+        list[idx] = { ...list[idx], ...nuevoRescate };
+    } else {
+        list.unshift(nuevoRescate);
+    }
+    saveRescates(list);
+
+    // Si la unidad está en el tablero taller, marcarla como rescate carretero
+    let unidades = getUnidades();
+    let uTaller = unidades.find(u => String(u.id) === String(nuevoRescate.unidad));
+    if (uTaller) {
+        uTaller.es_rescate = nuevoRescate.estado !== 'CONCLUIDO';
+        uTaller.rescate_folio = nuevoRescate.folio;
+        uTaller.rescate_tramo = `${nuevoRescate.carretera} ${nuevoRescate.kilometro}`.trim();
+        saveUnidades(unidades);
+    }
+
+    res.json({ success: true, rescate: nuevoRescate });
+});
+
+app.post('/api/rescates/:id/concluir', (req, res) => {
+    const { id } = req.params;
+    const { costo_real, notas_conclusion, tiempo_resolucion } = req.body;
+
+    const list = getRescates();
+    const rescate = list.find(r => r.id === id);
+    if (!rescate) return res.status(404).json({ error: 'Rescate no encontrado' });
+
+    rescate.estado = 'CONCLUIDO';
+    rescate.costo_real = Number(costo_real) || rescate.costo_estimado;
+    rescate.hora_conclusion = new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+    if (tiempo_resolucion) rescate.tiempo_resolucion = tiempo_resolucion;
+    if (notas_conclusion) rescate.notas = `${rescate.notas || ''}\n[Conclusión]: ${notas_conclusion}`.trim();
+
+    saveRescates(list);
+
+    // Actualizar estado en unidad si existe
+    let unidades = getUnidades();
+    let uTaller = unidades.find(u => String(u.id) === String(rescate.unidad));
+    if (uTaller) {
+        uTaller.es_rescate = false;
+        saveUnidades(unidades);
+    }
+
+    res.json({ success: true, rescate });
 });
 
 // --- Servir Aplicación SPA Frontend con Anti-Cache para HTML y Service Worker ---

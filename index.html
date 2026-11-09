@@ -63,12 +63,17 @@
         @media (min-width: 768px) {
             .kanban-container {
                 display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 1.25rem;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
                 height: calc(100vh - 235px);
             }
             .kanban-column {
                 min-width: 0;
+            }
+        }
+        @media (min-width: 1200px) {
+            .kanban-container {
+                grid-template-columns: repeat(4, 1fr);
             }
         }
         .card {
@@ -89,6 +94,7 @@
             transform: scale(0.96) rotate(1.5deg);
             border: 2px dashed var(--color-cess-gold);
         }
+        .card-stripe-considerar { border-left: 6px solid #a855f7; }
         .card-stripe-mayor { border-left: 6px solid #ef4444; }
         .card-stripe-proceso { border-left: 6px solid var(--color-cess-gold); }
         .card-stripe-listo { border-left: 6px solid #10b981; }
@@ -189,26 +195,40 @@
             
             <!-- Selector de Pestañas -->
             <div class="flex items-center gap-1.5 sm:gap-2">
-                <!-- Pestaña 1: Tablero de Taller -->
+                <!-- Pestaña 1: Tablero de Taller (Kanban 4 Columnas) -->
                 <button onclick="cambiarVistaPrincipal('tablero')" id="nav-btn-tablero" class="px-3.5 py-1.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 transition bg-[#C59B27] text-black shadow-lg shadow-[#C59B27]/30">
                     <i class="fa-solid fa-table-columns"></i>
                     <span>Tablero de Taller</span>
                 </button>
 
-                <!-- Pestaña 2: Historial Clínico por Unidad (DÍA POR DÍA) -->
+                <!-- Pestaña 2: Mantenimientos Preventivos (Control CESS Diesel) -->
+                <button onclick="cambiarVistaPrincipal('preventivos')" id="nav-btn-preventivos" class="px-3.5 py-1.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 transition text-slate-400 hover:text-white hover:bg-[#282A2E]" title="Semáforo de servicios preventivos vinculados a Control Diésel">
+                    <i class="fa-solid fa-shield-halved text-cyan-400"></i>
+                    <span>Preventivos</span>
+                    <span id="badge-nav-preventivos" class="bg-red-950 text-red-300 text-[10px] font-mono px-1.5 py-0.5 rounded border border-red-800 hidden sm:inline">22 Vencidos</span>
+                </button>
+
+                <!-- Pestaña 3: Rescates Carreteros (Auxilio Vial en Ruta) -->
+                <button onclick="cambiarVistaPrincipal('rescates')" id="nav-btn-rescates" class="px-3.5 py-1.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 transition text-slate-400 hover:text-white hover:bg-[#282A2E]" title="Reparaciones de emergencia en carretera y auxilios viales">
+                    <i class="fa-solid fa-truck-medical text-amber-400"></i>
+                    <span>Rescates Carreteros</span>
+                    <span id="badge-nav-rescates" class="bg-amber-950 text-amber-300 text-[10px] font-mono px-1.5 py-0.5 rounded border border-amber-800 hidden sm:inline">1 En Ruta</span>
+                </button>
+
+                <!-- Pestaña 4: Historial Clínico por Unidad (DÍA POR DÍA) -->
                 <button onclick="cambiarVistaPrincipal('historial')" id="nav-btn-historial" class="px-3.5 py-1.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 transition text-slate-400 hover:text-white hover:bg-[#282A2E]">
                     <i class="fa-solid fa-clock-rotate-left text-[#C59B27]"></i>
                     <span>Historial por Unidad</span>
                 </button>
 
-                <!-- Pestaña 3: Bitácora Diaria & Movimientos (ROLLOVER 24H) -->
+                <!-- Pestaña 5: Bitácora Diaria & Movimientos (ROLLOVER 24H) -->
                 <button onclick="cambiarVistaPrincipal('bitacoras')" id="nav-btn-bitacoras" class="px-3.5 py-1.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 transition text-slate-400 hover:text-white hover:bg-[#282A2E]">
                     <i class="fa-solid fa-calendar-days text-emerald-400"></i>
                     <span>Bitácoras Diarias</span>
                     <span class="bg-emerald-950 text-emerald-400 text-[10px] font-mono px-1.5 py-0.5 rounded border border-emerald-800 hidden sm:inline">Corte 12:00 AM</span>
                 </button>
 
-                <!-- Pestaña 4: Métricas & Analítica Gerencial -->
+                <!-- Pestaña 6: Métricas & Analítica Gerencial -->
                 <button onclick="cambiarVistaPrincipal('analitica')" id="nav-btn-analitica" class="px-3.5 py-1.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 transition text-slate-400 hover:text-white hover:bg-[#282A2E]">
                     <i class="fa-solid fa-chart-pie text-[#C59B27]"></i>
                     <span>Métricas & Analítica</span>
@@ -285,10 +305,27 @@
             </div>
         </div>
 
-        <!-- Contenedor de Columnas Kanban (HTML5 DRAG & DROP) -->
+        <!-- Contenedor de Columnas Kanban (HTML5 DRAG & DROP - 4 ETAPAS CESS) -->
         <main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-5 kanban-container custom-scroll">
             
-            <!-- COLUMNA 1: REPARACIÓN MAYOR / PRESUPUESTO ($$) -->
+            <!-- COLUMNA 1: A CONSIDERAR / DETECCIONES (PÚRPURA / ÍNDIGO) -->
+            <section class="kanban-column" id="col-considerar"
+                     ondragover="permitirSoltar(event)"
+                     ondragenter="resaltarColumna(event, 'considerar')"
+                     ondragleave="desresaltarColumna(event, 'considerar')"
+                     ondrop="soltarTarjeta(event, 'considerar')">
+                <div class="flex items-center justify-between pb-3 mb-2 border-b border-purple-900/60">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-purple-500 shadow-sm shadow-purple-500"></span>
+                        <h2 class="font-black text-sm tracking-wide text-purple-400 uppercase">A Considerar / Detecciones</h2>
+                    </div>
+                    <span class="bg-purple-950 text-purple-300 font-mono font-bold text-xs px-2.5 py-0.5 rounded-full border border-purple-800" id="count-considerar">0</span>
+                </div>
+                <p class="text-[11px] text-slate-400 mb-3">Con anomalías detectadas en patio o ruta / En evaluación</p>
+                <div id="lista-considerar" class="flex-1 overflow-y-auto custom-scroll flex flex-col gap-3 pr-1"></div>
+            </section>
+
+            <!-- COLUMNA 2: REPARACIÓN MAYOR / PRESUPUESTO ($$) -->
             <section class="kanban-column" id="col-mayor"
                      ondragover="permitirSoltar(event)"
                      ondragenter="resaltarColumna(event, 'mayor')"
@@ -340,6 +377,240 @@
             </section>
 
         </main>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- VISTA: MANTENIMIENTOS PREVENTIVOS (CONTROL CESS DIESEL) -->
+    <!-- ======================================================== -->
+    <div id="vista-preventivos" class="flex-1 hidden max-w-7xl w-full mx-auto p-3 sm:p-6 flex-col gap-5">
+        <!-- Encabezado y Filtros Preventivos -->
+        <div class="bg-[#1E1E1E] border border-[#3A3D42] rounded-2xl p-4 sm:p-5 shadow-xl flex flex-col gap-4">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-cyan-950 border border-cyan-700/60 text-cyan-400 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-base sm:text-lg font-black text-white flex items-center gap-2">
+                            Mantenimientos Preventivos <span class="text-xs bg-[#C59B27] text-black px-2 py-0.5 rounded font-black">CESS</span>
+                        </h2>
+                        <p class="text-xs text-slate-400">Control oficial de kilometrajes y calendarización de servicios por unidad (vinculado a Control Diésel).</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="cargarModuloPreventivos()" class="bg-[#282A2E] hover:bg-[#3A3D42] text-slate-200 border border-[#3A3D42] px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow">
+                        <i class="fa-solid fa-arrows-rotate text-cyan-400"></i> Actualizar Preventivos
+                    </button>
+                    <button onclick="exportarExcelPreventivos()" class="bg-emerald-950 hover:bg-emerald-900 text-emerald-300 border border-emerald-700/80 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow">
+                        <i class="fa-solid fa-file-excel"></i> Exportar
+                    </button>
+                </div>
+            </div>
+
+            <!-- KPI Cards de Preventivos -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                <div class="bg-[#141518] p-3.5 rounded-xl border border-[#3A3D42] flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-lg bg-blue-950 border border-blue-800 text-blue-400 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-truck"></i>
+                    </div>
+                    <div>
+                        <span class="block text-[11px] text-slate-400 font-bold uppercase">Total Flota Monitoreada</span>
+                        <span class="text-lg font-black text-white font-mono" id="prev-kpi-total">83</span>
+                    </div>
+                </div>
+                <div class="bg-[#141518] p-3.5 rounded-xl border border-red-900/60 flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-lg bg-red-950 border border-red-800 text-red-400 flex items-center justify-center font-bold animate-pulse">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <div>
+                        <span class="block text-[11px] text-red-300 font-bold uppercase">Servicios Vencidos</span>
+                        <span class="text-lg font-black text-red-400 font-mono" id="prev-kpi-vencidos">0</span>
+                    </div>
+                </div>
+                <div class="bg-[#141518] p-3.5 rounded-xl border border-amber-900/60 flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-lg bg-amber-950 border border-amber-800 text-amber-400 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+                    <div>
+                        <span class="block text-[11px] text-amber-300 font-bold uppercase">Próximos a Vencer</span>
+                        <span class="text-lg font-black text-amber-400 font-mono" id="prev-kpi-proximos">0</span>
+                    </div>
+                </div>
+                <div class="bg-[#141518] p-3.5 rounded-xl border border-emerald-900/60 flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-lg bg-emerald-950 border border-emerald-800 text-emerald-400 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <div>
+                        <span class="block text-[11px] text-emerald-300 font-bold uppercase">Servicios al Día</span>
+                        <span class="text-lg font-black text-emerald-400 font-mono" id="prev-kpi-vigentes">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filtros Rápidos y Buscador -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 border-t border-[#3A3D42]/60">
+                <div class="flex flex-wrap items-center gap-1.5 w-full sm:w-auto">
+                    <button onclick="filtrarPreventivosPorEstatus('TODOS')" id="btn-filtro-prev-todos" class="px-3 py-1 rounded-lg text-xs font-bold transition bg-[#C59B27] text-black">
+                        Todos (<span id="cnt-filtro-prev-todos">83</span>)
+                    </button>
+                    <button onclick="filtrarPreventivosPorEstatus('VENCIDO')" id="btn-filtro-prev-vencido" class="px-3 py-1 rounded-lg text-xs font-bold transition bg-[#141518] text-red-400 border border-red-900/60 hover:bg-red-950/40">
+                        Vencidos (<span id="cnt-filtro-prev-vencidos">0</span>)
+                    </button>
+                    <button onclick="filtrarPreventivosPorEstatus('PROXIMO')" id="btn-filtro-prev-proximo" class="px-3 py-1 rounded-lg text-xs font-bold transition bg-[#141518] text-amber-400 border border-amber-900/60 hover:bg-amber-950/40">
+                        Próximos (<span id="cnt-filtro-prev-proximos">0</span>)
+                    </button>
+                    <button onclick="filtrarPreventivosPorEstatus('VIGENTE')" id="btn-filtro-prev-vigente" class="px-3 py-1 rounded-lg text-xs font-bold transition bg-[#141518] text-emerald-400 border border-emerald-900/60 hover:bg-emerald-950/40">
+                        Vigentes (<span id="cnt-filtro-prev-vigentes">0</span>)
+                    </button>
+                </div>
+                <div class="relative w-full sm:w-64">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-500 text-xs"></i>
+                    <input type="text" id="input-buscar-preventivo" oninput="aplicarFiltroPreventivos()" placeholder="Buscar por unidad o división..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl pl-8 pr-3 py-1.5 text-white text-xs focus:border-[#C59B27] focus:outline-none">
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla Responsiva de Preventivos -->
+        <div class="bg-[#1E1E1E] border border-[#3A3D42] rounded-2xl overflow-hidden shadow-xl">
+            <div class="overflow-x-auto custom-scroll max-h-[65vh]">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-[#141518] text-slate-300 font-bold border-b border-[#3A3D42] sticky top-0 z-10 uppercase text-[10px] tracking-wider">
+                        <tr>
+                            <th class="p-3">Unidad</th>
+                            <th class="p-3">División</th>
+                            <th class="p-3 text-right">Km Actual</th>
+                            <th class="p-3 text-right">Último Servicio Km</th>
+                            <th class="p-3">Fecha Realizado</th>
+                            <th class="p-3 text-right">Próximo Km</th>
+                            <th class="p-3 text-right">Km Restantes</th>
+                            <th class="p-3 text-center">Estatus</th>
+                            <th class="p-3 text-center">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-preventivos-body" class="divide-y divide-[#3A3D42]/60 font-medium">
+                        <tr>
+                            <td colspan="9" class="p-8 text-center text-slate-500">
+                                <i class="fa-solid fa-spinner fa-spin text-xl text-[#C59B27] mb-2"></i>
+                                <span class="block">Cargando preventivos desde Control Diésel...</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- VISTA: RESCATES CARRETEROS (AUXILIO VIAL EN RUTA) -->
+    <!-- ======================================================== -->
+    <div id="vista-rescates" class="flex-1 hidden max-w-7xl w-full mx-auto p-3 sm:p-6 flex-col gap-5">
+        <!-- Encabezado Rescates Carreteros -->
+        <div class="bg-[#1E1E1E] border border-[#3A3D42] rounded-2xl p-4 sm:p-5 shadow-xl flex flex-col gap-4">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-amber-950 border border-amber-700/60 text-amber-400 flex items-center justify-center text-lg animate-pulse">
+                        <i class="fa-solid fa-truck-medical"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-base sm:text-lg font-black text-white flex items-center gap-2">
+                            Rescates Carreteros & Auxilio Vial <span class="text-xs bg-amber-500 text-black px-2 py-0.5 rounded font-black">SOS RUTA</span>
+                        </h2>
+                        <p class="text-xs text-slate-400">Control operativo y costos de reparaciones correctivas de emergencia en carretera fuera de patio.</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="abrirModalNuevoRescate()" class="btn-cess-gold px-3.5 py-2 rounded-xl text-xs font-black flex items-center gap-2 shadow-lg shadow-[#C59B27]/20 transition">
+                        <i class="fa-solid fa-plus text-sm"></i> Registrar Nuevo Rescate
+                    </button>
+                    <button onclick="cargarModuloRescates()" class="bg-[#282A2E] hover:bg-[#3A3D42] text-slate-200 border border-[#3A3D42] px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow">
+                        <i class="fa-solid fa-arrows-rotate text-[#C59B27]"></i> Sincronizar
+                    </button>
+                </div>
+            </div>
+
+            <!-- KPI Cards de Rescates -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                <div class="bg-[#141518] p-3.5 rounded-xl border border-amber-900/70 flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-lg bg-amber-950 border border-amber-700 text-amber-400 flex items-center justify-center font-bold animate-pulse">
+                        <i class="fa-solid fa-route"></i>
+                    </div>
+                    <div>
+                        <span class="block text-[11px] text-amber-300 font-bold uppercase">Rescates Activos en Ruta</span>
+                        <span class="text-lg font-black text-amber-400 font-mono" id="resc-kpi-activos">0</span>
+                    </div>
+                </div>
+                <div class="bg-[#141518] p-3.5 rounded-xl border border-emerald-900/60 flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-lg bg-emerald-950 border border-emerald-800 text-emerald-400 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-check-double"></i>
+                    </div>
+                    <div>
+                        <span class="block text-[11px] text-emerald-300 font-bold uppercase">Rescates Concluidos</span>
+                        <span class="text-lg font-black text-emerald-400 font-mono" id="resc-kpi-concluidos">0</span>
+                    </div>
+                </div>
+                <div class="bg-[#141518] p-3.5 rounded-xl border border-[#3A3D42] flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-lg bg-[#282A2E] border border-[#3A3D42] text-[#DFB743] flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-stopwatch"></i>
+                    </div>
+                    <div>
+                        <span class="block text-[11px] text-slate-400 font-bold uppercase">Tiempo Prom. Auxilio</span>
+                        <span class="text-lg font-black text-white font-mono" id="resc-kpi-tiempo">1h 35m</span>
+                    </div>
+                </div>
+                <div class="bg-[#141518] p-3.5 rounded-xl border border-[#3A3D42] flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-lg bg-red-950 border border-red-800 text-red-400 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-hand-holding-dollar"></i>
+                    </div>
+                    <div>
+                        <span class="block text-[11px] text-slate-400 font-bold uppercase">Inversión Rescates</span>
+                        <span class="text-lg font-black text-white font-mono" id="resc-kpi-costo">$0 MXN</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección de Rescates Activos en Vivo (Tablero Visual de Carretera) -->
+        <div class="flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+                <h3 class="text-sm font-black text-white uppercase tracking-wider flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping"></span>
+                    Auxilios en Curso en Carretera
+                </h3>
+                <span class="text-xs text-slate-400">Atención inmediata en ruta</span>
+            </div>
+            <div id="grid-rescates-activos" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Se inyectan dinámicamente -->
+            </div>
+        </div>
+
+        <!-- Historial de Rescates Concluidos -->
+        <div class="bg-[#1E1E1E] border border-[#3A3D42] rounded-2xl overflow-hidden shadow-xl mt-2">
+            <div class="p-3 bg-[#141518] border-b border-[#3A3D42] flex items-center justify-between">
+                <h4 class="font-bold text-xs text-slate-300 uppercase tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-clock-rotate-left text-[#C59B27]"></i> Historial de Rescates Atendidos
+                </h4>
+            </div>
+            <div class="overflow-x-auto custom-scroll max-h-[50vh]">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-[#141518] text-slate-400 font-bold border-b border-[#3A3D42] uppercase text-[10px]">
+                        <tr>
+                            <th class="p-3">Folio</th>
+                            <th class="p-3">Unidad</th>
+                            <th class="p-3">Operador</th>
+                            <th class="p-3">Ubicación / Carretera</th>
+                            <th class="p-3">Falla Reportada</th>
+                            <th class="p-3">Mecánico / Grúa</th>
+                            <th class="p-3 text-right">Costo Real</th>
+                            <th class="p-3">Tiempo Res.</th>
+                            <th class="p-3 text-center">Estatus</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-rescates-historial-body" class="divide-y divide-[#3A3D42]/60 font-medium">
+                        <!-- Inyección dinámica -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <!-- ======================================================== -->
@@ -1704,6 +1975,291 @@
     </div>
 
     <!-- ======================================================== -->
+    <!-- MODAL ESPECIAL: REGISTRAR AVANCE RÁPIDO DE UNIDAD -->
+    <!-- ======================================================== -->
+    <div id="modal-avance-rapido" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
+        <div class="bg-[#1E1E1E] border border-[#C59B27]/50 rounded-2xl w-full max-w-lg p-5 flex flex-col shadow-2xl animate-in fade-in duration-150">
+            <div class="flex justify-between items-center mb-3 pb-2 border-b border-[#3A3D42]">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-[#C59B27] text-black flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-list-check"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white">Registrar Avance / Estatus</h3>
+                        <p class="text-[11px] text-slate-400">Unidad <span id="avance-modal-unidad-num" class="text-[#DFB743] font-bold font-mono text-xs">--</span></p>
+                    </div>
+                </div>
+                <button onclick="cerrarModalAvanceRapido()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
+            </div>
+
+            <form onsubmit="guardarAvanceRapidoForm(event)" class="flex flex-col gap-3 text-xs">
+                <input type="hidden" id="avance-form-unidad-id" value="">
+
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="font-bold text-slate-300">Detalle del Avance o Situación *</label>
+                        <button type="button" onclick="iniciarDictadoAvance()" id="btn-mic-avance" class="text-[10px] bg-[#282A2E] hover:bg-[#3A3D42] text-[#DFB743] px-2 py-0.5 rounded border border-[#3A3D42] flex items-center gap-1 transition">
+                            <i class="fa-solid fa-microphone"></i> Dictar por Voz
+                        </button>
+                    </div>
+                    <textarea id="avance-form-texto" required rows="3" placeholder="Ej: Se desmontaron cálipers, se detectó balero desgastado. Refacción solicitada..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2.5 text-white text-xs focus:border-[#C59B27] focus:outline-none"></textarea>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Mecánico / Responsable</label>
+                        <input type="text" id="avance-form-mecanico" placeholder="Ej: Ramón Valdez" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Porcentaje de Avance</label>
+                        <select id="avance-form-porcentaje" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none">
+                            <option value="">(Sin especificar)</option>
+                            <option value="15">15% - Diagnóstico y Desarme</option>
+                            <option value="35">35% - Espera de Refacciones</option>
+                            <option value="60">60% - En Reparación Activa</option>
+                            <option value="85">85% - Ensamble y Ajustes</option>
+                            <option value="95">95% - Pruebas de Patio</option>
+                            <option value="100">100% - Concluido y Listo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="pt-2 border-t border-[#3A3D42] flex justify-end gap-2 mt-1">
+                    <button type="button" onclick="cerrarModalAvanceRapido()" class="px-3 py-1.5 rounded-xl border border-[#3A3D42] text-slate-300 hover:bg-[#282A2E] font-bold">Cancelar</button>
+                    <button type="submit" class="btn-cess-gold px-4 py-1.5 rounded-xl font-bold flex items-center gap-1.5 shadow">
+                        <i class="fa-solid fa-check"></i> Guardar Avance
+                    </button>
+                </div>
+            </form>
+
+            <!-- Historial de Avances Anteriores de esta unidad -->
+            <div class="mt-4 pt-3 border-t border-[#3A3D42]">
+                <h4 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                    <i class="fa-solid fa-clock-rotate-left text-[#C59B27]"></i> Avances Registrados Hoy
+                </h4>
+                <div id="timeline-avances-unidad" class="max-h-40 overflow-y-auto custom-scroll flex flex-col gap-2">
+                    <!-- Se llena dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- MODAL ESPECIAL: VINCULAR FOLIO DE ALMACÉN CESS Y COSTOS -->
+    <!-- ======================================================== -->
+    <div id="modal-vincular-almacen" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
+        <div class="bg-[#1E1E1E] border border-indigo-700/60 rounded-2xl w-full max-w-lg p-5 flex flex-col shadow-2xl animate-in fade-in duration-150">
+            <div class="flex justify-between items-center mb-3 pb-2 border-b border-[#3A3D42]">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-indigo-950 border border-indigo-700 text-indigo-400 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-barcode"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white">Vincular Salida de Almacén CESS</h3>
+                        <p class="text-[11px] text-slate-400">Unidad <span id="vincular-modal-unidad-num" class="text-indigo-400 font-bold font-mono text-xs">--</span></p>
+                    </div>
+                </div>
+                <button onclick="cerrarModalVincularAlmacen()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
+            </div>
+
+            <div class="flex flex-col gap-3 text-xs">
+                <div>
+                    <label class="block font-bold text-slate-300 mb-1">Número de Folio de Salida de Almacén *</label>
+                    <div class="flex items-center gap-2">
+                        <div class="relative flex-1">
+                            <span class="absolute left-3 top-2.5 text-slate-500 font-mono font-bold">#</span>
+                            <input type="text" id="input-folio-almacen" placeholder="Ej: 4047" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl pl-7 pr-3 py-2 text-white font-mono font-bold text-sm focus:border-indigo-500 focus:outline-none">
+                        </div>
+                        <button type="button" onclick="consultarFolioAlmacenBoton()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-3 py-2 rounded-xl text-xs transition flex items-center gap-1.5 shadow">
+                            <i class="fa-solid fa-magnifying-glass"></i> Buscar Folio
+                        </button>
+                    </div>
+                    <p class="text-[10px] text-slate-400 mt-1">Ingresa el folio de la nota o vale de salida firmado en Almacén CESS.</p>
+                </div>
+
+                <!-- Resultado de la consulta del folio -->
+                <div id="caja-resultado-folio" class="hidden flex-col gap-2 p-3 rounded-xl bg-[#141518] border border-[#3A3D42]">
+                    <div class="flex items-center justify-between pb-2 border-b border-[#3A3D42]/60">
+                        <div>
+                            <span class="text-[10px] text-slate-400 uppercase font-bold block">Refacciones Encontradas</span>
+                            <span id="txt-folio-solicitante" class="text-xs text-white font-bold">Solicitado por: --</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-[10px] text-slate-400 uppercase font-bold block">Costo de Refacciones</span>
+                            <span id="txt-folio-costo-total" class="text-sm font-black text-[#DFB743] font-mono">$0 MXN</span>
+                        </div>
+                    </div>
+                    <div id="lista-items-folio" class="max-h-36 overflow-y-auto custom-scroll flex flex-col gap-1.5 divide-y divide-[#3A3D42]/40">
+                        <!-- Items -->
+                    </div>
+                </div>
+
+                <div class="pt-2 border-t border-[#3A3D42] flex justify-end gap-2 mt-1">
+                    <button type="button" onclick="cerrarModalVincularAlmacen()" class="px-3 py-1.5 rounded-xl border border-[#3A3D42] text-slate-300 hover:bg-[#282A2E] font-bold">Cerrar</button>
+                    <button type="button" id="btn-confirmar-vincular" onclick="confirmarVinculacionAlmacen()" disabled class="bg-indigo-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-indigo-500 text-white px-4 py-1.5 rounded-xl font-bold flex items-center gap-1.5 shadow">
+                        <i class="fa-solid fa-link"></i> Vincular a Unidad y Sumar Costos
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- MODAL ESPECIAL: REGISTRAR RESCATE CARRETERO (AUXILIO VIAL) -->
+    <!-- ======================================================== -->
+    <div id="modal-nuevo-rescate" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
+        <div class="bg-[#1E1E1E] border border-amber-600/70 rounded-2xl w-full max-w-lg p-5 flex flex-col shadow-2xl animate-in fade-in duration-150 overflow-y-auto max-h-[92vh] custom-scroll">
+            <div class="flex justify-between items-center mb-3 pb-2 border-b border-[#3A3D42]">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-amber-950 border border-amber-600 text-amber-400 flex items-center justify-center font-bold animate-pulse">
+                        <i class="fa-solid fa-truck-medical"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white">Registrar Rescate Carretero</h3>
+                        <p class="text-[11px] text-slate-400">Auxilio mecánico de emergencia en ruta</p>
+                    </div>
+                </div>
+                <button onclick="cerrarModalNuevoRescate()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
+            </div>
+
+            <form onsubmit="guardarNuevoRescateForm(event)" class="flex flex-col gap-3 text-xs">
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Número de Unidad *</label>
+                        <input type="text" id="rescate-form-unidad" required placeholder="Ej: 75" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white font-bold text-sm focus:border-amber-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Terminal / Base</label>
+                        <select id="rescate-form-sucursal" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
+                            <option value="Apodaca">Apodaca</option>
+                            <option value="Querétaro">Querétaro</option>
+                            <option value="Guadalajara">Guadalajara</option>
+                            <option value="México">México</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Nombre del Operador</label>
+                        <input type="text" id="rescate-form-operador" placeholder="Ej: Carlos Mendoza" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Teléfono de Contacto</label>
+                        <input type="text" id="rescate-form-tel" placeholder="Ej: 811-450-8921" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2">
+                    <div class="col-span-2">
+                        <label class="block font-bold text-slate-400 mb-1">Carretera / Autopista *</label>
+                        <input type="text" id="rescate-form-carretera" required placeholder="Ej: Carr. 57 México - Laredo" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Kilómetro *</label>
+                        <input type="text" id="rescate-form-km" required placeholder="Ej: Km 142" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Tramo</label>
+                        <input type="text" id="rescate-form-tramo" placeholder="Ej: Matehuala - Saltillo" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Sentido de Circulación</label>
+                        <select id="rescate-form-sentido" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
+                            <option value="Sur a Norte">Sur a Norte</option>
+                            <option value="Norte a Sur">Norte a Sur</option>
+                            <option value="Oriente a Poniente">Oriente a Poniente</option>
+                            <option value="Poniente a Oriente">Poniente a Oriente</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Tipo de Falla</label>
+                        <select id="rescate-form-tipo-falla" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
+                            <option value="Mecánica">Mecánica / Motor</option>
+                            <option value="Neumática">Neumática / Frenos / Mangueras</option>
+                            <option value="Llantas">Llantas / Rines</option>
+                            <option value="Eléctrica">Eléctrica / Alternador / Batería</option>
+                            <option value="Enfriamiento">Radiador / Mangueras / Anticongelante</option>
+                            <option value="Transmisión">Embrague / Cardán / Diferencial</option>
+                            <option value="Otro">Otro auxilio</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Auxilio / Taller Asignado</label>
+                        <input type="text" id="rescate-form-mecanico" placeholder="Ej: Auxilio Móvil CESS o Taller Local" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-400 mb-1">Falla Reportada en Ruta *</label>
+                    <textarea id="rescate-form-falla" required rows="2" placeholder="Describe la falla reportada por el operador y la situación en carretera..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none"></textarea>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Costo Estimado ($ MXN)</label>
+                        <input type="number" id="rescate-form-costo-est" placeholder="Ej: 3500" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Estatus del Rescate</label>
+                        <select id="rescate-form-estado" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
+                            <option value="EN_CAMINO">En Camino al Punto</option>
+                            <option value="EN_REPARACION_RUTA">En Reparación en Ruta</option>
+                            <option value="CONCLUIDO">Concluido / Unidad Liberada</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="pt-2 border-t border-[#3A3D42] flex justify-end gap-2 mt-1">
+                    <button type="button" onclick="cerrarModalNuevoRescate()" class="px-3 py-1.5 rounded-xl border border-[#3A3D42] text-slate-300 hover:bg-[#282A2E] font-bold">Cancelar</button>
+                    <button type="submit" class="bg-amber-600 hover:bg-amber-500 text-black font-black px-4 py-1.5 rounded-xl flex items-center gap-1.5 shadow">
+                        <i class="fa-solid fa-truck-medical"></i> Registrar y Alertar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: CONCLUIR RESCATE CARRETERO -->
+    <div id="modal-concluir-rescate" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
+        <div class="bg-[#1E1E1E] border border-emerald-600/70 rounded-2xl w-full max-w-md p-5 flex flex-col shadow-2xl animate-in fade-in duration-150">
+            <div class="flex justify-between items-center mb-3 pb-2 border-b border-[#3A3D42]">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-flag-checkered text-emerald-400"></i> Concluir Rescate Carretero
+                </h3>
+                <button onclick="cerrarModalConcluirRescate()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
+            </div>
+            <form onsubmit="guardarConclusionRescateForm(event)" class="flex flex-col gap-3 text-xs">
+                <input type="hidden" id="concluir-rescate-id" value="">
+                <div>
+                    <label class="block font-bold text-slate-400 mb-1">Costo Real Final ($ MXN) *</label>
+                    <input type="number" id="concluir-rescate-costo" required placeholder="Ej: 3800" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white font-bold text-sm focus:border-emerald-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-400 mb-1">Tiempo de Resolución</label>
+                    <input type="text" id="concluir-rescate-tiempo" placeholder="Ej: 1h 45m" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-emerald-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-400 mb-1">Notas de Conclusión y Reparación Hecha</label>
+                    <textarea id="concluir-rescate-notas" rows="2" placeholder="Detalle de refacción cambiada, pruebas y hora en que la unidad reanudó viaje..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-emerald-500 focus:outline-none"></textarea>
+                </div>
+                <div class="pt-2 border-t border-[#3A3D42] flex justify-end gap-2 mt-1">
+                    <button type="button" onclick="cerrarModalConcluirRescate()" class="px-3 py-1.5 rounded-xl border border-[#3A3D42] text-slate-300 hover:bg-[#282A2E] font-bold">Cancelar</button>
+                    <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-1.5 rounded-xl flex items-center gap-1.5 shadow">
+                        <i class="fa-solid fa-check"></i> Marcar Concluido
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
     <!-- MODAL 8: AJUSTES & CONFIGURACIÓN -->
     <!-- ======================================================== -->
     <div id="modal-ajustes" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
@@ -1793,6 +2349,9 @@
 
             // Renderizar la vista activa
             renderizarTablero();
+
+            // Cargar métricas de Preventivos y Rescates para insignias
+            cargarResumenCabeceras();
 
             // Verificar estado del túnel en segundo plano
             verificarEstadoTunelSilencioso();
@@ -2093,6 +2652,8 @@
                 return;
             }
             const mapa = new Map();
+            const rank = { 'listo': 4, 'proceso': 3, 'mayor': 2, 'considerar': 1 };
+
             for (const u of baseDatos) {
                 if (!u || u.id === undefined || u.id === null) continue;
                 const key = String(u.id).trim();
@@ -2101,13 +2662,19 @@
                     mapa.set(key, { ...u });
                 } else {
                     const exist = mapa.get(key);
-                    // Si el duplicado tiene estado más avanzado ('listo' > 'proceso' > 'mayor'), adoptarlo
-                    if (u.estado === 'listo' || (u.estado === 'proceso' && exist.estado === 'mayor')) {
+                    // Si el duplicado tiene estado más avanzado, adoptarlo
+                    if ((rank[u.estado] || 0) > (rank[exist.estado] || 0)) {
                         exist.estado = u.estado;
                     }
                     if (u.reporte && (!exist.reporte || u.reporte.length > exist.reporte.length)) {
                         exist.reporte = u.reporte;
                     }
+                    if (Array.isArray(u.avances) && u.avances.length > 0) {
+                        exist.avances = [...(exist.avances || []), ...u.avances];
+                    }
+                    if (u.folio_almacen) exist.folio_almacen = u.folio_almacen;
+                    if (u.costo_refacciones) exist.costo_refacciones = u.costo_refacciones;
+                    if (u.es_rescate !== undefined) exist.es_rescate = u.es_rescate;
                     if (Array.isArray(u.piezas) && u.piezas.length > 0) {
                         const piezasMap = new Map();
                         (exist.piezas || []).forEach(p => piezasMap.set(p.id_pieza || p.descripcion, p));
@@ -2186,6 +2753,8 @@
             vistaActual = vista;
             const vistas = {
                 tablero: document.getElementById('vista-tablero'),
+                preventivos: document.getElementById('vista-preventivos'),
+                rescates: document.getElementById('vista-rescates'),
                 historial: document.getElementById('vista-historial'),
                 bitacoras: document.getElementById('vista-bitacoras'),
                 analitica: document.getElementById('vista-analitica')
@@ -2193,6 +2762,8 @@
 
             const botones = {
                 tablero: document.getElementById('nav-btn-tablero'),
+                preventivos: document.getElementById('nav-btn-preventivos'),
+                rescates: document.getElementById('nav-btn-rescates'),
                 historial: document.getElementById('nav-btn-historial'),
                 bitacoras: document.getElementById('nav-btn-bitacoras'),
                 analitica: document.getElementById('nav-btn-analitica')
@@ -2213,6 +2784,10 @@
 
             if (vista === 'tablero') {
                 renderizarTablero();
+            } else if (vista === 'preventivos') {
+                cargarModuloPreventivos();
+            } else if (vista === 'rescates') {
+                cargarModuloRescates();
             } else if (vista === 'historial') {
                 const idActual = document.getElementById('input-buscar-historial-id').value.trim() || '96';
                 seleccionarUnidadHistorial(idActual);
@@ -2223,24 +2798,25 @@
             }
         }
 
-        // --- 4. VISTA 1: TABLERO KANBAN CON HTML5 DRAG & DROP ---
+        // --- 4. VISTA 1: TABLERO KANBAN CON HTML5 DRAG & DROP (4 COLUMNAS) ---
         function renderizarTablero() {
             sanitizarBaseDatos();
             const dom = {
+                considerar: document.getElementById('lista-considerar'),
                 mayor: document.getElementById('lista-mayor'),
                 proceso: document.getElementById('lista-proceso'),
                 listo: document.getElementById('lista-listo')
             };
 
-            const conteos = { mayor: 0, proceso: 0, listo: 0, apodaca: 0, queretaro: 0, costoTotal: 0 };
-            Object.values(dom).forEach(el => el.innerHTML = '');
+            const conteos = { considerar: 0, mayor: 0, proceso: 0, listo: 0, apodaca: 0, queretaro: 0, costoTotal: 0 };
+            Object.values(dom).forEach(el => { if (el) el.innerHTML = ''; });
 
             const queryBusqueda = document.getElementById('input-busqueda').value.trim().toLowerCase();
 
             baseDatos.forEach(u => {
                 if (u.sucursal === 'Apodaca') conteos.apodaca++;
                 if (u.sucursal === 'Querétaro') conteos.queretaro++;
-                conteos.costoTotal += (Number(u.costo) || 0);
+                conteos.costoTotal += (Number(u.costo) || 0) + (Number(u.costo_refacciones) || 0);
 
                 if (filtroSucursalActual !== 'TODAS' && u.sucursal !== filtroSucursalActual) return;
 
@@ -2248,21 +2824,27 @@
                     const match = String(u.id).toLowerCase().includes(queryBusqueda) ||
                                   (u.defecto && u.defecto.toLowerCase().includes(queryBusqueda)) ||
                                   (u.notas && u.notas.toLowerCase().includes(queryBusqueda)) ||
-                                  (u.reporte && u.reporte.toLowerCase().includes(queryBusqueda));
+                                  (u.reporte && u.reporte.toLowerCase().includes(queryBusqueda)) ||
+                                  (u.folio_almacen && String(u.folio_almacen).includes(queryBusqueda));
                     if (!match) return;
                 }
 
-                if (conteos[u.estado] !== undefined) conteos[u.estado]++;
+                // Normalizar estado si no está en las 4 columnas
+                let est = u.estado || 'proceso';
+                if (!dom[est]) est = 'proceso';
+
+                if (conteos[est] !== undefined) conteos[est]++;
 
                 const tarjeta = crearElementoTarjeta(u);
-                if (dom[u.estado]) {
-                    dom[u.estado].appendChild(tarjeta);
+                if (dom[est]) {
+                    dom[est].appendChild(tarjeta);
                 }
             });
 
-            document.getElementById('count-mayor').innerText = conteos.mayor;
-            document.getElementById('count-proceso').innerText = conteos.proceso;
-            document.getElementById('count-listo').innerText = conteos.listo;
+            if (document.getElementById('count-considerar')) document.getElementById('count-considerar').innerText = conteos.considerar;
+            if (document.getElementById('count-mayor')) document.getElementById('count-mayor').innerText = conteos.mayor;
+            if (document.getElementById('count-proceso')) document.getElementById('count-proceso').innerText = conteos.proceso;
+            if (document.getElementById('count-listo')) document.getElementById('count-listo').innerText = conteos.listo;
 
             document.getElementById('cont-todas').innerText = baseDatos.length;
             document.getElementById('cont-apodaca').innerText = conteos.apodaca;
@@ -2270,8 +2852,8 @@
 
             document.getElementById('resumen-costo-total').innerText = `$${conteos.costoTotal.toLocaleString()} MXN`;
 
-            ['mayor', 'proceso', 'listo'].forEach(est => {
-                if (dom[est].children.length === 0) {
+            ['considerar', 'mayor', 'proceso', 'listo'].forEach(est => {
+                if (dom[est] && dom[est].children.length === 0) {
                     dom[est].innerHTML = '<div class="text-slate-500 text-xs italic text-center py-8 border border-dashed border-[#3A3D42] rounded-xl bg-[#141518]/50">Arrastra una unidad aquí</div>';
                 }
             });
@@ -2280,7 +2862,7 @@
         function crearElementoTarjeta(unidad) {
             const card = document.createElement('div');
             card.id = `card-unit-${unidad.id}`;
-            card.className = `card card-stripe-${unidad.estado} p-3.5 shadow-md cursor-grab active:cursor-grabbing flex flex-col gap-2.5`;
+            card.className = `card card-stripe-${unidad.estado || 'proceso'} p-3.5 shadow-md cursor-grab active:cursor-grabbing flex flex-col gap-2.5`;
             
             // Atributos HTML5 Drag & Drop
             card.draggable = true;
@@ -2289,24 +2871,38 @@
 
             // Clic principal: abrir expediente clínico
             card.onclick = (e) => {
-                // Evitar abrir expediente si el clic fue en un botón de acción
                 if (e.target.closest('button')) return;
                 abrirModalExpediente(unidad.id);
             };
 
-            // Doble clic en PC: abrir editor de texto de inmediato
+            // Doble clic en PC: abrir editor rápido
             card.ondblclick = (e) => {
                 if (e.target.closest('button')) return;
                 abrirEdicionRapida(e, unidad.id);
             };
 
-            let badgeCosto = unidad.costo > 0 ? `<span class="bg-red-950/70 text-red-300 text-[10px] font-bold px-2 py-0.5 rounded border border-red-800/80"><i class="fa-solid fa-dollar-sign mr-0.5"></i> ${unidad.costo.toLocaleString()} MXN</span>` : '';
+            const costoTotalUnidad = (Number(unidad.costo) || 0) + (Number(unidad.costo_refacciones) || 0);
+            let badgeCosto = costoTotalUnidad > 0 ? `<span class="bg-red-950/70 text-red-300 text-[10px] font-bold px-2 py-0.5 rounded border border-red-800/80"><i class="fa-solid fa-dollar-sign mr-0.5"></i> ${costoTotalUnidad.toLocaleString()} MXN</span>` : '';
             let badgeFecha = unidad.fechaRefaccion ? `<span class="bg-[#2D2612] text-[#DFB743] text-[10px] font-bold px-2 py-0.5 rounded border border-[#C59B27]/70"><i class="fa-solid fa-calendar-day mr-1"></i> Prog: ${unidad.fechaRefaccion}</span>` : '';
             
             const reincidencia = detectarReincidenciaUnidad(unidad);
             let badgeReincidencia = reincidencia.esReincidente ? `
                 <div class="bg-amber-950/70 border border-amber-600/70 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1 animate-pulse" title="Falla recurrente detectada en historial">
                     <i class="fa-solid fa-triangle-exclamation"></i> Reincidente: ${reincidencia.sistema}
+                </div>
+            ` : '';
+
+            // Badge Rescate Carretero (si aplica)
+            let badgeRescate = unidad.es_rescate ? `
+                <div class="bg-amber-950/90 border border-amber-500/80 text-amber-300 text-[10px] font-black px-2 py-0.5 rounded flex items-center gap-1 animate-pulse" title="Atención de Rescate Carretero SOS">
+                    <i class="fa-solid fa-truck-medical text-amber-400"></i> RESCATE CARRETERO
+                </div>
+            ` : '';
+
+            // Badge Folio Almacén Vinculado
+            let badgeFolio = unidad.folio_almacen ? `
+                <div class="bg-indigo-950/80 border border-indigo-700/80 text-indigo-300 text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1" title="Refacciones vinculadas desde Almacén CESS">
+                    <i class="fa-solid fa-receipt text-indigo-400"></i> Folio #${unidad.folio_almacen} ${unidad.costo_refacciones ? '• $' + Number(unidad.costo_refacciones).toLocaleString() : ''}
                 </div>
             ` : '';
 
@@ -2317,76 +2913,93 @@
             let badgePiezas = '';
             if (Array.isArray(unidad.piezas) && unidad.piezas.length > 0) {
                 const totalPz = unidad.piezas.length;
-                const enOC = unidad.piezas.filter(p => p && p.estado === 'EN_ORDEN_COMPRA').length;
-                const porAutorizar = unidad.piezas.filter(p => p && p.estado === 'SOLICITADA_ALMACEN').length;
                 const listas = unidad.piezas.filter(p => p && (p.estado === 'SALIDA_AUTORIZADA' || p.estado === 'RECIBIDA_TALLER')).length;
                 const instaladas = unidad.piezas.filter(p => p && p.estado === 'INSTALADA').length;
 
-                if (enOC > 0) {
-                    badgePiezas = `<span class="bg-amber-950/80 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded border border-amber-600/80 flex items-center gap-1" title="${enOC} refacción(es) en orden de compra"><i class="fa-solid fa-clock text-amber-400"></i> ${enOC} en Orden de Compra</span>`;
-                } else if (porAutorizar > 0) {
-                    badgePiezas = `<span class="bg-yellow-950/80 text-yellow-300 text-[10px] font-bold px-2 py-0.5 rounded border border-yellow-600/80 flex items-center gap-1" title="${porAutorizar} refacción(es) por autorizar salida de almacén"><i class="fa-solid fa-key text-yellow-400"></i> ${porAutorizar} por autorizar salida</span>`;
+                if (instaladas === totalPz) {
+                    badgePiezas = `<span class="bg-blue-950/80 text-blue-300 text-[10px] font-bold px-2 py-0.5 rounded border border-blue-600/80 flex items-center gap-1"><i class="fa-solid fa-wrench text-blue-400"></i> ${totalPz} Pzs Instaladas</span>`;
                 } else if (listas > 0) {
-                    badgePiezas = `<span class="bg-emerald-950/80 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-600/80 flex items-center gap-1" title="${listas} refacción(es) surtidas o recibidas en taller"><i class="fa-solid fa-check-double text-emerald-400"></i> ${listas} en Taller</span>`;
-                } else if (instaladas === totalPz) {
-                    badgePiezas = `<span class="bg-blue-950/80 text-blue-300 text-[10px] font-bold px-2 py-0.5 rounded border border-blue-600/80 flex items-center gap-1" title="Todas las refacciones instaladas"><i class="fa-solid fa-wrench text-blue-400"></i> Refacciones Instaladas</span>`;
+                    badgePiezas = `<span class="bg-emerald-950/80 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-600/80 flex items-center gap-1"><i class="fa-solid fa-check-double text-emerald-400"></i> ${listas} en Taller</span>`;
                 } else {
-                    badgePiezas = `<span class="bg-[#282A2E] text-slate-300 text-[10px] font-bold px-2 py-0.5 rounded border border-[#3A3D42] flex items-center gap-1"><i class="fa-solid fa-boxes-stacked text-[#C59B27]"></i> ${totalPz} Refacciones</span>`;
+                    badgePiezas = `<span class="bg-[#282A2E] text-slate-300 text-[10px] font-bold px-2 py-0.5 rounded border border-[#3A3D42] flex items-center gap-1"><i class="fa-solid fa-boxes-stacked text-[#C59B27]"></i> ${totalPz} Pzs</span>`;
                 }
             }
 
-            const btnQuickListo = unidad.estado !== 'listo' ? `
-                <button onclick="cambiarEstadoDirecto(event, '${unidad.id}', 'listo')" class="bg-emerald-950/90 hover:bg-emerald-600 text-emerald-300 hover:text-white border border-emerald-700/80 px-2 py-0.5 rounded text-[11px] font-bold transition flex items-center gap-1 shadow-sm" title="Marcar como lista para entrega al instante (1 toque)">
-                    <i class="fa-solid fa-circle-check text-[10px]"></i> <span>¡Lista!</span>
-                </button>
-            ` : `
-                <span class="bg-emerald-950/70 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-700/60 flex items-center gap-1">
-                    <i class="fa-solid fa-circle-check text-[10px]"></i> Lista
-                </span>
-            `;
+            // Vista previa del último avance registrado
+            let seccionAvancePreview = '';
+            if (Array.isArray(unidad.avances) && unidad.avances.length > 0) {
+                const ultimoAvance = unidad.avances[unidad.avances.length - 1];
+                seccionAvancePreview = `
+                    <div class="bg-[#141518] p-2 rounded-lg border border-[#3A3D42]/80 flex flex-col gap-0.5 text-[11px] mt-0.5">
+                        <div class="flex items-center justify-between text-slate-400">
+                            <span class="font-bold text-[#DFB743] flex items-center gap-1">
+                                <i class="fa-solid fa-list-check text-[10px]"></i> Avance (${ultimoAvance.hora || 'Hoy'})
+                            </span>
+                            ${ultimoAvance.porcentaje ? `<span class="bg-cyan-950 text-cyan-300 font-mono text-[9px] px-1.5 py-0.2 rounded border border-cyan-800 font-bold">${ultimoAvance.porcentaje}%</span>` : ''}
+                        </div>
+                        <p class="text-slate-200 line-clamp-2 text-[11px] leading-snug">${ultimoAvance.texto}</p>
+                        ${ultimoAvance.mecanico ? `<span class="text-[9px] text-slate-400 font-medium">Por: ${ultimoAvance.mecanico}</span>` : ''}
+                    </div>
+                `;
+            }
 
             card.innerHTML = `
-                <div class="flex justify-between items-start">
+                <!-- Cabecera de Tarjeta: Unidad, Acciones y Sucursal -->
+                <div class="flex items-center justify-between gap-1">
                     <div class="flex items-center gap-1.5">
                         <span class="text-base font-black text-white flex items-center gap-1">
-                            <i class="fa-solid fa-grip-vertical text-slate-500 text-xs mr-0.5"></i> Unidad ${unidad.id}
+                            <i class="fa-solid fa-grip-vertical text-slate-500 text-xs mr-0.5"></i> ${unidad.id}
                         </span>
                         ${badgeFotos}
                     </div>
-                    <div class="flex items-center gap-1.5">
-                        ${btnQuickListo}
-                        <button onclick="abrirEdicionRapida(event, '${unidad.id}')" class="bg-[#141518] hover:bg-[#C59B27] hover:text-black text-slate-300 border border-[#3A3D42] px-2 py-0.5 rounded text-[11px] font-bold transition flex items-center gap-1" title="Edición Rápida (Escribir o Dictar)">
-                            <i class="fa-solid fa-pen-to-square text-[10px]"></i> <span>Editar</span>
+                    <div class="flex items-center gap-1 flex-wrap justify-end">
+                        <button onclick="abrirModalAvanceRapido(event, '${unidad.id}')" class="bg-[#1E1E1E] hover:bg-[#C59B27] hover:text-black text-[#DFB743] border border-[#C59B27]/60 px-2 py-0.5 rounded text-[11px] font-bold transition flex items-center gap-1 shadow-sm" title="Registrar nuevo avance o estatus">
+                            <i class="fa-solid fa-plus text-[9px]"></i> <span>Avance</span>
                         </button>
-                        <span class="text-[10px] font-bold bg-[#141518] border border-[#3A3D42] px-2 py-0.5 rounded text-slate-300 flex items-center gap-1">
-                            <i class="fa-solid fa-location-dot text-[#C59B27]"></i> ${unidad.sucursal}
+                        <button onclick="abrirModalVincularAlmacen(event, '${unidad.id}')" class="bg-indigo-950/80 hover:bg-indigo-700 text-indigo-300 hover:text-white border border-indigo-700/60 px-2 py-0.5 rounded text-[11px] font-bold transition flex items-center gap-1 shadow-sm" title="Vincular Folio de Almacén CESS">
+                            <i class="fa-solid fa-barcode text-[9px]"></i> <span>${unidad.folio_almacen ? '#' + unidad.folio_almacen : 'Almacén'}</span>
+                        </button>
+                        <button onclick="abrirEdicionRapida(event, '${unidad.id}')" class="bg-[#141518] hover:bg-[#282A2E] text-slate-300 border border-[#3A3D42] px-1.5 py-0.5 rounded text-[11px] font-bold transition flex items-center gap-1" title="Edición Rápida">
+                            <i class="fa-solid fa-pen-to-square text-[10px]"></i>
+                        </button>
+                        <span class="text-[10px] font-bold bg-[#141518] border border-[#3A3D42] px-1.5 py-0.5 rounded text-slate-300 flex items-center gap-1">
+                            <i class="fa-solid fa-location-dot text-[#C59B27]"></i> ${unidad.sucursal || 'Patio'}
                         </span>
                     </div>
                 </div>
 
-                <!-- Texto de Avance Editable con 1 Clic o Toque (Mobile & PC) -->
-                <p onclick="abrirEdicionRapida(event, '${unidad.id}')" class="text-xs text-slate-200 line-clamp-3 leading-relaxed font-medium cursor-pointer hover:bg-[#282A2E]/70 hover:text-white p-1.5 -m-1.5 rounded-lg border border-transparent hover:border-[#3A3D42] transition select-text" title="Haz clic o toca para editar texto">
-                    ${unidad.reporte || unidad.defecto || '<span class=\"italic text-slate-500\">Sin observaciones. Clic para escribir...</span>'}
+                <!-- Texto de Situación / Defecto Editable con 1 Clic -->
+                <p onclick="abrirEdicionRapida(event, '${unidad.id}')" class="text-xs text-slate-200 line-clamp-3 leading-relaxed font-medium cursor-pointer hover:bg-[#282A2E]/70 hover:text-white p-1.5 -m-1.5 rounded-lg border border-transparent hover:border-[#3A3D42] transition select-text" title="Haz clic para editar texto">
+                    ${unidad.reporte || unidad.defecto || '<span class="italic text-slate-500">Sin observaciones. Clic para escribir...</span>'}
                 </p>
 
+                <!-- Vista previa del avance -->
+                ${seccionAvancePreview}
+
+                <!-- Badges de estatus, refacciones y costos -->
                 <div class="flex flex-wrap gap-1.5 items-center">
+                    ${badgeRescate}
+                    ${badgeFolio}
                     ${badgeCosto}
                     ${badgeFecha}
                     ${badgeReincidencia}
                     ${badgePiezas}
                 </div>
 
-                <!-- Selector Táctil / 1-Clic de Columna (Optimizado Celular y PC) -->
+                <!-- Selector Táctil / 1-Clic de Columna (4 ESTADOS CESS) -->
                 <div class="pt-2 mt-1 border-t border-[#3A3D42]/70 flex flex-col gap-1.5">
                     <div class="flex items-center justify-between text-[10px] text-slate-400 font-bold uppercase tracking-wider">
                         <span>Mover a columna:</span>
-                        <span class="text-[10px] text-slate-500 font-normal">1 toque / clic</span>
+                        <span class="text-[9px] text-slate-500 font-normal">1 toque</span>
                     </div>
-                    <div class="grid grid-cols-3 gap-1 bg-[#141518] p-1 rounded-lg border border-[#3A3D42]">
+                    <div class="grid grid-cols-4 gap-1 bg-[#141518] p-1 rounded-lg border border-[#3A3D42]">
+                        <button onclick="cambiarEstadoDirecto(event, '${unidad.id}', 'considerar')" class="py-1 px-1 rounded text-[10px] font-bold transition flex items-center justify-center gap-1 ${unidad.estado === 'considerar' ? 'bg-purple-700 text-white shadow font-black' : 'text-slate-400 hover:text-purple-300 hover:bg-[#282A2E]'}" title="Mover a Considerar / Detecciones">
+                            <span class="w-1.5 h-1.5 rounded-full ${unidad.estado === 'considerar' ? 'bg-white' : 'bg-purple-500'}"></span> Evaluar
+                        </button>
                         <button onclick="cambiarEstadoDirecto(event, '${unidad.id}', 'mayor')" class="py-1 px-1 rounded text-[10px] font-bold transition flex items-center justify-center gap-1 ${unidad.estado === 'mayor' ? 'bg-red-700 text-white shadow font-black' : 'text-slate-400 hover:text-red-300 hover:bg-[#282A2E]'}" title="Mover a Reparación Mayor">
                             <span class="w-1.5 h-1.5 rounded-full ${unidad.estado === 'mayor' ? 'bg-white' : 'bg-red-500'}"></span> Mayor
                         </button>
-                        <button onclick="cambiarEstadoDirecto(event, '${unidad.id}', 'proceso')" class="py-1 px-1 rounded text-[10px] font-bold transition flex items-center justify-center gap-1 ${unidad.estado === 'proceso' ? 'bg-[#C59B27] text-black shadow font-black' : 'text-slate-400 hover:text-[#DFB743] hover:bg-[#282A2E]'}" title="Mover a En Proceso (Taller)">
+                        <button onclick="cambiarEstadoDirecto(event, '${unidad.id}', 'proceso')" class="py-1 px-1 rounded text-[10px] font-bold transition flex items-center justify-center gap-1 ${unidad.estado === 'proceso' ? 'bg-[#C59B27] text-black shadow font-black' : 'text-slate-400 hover:text-[#DFB743] hover:bg-[#282A2E]'}" title="Mover a En Reparación Activa">
                             <span class="w-1.5 h-1.5 rounded-full ${unidad.estado === 'proceso' ? 'bg-black' : 'bg-amber-400'}"></span> Taller
                         </button>
                         <button onclick="cambiarEstadoDirecto(event, '${unidad.id}', 'listo')" class="py-1 px-1 rounded text-[10px] font-bold transition flex items-center justify-center gap-1 ${unidad.estado === 'listo' ? 'bg-emerald-600 text-white shadow font-black' : 'text-slate-400 hover:text-emerald-300 hover:bg-[#282A2E]'}" title="Mover a Listas para Entrega">
@@ -2416,7 +3029,7 @@
                 if (cardEl) cardEl.classList.remove('is-dragging');
             }
             idArrastrando = null;
-            ['mayor', 'proceso', 'listo'].forEach(c => {
+            ['considerar', 'mayor', 'proceso', 'listo'].forEach(c => {
                 const col = document.getElementById(`col-${c}`);
                 if (col) col.classList.remove('drop-hover');
             });
@@ -2450,23 +3063,26 @@
             const unidad = baseDatos.find(u => String(u.id) === String(id));
             if (!unidad) return;
 
-            if (unidad.estado === nuevoEstado) return; // No cambió de columna
+            if (unidad.estado === nuevoEstado) return;
 
             const anterior = unidad.estado;
             unidad.estado = nuevoEstado;
             unidad.estadoModificadoManualmente = true;
 
-            const nombres = { mayor: 'Reparación Mayor ($$)', proceso: 'En Reparación Activa', listo: 'Listas para Entrega' };
-            const desc = `Movimiento Kanban: Arrastrado de '${nombres[anterior]}' a '${nombres[nuevoEstado]}'`;
+            const nombres = {
+                considerar: 'A Considerar / Detecciones',
+                mayor: 'Reparación Mayor ($$)',
+                proceso: 'En Reparación Activa',
+                listo: 'Listas para Entrega'
+            };
+            const desc = `Movimiento Kanban: Arrastrado de '${nombres[anterior] || anterior}' a '${nombres[nuevoEstado]}'`;
 
             agregarEventoHistorial(unidad.id, desc, 'movimiento_kanban');
 
-            // Actualizar interfaz al instante
             guardarDatosLocales();
             renderizarTablero();
             mostrarToast(`Unidad ${unidad.id} movida a ${nombres[nuevoEstado]}`);
 
-            // Persistir en servidor
             try {
                 await fetch(`/api/unidad/${unidad.id}/mover`, {
                     method: 'POST',
@@ -2480,7 +3096,7 @@
 
         function moverUnidad(event, id, direccion) {
             event.stopPropagation();
-            const orden = ['mayor', 'proceso', 'listo'];
+            const orden = ['considerar', 'mayor', 'proceso', 'listo'];
             const unidad = baseDatos.find(u => String(u.id) === String(id));
             if (!unidad) return;
 
@@ -2492,8 +3108,13 @@
                 unidad.estado = orden[nuevoIdx];
                 unidad.estadoModificadoManualmente = true;
 
-                const nombres = { mayor: 'Reparación Mayor ($$)', proceso: 'En Proceso', listo: 'Listas para Entrega' };
-                const desc = `Cambio de estatus: De '${nombres[anterior]}' a '${nombres[unidad.estado]}'`;
+                const nombres = {
+                    considerar: 'A Considerar',
+                    mayor: 'Reparación Mayor',
+                    proceso: 'En Taller',
+                    listo: 'Listas para Entrega'
+                };
+                const desc = `Cambio de estatus: De '${nombres[anterior] || anterior}' a '${nombres[unidad.estado]}'`;
                 
                 agregarEventoHistorial(unidad.id, desc, 'cambio_estatus');
 
@@ -2521,7 +3142,12 @@
             const anterior = u.estado;
             u.estado = nuevoEstado;
             u.estadoModificadoManualmente = true;
-            const nombres = { mayor: 'Reparación Mayor ($$)', proceso: 'En Proceso (Taller)', listo: 'Listas para Entrega' };
+            const nombres = {
+                considerar: 'A Considerar / Detecciones',
+                mayor: 'Reparación Mayor ($$)',
+                proceso: 'En Proceso (Taller)',
+                listo: 'Listas para Entrega'
+            };
             
             agregarEventoHistorial(u.id, `Cambio de estatus: De '${nombres[anterior] || anterior}' a '${nombres[nuevoEstado]}'`, 'cambio_estatus');
             sanitizarBaseDatos();
@@ -2545,7 +3171,6 @@
             abrirModalExpediente(unidadActiva.id);
         }
 
-        // --- 5. EDICIÓN RÁPIDA (OPTIMIZADA PARA TECLADO EN PC Y CELULAR) ---
         function abrirEdicionRapida(event, id) {
             if (event) event.stopPropagation();
             const u = baseDatos.find(x => String(x.id) === String(id));
@@ -5599,6 +6224,681 @@
             document.getElementById('toast-mensaje').innerText = msg;
             t.classList.remove('hidden');
             setTimeout(() => t.classList.add('hidden'), 3200);
+        }
+
+        
+        // ========================================================
+        // CONTROLADORES DE NUEVOS MÓDULOS CESS (REUNIÓN GERENCIAL)
+        // ========================================================
+
+        async function cargarResumenCabeceras() {
+            try {
+                const [resPrev, resResc] = await Promise.all([
+                    fetch('/api/preventivos?t=' + Date.now()).then(r => r.ok ? r.json() : null).catch(() => null),
+                    fetch('/api/rescates?t=' + Date.now()).then(r => r.ok ? r.json() : null).catch(() => null)
+                ]);
+
+                if (resPrev && resPrev.resumen) {
+                    const vencidos = resPrev.resumen.vencidos || 0;
+                    const navBadgePrev = document.getElementById('badge-nav-preventivos');
+                    if (navBadgePrev) {
+                        navBadgePrev.innerText = `${vencidos} Vencidos`;
+                        navBadgePrev.className = vencidos > 0 
+                            ? "bg-red-950 text-red-300 text-[10px] font-mono px-1.5 py-0.5 rounded border border-red-800 hidden sm:inline"
+                            : "bg-emerald-950 text-emerald-300 text-[10px] font-mono px-1.5 py-0.5 rounded border border-emerald-800 hidden sm:inline";
+                    }
+                }
+
+                if (resResc && resResc.resumen) {
+                    const activos = resResc.resumen.activos || 0;
+                    const navBadgeResc = document.getElementById('badge-nav-rescates');
+                    if (navBadgeResc) {
+                        navBadgeResc.innerText = `${activos} En Ruta`;
+                        navBadgeResc.className = activos > 0 
+                            ? "bg-amber-950 text-amber-300 text-[10px] font-mono px-1.5 py-0.5 rounded border border-amber-800 hidden sm:inline animate-pulse"
+                            : "bg-[#282A2E] text-slate-400 text-[10px] font-mono px-1.5 py-0.5 rounded border border-[#3A3D42] hidden sm:inline";
+                    }
+                }
+            } catch (e) {}
+        }
+
+        // --- 1. MÓDULO DE MANTENIMIENTOS PREVENTIVOS (CONTROL DIÉSEL) ---
+        let cachePreventivos = [];
+        let filtroPreventivoEstatus = 'TODOS';
+
+        async function cargarModuloPreventivos() {
+            const tbody = document.getElementById('tabla-preventivos-body');
+            if (!tbody) return;
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="9" class="p-8 text-center text-slate-500">
+                        <i class="fa-solid fa-spinner fa-spin text-xl text-[#C59B27] mb-2"></i>
+                        <span class="block">Cargando preventivos desde Control Diésel...</span>
+                    </td>
+                </tr>
+            `;
+
+            try {
+                const res = await fetch('/api/preventivos?t=' + Date.now(), { cache: 'no-store' });
+                if (res.ok) {
+                    const json = await res.json();
+                    cachePreventivos = json.data || [];
+                    actualizarMetricasPreventivos(json.resumen || {});
+                    renderizarTablaPreventivos();
+                } else {
+                    throw new Error('Respuesta no exitosa');
+                }
+            } catch (e) {
+                console.warn('Error cargando preventivos:', e);
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="9" class="p-6 text-center text-red-400">
+                            <i class="fa-solid fa-triangle-exclamation mb-1 text-base"></i>
+                            <p>No se pudo conectar con el servidor de preventivos.</p>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        function actualizarMetricasPreventivos(resumen) {
+            const total = resumen.total || cachePreventivos.length;
+            const vigentes = resumen.vigentes || cachePreventivos.filter(p => p.estatus === 'VIGENTE').length;
+            const proximos = resumen.proximos || cachePreventivos.filter(p => p.estatus === 'PROXIMO').length;
+            const vencidos = resumen.vencidos || cachePreventivos.filter(p => p.estatus === 'VENCIDO').length;
+
+            if (document.getElementById('prev-kpi-total')) document.getElementById('prev-kpi-total').innerText = total;
+            if (document.getElementById('prev-kpi-vigentes')) document.getElementById('prev-kpi-vigentes').innerText = vigentes;
+            if (document.getElementById('prev-kpi-proximos')) document.getElementById('prev-kpi-proximos').innerText = proximos;
+            if (document.getElementById('prev-kpi-vencidos')) document.getElementById('prev-kpi-vencidos').innerText = vencidos;
+
+            if (document.getElementById('cnt-filtro-prev-todos')) document.getElementById('cnt-filtro-prev-todos').innerText = total;
+            if (document.getElementById('cnt-filtro-prev-vigentes')) document.getElementById('cnt-filtro-prev-vigentes').innerText = vigentes;
+            if (document.getElementById('cnt-filtro-prev-proximos')) document.getElementById('cnt-filtro-prev-proximos').innerText = proximos;
+            if (document.getElementById('cnt-filtro-prev-vencidos')) document.getElementById('cnt-filtro-prev-vencidos').innerText = vencidos;
+
+            const navBadge = document.getElementById('badge-nav-preventivos');
+            if (navBadge) {
+                navBadge.innerText = `${vencidos} Vencidos`;
+                navBadge.className = vencidos > 0 
+                    ? "bg-red-950 text-red-300 text-[10px] font-mono px-1.5 py-0.5 rounded border border-red-800 hidden sm:inline"
+                    : "bg-emerald-950 text-emerald-300 text-[10px] font-mono px-1.5 py-0.5 rounded border border-emerald-800 hidden sm:inline";
+            }
+        }
+
+        function filtrarPreventivosPorEstatus(est) {
+            filtroPreventivoEstatus = est;
+            ['todos', 'vencido', 'proximo', 'vigente'].forEach(k => {
+                const btn = document.getElementById(`btn-filtro-prev-${k}`);
+                if (!btn) return;
+                if (k.toUpperCase() === est) {
+                    btn.className = "px-3 py-1 rounded-lg text-xs font-bold transition bg-[#C59B27] text-black";
+                } else {
+                    const colors = {
+                        todos: "bg-[#141518] text-slate-300 border border-[#3A3D42]",
+                        vencido: "bg-[#141518] text-red-400 border border-red-900/60 hover:bg-red-950/40",
+                        proximo: "bg-[#141518] text-amber-400 border border-amber-900/60 hover:bg-amber-950/40",
+                        vigente: "bg-[#141518] text-emerald-400 border border-emerald-900/60 hover:bg-emerald-950/40"
+                    };
+                    btn.className = `px-3 py-1 rounded-lg text-xs font-bold transition ${colors[k]}`;
+                }
+            });
+            renderizarTablaPreventivos();
+        }
+
+        function aplicarFiltroPreventivos() {
+            renderizarTablaPreventivos();
+        }
+
+        function renderizarTablaPreventivos() {
+            const tbody = document.getElementById('tabla-preventivos-body');
+            if (!tbody) return;
+
+            const query = (document.getElementById('input-buscar-preventivo')?.value || '').trim().toLowerCase();
+
+            let filtrados = cachePreventivos.filter(item => {
+                if (filtroPreventivoEstatus !== 'TODOS' && item.estatus !== filtroPreventivoEstatus) return false;
+                if (query) {
+                    const txt = `${item.unidad} ${item.division || ''} ${item.estatus || ''}`.toLowerCase();
+                    if (!txt.includes(query)) return false;
+                }
+                return true;
+            });
+
+            if (filtrados.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="9" class="p-8 text-center text-slate-500 italic">
+                            No se encontraron registros de preventivos con los filtros aplicados.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = filtrados.map(item => {
+                let badgeColor = 'bg-emerald-950 text-emerald-300 border-emerald-800';
+                let textoEstatus = 'Al Día';
+                if (item.estatus === 'VENCIDO') {
+                    badgeColor = 'bg-red-950 text-red-300 border-red-800 animate-pulse';
+                    textoEstatus = 'Vencido';
+                } else if (item.estatus === 'PROXIMO') {
+                    badgeColor = 'bg-amber-950 text-amber-300 border-amber-800';
+                    textoEstatus = 'Próximo';
+                }
+
+                const kmRestantes = Number(item.km_restantes) || 0;
+                const kmClass = kmRestantes < 0 ? 'text-red-400 font-bold' : (kmRestantes < 3000 ? 'text-amber-400 font-bold' : 'text-slate-300');
+
+                return `
+                    <tr class="hover:bg-[#282A2E]/50 transition">
+                        <td class="p-3 font-black text-white font-mono text-sm flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full ${item.estatus === 'VENCIDO' ? 'bg-red-500' : (item.estatus === 'PROXIMO' ? 'bg-amber-400' : 'bg-emerald-500')}"></span>
+                            Unidad ${item.unidad}
+                        </td>
+                        <td class="p-3 text-slate-400">${item.division || 'Foráneo'}</td>
+                        <td class="p-3 text-right font-mono text-slate-200">${(Number(item.km_actual)||0).toLocaleString()} km</td>
+                        <td class="p-3 text-right font-mono text-slate-400">${(Number(item.km_ultimo_servicio)||0).toLocaleString()} km</td>
+                        <td class="p-3 text-slate-300">${item.fecha_ultimo_servicio || '--'}</td>
+                        <td class="p-3 text-right font-mono text-slate-300">${(Number(item.km_proximo_servicio)||0).toLocaleString()} km</td>
+                        <td class="p-3 text-right font-mono ${kmClass}">${kmRestantes.toLocaleString()} km</td>
+                        <td class="p-3 text-center">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold border ${badgeColor}">
+                                ${textoEstatus}
+                            </span>
+                        </td>
+                        <td class="p-3 text-center">
+                            <button onclick="ingresarPreventivoATaller('${item.unidad}')" class="bg-[#282A2E] hover:bg-[#C59B27] hover:text-black text-slate-200 border border-[#3A3D42] px-2.5 py-1 rounded-lg text-[11px] font-bold transition flex items-center gap-1 mx-auto shadow-sm" title="Ingresar a Taller para Servicio Preventivo">
+                                <i class="fa-solid fa-wrench text-[10px]"></i> A Taller
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        async function ingresarPreventivoATaller(numUnidad) {
+            const id = String(numUnidad).trim();
+            let u = baseDatos.find(x => String(x.id) === id);
+            if (u) {
+                u.estado = 'proceso';
+                u.reporte = `Mantenimiento Preventivo Programado (Servicio Mayor de Filtros y Aceite). ` + (u.reporte ? `\nObservaciones: ${u.reporte}` : '');
+                agregarEventoHistorial(u.id, `Ingreso por Mantenimiento Preventivo desde módulo diésel`, 'preventivo');
+            } else {
+                u = {
+                    id: id,
+                    sucursal: 'Apodaca',
+                    estado: 'proceso',
+                    defecto: 'Mantenimiento Preventivo Programado',
+                    reporte: 'Servicio Preventivo Programado (Cambio de Filtros Donaldson / Lubricación General).',
+                    costo: 0,
+                    piezas: [],
+                    historial: [{ fecha: new Date().toLocaleDateString('es-MX'), accion: 'Ingreso directo a taller desde módulo preventivos', usuario: 'Jefe de Taller' }]
+                };
+                baseDatos.push(u);
+            }
+            guardarDatosLocales();
+            cambiarVistaPrincipal('tablero');
+            mostrarToast(`Unidad ${id} agregada al Tablero en Reparación Activa.`);
+        }
+
+        function exportarExcelPreventivos() {
+            if (cachePreventivos.length === 0) {
+                mostrarToast('No hay preventivos para exportar');
+                return;
+            }
+            let csv = "Unidad,Division,Km Actual,Ultimo Servicio Km,Fecha Realizado,Proximo Km,Km Restantes,Estatus\n";
+            cachePreventivos.forEach(p => {
+                csv += `"${p.unidad}","${p.division || ''}","${p.km_actual || ''}","${p.km_ultimo_servicio || ''}","${p.fecha_ultimo_servicio || ''}","${p.km_proximo_servicio || ''}","${p.km_restantes || ''}","${p.estatus}"\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `CESS_Preventivos_${new Date().toISOString().slice(0,10)}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+            mostrarToast('Reporte de preventivos descargado.');
+        }
+
+        // --- 2. MÓDULO DE RESCATES CARRETEROS (AUXILIO VIAL EN RUTA) ---
+        let cacheRescates = [];
+
+        async function cargarModuloRescates() {
+            try {
+                const res = await fetch('/api/rescates?t=' + Date.now(), { cache: 'no-store' });
+                if (res.ok) {
+                    const json = await res.json();
+                    cacheRescates = json.data || [];
+                    actualizarMetricasRescates(json.resumen || {});
+                    renderizarRescatesModulo();
+                }
+            } catch (e) {
+                console.warn('Error cargando rescates:', e);
+            }
+        }
+
+        function actualizarMetricasRescates(resumen) {
+            const activos = resumen.activos || cacheRescates.filter(r => r.estatus !== 'CONCLUIDO').length;
+            const concluidos = resumen.concluidos || cacheRescates.filter(r => r.estatus === 'CONCLUIDO').length;
+            const inversion = resumen.inversion_total || cacheRescates.reduce((sum, r) => sum + (Number(r.costo_real || r.costo_estimado) || 0), 0);
+
+            if (document.getElementById('resc-kpi-activos')) document.getElementById('resc-kpi-activos').innerText = activos;
+            if (document.getElementById('resc-kpi-concluidos')) document.getElementById('resc-kpi-concluidos').innerText = concluidos;
+            if (document.getElementById('resc-kpi-costo')) document.getElementById('resc-kpi-costo').innerText = `$${inversion.toLocaleString()} MXN`;
+
+            const navBadge = document.getElementById('badge-nav-rescates');
+            if (navBadge) {
+                navBadge.innerText = `${activos} En Ruta`;
+                navBadge.className = activos > 0 
+                    ? "bg-amber-950 text-amber-300 text-[10px] font-mono px-1.5 py-0.5 rounded border border-amber-800 hidden sm:inline animate-pulse"
+                    : "bg-[#282A2E] text-slate-400 text-[10px] font-mono px-1.5 py-0.5 rounded border border-[#3A3D42] hidden sm:inline";
+            }
+        }
+
+        function renderizarRescatesModulo() {
+            const gridActivos = document.getElementById('grid-rescates-activos');
+            const activos = cacheRescates.filter(r => r.estatus !== 'CONCLUIDO');
+
+            if (gridActivos) {
+                if (activos.length === 0) {
+                    gridActivos.innerHTML = `
+                        <div class="col-span-full p-8 text-center bg-[#141518]/60 border border-dashed border-[#3A3D42] rounded-2xl text-slate-500">
+                            <i class="fa-solid fa-road-circle-check text-2xl text-emerald-400 mb-2"></i>
+                            <p class="font-bold text-slate-300">Sin auxilios carreteros activos en este momento</p>
+                            <p class="text-xs text-slate-500 mt-1">Toda la flota operando con normalidad en autopista.</p>
+                        </div>
+                    `;
+                } else {
+                    gridActivos.innerHTML = activos.map(r => `
+                        <div class="bg-[#1E1E1E] border border-amber-600/70 rounded-2xl p-4 shadow-xl flex flex-col gap-3 relative overflow-hidden">
+                            <div class="absolute top-0 right-0 bg-amber-500 text-black text-[10px] font-black px-3 py-1 rounded-bl-xl uppercase tracking-wider flex items-center gap-1 shadow">
+                                <span class="w-1.5 h-1.5 rounded-full bg-black animate-ping"></span> ${r.estatus === 'EN_CAMINO' ? 'Auxilio en Camino' : 'Reparando en Ruta'}
+                            </div>
+
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-11 h-11 rounded-xl bg-amber-950 border border-amber-600 text-amber-400 flex items-center justify-center text-xl font-bold">
+                                    <i class="fa-solid fa-truck-medical"></i>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <h3 class="text-base font-black text-white">Unidad ${r.unidad}</h3>
+                                        <span class="text-[10px] bg-[#141518] px-2 py-0.5 rounded border border-[#3A3D42] text-slate-300 font-bold">${r.sucursal || 'Apodaca'}</span>
+                                        <span class="text-[10px] font-mono text-amber-400 font-bold">${r.id}</span>
+                                    </div>
+                                    <p class="text-xs text-slate-400">Operador: <span class="text-slate-200 font-bold">${r.operador || 'No asignado'}</span></p>
+                                </div>
+                            </div>
+
+                            <div class="bg-[#141518] p-2.5 rounded-xl border border-[#3A3D42] flex flex-col gap-1 text-xs">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-amber-400 font-bold flex items-center gap-1.5">
+                                        <i class="fa-solid fa-location-dot"></i> ${r.carretera} (${r.km})
+                                    </span>
+                                    <span class="text-slate-400 text-[11px] font-mono">${r.sentido || ''}</span>
+                                </div>
+                                <span class="text-[11px] text-slate-400">Tramo: <strong class="text-slate-200">${r.tramo || 'Carretera Federal'}</strong></span>
+                            </div>
+
+                            <div class="text-xs">
+                                <div class="flex items-center justify-between text-[11px] text-slate-400 mb-1">
+                                    <span class="font-bold uppercase text-red-400"><i class="fa-solid fa-triangle-exclamation mr-1"></i> ${r.tipo_falla || 'Falla Mecánica'}</span>
+                                    <span>Hora: <strong class="text-slate-200 font-mono">${r.hora_reporte || ''}</strong></span>
+                                </div>
+                                <p class="text-slate-200 bg-[#141518]/50 p-2 rounded-lg border border-[#3A3D42]/60">${r.falla_reportada}</p>
+                            </div>
+
+                            <div class="flex items-center justify-between pt-2 border-t border-[#3A3D42]/60 text-xs">
+                                <div>
+                                    <span class="text-[10px] text-slate-400 block">Auxilio Asignado:</span>
+                                    <strong class="text-white">${r.mecanico_asignado || 'Auxilio Móvil'}</strong>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-[10px] text-slate-400 block">Presupuesto Est.:</span>
+                                    <strong class="text-amber-400 font-mono font-bold">$${(Number(r.costo_estimado)||0).toLocaleString()} MXN</strong>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-2 pt-1">
+                                <button onclick="abrirModalConcluirRescate('${r.id}')" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow transition">
+                                    <i class="fa-solid fa-flag-checkered"></i> Concluir y Liberar Unidad
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            const tbodyHistorial = document.querySelector('#vista-rescates tbody');
+            if (tbodyHistorial) {
+                const concluidos = cacheRescates.filter(r => r.estatus === 'CONCLUIDO');
+                if (concluidos.length === 0) {
+                    tbodyHistorial.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-500 italic">No hay historial de rescates concluidos.</td></tr>`;
+                } else {
+                    tbodyHistorial.innerHTML = concluidos.map(r => `
+                        <tr class="hover:bg-[#282A2E]/50 transition text-xs">
+                            <td class="p-3 font-mono font-bold text-amber-400">${r.id}</td>
+                            <td class="p-3 font-bold text-white">Unidad ${r.unidad}</td>
+                            <td class="p-3 text-slate-300">${r.operador || '--'}</td>
+                            <td class="p-3 text-slate-300">${r.carretera} (${r.km})</td>
+                            <td class="p-3 text-slate-400">${r.falla_reportada || '--'}</td>
+                            <td class="p-3 text-right font-mono text-emerald-400 font-bold">$${(Number(r.costo_real || r.costo_estimado)||0).toLocaleString()} MXN</td>
+                            <td class="p-3 text-center">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-800">Concluido</span>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            }
+        }
+
+        function abrirModalNuevoRescate() {
+            document.getElementById('modal-nuevo-rescate').classList.remove('hidden');
+        }
+
+        function cerrarModalNuevoRescate() {
+            document.getElementById('modal-nuevo-rescate').classList.add('hidden');
+        }
+
+        async function guardarNuevoRescateForm(e) {
+            e.preventDefault();
+            const unidad = document.getElementById('rescate-form-unidad').value.trim();
+            const sucursal = document.getElementById('rescate-form-sucursal').value;
+            const operador = document.getElementById('rescate-form-operador').value.trim();
+            const carretera = document.getElementById('rescate-form-carretera').value.trim();
+            const km = document.getElementById('rescate-form-km').value.trim();
+            const tramo = document.getElementById('rescate-form-tramo').value.trim();
+            const sentido = document.getElementById('rescate-form-sentido').value;
+            const tipo_falla = document.getElementById('rescate-form-tipo-falla').value;
+            const mecanico_asignado = document.getElementById('rescate-form-mecanico').value.trim();
+            const falla_reportada = document.getElementById('rescate-form-falla').value.trim();
+            const costo_estimado = Number(document.getElementById('rescate-form-costo-est').value) || 0;
+            const estatus = document.getElementById('rescate-form-estado').value;
+
+            const payload = {
+                unidad, sucursal, operador, carretera, km, tramo, sentido,
+                tipo_falla, mecanico_asignado, falla_reportada, costo_estimado, estatus
+            };
+
+            try {
+                const res = await fetch('/api/rescates', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (res.ok) {
+                    mostrarToast(`Rescate para Unidad ${unidad} registrado con éxito`);
+                    cerrarModalNuevoRescate();
+                    await descargarDatosDelServidor();
+                    await cargarModuloRescates();
+                    renderizarTablero();
+                } else {
+                    mostrarToast('Error al registrar rescate');
+                }
+            } catch (err) {
+                mostrarToast('Error de conexión al guardar rescate');
+            }
+        }
+
+        function abrirModalConcluirRescate(id) {
+            document.getElementById('concluir-rescate-id').value = id;
+            const r = cacheRescates.find(x => x.id === id);
+            if (r) {
+                document.getElementById('concluir-rescate-costo').value = r.costo_estimado || '';
+            }
+            document.getElementById('modal-concluir-rescate').classList.remove('hidden');
+        }
+
+        function cerrarModalConcluirRescate() {
+            document.getElementById('modal-concluir-rescate').classList.add('hidden');
+        }
+
+        async function guardarConclusionRescateForm(e) {
+            e.preventDefault();
+            const id = document.getElementById('concluir-rescate-id').value;
+            const costo_real = Number(document.getElementById('concluir-rescate-costo').value) || 0;
+            const tiempo_resolucion = document.getElementById('concluir-rescate-tiempo').value.trim();
+            const notas = document.getElementById('concluir-rescate-notas').value.trim();
+
+            try {
+                const res = await fetch(`/api/rescates/${id}/concluir`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ costo_real, tiempo_resolucion, notas })
+                });
+                if (res.ok) {
+                    mostrarToast(`Rescate ${id} concluido con éxito`);
+                    cerrarModalConcluirRescate();
+                    await descargarDatosDelServidor();
+                    await cargarModuloRescates();
+                    renderizarTablero();
+                }
+            } catch (err) {
+                mostrarToast('Error concluyendo rescate');
+            }
+        }
+
+        // --- 3. MODAL DE AVANCE RÁPIDO Y DICTADO POR VOZ ---
+        let unidadAvanceActiva = null;
+
+        function abrirModalAvanceRapido(event, id) {
+            if (event) event.stopPropagation();
+            const u = baseDatos.find(x => String(x.id) === String(id));
+            if (!u) return;
+
+            unidadAvanceActiva = u;
+            document.getElementById('avance-form-unidad-id').value = u.id;
+            document.getElementById('avance-modal-unidad-num').innerText = `${u.id} (${u.sucursal || 'Patio'})`;
+            document.getElementById('avance-form-texto').value = '';
+            document.getElementById('avance-form-mecanico').value = '';
+            document.getElementById('avance-form-porcentaje').value = '';
+
+            renderizarTimelineAvances(u);
+            document.getElementById('modal-avance-rapido').classList.remove('hidden');
+            setTimeout(() => document.getElementById('avance-form-texto').focus(), 100);
+        }
+
+        function cerrarModalAvanceRapido() {
+            document.getElementById('modal-avance-rapido').classList.add('hidden');
+            unidadAvanceActiva = null;
+        }
+
+        function renderizarTimelineAvances(u) {
+            const contenedor = document.getElementById('timeline-avances-unidad');
+            if (!contenedor) return;
+
+            const avances = Array.isArray(u.avances) ? u.avances : [];
+            if (avances.length === 0) {
+                contenedor.innerHTML = `<p class="text-[11px] text-slate-500 italic p-3 text-center">No hay avances registrados hoy para esta unidad.</p>`;
+                return;
+            }
+
+            contenedor.innerHTML = avances.slice().reverse().map(a => `
+                <div class="bg-[#141518] p-2.5 rounded-xl border border-[#3A3D42] text-xs flex flex-col gap-1">
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-[#DFB743] flex items-center gap-1">
+                            <i class="fa-solid fa-check text-[10px]"></i> ${a.hora || 'Hoy'}
+                        </span>
+                        ${a.porcentaje ? `<span class="bg-cyan-950 text-cyan-300 font-mono text-[10px] px-1.5 py-0.5 rounded border border-cyan-800">${a.porcentaje}% completado</span>` : ''}
+                    </div>
+                    <p class="text-slate-200">${a.texto}</p>
+                    ${a.mecanico ? `<span class="text-[10px] text-slate-400 font-medium">Registrado por: <strong>${a.mecanico}</strong></span>` : ''}
+                </div>
+            `).join('');
+        }
+
+        async function guardarAvanceRapidoForm(e) {
+            e.preventDefault();
+            if (!unidadAvanceActiva) return;
+
+            const texto = document.getElementById('avance-form-texto').value.trim();
+            const mecanico = document.getElementById('avance-form-mecanico').value.trim();
+            const porcentaje = document.getElementById('avance-form-porcentaje').value;
+
+            const payload = { texto, mecanico, porcentaje };
+
+            try {
+                const res = await fetch(`/api/unidad/${unidadAvanceActiva.id}/avance`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (res.ok) {
+                    const json = await res.json();
+                    if (json.unidad) {
+                        const idx = baseDatos.findIndex(x => String(x.id) === String(unidadAvanceActiva.id));
+                        if (idx !== -1) baseDatos[idx] = json.unidad;
+                    }
+                    guardarDatosLocales(false);
+                    renderizarTablero();
+                    mostrarToast(`Avance guardado para Unidad ${unidadAvanceActiva.id}`);
+                    cerrarModalAvanceRapido();
+                } else {
+                    mostrarToast('Error al guardar el avance');
+                }
+            } catch (err) {
+                mostrarToast('Error de conexión');
+            }
+        }
+
+        function iniciarDictadoAvance() {
+            if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+                alert('El dictado por voz no es compatible con este navegador. Puedes escribir el avance.');
+                return;
+            }
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'es-MX';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            const btn = document.getElementById('btn-mic-avance');
+            if (btn) btn.innerHTML = '<i class="fa-solid fa-microphone text-red-500 animate-pulse"></i> Escuchando...';
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                const txtArea = document.getElementById('avance-form-texto');
+                txtArea.value = (txtArea.value ? txtArea.value + ' ' : '') + transcript;
+            };
+            recognition.onend = () => {
+                if (btn) btn.innerHTML = '<i class="fa-solid fa-microphone"></i> Dictar por Voz';
+            };
+            recognition.start();
+        }
+
+        // --- 4. MODAL DE VINCULAR FOLIO DE ALMACÉN CESS Y COSTOS ---
+        let unidadVincularActiva = null;
+        let datosFolioConsultado = null;
+
+        function abrirModalVincularAlmacen(event, id) {
+            if (event) event.stopPropagation();
+            const u = baseDatos.find(x => String(x.id) === String(id));
+            if (!u) return;
+
+            unidadVincularActiva = u;
+            datosFolioConsultado = null;
+            document.getElementById('vincular-modal-unidad-num').innerText = `${u.id} (${u.sucursal || 'Patio'})`;
+            document.getElementById('input-folio-almacen').value = u.folio_almacen || '';
+            document.getElementById('caja-resultado-folio').classList.add('hidden');
+            document.getElementById('caja-resultado-folio').classList.remove('flex');
+            document.getElementById('btn-confirmar-vincular').disabled = true;
+
+            document.getElementById('modal-vincular-almacen').classList.remove('hidden');
+
+            if (u.folio_almacen) {
+                consultarFolioAlmacenBoton();
+            }
+        }
+
+        function cerrarModalVincularAlmacen() {
+            document.getElementById('modal-vincular-almacen').classList.add('hidden');
+            unidadVincularActiva = null;
+            datosFolioConsultado = null;
+        }
+
+        async function consultarFolioAlmacenBoton() {
+            const folio = document.getElementById('input-folio-almacen').value.trim();
+            if (!folio) {
+                mostrarToast('Ingresa un número de folio');
+                return;
+            }
+
+            const caja = document.getElementById('caja-resultado-folio');
+            const txtSol = document.getElementById('txt-folio-solicitante');
+            const txtCosto = document.getElementById('txt-folio-costo-total');
+            const lista = document.getElementById('lista-items-folio');
+            const btnVincular = document.getElementById('btn-confirmar-vincular');
+
+            caja.classList.remove('hidden');
+            caja.classList.add('flex');
+            lista.innerHTML = `<p class="text-slate-400 p-3 text-center italic"><i class="fa-solid fa-spinner fa-spin mr-1 text-indigo-400"></i> Consultando salida en Almacén CESS...</p>`;
+
+            try {
+                const res = await fetch(`/api/almacen/folio/${folio}?t=` + Date.now());
+                const json = await res.json();
+                if (res.ok && json.success) {
+                    datosFolioConsultado = json;
+                    txtSol.innerText = `Solicitado por: ${json.solicitante || 'Personal Taller'}`;
+                    txtCosto.innerText = `$${(json.costo_total || 0).toLocaleString()} MXN`;
+
+                    lista.innerHTML = (json.items || []).map(item => `
+                        <div class="py-1.5 flex items-center justify-between text-xs">
+                            <div>
+                                <strong class="text-white block">${item.descripcion}</strong>
+                                <span class="text-[10px] text-slate-400 font-mono">Parte: ${item.numero_parte || '--'} • Cant: ${item.cantidad}</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="font-bold text-slate-200 font-mono">$${(Number(item.total_costo)||0).toLocaleString()} MXN</span>
+                            </div>
+                        </div>
+                    `).join('');
+
+                    btnVincular.disabled = false;
+                } else {
+                    lista.innerHTML = `
+                        <p class="text-red-400 p-3 text-center font-bold">
+                            <i class="fa-solid fa-circle-exclamation mr-1"></i> Folio #${folio} no encontrado en Almacén CESS.
+                        </p>
+                    `;
+                    btnVincular.disabled = true;
+                }
+            } catch (e) {
+                lista.innerHTML = `<p class="text-red-400 p-2 text-center">Error al conectar con Almacén.</p>`;
+                btnVincular.disabled = true;
+            }
+        }
+
+        async function confirmarVinculacionAlmacen() {
+            if (!unidadVincularActiva || !datosFolioConsultado) return;
+
+            const folio = datosFolioConsultado.folio;
+            try {
+                const res = await fetch(`/api/unidad/${unidadVincularActiva.id}/vincular-folio`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        folio: folio,
+                        costo_refacciones: datosFolioConsultado.costo_total,
+                        piezas: datosFolioConsultado.items
+                    })
+                });
+
+                if (res.ok) {
+                    const json = await res.json();
+                    if (json.unidad) {
+                        const idx = baseDatos.findIndex(x => String(x.id) === String(unidadVincularActiva.id));
+                        if (idx !== -1) baseDatos[idx] = json.unidad;
+                    }
+                    guardarDatosLocales(false);
+                    renderizarTablero();
+                    mostrarToast(`Folio #${folio} vinculado con éxito a Unidad ${unidadVincularActiva.id}`);
+                    cerrarModalVincularAlmacen();
+                } else {
+                    mostrarToast('Error al vincular el folio');
+                }
+            } catch (e) {
+                mostrarToast('Error de conexión');
+            }
         }
 
         window.addEventListener('DOMContentLoaded', inicializarAplicacion);

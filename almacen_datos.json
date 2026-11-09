@@ -14944,7 +14944,11 @@
       "solicitante": "",
       "costo_unitario": 2733,
       "notas": "Ingreso masivo por remisión/factura",
-      "timestamp": "2026-11-06T21:51:54.588Z"
+      "timestamp": "2026-11-06T21:51:54.588Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-05"
     },
     {
       "id": "mov_1794001914534_0",
@@ -14967,7 +14971,11 @@
       "solicitante": "",
       "costo_unitario": 2733,
       "notas": "Ingreso masivo por remisión/factura",
-      "timestamp": "2026-11-06T21:51:47.911Z"
+      "timestamp": "2026-11-06T21:51:47.911Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-05"
     },
     {
       "id": "mov_1794001823927_898",
@@ -15010,7 +15018,11 @@
       "solicitante": "",
       "costo_unitario": 2733,
       "notas": "Ingreso masivo por remisión/factura",
-      "timestamp": "2026-11-06T21:40:22.744Z"
+      "timestamp": "2026-11-06T21:40:22.744Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-05"
     },
     {
       "id": "mov_1793980098626_328",
@@ -15051,7 +15063,11 @@
       "costo_unitario": 298,
       "foto": "",
       "notas": "",
-      "timestamp": "2026-11-06T15:36:31.528Z"
+      "timestamp": "2026-11-06T15:36:31.528Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-05"
     },
     {
       "id": "ajuste_1793979202958_438",
@@ -15167,7 +15183,11 @@
       "notas": "Entrada ágil con evidencia fotográfica",
       "timestamp": "2026-11-05T22:53:40.867Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-05"
     },
     {
       "id": "mov_1793919220887_4",
@@ -15192,7 +15212,11 @@
       "notas": "Entrada ágil con evidencia fotográfica",
       "timestamp": "2026-11-05T22:53:40.867Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-05"
     },
     {
       "id": "mov_1793919220887_3",
@@ -15217,7 +15241,11 @@
       "notas": "Entrada ágil con evidencia fotográfica",
       "timestamp": "2026-11-05T22:53:40.867Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-05"
     },
     {
       "id": "mov_1793919220887_2",
@@ -15242,7 +15270,11 @@
       "notas": "Entrada ágil con evidencia fotográfica",
       "timestamp": "2026-11-05T22:53:40.867Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-05"
     },
     {
       "id": "mov_1793919220887_1",
@@ -15267,7 +15299,11 @@
       "notas": "Entrada ágil con evidencia fotográfica",
       "timestamp": "2026-11-05T22:53:40.867Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-05"
     },
     {
       "id": "mov_1793919220887_0",
@@ -15292,7 +15328,11 @@
       "notas": "Entrada ágil con evidencia fotográfica",
       "timestamp": "2026-11-05T22:53:40.867Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-05"
     },
     {
       "id": "mov_1793905386376_4_9865",
@@ -15437,7 +15477,11 @@
       "notas": "Paso Directo E/S a Unidad 26-LA-4V: Recepción de Refacciones",
       "timestamp": "2026-11-04T15:06:51.021Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-03"
     },
     {
       "id": "mov_1793804772076_0",
@@ -15462,7 +15506,11 @@
       "notas": "Paso Directo E/S a Unidad 26-LA-4V: Recepción de Refacciones",
       "timestamp": "2026-11-04T15:06:12.067Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-03"
     },
     {
       "id": "mov_1793804498421_525",
@@ -15648,7 +15696,11 @@
       "costo_unitario": 80,
       "foto": "",
       "notas": "",
-      "timestamp": "2026-11-03T22:12:04.639Z"
+      "timestamp": "2026-11-03T22:12:04.639Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-03"
     },
     {
       "id": "mov_1793741502696_168",
@@ -15716,7 +15768,11 @@
       "solicitante": "",
       "costo_unitario": 1850,
       "notas": "Ingreso masivo por remisión/factura",
-      "timestamp": "2026-11-03T21:20:41.131Z"
+      "timestamp": "2026-11-03T21:20:41.131Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-03"
     },
     {
       "id": "mov_1793665371470_64",
@@ -15761,7 +15817,11 @@
       "notas": "Entrada por foto: Recepción de Refacciones",
       "timestamp": "2026-11-03T00:18:12.898Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-02"
     },
     {
       "id": "mov_1793665069001_0",
@@ -15786,7 +15846,11 @@
       "notas": "Entrada por foto: Recepción de Refacciones",
       "timestamp": "2026-11-03T00:17:48.999Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-02"
     },
     {
       "id": "mov_1793664767754_0",
@@ -15811,7 +15875,11 @@
       "notas": "Entrada por foto: Recepción de Refacciones",
       "timestamp": "2026-11-03T00:12:47.753Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-02"
     },
     {
       "id": "mov_1793664745388_0",
@@ -15836,7 +15904,11 @@
       "notas": "Entrada por foto: Recepción de Refacciones",
       "timestamp": "2026-11-03T00:12:25.387Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-02"
     },
     {
       "id": "mov_1793664724383_0",
@@ -15861,7 +15933,11 @@
       "notas": "Entrada por foto: Recepción de Refacciones",
       "timestamp": "2026-11-03T00:12:04.381Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-02"
     },
     {
       "id": "mov_1793664647209_0",
@@ -15886,7 +15962,11 @@
       "notas": "Entrada por foto: Recepción de Refacciones",
       "timestamp": "2026-11-03T00:10:47.208Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-02"
     },
     {
       "id": "mov_1793664338802_911",
@@ -16071,7 +16151,11 @@
       "notas": "Entrada por foto: Recepción de Refacciones",
       "timestamp": "2026-11-02T17:18:49.368Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-02"
     },
     {
       "id": "mov_1793638612393_551",
@@ -16208,7 +16292,11 @@
       "costo_unitario": 163,
       "foto": "/uploads/foto_1793468654918_64977.jpg",
       "notas": "",
-      "timestamp": "2026-10-31T17:44:42.666Z"
+      "timestamp": "2026-10-31T17:44:42.666Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-31"
     },
     {
       "id": "mov_1793468301139_0_5094",
@@ -16278,7 +16366,11 @@
       "notas": "Entrada por foto: Recepción de Refacciones",
       "timestamp": "2026-10-31T17:32:36.887Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-31"
     },
     {
       "id": "mov_1793467840756_1",
@@ -16304,7 +16396,11 @@
       "timestamp": "2026-10-31T17:30:40.717Z",
       "almacen_id": "refacciones",
       "almacen": "Almacén de Refacciones",
-      "editado_el": "2026-10-31T17:31:49.418Z"
+      "editado_el": "2026-10-31T17:31:49.418Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-31"
     },
     {
       "id": "mov_1793467840756_0",
@@ -16330,7 +16426,11 @@
       "timestamp": "2026-10-31T17:30:40.717Z",
       "almacen_id": "refacciones",
       "almacen": "Almacén de Refacciones",
-      "editado_el": "2026-10-31T17:32:01.044Z"
+      "editado_el": "2026-10-31T17:32:01.044Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-31"
     },
     {
       "id": "ajuste_1793465983979_190",
@@ -16507,7 +16607,11 @@
       "solicitante": "César López",
       "unidad_camion": "",
       "motivo": "Cambio de Aceite y Filtros",
-      "editado_el": "2026-10-30T21:30:35.421Z"
+      "editado_el": "2026-10-30T21:30:35.421Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-30"
     },
     {
       "id": "mov_1793315556542_280",
@@ -16572,7 +16676,11 @@
       "notas": "Entrada por foto: Recepción de Refacciones",
       "timestamp": "2026-10-29T23:10:14.400Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-29"
     },
     {
       "id": "mov_1793315414452_0",
@@ -16597,7 +16705,11 @@
       "notas": "Entrada por foto: Recepción de Refacciones",
       "timestamp": "2026-10-29T23:10:14.400Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-29"
     },
     {
       "id": "mov_1793297821914_314",
@@ -16622,7 +16734,11 @@
       "motivo": "Paso Directo E/S a Unidad 75",
       "foto": "/uploads/foto_1793297272117_49586.jpeg",
       "notas": "",
-      "timestamp": "2026-10-29T18:17:01.741Z"
+      "timestamp": "2026-10-29T18:17:01.741Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-29"
     },
     {
       "id": "mov_1793225107933_0_3617",
@@ -16667,7 +16783,11 @@
       "notas": "Paso Directo E/S a Unidad 45: Recepción de Refacciones",
       "timestamp": "2026-10-28T21:50:07.599Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-28"
     },
     {
       "id": "mov_1793208764348_0_3908",
@@ -16712,7 +16832,11 @@
       "notas": "Entrada por foto: Recepción de Refacciones",
       "timestamp": "2026-10-28T17:29:23.347Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-28"
     },
     {
       "id": "mov_1793208025848_0_8229",
@@ -16758,7 +16882,11 @@
       "solicitante": "",
       "unidad_camion": "",
       "motivo": "",
-      "editado_el": "2026-10-28T15:43:49.634Z"
+      "editado_el": "2026-10-28T15:43:49.634Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-28"
     },
     {
       "id": "mov_1793201989720_2",
@@ -16781,7 +16909,11 @@
       "solicitante": "",
       "costo_unitario": 4800,
       "notas": "Ingreso masivo por remisión/factura",
-      "timestamp": "2026-10-28T15:39:45.010Z"
+      "timestamp": "2026-10-28T15:39:45.010Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-27"
     },
     {
       "id": "mov_1793201989703_1",
@@ -16804,7 +16936,11 @@
       "solicitante": "",
       "costo_unitario": 3950,
       "notas": "Ingreso masivo por remisión/factura",
-      "timestamp": "2026-10-28T15:39:45.010Z"
+      "timestamp": "2026-10-28T15:39:45.010Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-27"
     },
     {
       "id": "mov_1793201985110_0",
@@ -16827,7 +16963,11 @@
       "solicitante": "",
       "costo_unitario": 5200,
       "notas": "Ingreso masivo por remisión/factura",
-      "timestamp": "2026-10-28T15:39:45.010Z"
+      "timestamp": "2026-10-28T15:39:45.010Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-27"
     },
     {
       "id": "mov_1793147021288_0_5929",
@@ -16997,7 +17137,11 @@
       "notas": "Entrada por foto: Recepción de Refacciones",
       "timestamp": "2026-10-27T21:51:32.063Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-27"
     },
     {
       "id": "mov_1793137656600_0",
@@ -17022,7 +17166,11 @@
       "notas": "Entrada por foto: Recepción de Refacciones",
       "timestamp": "2026-10-27T21:47:36.599Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-27"
     },
     {
       "id": "mov_1793137422139_0",
@@ -17047,7 +17195,11 @@
       "notas": "Entrada por foto: Recepción de Refacciones",
       "timestamp": "2026-10-27T21:43:42.138Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-27"
     },
     {
       "id": "mov_1793137363240_0",
@@ -17072,7 +17224,11 @@
       "notas": "Entrada por foto: Recepción de Refacciones",
       "timestamp": "2026-10-27T21:42:43.239Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-27"
     },
     {
       "id": "mov_1793137315943_0",
@@ -17097,7 +17253,11 @@
       "notas": "Entrada por foto: Recepción de Refacciones",
       "timestamp": "2026-10-27T21:41:55.943Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-27"
     },
     {
       "id": "mov_1793137266069_0",
@@ -17122,7 +17282,11 @@
       "notas": "Entrada por foto: Recepción de Refacciones",
       "timestamp": "2026-10-27T21:41:06.068Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-27"
     },
     {
       "id": "mov_1793136864691_0",
@@ -17147,7 +17311,11 @@
       "notas": "Entrada por foto: Recepción de Refacciones",
       "timestamp": "2026-10-27T21:34:24.686Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-27"
     },
     {
       "id": "mov_1793136280222_958",
@@ -17193,7 +17361,11 @@
       "timestamp": "2026-10-27T21:06:43.110Z",
       "almacen_id": "refacciones",
       "almacen": "Almacén de Refacciones",
-      "editado_el": "2026-10-27T21:09:38.427Z"
+      "editado_el": "2026-10-27T21:09:38.427Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-27"
     },
     {
       "id": "mov_1793135203117_8",
@@ -17219,7 +17391,11 @@
       "timestamp": "2026-10-27T21:06:43.110Z",
       "almacen_id": "refacciones",
       "almacen": "Almacén de Refacciones",
-      "editado_el": "2026-10-27T21:09:35.620Z"
+      "editado_el": "2026-10-27T21:09:35.620Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-27"
     },
     {
       "id": "mov_1793135203117_7",
@@ -17245,7 +17421,11 @@
       "timestamp": "2026-10-27T21:06:43.110Z",
       "almacen_id": "refacciones",
       "almacen": "Almacén de Refacciones",
-      "editado_el": "2026-10-27T21:09:31.955Z"
+      "editado_el": "2026-10-27T21:09:31.955Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-27"
     },
     {
       "id": "mov_1793135203117_6",
@@ -17271,7 +17451,11 @@
       "timestamp": "2026-10-27T21:06:43.110Z",
       "almacen_id": "refacciones",
       "almacen": "Almacén de Refacciones",
-      "editado_el": "2026-10-27T21:09:23.956Z"
+      "editado_el": "2026-10-27T21:09:23.956Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-27"
     },
     {
       "id": "mov_1793135203117_5",
@@ -17297,7 +17481,11 @@
       "timestamp": "2026-10-27T21:06:43.110Z",
       "almacen_id": "refacciones",
       "almacen": "Almacén de Refacciones",
-      "editado_el": "2026-10-27T21:09:17.894Z"
+      "editado_el": "2026-10-27T21:09:17.894Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-27"
     },
     {
       "id": "mov_1793135203117_4",
@@ -17323,7 +17511,11 @@
       "timestamp": "2026-10-27T21:06:43.110Z",
       "almacen_id": "refacciones",
       "almacen": "Almacén de Refacciones",
-      "editado_el": "2026-10-27T21:09:12.034Z"
+      "editado_el": "2026-10-27T21:09:12.034Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-27"
     },
     {
       "id": "mov_1793135203117_3",
@@ -17349,7 +17541,11 @@
       "timestamp": "2026-10-27T21:06:43.110Z",
       "almacen_id": "refacciones",
       "almacen": "Almacén de Refacciones",
-      "editado_el": "2026-10-27T21:09:04.567Z"
+      "editado_el": "2026-10-27T21:09:04.567Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-27"
     },
     {
       "id": "mov_1793135203117_2",
@@ -17375,7 +17571,11 @@
       "timestamp": "2026-10-27T21:06:43.110Z",
       "almacen_id": "refacciones",
       "almacen": "Almacén de Refacciones",
-      "editado_el": "2026-10-27T21:09:00.960Z"
+      "editado_el": "2026-10-27T21:09:00.960Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-27"
     },
     {
       "id": "mov_1793135203117_1",
@@ -17401,7 +17601,11 @@
       "timestamp": "2026-10-27T21:06:43.110Z",
       "almacen_id": "refacciones",
       "almacen": "Almacén de Refacciones",
-      "editado_el": "2026-10-27T21:08:57.389Z"
+      "editado_el": "2026-10-27T21:08:57.389Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-27"
     },
     {
       "id": "mov_1793135203116_0",
@@ -17427,7 +17631,11 @@
       "timestamp": "2026-10-27T21:06:43.110Z",
       "almacen_id": "refacciones",
       "almacen": "Almacén de Refacciones",
-      "editado_el": "2026-10-27T21:08:51.850Z"
+      "editado_el": "2026-10-27T21:08:51.850Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-27"
     },
     {
       "id": "mov_1793134464698_122",
@@ -17472,7 +17680,11 @@
       "notas": "Paso Directo E/S a Unidad 69: Recepción de Refacciones",
       "timestamp": "2026-10-27T00:30:48.902Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-16"
     },
     {
       "id": "mov_1793060464296_0",
@@ -17497,7 +17709,11 @@
       "notas": "Paso Directo E/S a Unidad 61: Recepción de Refacciones",
       "timestamp": "2026-10-27T00:21:04.223Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-26"
     },
     {
       "id": "mov_1793040298874_0_7686",
@@ -17602,7 +17818,11 @@
       "notas": "Paso Directo E/S a Unidad 2502: Recepción de Refacciones",
       "timestamp": "2026-10-26T17:06:53.390Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-23"
     },
     {
       "id": "mov_1793031199620_0_4548",
@@ -17753,7 +17973,11 @@
       "motivo": "Paso Directo E/S a Unidad 2506",
       "foto": "",
       "notas": "",
-      "timestamp": "2026-10-24T17:24:00.813Z"
+      "timestamp": "2026-10-24T17:24:00.813Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-24"
     },
     {
       "id": "mov_1792862002986_418",
@@ -17798,7 +18022,11 @@
       "notas": "Paso Directo E/S a Unidad 81: Recepción de Refacciones",
       "timestamp": "2026-10-24T17:11:30.150Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-24"
     },
     {
       "id": "mov_1792861542697_0_2056",
@@ -17919,7 +18147,11 @@
       "costo_unitario": 53.33,
       "foto": "",
       "notas": "",
-      "timestamp": "2026-10-24T00:32:37.713Z"
+      "timestamp": "2026-10-24T00:32:37.713Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-23"
     },
     {
       "id": "mov_1792792817916_5_1866",
@@ -18064,7 +18296,11 @@
       "notas": "Paso Directo E/S a Unidad 85: Recepción de Refacciones",
       "timestamp": "2026-10-23T21:56:19.454Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-23"
     },
     {
       "id": "mov_1792792576383_0",
@@ -18089,7 +18325,11 @@
       "notas": "Paso Directo E/S a Unidad 85: Recepción de Refacciones",
       "timestamp": "2026-10-23T21:56:16.383Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-23"
     },
     {
       "id": "mov_1792792573614_0",
@@ -18114,7 +18354,11 @@
       "notas": "Paso Directo E/S a Unidad 85: Recepción de Refacciones",
       "timestamp": "2026-10-23T21:56:13.612Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-23"
     },
     {
       "id": "mov_1792791682505_0",
@@ -18139,7 +18383,11 @@
       "notas": "Entrada por foto: Recepción de Refacciones",
       "timestamp": "2026-10-23T21:41:22.498Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-23"
     },
     {
       "id": "ajuste_1792790227411_355",
@@ -18190,7 +18438,11 @@
       "notas": "Paso Directo E/S a Unidad 61: Recepción de Refacciones",
       "timestamp": "2026-10-23T00:01:54.500Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-21"
     },
     {
       "id": "mov_1792713488715_0",
@@ -18215,7 +18467,11 @@
       "notas": "Paso Directo E/S a Unidad 61: Recepción de Refacciones",
       "timestamp": "2026-10-22T23:58:08.713Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-21"
     },
     {
       "id": "mov_1792713296782_0",
@@ -18240,7 +18496,11 @@
       "notas": "Entrada por foto: Recepción de Refacciones",
       "timestamp": "2026-10-22T23:54:56.772Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-21"
     },
     {
       "id": "mov_1792712990674_325",
@@ -18305,7 +18565,11 @@
       "notas": "Entrada por foto: Recepción de Refacciones",
       "timestamp": "2026-10-22T23:46:58.638Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-22"
     },
     {
       "id": "ajuste_1792712620540_661",
@@ -18356,7 +18620,11 @@
       "notas": "Entrada por foto: Recepción de Refacciones",
       "timestamp": "2026-10-22T23:40:11.760Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-22"
     },
     {
       "id": "mov_1792703940862_22",
@@ -18486,7 +18754,11 @@
       "notas": "Entrada por foto: Recepción de Refacciones",
       "timestamp": "2026-10-22T20:46:35.836Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-16"
     },
     {
       "id": "mov_1792701962737_0",
@@ -18511,7 +18783,11 @@
       "notas": "Entrada por foto: Recepción de Refacciones",
       "timestamp": "2026-10-22T20:46:02.700Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-16"
     },
     {
       "id": "mov_1792701694619_5",
@@ -18556,7 +18832,11 @@
       "notas": "Entrada por foto: Recepción de Refacciones",
       "timestamp": "2026-10-22T20:39:29.522Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-16"
     },
     {
       "id": "mov_1792701569531_1",
@@ -18581,7 +18861,11 @@
       "notas": "Entrada por foto: Recepción de Refacciones",
       "timestamp": "2026-10-22T20:39:29.522Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-16"
     },
     {
       "id": "mov_1792701569531_0",
@@ -18606,7 +18890,11 @@
       "notas": "Entrada por foto: Recepción de Refacciones",
       "timestamp": "2026-10-22T20:39:29.522Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-16"
     },
     {
       "id": "mov_1792701262854_705",
@@ -18627,7 +18915,11 @@
       "costo_unitario": 386,
       "foto": "",
       "notas": "",
-      "timestamp": "2026-10-22T20:34:22.846Z"
+      "timestamp": "2026-10-22T20:34:22.846Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-16"
     },
     {
       "id": "mov_1792700634877_28",
@@ -18937,7 +19229,11 @@
       "notas": "Entrada por foto: Recepción de Refacciones",
       "timestamp": "2026-10-22T18:35:21.633Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-21"
     },
     {
       "id": "mov_1792693564628_812",
@@ -19050,7 +19346,11 @@
       "solicitante": "",
       "costo_unitario": 1000,
       "notas": "Ingreso masivo por remisión/factura",
-      "timestamp": "2026-10-22T18:07:04.359Z"
+      "timestamp": "2026-10-22T18:07:04.359Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-22"
     },
     {
       "id": "mov_1792692430400_0",
@@ -19073,7 +19373,11 @@
       "solicitante": "",
       "costo_unitario": 1657,
       "notas": "Ingreso masivo por remisión/factura",
-      "timestamp": "2026-10-22T18:07:04.359Z"
+      "timestamp": "2026-10-22T18:07:04.359Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-22"
     },
     {
       "id": "mov_1792692058726_0_1353",
@@ -19119,7 +19423,11 @@
       "solicitante": "César Almacén",
       "costo_unitario": 4.2,
       "notas": "[RECEPCIÓN OC: OC-2026-001 | Proveedor: REFACCIONES Y FILTROS DEL NORTE SA DE CV]",
-      "timestamp": "2026-10-22T00:38:46.425Z"
+      "timestamp": "2026-10-22T00:38:46.425Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-22"
     },
     {
       "id": "mov_1792623248415_3_2394",
@@ -19354,7 +19662,11 @@
       "notas": "Ingreso masivo por remisión/factura",
       "timestamp": "2026-10-21T17:44:04.898Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-21"
     },
     {
       "id": "mov_1792541590589_265",
@@ -19578,7 +19890,11 @@
       "notas": "Ingreso masivo por remisión/factura",
       "timestamp": "2026-10-21T00:05:29.196Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-15"
     },
     {
       "id": "mov_1792541129265_7",
@@ -19601,7 +19917,11 @@
       "notas": "Ingreso masivo por remisión/factura",
       "timestamp": "2026-10-21T00:05:29.196Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-15"
     },
     {
       "id": "mov_1792541129264_6",
@@ -19624,7 +19944,11 @@
       "notas": "Ingreso masivo por remisión/factura",
       "timestamp": "2026-10-21T00:05:29.196Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-15"
     },
     {
       "id": "mov_1792541129264_5",
@@ -19647,7 +19971,11 @@
       "notas": "Ingreso masivo por remisión/factura",
       "timestamp": "2026-10-21T00:05:29.196Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-15"
     },
     {
       "id": "mov_1792541129263_4",
@@ -19670,7 +19998,11 @@
       "notas": "Ingreso masivo por remisión/factura",
       "timestamp": "2026-10-21T00:05:29.196Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-15"
     },
     {
       "id": "mov_1792541129263_3",
@@ -19693,7 +20025,11 @@
       "notas": "Ingreso masivo por remisión/factura",
       "timestamp": "2026-10-21T00:05:29.196Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-15"
     },
     {
       "id": "mov_1792541129262_2",
@@ -19716,7 +20052,11 @@
       "notas": "Ingreso masivo por remisión/factura",
       "timestamp": "2026-10-21T00:05:29.196Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-15"
     },
     {
       "id": "mov_1792541129262_1",
@@ -19739,7 +20079,11 @@
       "notas": "Ingreso masivo por remisión/factura",
       "timestamp": "2026-10-21T00:05:29.196Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-15"
     },
     {
       "id": "mov_1792541129260_0",
@@ -19762,7 +20106,11 @@
       "notas": "Ingreso masivo por remisión/factura",
       "timestamp": "2026-10-21T00:05:29.196Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-15"
     },
     {
       "id": "mov_1792540620392_215",
@@ -19883,7 +20231,11 @@
       "notas": "",
       "timestamp": "2026-10-20T23:42:56.304Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-14"
     },
     {
       "id": "mov_1792539085624_965",
@@ -20028,7 +20380,11 @@
       "notas": "",
       "timestamp": "2026-10-20T23:22:41.968Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-13"
     },
     {
       "id": "mov_1792538502398_405",
@@ -20069,7 +20425,11 @@
       "notas": "",
       "timestamp": "2026-10-20T23:15:52.599Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-13"
     },
     {
       "id": "mov_1792536706681_22",
@@ -20095,7 +20455,11 @@
       "timestamp": "2026-10-20T22:51:46.645Z",
       "editado_el": "2026-10-21T14:38:13.991Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-20"
     },
     {
       "id": "mov_1792535834438_168",
@@ -20276,7 +20640,11 @@
       "notas": "",
       "timestamp": "2026-10-20T22:08:11.601Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-19"
     },
     {
       "id": "mov_1792533874631_203",
@@ -20297,7 +20665,11 @@
       "notas": "",
       "timestamp": "2026-10-20T22:04:34.630Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-19"
     },
     {
       "id": "mov_1792533574890_740",
@@ -20318,7 +20690,11 @@
       "notas": "",
       "timestamp": "2026-10-20T21:59:34.725Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-19"
     },
     {
       "id": "mov_1792532403085_338",
@@ -20339,7 +20715,11 @@
       "notas": "",
       "timestamp": "2026-10-20T21:40:03.050Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-19"
     },
     {
       "id": "mov_1792532198646_422",
@@ -20459,7 +20839,11 @@
       "notas": "Ingreso masivo por remisión",
       "timestamp": "2026-10-20T00:22:37.540Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-20"
     },
     {
       "id": "mov_1792455757717_2",
@@ -20479,7 +20863,11 @@
       "notas": "Ingreso masivo por remisión",
       "timestamp": "2026-10-20T00:22:37.540Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-20"
     },
     {
       "id": "mov_1792455757717_1",
@@ -20499,7 +20887,11 @@
       "notas": "Ingreso masivo por remisión",
       "timestamp": "2026-10-20T00:22:37.540Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-20"
     },
     {
       "id": "mov_1792455757717_0",
@@ -20519,7 +20911,11 @@
       "notas": "Ingreso masivo por remisión",
       "timestamp": "2026-10-20T00:22:37.540Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-20"
     },
     {
       "id": "mov_1792454650221_0",
@@ -20559,7 +20955,11 @@
       "notas": "Ingreso masivo por remisión",
       "timestamp": "2026-10-19T23:21:06.441Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-19"
     },
     {
       "id": "mov_1792452066639_2",
@@ -20579,7 +20979,11 @@
       "notas": "Ingreso masivo por remisión",
       "timestamp": "2026-10-19T23:21:06.441Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-19"
     },
     {
       "id": "mov_1792452066638_1",
@@ -20599,7 +21003,11 @@
       "notas": "Ingreso masivo por remisión",
       "timestamp": "2026-10-19T23:21:06.441Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-19"
     },
     {
       "id": "mov_1792452066637_0",
@@ -20619,7 +21027,11 @@
       "notas": "Ingreso masivo por remisión",
       "timestamp": "2026-10-19T23:21:06.441Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-19"
     },
     {
       "id": "mov_1792450088864_591",
@@ -20640,7 +21052,11 @@
       "notas": "",
       "timestamp": "2026-10-19T22:48:08.847Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-19"
     },
     {
       "id": "mov_1792448824544_19",
@@ -20901,7 +21317,11 @@
       "notas": "Importado de hoja 12-10-2026",
       "timestamp": "2026-10-12T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-12"
     },
     {
       "id": "hist_ent_12-10-2026_272",
@@ -20922,7 +21342,11 @@
       "notas": "Importado de hoja 12-10-2026",
       "timestamp": "2026-10-12T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-12"
     },
     {
       "id": "hist_sal_09-10-2026_256",
@@ -21203,7 +21627,11 @@
       "notas": "Importado de hoja 08-10-2026",
       "timestamp": "2026-10-08T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-08"
     },
     {
       "id": "hist_ent_08-10-2026_102",
@@ -21224,7 +21652,11 @@
       "notas": "Importado de hoja 08-10-2026",
       "timestamp": "2026-10-08T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-08"
     },
     {
       "id": "hist_ent_08-10-2026_318",
@@ -21245,7 +21677,11 @@
       "notas": "Importado de hoja 08-10-2026",
       "timestamp": "2026-10-08T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-08"
     },
     {
       "id": "hist_sal_07-10-2026_100",
@@ -21346,7 +21782,11 @@
       "notas": "Importado de hoja 07-10-2026",
       "timestamp": "2026-10-07T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-07"
     },
     {
       "id": "hist_ent_07-10-2026_292",
@@ -21367,7 +21807,11 @@
       "notas": "Importado de hoja 07-10-2026",
       "timestamp": "2026-10-07T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-07"
     },
     {
       "id": "hist_ent_07-10-2026_708",
@@ -21388,7 +21832,11 @@
       "notas": "Importado de hoja 07-10-2026",
       "timestamp": "2026-10-07T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-07"
     },
     {
       "id": "hist_sal_06-10-2026_170",
@@ -21529,7 +21977,11 @@
       "notas": "Importado de hoja 06-10-2026",
       "timestamp": "2026-10-06T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-06"
     },
     {
       "id": "hist_ent_06-10-2026_612",
@@ -21550,7 +22002,11 @@
       "notas": "Importado de hoja 06-10-2026",
       "timestamp": "2026-10-06T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-06"
     },
     {
       "id": "hist_ent_06-10-2026_655",
@@ -21571,7 +22027,11 @@
       "notas": "Importado de hoja 06-10-2026",
       "timestamp": "2026-10-06T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-06"
     },
     {
       "id": "hist_sal_05-10-2026_70",
@@ -21892,7 +22352,11 @@
       "notas": "Importado de hoja 05-10-2026",
       "timestamp": "2026-10-05T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-05"
     },
     {
       "id": "hist_ent_05-10-2026_100",
@@ -21913,7 +22377,11 @@
       "notas": "Importado de hoja 05-10-2026",
       "timestamp": "2026-10-05T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-05"
     },
     {
       "id": "hist_ent_05-10-2026_170",
@@ -21934,7 +22402,11 @@
       "notas": "Importado de hoja 05-10-2026",
       "timestamp": "2026-10-05T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-05"
     },
     {
       "id": "hist_ent_05-10-2026_401",
@@ -21955,7 +22427,11 @@
       "notas": "Importado de hoja 05-10-2026",
       "timestamp": "2026-10-05T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-05"
     },
     {
       "id": "hist_ent_05-10-2026_665",
@@ -21976,7 +22452,11 @@
       "notas": "Importado de hoja 05-10-2026",
       "timestamp": "2026-10-05T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-05"
     },
     {
       "id": "hist_ent_05-10-2026_667",
@@ -21997,7 +22477,11 @@
       "notas": "Importado de hoja 05-10-2026",
       "timestamp": "2026-10-05T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-05"
     },
     {
       "id": "hist_ent_05-10-2026_705",
@@ -22018,7 +22502,11 @@
       "notas": "Importado de hoja 05-10-2026",
       "timestamp": "2026-10-05T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-05"
     },
     {
       "id": "hist_ent_05-10-2026_711",
@@ -22039,7 +22527,11 @@
       "notas": "Importado de hoja 05-10-2026",
       "timestamp": "2026-10-05T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-05"
     },
     {
       "id": "hist_ent_05-10-2026_869",
@@ -22060,7 +22552,11 @@
       "notas": "Importado de hoja 05-10-2026",
       "timestamp": "2026-10-05T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-05"
     },
     {
       "id": "hist_sal_02-10-2026_9",
@@ -22261,7 +22757,11 @@
       "notas": "Importado de hoja 02-10-2026",
       "timestamp": "2026-10-02T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-02"
     },
     {
       "id": "hist_ent_02-10-2026_19",
@@ -22282,7 +22782,11 @@
       "notas": "Importado de hoja 02-10-2026",
       "timestamp": "2026-10-02T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-02"
     },
     {
       "id": "hist_ent_02-10-2026_459",
@@ -22303,7 +22807,11 @@
       "notas": "Importado de hoja 02-10-2026",
       "timestamp": "2026-10-02T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-02"
     },
     {
       "id": "hist_ent_02-10-2026_739",
@@ -22324,7 +22832,11 @@
       "notas": "Importado de hoja 02-10-2026",
       "timestamp": "2026-10-02T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-02"
     },
     {
       "id": "hist_sal_01-10-2026_196",
@@ -22425,7 +22937,11 @@
       "notas": "Importado de hoja 01-10-2026",
       "timestamp": "2026-10-01T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-01"
     },
     {
       "id": "hist_ent_01-10-2026_611",
@@ -22446,7 +22962,11 @@
       "notas": "Importado de hoja 01-10-2026",
       "timestamp": "2026-10-01T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-01"
     },
     {
       "id": "hist_ent_01-10-2026_612",
@@ -22467,7 +22987,11 @@
       "notas": "Importado de hoja 01-10-2026",
       "timestamp": "2026-10-01T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-01"
     },
     {
       "id": "hist_sal_30-09-2026_368",
@@ -22628,7 +23152,11 @@
       "notas": "Importado de hoja 30-09-2026",
       "timestamp": "2026-09-30T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-30"
     },
     {
       "id": "hist_ent_30-09-2026_653",
@@ -22649,7 +23177,11 @@
       "notas": "Importado de hoja 30-09-2026",
       "timestamp": "2026-09-30T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-30"
     },
     {
       "id": "hist_ent_30-09-2026_703",
@@ -22670,7 +23202,11 @@
       "notas": "Importado de hoja 30-09-2026",
       "timestamp": "2026-09-30T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-30"
     },
     {
       "id": "hist_sal_29-09-2026_9",
@@ -22891,7 +23427,11 @@
       "notas": "Importado de hoja 29-09-2026",
       "timestamp": "2026-09-29T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-29"
     },
     {
       "id": "hist_ent_29-09-2026_70",
@@ -22912,7 +23452,11 @@
       "notas": "Importado de hoja 29-09-2026",
       "timestamp": "2026-09-29T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-29"
     },
     {
       "id": "hist_ent_29-09-2026_74",
@@ -22933,7 +23477,11 @@
       "notas": "Importado de hoja 29-09-2026",
       "timestamp": "2026-09-29T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-29"
     },
     {
       "id": "hist_ent_29-09-2026_305",
@@ -22954,7 +23502,11 @@
       "notas": "Importado de hoja 29-09-2026",
       "timestamp": "2026-09-29T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-29"
     },
     {
       "id": "hist_sal_28-09-2026_327",
@@ -23055,7 +23607,11 @@
       "notas": "Importado de hoja 28-09-2026",
       "timestamp": "2026-09-28T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-28"
     },
     {
       "id": "hist_sal_26-09-26_320",
@@ -23176,7 +23732,11 @@
       "notas": "Importado de hoja 25-09-26",
       "timestamp": "2026-09-25T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-25"
     },
     {
       "id": "hist_sal_24-09-26_23",
@@ -23237,7 +23797,11 @@
       "notas": "Importado de hoja 24-09-26",
       "timestamp": "2026-09-24T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-24"
     },
     {
       "id": "hist_ent_24-09-26_446",
@@ -23258,7 +23822,11 @@
       "notas": "Importado de hoja 24-09-26",
       "timestamp": "2026-09-24T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-24"
     },
     {
       "id": "hist_ent_24-09-26_560",
@@ -23279,7 +23847,11 @@
       "notas": "Importado de hoja 24-09-26",
       "timestamp": "2026-09-24T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-24"
     },
     {
       "id": "hist_ent_24-09-26_561",
@@ -23300,7 +23872,11 @@
       "notas": "Importado de hoja 24-09-26",
       "timestamp": "2026-09-24T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-24"
     },
     {
       "id": "hist_ent_24-09-26_562",
@@ -23321,7 +23897,11 @@
       "notas": "Importado de hoja 24-09-26",
       "timestamp": "2026-09-24T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-24"
     },
     {
       "id": "hist_ent_24-09-26_563",
@@ -23342,7 +23922,11 @@
       "notas": "Importado de hoja 24-09-26",
       "timestamp": "2026-09-24T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-24"
     },
     {
       "id": "hist_ent_24-09-26_564",
@@ -23363,7 +23947,11 @@
       "notas": "Importado de hoja 24-09-26",
       "timestamp": "2026-09-24T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-24"
     },
     {
       "id": "hist_ent_24-09-26_565",
@@ -23384,7 +23972,11 @@
       "notas": "Importado de hoja 24-09-26",
       "timestamp": "2026-09-24T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-24"
     },
     {
       "id": "hist_ent_24-09-26_566",
@@ -23405,7 +23997,11 @@
       "notas": "Importado de hoja 24-09-26",
       "timestamp": "2026-09-24T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-24"
     },
     {
       "id": "hist_ent_24-09-26_567",
@@ -23426,7 +24022,11 @@
       "notas": "Importado de hoja 24-09-26",
       "timestamp": "2026-09-24T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-24"
     },
     {
       "id": "hist_ent_24-09-26_568",
@@ -23447,7 +24047,11 @@
       "notas": "Importado de hoja 24-09-26",
       "timestamp": "2026-09-24T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-24"
     },
     {
       "id": "hist_ent_24-09-26_569",
@@ -23468,7 +24072,11 @@
       "notas": "Importado de hoja 24-09-26",
       "timestamp": "2026-09-24T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-24"
     },
     {
       "id": "hist_ent_24-09-26_570",
@@ -23489,7 +24097,11 @@
       "notas": "Importado de hoja 24-09-26",
       "timestamp": "2026-09-24T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-24"
     },
     {
       "id": "hist_ent_24-09-26_571",
@@ -23510,7 +24122,11 @@
       "notas": "Importado de hoja 24-09-26",
       "timestamp": "2026-09-24T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-24"
     },
     {
       "id": "hist_ent_24-09-26_572",
@@ -23531,7 +24147,11 @@
       "notas": "Importado de hoja 24-09-26",
       "timestamp": "2026-09-24T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-24"
     },
     {
       "id": "hist_ent_24-09-26_573",
@@ -23552,7 +24172,11 @@
       "notas": "Importado de hoja 24-09-26",
       "timestamp": "2026-09-24T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-24"
     },
     {
       "id": "hist_ent_24-09-26_574",
@@ -23573,7 +24197,11 @@
       "notas": "Importado de hoja 24-09-26",
       "timestamp": "2026-09-24T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-24"
     },
     {
       "id": "hist_ent_24-09-26_575",
@@ -23594,7 +24222,11 @@
       "notas": "Importado de hoja 24-09-26",
       "timestamp": "2026-09-24T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-24"
     },
     {
       "id": "hist_ent_24-09-26_576",
@@ -23615,7 +24247,11 @@
       "notas": "Importado de hoja 24-09-26",
       "timestamp": "2026-09-24T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-24"
     },
     {
       "id": "hist_ent_24-09-26_725",
@@ -23636,7 +24272,11 @@
       "notas": "Importado de hoja 24-09-26",
       "timestamp": "2026-09-24T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-24"
     },
     {
       "id": "hist_ent_24-09-26_737",
@@ -23657,7 +24297,11 @@
       "notas": "Importado de hoja 24-09-26",
       "timestamp": "2026-09-24T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-24"
     },
     {
       "id": "hist_ent_24-09-26_740",
@@ -23678,7 +24322,11 @@
       "notas": "Importado de hoja 24-09-26",
       "timestamp": "2026-09-24T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-24"
     },
     {
       "id": "hist_ent_24-09-26_826",
@@ -23699,7 +24347,11 @@
       "notas": "Importado de hoja 24-09-26",
       "timestamp": "2026-09-24T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-24"
     },
     {
       "id": "hist_ent_24-09-26_849",
@@ -23720,7 +24372,11 @@
       "notas": "Importado de hoja 24-09-26",
       "timestamp": "2026-09-24T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-24"
     },
     {
       "id": "hist_sal_23-09-26_106",
@@ -24121,7 +24777,11 @@
       "notas": "Importado de hoja 22-09-26",
       "timestamp": "2026-09-22T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-22"
     },
     {
       "id": "hist_ent_22-09-26_618",
@@ -24142,7 +24802,11 @@
       "notas": "Importado de hoja 22-09-26",
       "timestamp": "2026-09-22T10:00:00.000Z",
       "almacen_id": "refacciones",
-      "almacen": "Almacén de Refacciones"
+      "almacen": "Almacén de Refacciones",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-22"
     }
   ],
   "facturas_procesadas": [
@@ -24167,7 +24831,11 @@
           "descripcion": "PEDAL COMPLETO DEL ACELERADOR",
           "costo_unitario": 2733
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-05"
     },
     {
       "id": "fac_1793740846560_aecqk",
@@ -24190,7 +24858,11 @@
           "descripcion": "JUEGO FRENO ZAPATACOJINETE FRENOS",
           "costo_unitario": 1850
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-03"
     },
     {
       "id": "fac_1793297821914",
@@ -24212,7 +24884,11 @@
           "cantidad": 1,
           "costo_unitario": 10100
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-29"
     },
     {
       "id": "fac_1793201989722_8txk6",
@@ -24247,7 +24923,11 @@
           "descripcion": "REP. SECADOR AD-IS DLU BX/",
           "costo_unitario": 4800
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-27"
     },
     {
       "id": "fac_1792692436349_ekeg1",
@@ -24276,7 +24956,11 @@
           "descripcion": "BOLSA SUSPENCION 8 BOLSAS HEMBRA TIPO NUVO (1R11-268/C81-1005/W013589541) PISTON PLASTICO",
           "costo_unitario": 1000
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-22"
     },
     {
       "id": "fac_1792604644950_obpts",
@@ -24299,7 +24983,11 @@
           "descripcion": "MANG. BOOSTER 3/8 X 3.40 MT CON HEMBRAS REUSABLE FRENOS",
           "costo_unitario": 450
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-21"
     },
     {
       "id": "fac_1792541129266_a80wf",
@@ -24370,7 +25058,11 @@
           "descripcion": "P954933 AIR OIL SEPARATOR",
           "costo_unitario": 193.75
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-15"
     },
     {
       "id": "fac_hist_F88429",
@@ -24433,7 +25125,11 @@
           "descripcion": "FILTRO PARA COMBUSTIBLE CARBURANTE",
           "costo_unitario": 890
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-20"
     },
     {
       "id": "fac_hist_106761",
@@ -24454,7 +25150,11 @@
           "descripcion": "BOLSA DE AIRE",
           "costo_unitario": 1875.8621
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-19"
     },
     {
       "id": "fac_hist_83729",
@@ -24475,7 +25175,11 @@
           "descripcion": "RETEN CIGÜEÑAL DELANTERO",
           "costo_unitario": 820
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-12"
     },
     {
       "id": "fac_hist_14146",
@@ -24496,7 +25200,11 @@
           "descripcion": "VALVULA REDUCTORA DE PRESIOM",
           "costo_unitario": 1832
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-12"
     },
     {
       "id": "fac_hist_40998",
@@ -24535,7 +25243,11 @@
           "descripcion": "FILTRO DE ACEITE",
           "costo_unitario": 850
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-29"
     },
     {
       "id": "fac_hist_226560",
@@ -24556,7 +25268,11 @@
           "descripcion": "DEPOSITO DE DIRECCION",
           "costo_unitario": 3393.9
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-28"
     },
     {
       "id": "fac_hist_A142",
@@ -24631,7 +25347,11 @@
           "descripcion": "GRIFO DE TIRON 1/4",
           "costo_unitario": 135.85
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-24"
     },
     {
       "id": "fac_hist_1679",
@@ -24676,7 +25396,11 @@
           "descripcion": "BOLSA DE AIRE CABINA CASCADIA",
           "costo_unitario": 1596
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-09-24"
     },
     {
       "id": "fac_hist_441342258",
@@ -24697,7 +25421,11 @@
           "descripcion": "FILTRO DE AIRE INTERNACIONAL",
           "costo_unitario": 2219.31
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-19"
     },
     {
       "id": "fac_hist_PE14148",
@@ -24718,7 +25446,11 @@
           "descripcion": "Compresor de Aire Acondicionado Automotriz",
           "costo_unitario": 17219.98
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-19"
     },
     {
       "id": "fac_hist_4441342258",
@@ -24739,7 +25471,11 @@
           "descripcion": "Filtro de combustible secundario enroscable",
           "costo_unitario": 505.91
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-19"
     },
     {
       "id": "fac_hist_FACTEST7789",
@@ -24760,7 +25496,11 @@
           "descripcion": "FOCO H11 12V",
           "costo_unitario": 4.2
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-22"
     },
     {
       "id": "fac_hist_1718",
@@ -24793,7 +25533,11 @@
           "descripcion": "MANGUERA PARA POST ENFRIADOR 4*8",
           "costo_unitario": 1676
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-16"
     },
     {
       "id": "fac_hist_8499",
@@ -24814,7 +25558,11 @@
           "descripcion": "MANGUERA PARA POST ENFRIADOR 4*8",
           "costo_unitario": 386
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-16"
     },
     {
       "id": "fac_hist_FERRETERIA",
@@ -24835,7 +25583,11 @@
           "descripcion": "VALVULA DE ESFERA NIQUELADA ROSCABLE / PASO",
           "costo_unitario": 78.5
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-21"
     },
     {
       "id": "fac_hist_ENTFOTOMVK7GJ0M",
@@ -24856,7 +25608,11 @@
           "descripcion": "RETEN CIGÜEÑAL DELANTERO",
           "costo_unitario": 820
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-21"
     },
     {
       "id": "fac_hist_ENTFOTOMVK7BOSR",
@@ -24877,7 +25633,11 @@
           "descripcion": "BALERO",
           "costo_unitario": 378
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-21"
     },
     {
       "id": "fac_hist_ENTFOTOMVK77KPA",
@@ -24898,7 +25658,11 @@
           "descripcion": "HUASA DE PARO 2\"",
           "costo_unitario": 500
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-21"
     },
     {
       "id": "fac_hist_ENTFOTOMVK6XBRL",
@@ -24919,7 +25683,11 @@
           "descripcion": "AMORTIGUADOR",
           "costo_unitario": 1250
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-22"
     },
     {
       "id": "fac_hist_ENTFOTOMVK6OLVA",
@@ -24940,7 +25708,11 @@
           "descripcion": "AMORTIGUADOR TRASERO",
           "costo_unitario": 1250
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-22"
     },
     {
       "id": "fac_hist_ENTFOTOMVK0HCU6",
@@ -24961,7 +25733,11 @@
           "descripcion": "TORNILLO BARRA CARDAN DE CABEZA HEXAGONAL M14 * 1,5",
           "costo_unitario": 70
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-16"
     },
     {
       "id": "fac_hist_ENTFOTOMVK0GNAP",
@@ -24982,7 +25758,11 @@
           "descripcion": "TUERCA BARRA CARDAN HEXAGONAL TIPO 2 M14 * 1,5",
           "costo_unitario": 35
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-16"
     },
     {
       "id": "fac_hist_ENTFOTOMVLIEVLR",
@@ -25003,7 +25783,11 @@
           "descripcion": "EMPAQUE",
           "costo_unitario": 0
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-23"
     },
     {
       "id": "fac_hist_ENTFOTOMVLIET8F",
@@ -25024,7 +25808,11 @@
           "descripcion": "TORNILLO",
           "costo_unitario": 178
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-23"
     },
     {
       "id": "fac_hist_ENTFOTOMVLIER3I",
@@ -25045,7 +25833,11 @@
           "descripcion": "TORNILLO",
           "costo_unitario": 0
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-23"
     },
     {
       "id": "fac_hist_ENTFOTOMVLHVNIG",
@@ -25066,7 +25858,11 @@
           "descripcion": "BUJE DE QUINTA RUEDA FONTAINE",
           "costo_unitario": 485
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-23"
     },
     {
       "id": "fac_hist_ENTFOTOMVSNE628",
@@ -25087,7 +25883,11 @@
           "descripcion": "CRUCETA",
           "costo_unitario": 990.99
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-28"
     },
     {
       "id": "fac_hist_32000",
@@ -25108,7 +25908,11 @@
           "descripcion": "BALERO DE CENTRO CARDAN / SOPORTE CARDAN",
           "costo_unitario": 0
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-28"
     },
     {
       "id": "fac_hist_31967",
@@ -25165,7 +25969,11 @@
           "descripcion": "SOPORTE  / BUJE DE CABINA",
           "costo_unitario": 635
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-27"
     },
     {
       "id": "fac_hist_2667",
@@ -25186,7 +25994,11 @@
           "descripcion": "FILTRO DE COMBUSTIBLE",
           "costo_unitario": 1781
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-27"
     },
     {
       "id": "fac_hist_ENTFOTOMVR6EHPO",
@@ -25249,7 +26061,11 @@
           "descripcion": "FILTRO DE COMBUSTIBLE",
           "costo_unitario": 734.3027999999999
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-27"
     },
     {
       "id": "fac_hist_ENTFOTOMVPY93YJ",
@@ -25270,7 +26086,11 @@
           "descripcion": "CAMARA DE SUSPENSION",
           "costo_unitario": 2072.92
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-16"
     },
     {
       "id": "fac_hist_ENTFOTOMVPXWKVA",
@@ -25291,7 +26111,11 @@
           "descripcion": "RETEN DE CIGUEÑAL TRASERO CUMMINS",
           "costo_unitario": 1590
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-26"
     },
     {
       "id": "fac_hist_ENTFOTOMVPIE7WO",
@@ -25312,7 +26136,11 @@
           "descripcion": "ACUMULADOR / BATERIA / PILA",
           "costo_unitario": 84
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-23"
     },
     {
       "id": "fac_hist_ENTFOTOMVMNOG2V",
@@ -25333,7 +26161,11 @@
           "descripcion": "VALVULA / CONEXION RAPIDA CODO 90 GRADOS 1/2 A 3/4",
           "costo_unitario": 125
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-24"
     },
     {
       "id": "fac_hist_R028211",
@@ -25360,7 +26192,11 @@
           "descripcion": "CONEXION AQ71-P-4X4",
           "costo_unitario": 160
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-29"
     },
     {
       "id": "fac_hist_4441343233",
@@ -25381,7 +26217,11 @@
           "descripcion": "FILTRO DE AIRE PRIMARIO",
           "costo_unitario": 1447
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-30"
     },
     {
       "id": "fac_hist_441343620",
@@ -25432,7 +26272,11 @@
           "descripcion": "FILTRO DE AIRE TIPO PANEL",
           "costo_unitario": 303.98
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-05"
     },
     {
       "id": "fac_hist_I39",
@@ -25459,7 +26303,11 @@
           "descripcion": "BALATA 4707 ",
           "costo_unitario": 280
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-03"
     },
     {
       "id": "fac_hist_32247",
@@ -25480,7 +26328,11 @@
           "descripcion": "LIMPIAPARABRISAS 22\"",
           "costo_unitario": 80
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-03"
     },
     {
       "id": "fac_hist_32180",
@@ -25507,7 +26359,11 @@
           "descripcion": "RETEN TRASERO",
           "costo_unitario": 0
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-02"
     },
     {
       "id": "fac_hist_32196",
@@ -25546,7 +26402,11 @@
           "descripcion": "TAMBOR DE FRENO UNEMOUNT PARA EJE DE REMOLQUE",
           "costo_unitario": 13999
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-02"
     },
     {
       "id": "fac_hist_ENTFOTOMVZIWIZH",
@@ -25567,7 +26427,11 @@
           "descripcion": "BOLSA DE AIRE",
           "costo_unitario": 1638.42
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-02"
     },
     {
       "id": "fac_hist_ENTFOTOMVWOIK60",
@@ -25588,7 +26452,11 @@
           "descripcion": "CINTA GRIS PARA DUCTO",
           "costo_unitario": 58.8
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-31"
     },
     {
       "id": "fac_hist_3621",
@@ -25615,7 +26483,11 @@
           "descripcion": "CONECTOR RAPIDO PARA MANGUERA DE AIRE / UNION PLASTICA / CONEXION RAPIDA 4MM",
           "costo_unitario": 75
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-10-31"
     }
   ],
   "usuarios": [
