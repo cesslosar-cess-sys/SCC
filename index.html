@@ -400,7 +400,7 @@
     <!-- VISTA: MANTENIMIENTOS PREVENTIVOS CESS -->
     <!-- ======================================================== -->
     <div id="vista-preventivos" class="flex-1 hidden max-w-7xl w-full mx-auto p-3 sm:p-6 flex-col gap-5">
-        <!-- Encabezado y Navegación de Preventivos Vinculados a Combustible -->
+        <!-- Encabezado y Navegación de Preventivos Flota CESS -->
         <div class="bg-[#1E1E1E] border border-[#3A3D42] rounded-2xl p-4 sm:p-5 shadow-xl flex flex-col gap-4">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
@@ -424,26 +424,6 @@
                 </div>
             </div>
 
-            <!-- Banner Informativo: Vinculación Oficial con Sistema de Control CESS Combustible -->
-            <div class="bg-gradient-to-r from-cyan-950/40 via-[#1A2333]/60 to-[#141518] border border-cyan-800/50 rounded-xl px-3.5 py-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-7 h-7 rounded-lg bg-cyan-900/50 text-cyan-300 flex items-center justify-center font-bold text-xs shrink-0">
-                        <i class="fa-solid fa-link"></i>
-                    </div>
-                    <div>
-                        <div class="font-bold text-white flex items-center gap-2 flex-wrap">
-                            <span>Vinculado a: <strong>Sistema de Control CESS Combustible</strong></span>
-                            <span class="inline-flex items-center gap-1 text-[10px] text-emerald-400 bg-emerald-950/90 px-2 py-0.5 rounded-full border border-emerald-800 font-mono">
-                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> EN VIVO
-                            </span>
-                        </div>
-                        <p class="text-[11px] text-slate-400">Datos y odómetros gobernados desde el módulo oficial de preventivos. Modo supervisión y consulta para taller.</p>
-                    </div>
-                </div>
-                <div class="text-[11px] text-amber-300/90 bg-amber-950/40 px-3 py-1 rounded-lg border border-amber-800/40 self-start sm:self-auto flex items-center gap-1.5 shrink-0">
-                    <i class="fa-solid fa-lock text-[#C59B27]"></i> Registros centralizados desde preventivos
-                </div>
-            </div>
 
             <!-- Selector de Sub-Pestañas: [1. Estado Actual por Unidad] vs [2. Bitácora de Preventivos] -->
             <div class="flex items-center gap-2 pt-1 border-t border-[#3A3D42]/60 flex-wrap">
@@ -468,7 +448,7 @@
                     </div>
                     <div>
                         <span class="block text-[11px] text-slate-400 font-bold uppercase">Total Flota Monitoreada</span>
-                        <span class="text-lg font-black text-white font-mono" id="prev-kpi-total">83</span>
+                        <span class="text-lg font-black text-white font-mono" id="prev-kpi-total">74</span>
                     </div>
                 </div>
                 <div class="bg-[#141518] p-3.5 rounded-xl border border-red-900/60 flex items-center gap-3">
@@ -477,7 +457,7 @@
                     </div>
                     <div>
                         <span class="block text-[11px] text-red-300 font-bold uppercase">Servicios Vencidos</span>
-                        <span class="text-lg font-black text-red-400 font-mono" id="prev-kpi-vencidos">19</span>
+                        <span class="text-lg font-black text-red-400 font-mono" id="prev-kpi-vencidos">7</span>
                     </div>
                 </div>
                 <div class="bg-[#141518] p-3.5 rounded-xl border border-amber-900/60 flex items-center gap-3">
@@ -486,7 +466,7 @@
                     </div>
                     <div>
                         <span class="block text-[11px] text-amber-300 font-bold uppercase">Próximos a Vencer</span>
-                        <span class="text-lg font-black text-amber-400 font-mono" id="prev-kpi-proximos">5</span>
+                        <span class="text-lg font-black text-amber-400 font-mono" id="prev-kpi-proximos">3</span>
                     </div>
                 </div>
                 <div class="bg-[#141518] p-3.5 rounded-xl border border-emerald-900/60 flex items-center gap-3">
@@ -495,7 +475,7 @@
                     </div>
                     <div>
                         <span class="block text-[11px] text-emerald-300 font-bold uppercase">Servicios al Día</span>
-                        <span class="text-lg font-black text-emerald-400 font-mono" id="prev-kpi-vigentes">59</span>
+                        <span class="text-lg font-black text-emerald-400 font-mono" id="prev-kpi-vigentes">64</span>
                     </div>
                 </div>
             </div>
@@ -504,16 +484,16 @@
             <div class="bg-[#1E1E1E] border border-[#3A3D42] rounded-2xl p-4 shadow-xl flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
                 <div class="flex flex-wrap items-center gap-1.5">
                     <button onclick="filtrarPreventivosPorEstatus('TODOS')" id="btn-filtro-prev-todos" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-[#C59B27] text-black shadow-sm">
-                        Todos (<span id="cnt-filtro-prev-todos">83</span>)
+                        Todos (<span id="cnt-filtro-prev-todos">74</span>)
                     </button>
                     <button onclick="filtrarPreventivosPorEstatus('VENCIDO')" id="btn-filtro-prev-vencido" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-[#141518] text-red-400 border border-red-900/60 hover:bg-red-950/40">
-                        Vencidos (<span id="cnt-filtro-prev-vencidos">19</span>)
+                        Vencidos (<span id="cnt-filtro-prev-vencidos">7</span>)
                     </button>
                     <button onclick="filtrarPreventivosPorEstatus('PROXIMO')" id="btn-filtro-prev-proximo" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-[#141518] text-amber-400 border border-amber-900/60 hover:bg-amber-950/40">
-                        Próximos (<span id="cnt-filtro-prev-proximos">5</span>)
+                        Próximos (<span id="cnt-filtro-prev-proximos">3</span>)
                     </button>
                     <button onclick="filtrarPreventivosPorEstatus('VIGENTE')" id="btn-filtro-prev-vigente" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-[#141518] text-emerald-400 border border-emerald-900/60 hover:bg-emerald-950/40">
-                        Vigentes (<span id="cnt-filtro-prev-vigentes">59</span>)
+                        Vigentes (<span id="cnt-filtro-prev-vigentes">64</span>)
                     </button>
                 </div>
 
@@ -7323,7 +7303,7 @@
             }
         }
 
-        // --- 1. MÓDULO DE MANTENIMIENTOS PREVENTIVOS (VINCULADO A CONTROL CESS COMBUSTIBLE) ---
+        // --- 1. MÓDULO DE MANTENIMIENTOS PREVENTIVOS (FLOTA CESS) ---
         let cachePreventivos = [];
         let cacheBitacora = [];
         let subTabPreventivosActiva = 'unidades'; // 'unidades' | 'bitacora'
@@ -7367,7 +7347,7 @@
                     <tr>
                         <td colspan="9" class="p-8 text-center text-slate-500">
                             <i class="fa-solid fa-spinner fa-spin text-xl text-[#C59B27] mb-2"></i>
-                            <span class="block">Cargando unidades vinculadas a Control CESS Combustible...</span>
+                            <span class="block">Cargando unidades y mantenimientos preventivos...</span>
                         </td>
                     </tr>
                 `;

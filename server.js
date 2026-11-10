@@ -2856,7 +2856,7 @@ app.get('/api/preventivos', (req, res) => {
 
     res.json({
         success: true,
-        source: 'Sistema de Control CESS Combustible (diesel-cess-40bbf)',
+        source: 'Control Oficial de Flota CESS',
         data: list,
         preventivos: list,
         stats,
@@ -2873,7 +2873,7 @@ app.get('/api/preventivos/bitacora', (req, res) => {
     }
     res.json({
         success: true,
-        source: 'Sistema de Control CESS Combustible - Bitácora Oficial',
+        source: 'Bitácora Oficial de Mantenimientos CESS',
         data: bitacora,
         bitacora: bitacora,
         count: bitacora.length
