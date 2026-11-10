@@ -55,6 +55,47 @@ const ALMACEN_DB_FILE = fs.existsSync(path.join(__dirname, 'almacen_datos.json')
 const PREVENTIVOS_FILE = path.join(__dirname, 'taller_preventivos.json');
 const RESCATES_FILE = path.join(__dirname, 'taller_rescates.json');
 const TITULOS_COLUMNAS_FILE = path.join(__dirname, 'taller_config_columnas.json');
+const REMOLQUES_FILE = path.join(__dirname, 'taller_remolques.json');
+const ARCHIVADAS_FILE = path.join(__dirname, 'taller_unidades_archivadas.json');
+
+function getUnidadesArchivadas() {
+    if (!fs.existsSync(ARCHIVADAS_FILE)) return [];
+    try {
+        return JSON.parse(fs.readFileSync(ARCHIVADAS_FILE, 'utf8'));
+    } catch(e) {
+        return [];
+    }
+}
+
+function saveUnidadesArchivadas(archivadas) {
+    try {
+        fs.writeFileSync(ARCHIVADAS_FILE, JSON.stringify(archivadas, null, 2), 'utf8');
+        return true;
+    } catch(e) {
+        return false;
+    }
+}
+
+function getRemolques() {
+    if (!fs.existsSync(REMOLQUES_FILE)) {
+        return [];
+    }
+    try {
+        return JSON.parse(fs.readFileSync(REMOLQUES_FILE, 'utf8'));
+    } catch(e) {
+        return [];
+    }
+}
+
+function saveRemolques(remolques) {
+    try {
+        fs.writeFileSync(REMOLQUES_FILE, JSON.stringify(remolques, null, 2), 'utf8');
+        broadcastSSE('remolques_updated', { remolques, count: remolques.length });
+        return true;
+    } catch(e) {
+        return false;
+    }
+}
 
 function getTitulosColumnas() {
     const defaultTitulos = {
@@ -419,6 +460,34 @@ function saveUnidades(unidades, autor = 'Sistema') {
             }
         });
     }
+
+    // PROTECCIÓN DE DATOS HISTÓRICOS: Si una unidad ya no está en el tablero activo, archivarla sin perder avances
+    if (fs.existsSync(DB_FILE)) {
+        try {
+            const previas = JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
+            if (Array.isArray(previas)) {
+                let archivadas = getUnidadesArchivadas();
+                let cambioArchivadas = false;
+                previas.forEach(p => {
+                    const sigueEnTablero = unidades.some(u => String(u.id).trim() === String(p.id).trim());
+                    if (!sigueEnTablero) {
+                        const idxArch = archivadas.findIndex(a => String(a.id).trim() === String(p.id).trim());
+                        const copia = { ...p, archivada: true, fecha_salida: p.fecha_salida || new Date().toLocaleDateString('es-MX'), motivo_salida: p.motivo_salida || 'Retirada del tablero activo / Salida a viaje' };
+                        if (idxArch >= 0) {
+                            archivadas[idxArch] = { ...archivadas[idxArch], ...copia };
+                        } else {
+                            archivadas.unshift(copia);
+                        }
+                        cambioArchivadas = true;
+                    }
+                });
+                if (cambioArchivadas) {
+                    saveUnidadesArchivadas(archivadas);
+                }
+            }
+        } catch(e) {}
+    }
+
     fs.writeFileSync(DB_FILE, JSON.stringify(unidades, null, 2), 'utf8');
     broadcastSSE('units_updated', { units: unidades, autor, count: unidades.length });
 }
@@ -732,7 +801,20 @@ app.post('/api/unidad/:id', (req, res) => {
 app.get('/api/unidad/:id/historial-diario', (req, res) => {
     const unitId = String(req.params.id).trim();
     const unidades = getUnidades();
-    const u = unidades.find(x => String(x.id) === unitId);
+    const archivadas = getUnidadesArchivadas();
+    let u = unidades.find(x => String(x.id) === unitId) || archivadas.find(x => String(x.id) === unitId);
+
+    // Búsqueda profunda en bitácoras históricas si la unidad fue atendida en jornadas anteriores
+    if (!u) {
+        const bitacoras = getBitacoras();
+        for (const b of bitacoras) {
+            const uSnap = (b.unidades || []).find(x => String(x.id) === unitId);
+            if (uSnap) {
+                u = { ...uSnap, historial: uSnap.historial || [], avances: uSnap.avances || [] };
+                break;
+            }
+        }
+    }
 
     if (!u) {
         return res.status(404).json({ error: `Unidad ${unitId} no encontrada` });
@@ -788,7 +870,11 @@ app.get('/api/unidad/:id/historial-diario', (req, res) => {
             costo: u.costo,
             fechaRefaccion: u.fechaRefaccion,
             categoriaFalla: u.categoriaFalla,
-            piezas: u.piezas || []
+            piezas: u.piezas || [],
+            avances: u.avances || [],
+            archivada: u.archivada || false,
+            fecha_salida: u.fecha_salida || null,
+            motivo_salida: u.motivo_salida || null
         },
         resumen: {
             dias_con_actividad: diasOrdenados.length,
@@ -797,6 +883,214 @@ app.get('/api/unidad/:id/historial-diario', (req, res) => {
         },
         dias: diasOrdenados
     });
+});
+
+
+// --- 6.5 GESTIÓN DE SALIDA A VIAJE Y UNIDADES ARCHIVADAS ---
+app.get('/api/unidades/archivadas', (req, res) => {
+    const archivadas = getUnidadesArchivadas();
+    res.json({ success: true, count: archivadas.length, archivadas });
+});
+
+app.post('/api/unidad/:id/liberar', (req, res) => {
+    const unitId = String(req.params.id).trim();
+    const { motivo, notas, km_salida } = req.body || {};
+    let unidades = getUnidades();
+    const idx = unidades.findIndex(u => String(u.id).trim() === unitId);
+
+    if (idx === -1) {
+        return res.status(404).json({ error: `Unidad ${unitId} no encontrada en el tablero activo` });
+    }
+
+    const unidad = unidades[idx];
+    const fechaSalida = new Date().toLocaleDateString('es-MX');
+    const horaSalida = new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+
+    const eventoSalida = {
+        fecha: fechaSalida,
+        hora: horaSalida,
+        evento: `Salida de taller: ${motivo || 'Asignada a viaje / Liberada'}. ${notas || ''}`.trim(),
+        tipo: 'liberacion',
+        km: km_salida || null
+    };
+
+    if (!Array.isArray(unidad.historial)) unidad.historial = [];
+    unidad.historial.push(eventoSalida);
+
+    if (!Array.isArray(unidad.avances)) unidad.avances = [];
+    unidad.avances.unshift({
+        fecha: fechaSalida,
+        hora: horaSalida,
+        texto: `🏁 Unidad liberada de taller: ${motivo || 'Asignada a viaje'}. ${notas || ''}`.trim(),
+        mecanico: 'Jefe de Taller',
+        porcentaje: 100
+    });
+
+    unidad.archivada = true;
+    unidad.fecha_salida = fechaSalida;
+    unidad.hora_salida = horaSalida;
+    unidad.motivo_salida = motivo || 'Asignada a viaje / Liberada';
+    unidad.notas_salida = notas || '';
+    if (km_salida) unidad.km_salida = km_salida;
+
+    let archivadas = getUnidadesArchivadas();
+    const archIdx = archivadas.findIndex(a => String(a.id).trim() === unitId);
+    if (archIdx >= 0) {
+        archivadas[archIdx] = { ...archivadas[archIdx], ...unidad };
+    } else {
+        archivadas.unshift(unidad);
+    }
+    saveUnidadesArchivadas(archivadas);
+
+    // Retirar del tablero activo
+    unidades.splice(idx, 1);
+    saveUnidades(unidades);
+
+    // Registrar en movimientos de jornada
+    try {
+        const jornada = getJornadaActual();
+        if (!jornada.movimientos) jornada.movimientos = [];
+        jornada.movimientos.unshift({
+            id: `mov_lib_${Date.now()}`,
+            hora: horaSalida,
+            unidad_id: unitId,
+            tipo: 'liberacion',
+            descripcion: `Unidad ${unitId} liberada de taller: ${motivo || 'Salida a viaje'}`,
+            autor: 'Jefe de Taller'
+        });
+        saveJornada(jornada);
+    } catch(e) {}
+
+    res.json({ success: true, mensaje: `Unidad ${unitId} liberada y archivada correctamente`, unidad });
+});
+
+app.post('/api/unidad/:id/reincorporar', (req, res) => {
+    const unitId = String(req.params.id).trim();
+    let archivadas = getUnidadesArchivadas();
+    const idx = archivadas.findIndex(a => String(a.id).trim() === unitId);
+
+    if (idx === -1) {
+        return res.status(404).json({ error: `Unidad ${unitId} no encontrada en archivo` });
+    }
+
+    const unidad = archivadas[idx];
+    unidad.archivada = false;
+    unidad.estado = unidad.estado || 'proceso';
+
+    const fechaReinc = new Date().toLocaleDateString('es-MX');
+    const horaReinc = new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+    if (!Array.isArray(unidad.historial)) unidad.historial = [];
+    unidad.historial.push({
+        fecha: fechaReinc,
+        hora: horaReinc,
+        evento: 'Reincorporada al tablero de taller activo',
+        tipo: 'reincorporacion'
+    });
+
+    let unidades = getUnidades();
+    const existIdx = unidades.findIndex(u => String(u.id).trim() === unitId);
+    if (existIdx >= 0) {
+        unidades[existIdx] = unidad;
+    } else {
+        unidades.unshift(unidad);
+    }
+    saveUnidades(unidades);
+
+    archivadas.splice(idx, 1);
+    saveUnidadesArchivadas(archivadas);
+
+    res.json({ success: true, mensaje: `Unidad ${unitId} reincorporada al tablero`, unidad });
+});
+
+// --- 23.5 ACTUALIZACIÓN BIDIRECCIONAL DE SERVICIOS PREVENTIVOS ---
+app.post('/api/preventivo/:unidad/actualizar-servicio', (req, res) => {
+    const unidadId = String(req.params.unidad).trim();
+    const { km_actual, fecha_realizado, intervalo, tipo_tracto, costo, observaciones } = req.body || {};
+
+    const targetFiles = [
+        'combustible_preventivos_cache.json',
+        'taller_preventivos.json',
+        'diesel_local_cache.json',
+        'web/src/data/initial_cache.json'
+    ];
+
+    let unidadActualizada = null;
+
+    targetFiles.forEach(relPath => {
+        const fullPath = path.join(__dirname, relPath);
+        if (!fs.existsSync(fullPath)) return;
+        try {
+            let content = JSON.parse(fs.readFileSync(fullPath, 'utf8'));
+            let list = Array.isArray(content) ? content : (content.preventivos || []);
+            let item = list.find(x => String(x.unidad).trim() === unidadId);
+
+            const tracto = tipo_tracto || (item ? item.tipo_tracto : 'Cascadia');
+            const isSitrak = String(tracto).toLowerCase().includes('sitrak');
+            const inter = Number(intervalo) || (isSitrak ? 30000 : 35000);
+            const km = Number(km_actual || (item ? item.km_actual : 0));
+            const prox = km + inter;
+            const fecha = fecha_realizado || new Date().toLocaleDateString('es-MX');
+
+            const updatedData = {
+                unidad: unidadId,
+                division: item ? item.division : 'RL',
+                marca: item ? item.marca : (isSitrak ? 'Sinotruk' : 'Freightliner'),
+                tipo_tracto: tracto,
+                km_actual: km,
+                km_mtto_anterior: km,
+                fecha_realizado: fecha,
+                proximo_mtto_km: prox,
+                km_restantes: inter,
+                estatus: 'VIGENTE',
+                estatusLabel: 'Vigente',
+                ubicacion: item ? item.ubicacion : 'PATIO APODACA'
+            };
+
+            unidadActualizada = updatedData;
+
+            if (item) {
+                Object.assign(item, updatedData);
+            } else {
+                list.push(updatedData);
+            }
+
+            const histEntry = {
+                id: `bit_${Date.now()}`,
+                unidad: unidadId,
+                fecha: fecha,
+                km_actual: km,
+                intervalo: inter,
+                tipo_tracto: tracto,
+                marca: updatedData.marca,
+                costo_total: Number(costo) || 0,
+                observaciones: observaciones || 'Servicio preventivo registrado en sistema'
+            };
+
+            if (content.preventivos_historial && Array.isArray(content.preventivos_historial)) {
+                content.preventivos_historial.unshift(histEntry);
+            }
+            if (content.bitacora && Array.isArray(content.bitacora)) {
+                content.bitacora.unshift(histEntry);
+            }
+
+            if (!Array.isArray(content)) {
+                content.stats = {
+                    total: list.length,
+                    vigentes: list.filter(p => (p.estatus || '').toUpperCase() === 'VIGENTE').length,
+                    vencidos: list.filter(p => (p.estatus || '').toUpperCase() === 'VENCIDO').length,
+                    proximos: list.filter(p => (p.estatus || '').toUpperCase() === 'PRÓXIMO' || (p.estatus || '').toUpperCase() === 'PROXIMO').length
+                };
+                content.resumen = content.stats;
+            }
+
+            fs.writeFileSync(fullPath, JSON.stringify(content, null, 2), 'utf8');
+        } catch (e) {
+            console.error(`Error actualizando preventivo en ${relPath}:`, e.message);
+        }
+    });
+
+    broadcastSSE('preventivos_updated', { unidad: unidadActualizada });
+    res.json({ success: true, mensaje: `Servicio preventivo de Unidad ${unidadId} actualizado con éxito`, preventivo: unidadActualizada });
 });
 
 // 7. Sincronizar desde archivo Excel Taller Flotilla-v2.xlsx
@@ -2143,30 +2437,60 @@ app.get('/api/exportar-excel-ejecutivo', (req, res) => {
         const unidades = getUnidades();
         const fechaHoy = getFechaActualISO();
 
-        const orden = { mayor: 1, proceso: 2, listo: 3 };
-        const ordenadas = [...unidades].sort((a, b) => (orden[a.estado] || 9) - (orden[b.estado] || 9));
+        const prevList = getPreventivos();
+        const orden = { considerar: 0, mayor: 1, proceso: 2, listo: 3 };
+        const ordenadas = [...unidades].sort((a, b) => (orden[a.estado] ?? 9) - (orden[b.estado] ?? 9));
 
-        const rows = ordenadas.map(u => ({
-            'No. Unidad': u.id,
-            'Terminal': u.sucursal,
-            'Estatus Actual': u.estado === 'mayor' ? 'Reparación Mayor / Presupuesto ($$)' : (u.estado === 'proceso' ? 'En Reparación Activa' : 'Lista para Entrega'),
-            'Categoría Sistema': u.categoriaFalla || 'General',
-            'Diagnóstico / Defecto Mecánico': u.defecto || '',
-            'Avances Técnicos / Notas': u.notas || u.reporte || '',
-            'Costo Refacciones (MXN)': Number(u.costo) || 0,
-            'Fecha Prog. Entrega': u.fechaRefaccion || 'Sin programar'
-        }));
+        const rows = ordenadas.map(u => {
+            const p = prevList.find(x => String(x.unidad).trim() === String(u.id).trim() || (Number(x.unidad) > 0 && Number(x.unidad) === Number(u.id)));
+            let prevTag = 'Al Día';
+            let kmRestPrev = '';
+            if (p) {
+                const estNorm = (p.estatus || '').toUpperCase().trim();
+                kmRestPrev = Number(p.km_restantes) || 0;
+                if (estNorm === 'VENCIDO') {
+                    prevTag = `🚨 VENCIDO (${kmRestPrev.toLocaleString()} km)`;
+                } else if (estNorm.includes('PROXIM')) {
+                    prevTag = `⚠️ PRÓXIMO (+${kmRestPrev.toLocaleString()} km)`;
+                } else {
+                    prevTag = `✅ Al Día (+${kmRestPrev.toLocaleString()} km)`;
+                }
+            } else {
+                prevTag = 'Sin registro';
+            }
+
+            const estTablero = u.estado === 'considerar' 
+                ? 'A Considerar / Detección' 
+                : (u.estado === 'mayor' 
+                    ? 'Reparación Mayor / Presupuesto' 
+                    : (u.estado === 'proceso' ? 'En Reparación Activa' : 'Lista para Entrega'));
+
+            return {
+                'No. Unidad': u.id,
+                'Terminal': u.sucursal || 'Apodaca',
+                'Estatus Tablero': estTablero,
+                'Diagnóstico / Defecto Mecánico': u.defecto || '',
+                'Avances Técnicos / Notas': u.notas || u.reporte || '',
+                'Folio Almacén': u.folio_almacen ? `#${u.folio_almacen}` : 'Sin folio',
+                'Costo Estimado (MXN)': (Number(u.costo) || 0) + (Number(u.costo_refacciones) || 0),
+                '¿Le toca Preventivo?': prevTag,
+                'Km Restantes Preventivo': kmRestPrev,
+                'Fecha Prog. Entrega': u.fechaRefaccion || 'Sin programar'
+            };
+        });
 
         // Fila de resumen total
-        const totalCosto = unidades.reduce((acc, u) => acc + (Number(u.costo) || 0), 0);
+        const totalCosto = unidades.reduce((acc, u) => acc + (Number(u.costo) || 0) + (Number(u.costo_refacciones) || 0), 0);
         rows.push({
             'No. Unidad': 'TOTALES',
             'Terminal': `${unidades.length} Unidades`,
-            'Estatus Actual': `Mayor: ${unidades.filter(u=>u.estado==='mayor').length} | Proceso: ${unidades.filter(u=>u.estado==='proceso').length} | Listas: ${unidades.filter(u=>u.estado==='listo').length}`,
-            'Categoría Sistema': 'Resumen Flotilla',
+            'Estatus Tablero': `Mayor: ${unidades.filter(u=>u.estado==='mayor').length} | Proceso: ${unidades.filter(u=>u.estado==='proceso').length} | Listas: ${unidades.filter(u=>u.estado==='listo').length}`,
             'Diagnóstico / Defecto Mecánico': `Generado el ${new Date().toLocaleString('es-MX')}`,
             'Avances Técnicos / Notas': 'Reporte Ejecutivo Oficial CESS Flotilla',
-            'Costo Refacciones (MXN)': totalCosto,
+            'Folio Almacén': `${unidades.filter(u => u.folio_almacen).length} con folio`,
+            'Costo Estimado (MXN)': totalCosto,
+            '¿Le toca Preventivo?': 'Corte Oficial',
+            'Km Restantes Preventivo': '',
             'Fecha Prog. Entrega': 'Corte Oficial'
         });
 
@@ -2176,12 +2500,14 @@ app.get('/api/exportar-excel-ejecutivo', (req, res) => {
         ws['!cols'] = [
             { wch: 12 }, // Unidad
             { wch: 14 }, // Terminal
-            { wch: 34 }, // Estatus
-            { wch: 20 }, // Categoria
+            { wch: 32 }, // Estatus Tablero
             { wch: 38 }, // Defecto
             { wch: 48 }, // Notas
-            { wch: 24 }, // Costo
-            { wch: 24 }  // Fecha
+            { wch: 16 }, // Folio Almacén
+            { wch: 22 }, // Costo
+            { wch: 30 }, // ¿Le toca Preventivo?
+            { wch: 22 }, // Km Restantes Preventivo
+            { wch: 22 }  // Fecha Prog
         ];
 
         xlsx.utils.book_append_sheet(wb, ws, 'Bitácora Flotilla CESS');
@@ -3095,6 +3421,120 @@ app.post('/api/rescates/:id/concluir', (req, res) => {
     }
 
     res.json({ success: true, rescate });
+});
+
+// --- 25. MÓDULO DE CAJAS Y REMOLQUES CESS ---
+app.get('/api/remolques', (req, res) => {
+    const list = getRemolques();
+    const stats = {
+        total: list.length,
+        considerar: list.filter(r => r.estado === 'considerar').length,
+        mayor: list.filter(r => r.estado === 'mayor').length,
+        proceso: list.filter(r => r.estado === 'proceso').length,
+        listo: list.filter(r => r.estado === 'listo').length,
+        costoTotal: list.reduce((acc, r) => acc + (Number(r.costo) || 0), 0)
+    };
+    res.json({ success: true, stats, remolques: list, count: list.length });
+});
+
+app.post('/api/remolques', (req, res) => {
+    const remolques = req.body;
+    if (!Array.isArray(remolques)) {
+        return res.status(400).json({ error: 'Se esperaba un arreglo de remolques' });
+    }
+    saveRemolques(remolques);
+    res.json({ success: true, count: remolques.length });
+});
+
+app.post('/api/remolque/:id', (req, res) => {
+    const remolqueId = String(req.params.id).trim();
+    const data = req.body;
+    let list = getRemolques();
+    let idx = list.findIndex(r => String(r.id).trim().toUpperCase() === remolqueId.toUpperCase());
+
+    const item = {
+        id: remolqueId,
+        tipo: data.tipo || "Caja Seca 53'",
+        marca: data.marca || '',
+        anio: data.anio || '',
+        placas: data.placas || '',
+        estado: data.estado || 'proceso',
+        sistema: data.sistema || 'General',
+        defecto: data.defecto || data.reporte || 'Mantenimiento preventivo / correctivo',
+        reporte: data.reporte || data.defecto || '',
+        mecanico: data.mecanico || 'Sin asignar',
+        costo: Number(data.costo) || 0,
+        sucursal: data.sucursal || 'Apodaca',
+        folio_almacen: data.folio_almacen || '',
+        fechaIngreso: data.fechaIngreso || new Date().toLocaleDateString('es-MX')
+    };
+
+    if (idx >= 0) {
+        list[idx] = { ...list[idx], ...item };
+    } else {
+        list.unshift(item);
+    }
+    saveRemolques(list);
+    res.json({ success: true, remolque: item });
+});
+
+app.post('/api/remolque/:id/estado', (req, res) => {
+    const remolqueId = String(req.params.id).trim();
+    const { nuevoEstado } = req.body;
+    let list = getRemolques();
+    let item = list.find(r => String(r.id).trim().toUpperCase() === remolqueId.toUpperCase());
+    if (!item) return res.status(404).json({ error: 'Remolque no encontrado' });
+
+    item.estado = nuevoEstado;
+    saveRemolques(list);
+    res.json({ success: true, remolque: item });
+});
+
+app.delete('/api/remolque/:id', (req, res) => {
+    const remolqueId = String(req.params.id).trim();
+    let list = getRemolques();
+    const nuevaLista = list.filter(r => String(r.id).trim().toUpperCase() !== remolqueId.toUpperCase());
+    saveRemolques(nuevaLista);
+    res.json({ success: true, count: nuevaLista.length });
+});
+
+app.get('/api/exportar-excel-remolques', (req, res) => {
+    try {
+        const remolques = getRemolques();
+        const fechaHoy = getFechaActualISO();
+        const rows = remolques.map(r => ({
+            'No. Remolque / Caja': r.id,
+            'Tipo de Remolque': r.tipo,
+            'Marca / Fabricante': r.marca || '',
+            'Año': r.anio || '',
+            'Placas': r.placas || '',
+            'Estatus en Taller': r.estado === 'mayor' ? 'Reparación Mayor / Hojalatería' : (r.estado === 'proceso' ? 'En Reparación Activa' : (r.estado === 'considerar' ? 'A Considerar / Daño' : 'Lista para Carga')),
+            'Sistema Afectado': r.sistema || 'General',
+            'Defecto / Trabajo Reportado': r.defecto || '',
+            'Avances Técnicos / Notas': r.reporte || '',
+            'Mecánico Asignado': r.mecanico || 'Sin asignar',
+            'Folio Almacén': r.folio_almacen ? `#${r.folio_almacen}` : 'Sin folio',
+            'Costo Estimado (MXN)': Number(r.costo) || 0,
+            'Patio / Ubicación': r.sucursal || 'Apodaca',
+            'Fecha Ingreso': r.fechaIngreso || ''
+        }));
+
+        const wb = xlsx.utils.book_new();
+        const ws = xlsx.utils.json_to_sheet(rows);
+        ws['!cols'] = [
+            { wch: 20 }, { wch: 24 }, { wch: 18 }, { wch: 10 }, { wch: 14 },
+            { wch: 30 }, { wch: 22 }, { wch: 38 }, { wch: 42 }, { wch: 20 },
+            { wch: 16 }, { wch: 20 }, { wch: 18 }, { wch: 16 }
+        ];
+        xlsx.utils.book_append_sheet(wb, ws, 'Remolques CESS');
+        const buf = xlsx.write(wb, { type: 'buffer', bookType: 'xlsx' });
+
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        res.setHeader('Content-Disposition', `attachment; filename="Cajas_y_Remolques_CESS_${fechaHoy}.xlsx"`);
+        res.send(buf);
+    } catch(err) {
+        res.status(500).json({ error: 'Error exportando Excel remolques: ' + err.message });
+    }
 });
 
 // --- Servir Aplicación SPA Frontend con Anti-Cache para HTML y Service Worker ---

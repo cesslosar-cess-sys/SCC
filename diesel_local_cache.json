@@ -31917,20 +31917,6 @@
   ],
   "preventivos": [
     {
-      "unidad": "25.03",
-      "division": "RL",
-      "marca": "FREIGHTLINER",
-      "tipo_tracto": "Cascadia",
-      "km_actual": 322003,
-      "km_mtto_anterior": 0,
-      "fecha_realizado": "-",
-      "proximo_mtto_km": 357003,
-      "km_restantes": 35000,
-      "estatus": "VIGENTE",
-      "estatusLabel": "Al Día",
-      "ubicacion": "PATIO APODACA"
-    },
-    {
       "unidad": "2503",
       "division": "RL",
       "marca": "International",
@@ -32958,12 +32944,12 @@
       "marca": "Sinotruk",
       "tipo_tracto": "SITRAK",
       "km_actual": 278234,
-      "km_mtto_anterior": 221610,
-      "fecha_realizado": "26/05/2026",
-      "proximo_mtto_km": 251610,
-      "km_restantes": -26624,
-      "estatus": "VENCIDO",
-      "estatusLabel": "Vencido",
+      "km_mtto_anterior": 278234,
+      "fecha_realizado": "10/11/2026",
+      "proximo_mtto_km": 308234,
+      "km_restantes": 30000,
+      "estatus": "VIGENTE",
+      "estatusLabel": "Vigente",
       "ubicacion": "cedis novem qro"
     },
     {
@@ -32982,6 +32968,17 @@
     }
   ],
   "preventivos_historial": [
+    {
+      "id": "bit_u8_1794347349499",
+      "unidad": "8",
+      "fecha": "10/11/2026",
+      "km_actual": 278234,
+      "intervalo": 30000,
+      "tipo_tracto": "SITRAK",
+      "marca": "Sinotruk",
+      "costo_total": 0,
+      "observaciones": "Servicio preventivo actualizado en Sistema de Control CESS Combustible"
+    },
     {
       "id": "prev_hist_156",
       "unidad": "59",
@@ -35512,5 +35509,17 @@
       "id": "MKj4qCA31ce2tvdbMXEF"
     }
   ],
-  "last_sync_timestamp": 1792594833.8270352
+  "last_sync_timestamp": 1792594833.8270352,
+  "stats": {
+    "total": 75,
+    "vigentes": 61,
+    "vencidos": 6,
+    "proximos": 8
+  },
+  "resumen": {
+    "total": 75,
+    "vigentes": 61,
+    "vencidos": 6,
+    "proximos": 8
+  }
 }

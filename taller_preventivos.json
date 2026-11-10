@@ -1,19 +1,5 @@
 [
   {
-    "unidad": "25.03",
-    "division": "RL",
-    "marca": "FREIGHTLINER",
-    "tipo_tracto": "Cascadia",
-    "km_actual": 322003,
-    "km_mtto_anterior": 0,
-    "fecha_realizado": "-",
-    "proximo_mtto_km": 357003,
-    "km_restantes": 35000,
-    "estatus": "VIGENTE",
-    "estatusLabel": "Al Día",
-    "ubicacion": "PATIO APODACA"
-  },
-  {
     "unidad": "2503",
     "division": "RL",
     "marca": "International",
@@ -1041,12 +1027,12 @@
     "marca": "Sinotruk",
     "tipo_tracto": "SITRAK",
     "km_actual": 278234,
-    "km_mtto_anterior": 221610,
-    "fecha_realizado": "26/05/2026",
-    "proximo_mtto_km": 251610,
-    "km_restantes": -26624,
-    "estatus": "VENCIDO",
-    "estatusLabel": "Vencido",
+    "km_mtto_anterior": 278234,
+    "fecha_realizado": "10/11/2026",
+    "proximo_mtto_km": 308234,
+    "km_restantes": 30000,
+    "estatus": "VIGENTE",
+    "estatusLabel": "Vigente",
     "ubicacion": "cedis novem qro"
   },
   {

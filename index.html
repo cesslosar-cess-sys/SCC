@@ -167,10 +167,10 @@
                     <span class="font-black">Compartir</span>
                 </button>
 
-                <!-- BOTÓN ACCESO JEFE DE TALLER (CELULAR O PC) -->
-                <button onclick="abrirModalInstalarJefe()" class="bg-[#282A2E] hover:bg-[#3A3D42] text-slate-200 border border-[#3A3D42] px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold shadow flex items-center gap-1.5 transition" title="Habilitar acceso permanente en celular o compu del Jefe de Taller">
+                <!-- BOTÓN INSTALAR APP (CELULAR O PC) -->
+                <button onclick="abrirModalInstalarJefe()" class="bg-[#282A2E] hover:bg-[#3A3D42] text-slate-200 border border-[#3A3D42] px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold shadow flex items-center gap-1.5 transition" title="Instalar aplicación en celular (Android / iOS) o computadora">
                     <i class="fa-solid fa-mobile-screen-button text-[#C59B27]"></i>
-                    <span class="hidden md:inline">Acceso Jefe</span>
+                    <span class="hidden md:inline">Instalar App</span>
                 </button>
 
                 <button onclick="abrirModalNuevaUnidad()" class="bg-[#282A2E] hover:bg-[#3A3D42] text-white border border-[#3A3D42] px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold shadow flex items-center gap-1.5 transition">
@@ -205,7 +205,7 @@
                 <button onclick="cambiarVistaPrincipal('preventivos')" id="nav-btn-preventivos" class="px-3.5 py-1.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 transition text-slate-400 hover:text-white hover:bg-[#282A2E]" title="Semáforo de servicios preventivos y kilometrajes de la flota CESS">
                     <i class="fa-solid fa-shield-halved text-cyan-400"></i>
                     <span>Preventivos</span>
-                    <span id="badge-nav-preventivos" class="bg-red-950 text-red-300 text-[10px] font-mono px-1.5 py-0.5 rounded border border-red-800 hidden sm:inline">22 Vencidos</span>
+                    <span id="badge-nav-preventivos" class="bg-red-950 text-red-300 text-[10px] font-mono px-1.5 py-0.5 rounded border border-red-800 hidden sm:inline">7 Vencidos</span>
                 </button>
 
                 <!-- Pestaña 3: Rescates Carreteros (Auxilio Vial en Ruta) -->
@@ -213,6 +213,13 @@
                     <i class="fa-solid fa-truck-medical text-amber-400"></i>
                     <span>Rescates Carreteros</span>
                     <span id="badge-nav-rescates" class="bg-amber-950 text-amber-300 text-[10px] font-mono px-1.5 py-0.5 rounded border border-amber-800 hidden sm:inline">1 En Ruta</span>
+                </button>
+
+                <!-- Pestaña 4: Cajas y Remolques CESS -->
+                <button onclick="cambiarVistaPrincipal('remolques')" id="nav-btn-remolques" class="px-3.5 py-1.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 transition text-slate-400 hover:text-white hover:bg-[#282A2E]" title="Control de mantenimiento de cajas 53', termos, plataformas y remolques">
+                    <i class="fa-solid fa-trailer text-[#DFB743]"></i>
+                    <span>Cajas & Remolques</span>
+                    <span id="badge-nav-remolques" class="bg-[#141518] text-[#C59B27] text-[10px] font-mono px-1.5 py-0.5 rounded border border-[#3A3D42] hidden sm:inline">6 Activas</span>
                 </button>
 
                 <!-- Pestaña 4: Historial Clínico por Unidad (DÍA POR DÍA) -->
@@ -285,6 +292,9 @@
                         <span>Inversión Cotizada:</span>
                         <span id="resumen-costo-total" class="font-bold text-red-400">$0 MXN</span>
                     </div>
+                    <button onclick="abrirModalUnidadesLiberadas()" class="bg-[#1E1E1E] hover:bg-[#282A2E] text-slate-300 border border-[#3A3D42] px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow" title="Ver unidades que salieron a viaje o fueron liberadas del taller">
+                        <i class="fa-solid fa-flag-checkered text-emerald-400"></i> <span class="hidden sm:inline">Salidas a Viaje</span> (<span id="cont-unidades-liberadas">0</span>)
+                    </button>
                 </div>
             </div>
         </div>
@@ -431,7 +441,10 @@
                     <i class="fa-solid fa-list-check"></i> Estado Actual por Unidad (<span id="tab-cnt-unidades">83</span>)
                 </button>
                 <button id="btn-subtab-prev-bitacora" onclick="cambiarSubTabPreventivos('bitacora')" class="px-3.5 py-2 rounded-xl text-xs font-bold transition bg-[#141518] text-slate-300 hover:text-white border border-[#3A3D42] flex items-center gap-2">
-                    <i class="fa-solid fa-clock-rotate-left text-cyan-400"></i> Bitácora Histórica de Mantenimientos (<span id="tab-cnt-bitacora">106</span>)
+                    <i class="fa-solid fa-clock-rotate-left text-cyan-400"></i> Bitácora Histórica (<span id="tab-cnt-bitacora">106</span>)
+                </button>
+                <button onclick="abrirModalActualizarServicio()" class="btn-cess-gold px-3.5 py-2 rounded-xl text-xs font-black flex items-center gap-2 shadow-lg shadow-[#C59B27]/20 transition" title="Registrar servicio preventivo realizado en una unidad">
+                    <i class="fa-solid fa-wrench"></i> Registrar Servicio Realizado
                 </button>
             </div>
         </div>
@@ -740,6 +753,210 @@
             </div>
         </div>
     </div>
+
+    <!-- ======================================================== -->
+    <!-- VISTA: CAJAS Y REMOLQUES CESS -->
+    <!-- ======================================================== -->
+    <div id="vista-remolques" class="flex-1 hidden max-w-7xl w-full mx-auto p-3 sm:p-6 flex-col gap-5">
+        <!-- Encabezado Módulo de Cajas y Remolques -->
+        <div class="bg-[#1E1E1E] border border-[#3A3D42] rounded-2xl p-4 sm:p-5 shadow-xl flex flex-col gap-4">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-[#2D2612] border border-[#C59B27]/60 text-[#DFB743] flex items-center justify-center text-lg shadow">
+                        <i class="fa-solid fa-trailer"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-base sm:text-lg font-black text-white flex items-center gap-2">
+                            Módulo de Cajas y Remolques <span class="text-xs bg-[#C59B27] text-black px-2 py-0.5 rounded font-black">FLOTA ARRASTRE</span>
+                        </h2>
+                        <p class="text-xs text-slate-400">Control de mantenimiento para cajas secas 53', refrigeradas (termos), plataformas y dollies CESS.</p>
+                    </div>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="abrirModalNuevoRemolque()" class="btn-cess-gold px-3.5 py-2 rounded-xl text-xs font-black flex items-center gap-2 shadow-lg shadow-[#C59B27]/20 transition">
+                        <i class="fa-solid fa-plus text-sm"></i> Registrar Caja / Remolque
+                    </button>
+                    <a href="/api/exportar-excel-remolques" target="_blank" class="bg-[#282A2E] hover:bg-[#3A3D42] text-slate-200 border border-[#3A3D42] px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow" title="Descargar reporte completo en formato Excel">
+                        <i class="fa-solid fa-file-excel text-emerald-400"></i> Exportar Excel
+                    </a>
+                    <button onclick="cargarModuloRemolques()" class="bg-[#282A2E] hover:bg-[#3A3D42] text-slate-200 border border-[#3A3D42] px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow" title="Sincronizar datos">
+                        <i class="fa-solid fa-arrows-rotate text-[#C59B27]"></i> Sincronizar
+                    </button>
+                </div>
+            </div>
+
+            <!-- KPI Cards de Remolques -->
+            <div class="grid grid-cols-2 lg:grid-cols-5 gap-3">
+                <div class="bg-[#141518] p-3 rounded-xl border border-[#3A3D42] flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-[#282A2E] border border-[#3A3D42] text-[#DFB743] flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-trailer"></i>
+                    </div>
+                    <div>
+                        <span class="block text-[10px] text-slate-400 font-bold uppercase">Total Cajas / Remolques</span>
+                        <span class="text-base sm:text-lg font-black text-white font-mono" id="rem-kpi-total">0</span>
+                    </div>
+                </div>
+                <div class="bg-[#141518] p-3 rounded-xl border border-cyan-900/60 flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-cyan-950 border border-cyan-800 text-cyan-400 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                    </div>
+                    <div>
+                        <span class="block text-[10px] text-cyan-300 font-bold uppercase">En Reparación Activa</span>
+                        <span class="text-base sm:text-lg font-black text-cyan-400 font-mono" id="rem-kpi-proceso">0</span>
+                    </div>
+                </div>
+                <div class="bg-[#141518] p-3 rounded-xl border border-amber-900/60 flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-amber-950 border border-amber-800 text-amber-400 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <div>
+                        <span class="block text-[10px] text-amber-300 font-bold uppercase">Reparación Mayor</span>
+                        <span class="text-base sm:text-lg font-black text-amber-400 font-mono" id="rem-kpi-mayor">0</span>
+                    </div>
+                </div>
+                <div class="bg-[#141518] p-3 rounded-xl border border-yellow-900/60 flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-yellow-950 border border-yellow-800 text-yellow-400 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-eye"></i>
+                    </div>
+                    <div>
+                        <span class="block text-[10px] text-yellow-300 font-bold uppercase">A Considerar / Daño</span>
+                        <span class="text-base sm:text-lg font-black text-yellow-400 font-mono" id="rem-kpi-considerar">0</span>
+                    </div>
+                </div>
+                <div class="bg-[#141518] p-3 rounded-xl border border-emerald-900/60 flex items-center gap-3 col-span-2 lg:col-span-1">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-950 border border-emerald-800 text-emerald-400 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <div>
+                        <span class="block text-[10px] text-emerald-300 font-bold uppercase">Listas para Patio</span>
+                        <span class="text-base sm:text-lg font-black text-emerald-400 font-mono" id="rem-kpi-listo">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Barra de Filtros, Búsqueda y Selector de Sub-pestañas -->
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2 border-t border-[#3A3D42]">
+                <!-- Sub-tabs: Tablero Kanban vs Inventario en Tabla -->
+                <div class="flex items-center gap-1.5 bg-[#141518] p-1 rounded-xl border border-[#3A3D42]">
+                    <button onclick="cambiarSubTabRemolques('tablero')" id="rem-subtab-btn-tablero" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-[#C59B27] text-black shadow flex items-center gap-1.5">
+                        <i class="fa-solid fa-table-columns"></i> Tablero Kanban
+                    </button>
+                    <button onclick="cambiarSubTabRemolques('tabla')" id="rem-subtab-btn-tabla" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white hover:bg-[#282A2E] flex items-center gap-1.5">
+                        <i class="fa-solid fa-list-check"></i> Inventario & Bitácora
+                    </button>
+                </div>
+
+                <!-- Filtro por Tipo de Caja y Búsqueda -->
+                <div class="flex flex-wrap items-center gap-2">
+                    <div class="flex items-center gap-1.5 bg-[#141518] px-2.5 py-1.5 rounded-xl border border-[#3A3D42]">
+                        <i class="fa-solid fa-filter text-[10px] text-slate-400"></i>
+                        <select id="filtro-remolque-tipo" onchange="filtrarRemolques()" class="bg-transparent text-white text-xs font-bold focus:outline-none cursor-pointer">
+                            <option value="TODOS" class="bg-[#1E1E1E]">Todos los Tipos</option>
+                            <option value="Caja Seca 53'" class="bg-[#1E1E1E]">Caja Seca 53'</option>
+                            <option value="Caja Refrigerada (Termo)" class="bg-[#1E1E1E]">Caja Refrigerada (Termo)</option>
+                            <option value="Plataforma 40'" class="bg-[#1E1E1E]">Plataforma 40'</option>
+                            <option value="Dolly" class="bg-[#1E1E1E]">Dolly</option>
+                            <option value="Portacontenedor" class="bg-[#1E1E1E]">Portacontenedor</option>
+                            <option value="Tolva" class="bg-[#1E1E1E]">Tolva</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center gap-1.5 bg-[#141518] px-2.5 py-1.5 rounded-xl border border-[#3A3D42] w-full sm:w-56">
+                        <i class="fa-solid fa-magnifying-glass text-slate-400 text-xs"></i>
+                        <input type="text" id="filtro-remolque-busqueda" oninput="filtrarRemolques()" placeholder="Buscar caja, placas o falla..." class="bg-transparent text-white text-xs w-full focus:outline-none placeholder-slate-500 font-medium">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUB-VISTA 1: TABLERO KANBAN DE REMOLQUES (4 COLUMNAS) -->
+        <div id="remolques-vista-tablero" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-start">
+            <!-- Columna 1: A Considerar / Daño -->
+            <div class="bg-[#1E1E1E] border border-yellow-700/50 rounded-2xl p-3 flex flex-col gap-3 min-h-[500px] shadow-xl">
+                <div class="flex justify-between items-center pb-2 border-b border-yellow-800/40">
+                    <h3 class="font-black text-xs text-yellow-300 uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-eye text-yellow-400"></i> A Considerar / Daño
+                    </h3>
+                    <span id="badge-col-rem-considerar" class="bg-yellow-950 text-yellow-300 border border-yellow-800 text-[10px] font-mono px-2 py-0.5 rounded-full font-bold">0</span>
+                </div>
+                <div id="remolques-col-considerar" class="flex flex-col gap-3 flex-1 overflow-y-auto custom-scroll pr-1">
+                    <!-- Se inyectan tarjetas dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Columna 2: Reparación Mayor / Hojalatería -->
+            <div class="bg-[#1E1E1E] border border-amber-700/50 rounded-2xl p-3 flex flex-col gap-3 min-h-[500px] shadow-xl">
+                <div class="flex justify-between items-center pb-2 border-b border-amber-800/40">
+                    <h3 class="font-black text-xs text-amber-300 uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-triangle-exclamation text-amber-400"></i> Rep. Mayor / Hojalatería
+                    </h3>
+                    <span id="badge-col-rem-mayor" class="bg-amber-950 text-amber-300 border border-amber-800 text-[10px] font-mono px-2 py-0.5 rounded-full font-bold">0</span>
+                </div>
+                <div id="remolques-col-mayor" class="flex flex-col gap-3 flex-1 overflow-y-auto custom-scroll pr-1">
+                    <!-- Se inyectan tarjetas dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Columna 3: En Reparación Activa -->
+            <div class="bg-[#1E1E1E] border border-cyan-700/50 rounded-2xl p-3 flex flex-col gap-3 min-h-[500px] shadow-xl">
+                <div class="flex justify-between items-center pb-2 border-b border-cyan-800/40">
+                    <h3 class="font-black text-xs text-cyan-300 uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-screwdriver-wrench text-cyan-400"></i> En Reparación Activa
+                    </h3>
+                    <span id="badge-col-rem-proceso" class="bg-cyan-950 text-cyan-300 border border-cyan-800 text-[10px] font-mono px-2 py-0.5 rounded-full font-bold">0</span>
+                </div>
+                <div id="remolques-col-proceso" class="flex flex-col gap-3 flex-1 overflow-y-auto custom-scroll pr-1">
+                    <!-- Se inyectan tarjetas dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Columna 4: Listas para Patio / Carga -->
+            <div class="bg-[#1E1E1E] border border-emerald-700/50 rounded-2xl p-3 flex flex-col gap-3 min-h-[500px] shadow-xl">
+                <div class="flex justify-between items-center pb-2 border-b border-emerald-800/40">
+                    <h3 class="font-black text-xs text-emerald-300 uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-circle-check text-emerald-400"></i> Listas para Patio
+                    </h3>
+                    <span id="badge-col-rem-listo" class="bg-emerald-950 text-emerald-300 border border-emerald-800 text-[10px] font-mono px-2 py-0.5 rounded-full font-bold">0</span>
+                </div>
+                <div id="remolques-col-listo" class="flex flex-col gap-3 flex-1 overflow-y-auto custom-scroll pr-1">
+                    <!-- Se inyectan tarjetas dinámicamente -->
+                </div>
+            </div>
+        </div>
+
+        <!-- SUB-VISTA 2: INVENTARIO Y BITÁCORA GENERAL DE CAJAS (TABLA) -->
+        <div id="remolques-vista-tabla" class="hidden bg-[#1E1E1E] border border-[#3A3D42] rounded-2xl overflow-hidden shadow-xl">
+            <div class="p-3 bg-[#141518] border-b border-[#3A3D42] flex justify-between items-center">
+                <h4 class="font-bold text-xs text-slate-300 uppercase tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-list text-[#C59B27]"></i> Catálogo e Inventario de Cajas y Remolques
+                </h4>
+                <span class="text-xs text-slate-400" id="rem-total-tabla-txt">6 registros</span>
+            </div>
+            <div class="overflow-x-auto custom-scroll max-h-[65vh]">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-[#141518] text-slate-400 font-bold border-b border-[#3A3D42] uppercase text-[10px]">
+                        <tr>
+                            <th class="p-3">No. Caja</th>
+                            <th class="p-3">Tipo / Fabricante</th>
+                            <th class="p-3">Placas / Año</th>
+                            <th class="p-3">Sistema Afectado</th>
+                            <th class="p-3">Trabajo Reportado / Falla</th>
+                            <th class="p-3">Avance Técnico</th>
+                            <th class="p-3">Mecánico</th>
+                            <th class="p-3">Folio Almacén</th>
+                            <th class="p-3 text-right">Costo Est.</th>
+                            <th class="p-3 text-center">Estatus</th>
+                            <th class="p-3 text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-remolques-body" class="divide-y divide-[#3A3D42]/60 font-medium">
+                        <!-- Inyección dinámica -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
 
     <!-- ======================================================== -->
     <!-- VISTA 2: HISTORIAL CLÍNICO POR UNIDAD (DÍA POR DÍA) -->
@@ -1273,22 +1490,36 @@
                     </a>
                 </div>
 
-                <!-- OPCIÓN 3: COPIAR RESUMEN EJECUTIVO PARA WHATSAPP -->
-                <div class="bg-[#282A2E] border border-[#3A3D42] rounded-xl p-4 flex flex-col gap-2.5">
-                    <div class="flex items-center justify-between">
+                <!-- OPCIÓN 3: BITÁCORA DETALLADA DE UNIDADES EN TABLERO PARA WHATSAPP -->
+                <div class="bg-[#282A2E] border border-[#3A3D42] rounded-xl p-4 flex flex-col gap-3">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <div class="flex items-center gap-2">
                             <i class="fa-brands fa-whatsapp text-emerald-400 text-lg"></i>
-                            <span class="font-black text-white text-sm">3. Resumen Ejecutivo Rápido por WhatsApp</span>
+                            <span class="font-black text-white text-sm">3. Bitácora de Unidades en Tablero (WhatsApp)</span>
                         </div>
-                        <button onclick="copiarResumenWhatsApp()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1 rounded-lg text-[11px] flex items-center gap-1.5 transition">
-                            <i class="fa-solid fa-copy"></i> Copiar Texto
+                        <!-- Selector de Modo de Bitácora -->
+                        <div class="flex items-center gap-1 bg-[#141518] p-1 rounded-xl border border-[#3A3D42]">
+                            <button id="btn-modo-bitacora-detallada" onclick="cambiarModoBitacoraCompartir('detallada')" class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-[#C59B27] text-black transition">
+                                📋 Detallada (Con Preventivos)
+                            </button>
+                            <button id="btn-modo-bitacora-resumen" onclick="cambiarModoBitacoraCompartir('resumen')" class="px-2.5 py-1 rounded-lg text-[10px] font-bold text-slate-400 hover:text-white transition">
+                                📊 Resumen Totales
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-slate-300 leading-relaxed">
+                        Genera y comparte la bitácora completa de las unidades activas en el tablero, con sus fallas, avances técnicos, folios de almacén y marcando con alerta si a la unidad le toca mantenimiento preventivo:
+                    </p>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button onclick="compartirPorWhatsAppLink()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black px-4 py-2 rounded-xl text-xs flex items-center gap-2 transition shadow">
+                            <i class="fa-brands fa-whatsapp text-sm"></i> Enviar Bitácora por WhatsApp
+                        </button>
+                        <button onclick="copiarResumenWhatsApp()" class="bg-[#141518] hover:bg-[#3A3D42] text-slate-200 border border-[#3A3D42] px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition">
+                            <i class="fa-solid fa-copy text-[#C59B27]"></i> Copiar Texto
                         </button>
                     </div>
-                    <p class="text-slate-300">
-                        Copia el balance instantáneo de hoy con el enlace directo incluido para compartirlo por chat:
-                    </p>
-                    <div class="bg-[#141518] border border-[#3A3D42] rounded-xl p-3 font-mono text-[11px] text-slate-300 max-h-36 overflow-y-auto custom-scroll whitespace-pre-line" id="preview-whatsapp-resumen">
-                        Generando resumen...
+                    <div class="bg-[#141518] border border-[#3A3D42] rounded-xl p-3 font-mono text-[11px] text-slate-200 max-h-56 overflow-y-auto custom-scroll whitespace-pre-wrap select-all leading-relaxed" id="preview-whatsapp-resumen">
+                        Generando bitácora detallada...
                     </div>
                 </div>
 
@@ -1317,9 +1548,9 @@
                     </div>
                     <div>
                         <h3 class="text-base font-black text-white flex items-center gap-2">
-                            Plataforma Siempre Habilitada <span class="text-xs bg-[#C59B27] text-black px-2 py-0.5 rounded font-black">JEFE DE TALLER</span>
+                            Instalar Aplicación <span class="text-xs bg-[#C59B27] text-black px-2 py-0.5 rounded font-black">APP CESS</span>
                         </h3>
-                        <p class="text-[11px] text-slate-400">Acceso en su celular como App nativa (PWA) y autoarranque en computadora.</p>
+                        <p class="text-[11px] text-slate-400">Acceso directo como App en celular (Android / iOS) o computadora sin descargas de tiendas.</p>
                     </div>
                 </div>
                 <button onclick="cerrarModalInstalarJefe()" class="text-slate-400 hover:text-white text-2xl p-1 leading-none">&times;</button>
@@ -1328,25 +1559,22 @@
             <!-- Contenido del Modal -->
             <div class="p-5 overflow-y-auto custom-scroll flex-1 flex flex-col gap-4 text-xs">
                 
-                <!-- SECCIÓN 1: ENVIAR ACCESO A SU CELULAR POR WHATSAPP (1 TOQUE) -->
-                <div class="bg-[#282A2E] border border-emerald-900/60 rounded-xl p-4 flex flex-col gap-3">
+                <!-- SECCIÓN 1: ENLACE DIRECTO DE LA APLICACIÓN -->
+                <div class="bg-[#282A2E] border border-[#3A3D42] rounded-xl p-4 flex flex-col gap-3">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
-                            <i class="fa-brands fa-whatsapp text-emerald-400 text-xl"></i>
-                            <span class="font-black text-white text-sm">1. Enviar Enlace Directo a su WhatsApp</span>
+                            <i class="fa-solid fa-link text-[#C59B27] text-base"></i>
+                            <span class="font-black text-white text-sm">1. Enlace Oficial de la Aplicación</span>
                         </div>
-                        <span class="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-mono px-2 py-0.5 rounded font-bold">1 Toque</span>
+                        <span class="bg-[#141518] text-[#C59B27] border border-[#3A3D42] text-[10px] font-mono px-2 py-0.5 rounded font-bold">PWA Móvil</span>
                     </div>
                     <p class="text-slate-300 leading-relaxed">
-                        Envía al jefe de taller la invitación con el enlace interactivo en vivo. No necesita instalar nada desde tiendas ni crear contraseñas.
+                        Abre este enlace desde el navegador de tu celular (Google Chrome o Safari) o computadora para agregarlo directamente a tu pantalla de inicio:
                     </p>
-                    <div class="flex flex-wrap gap-2">
-                        <button onclick="enviarEnlaceAJefeWhatsApp()" class="btn-cess-gold px-4 py-2.5 rounded-xl font-black text-xs flex items-center gap-2 shadow-lg shadow-[#C59B27]/20 transition">
-                            <i class="fa-brands fa-whatsapp text-base"></i>
-                            <span>Enviar Enlace por WhatsApp al Jefe de Taller</span>
-                        </button>
-                        <button onclick="copiarEnlaceJefe()" class="bg-[#141518] hover:bg-[#3A3D42] text-slate-200 border border-[#3A3D42] px-3.5 py-2.5 rounded-xl font-bold transition flex items-center gap-1.5">
-                            <i class="fa-solid fa-copy text-[#C59B27]"></i> Copiar Enlace
+                    <div class="flex items-center gap-2">
+                        <input type="text" id="input-url-instalar-app" readonly value="Cargando enlace..." class="flex-1 bg-[#141518] border border-[#3A3D42] rounded-xl px-3 py-2 text-white font-mono text-xs select-all focus:outline-none" onclick="this.select()">
+                        <button onclick="copiarEnlaceJefe()" class="btn-cess-gold px-3.5 py-2 rounded-xl font-black text-xs flex items-center gap-1.5 shadow transition">
+                            <i class="fa-solid fa-copy"></i> Copiar Enlace
                         </button>
                     </div>
                 </div>
@@ -1707,9 +1935,14 @@
 
             <!-- Footer Modal con Opciones Administrativas -->
             <div class="p-3 bg-[#141518] border-t border-[#3A3D42] flex justify-between items-center text-xs">
-                <button onclick="eliminarUnidadActiva()" class="text-red-400 hover:text-red-300 font-bold flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-red-950/40 transition">
-                    <i class="fa-solid fa-trash-can"></i> Eliminar
-                </button>
+                <div class="flex items-center gap-2">
+                    <button onclick="abrirModalLiberarUnidad()" class="bg-blue-950 hover:bg-blue-900 text-blue-300 border border-blue-700/60 font-bold flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition" title="Registrar salida a viaje y retirar del tablero activo preservando todos los avances">
+                        <i class="fa-solid fa-truck-fast text-cyan-400"></i> Liberar / Salida a Viaje
+                    </button>
+                    <button onclick="eliminarDefinitivoUnidadActiva()" class="text-slate-500 hover:text-red-400 text-[11px] p-1.5 rounded hover:bg-[#282A2E] transition" title="Eliminar registro (solo para errores de captura)">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
                 <div class="flex items-center gap-2">
                     <button onclick="verUnidadEnVistaHistorial(unidadActiva ? unidadActiva.id : '')" class="bg-[#282A2E] hover:bg-[#3A3D42] text-[#C59B27] border border-[#3A3D42] px-3 py-1.5 rounded-lg font-bold transition">
                         <i class="fa-solid fa-clock-rotate-left mr-1"></i> Ver Día por Día
@@ -2702,6 +2935,131 @@
     </div>
 
     <!-- ======================================================== -->
+    <!-- MODAL ESPECIAL: REGISTRAR / EDITAR CAJA O REMOLQUE -->
+    <!-- ======================================================== -->
+    <div id="modal-nuevo-remolque" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
+        <div class="bg-[#1E1E1E] border border-[#C59B27]/70 rounded-2xl w-full max-w-xl p-5 flex flex-col shadow-2xl animate-in fade-in duration-150 overflow-y-auto max-h-[92vh] custom-scroll">
+            <div class="flex justify-between items-center mb-3 pb-2 border-b border-[#3A3D42]">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-[#2D2612] border border-[#C59B27] text-[#DFB743] flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-trailer"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white" id="modal-remolque-titulo">Registrar Caja / Remolque</h3>
+                        <p class="text-[11px] text-slate-400">Control de mantenimiento para cajas secas, refrigeradas y dollies</p>
+                    </div>
+                </div>
+                <button onclick="cerrarModalNuevoRemolque()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
+            </div>
+
+            <form onsubmit="guardarRemolqueForm(event)" class="flex flex-col gap-3 text-xs">
+                <input type="hidden" id="remolque-form-es-edicion" value="false">
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">No. Remolque / Caja *</label>
+                        <input type="text" id="remolque-form-id" required placeholder="Ej: R-5301 o D-101" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white font-bold text-sm uppercase focus:border-[#C59B27] focus:outline-none font-mono">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Tipo de Remolque *</label>
+                        <select id="remolque-form-tipo" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none">
+                            <option value="Caja Seca 53'">Caja Seca 53'</option>
+                            <option value="Caja Refrigerada (Termo)">Caja Refrigerada (Termo)</option>
+                            <option value="Plataforma 40'">Plataforma 40'</option>
+                            <option value="Dolly">Dolly</option>
+                            <option value="Portacontenedor">Portacontenedor</option>
+                            <option value="Tolva">Tolva</option>
+                            <option value="Otro">Otro Remolque</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Estatus en Taller *</label>
+                        <select id="remolque-form-estado" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none">
+                            <option value="considerar">A Considerar / Daño</option>
+                            <option value="mayor">Reparación Mayor / Hojalatería</option>
+                            <option value="proceso" selected>En Reparación Activa</option>
+                            <option value="listo">Listo para Patio / Carga</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2">
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Marca / Fabricante</label>
+                        <input type="text" id="remolque-form-marca" placeholder="Utility, Wabash, Fruehauf..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Año Modelo</label>
+                        <input type="text" id="remolque-form-anio" placeholder="Ej: 2022" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Placas</label>
+                        <input type="text" id="remolque-form-placas" placeholder="Ej: 42-UD-8K" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs uppercase focus:border-[#C59B27] focus:outline-none font-mono">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Sistema Afectado</label>
+                        <select id="remolque-form-sistema" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none">
+                            <option value="Frenos / Cámaras">Frenos / Cámaras / Líneas Aire</option>
+                            <option value="Llantas / Enllantado">Llantas / Enllantado / Rines</option>
+                            <option value="Suspensión / Bolsas">Suspensión / Bolsas Neumáticas</option>
+                            <option value="Estructural / Patines">Estructural / Patines / Puertas</option>
+                            <option value="Eléctrico / Luces">Eléctrico / Plafones / 7 Vías</option>
+                            <option value="Thermo King / Refrigeración">Thermo King / Refrigeración</option>
+                            <option value="Quinta Rueda">Quinta Rueda (Dolly)</option>
+                            <option value="General">Mantenimiento General / Limpieza</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Terminal / Patio</label>
+                        <select id="remolque-form-sucursal" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none">
+                            <option value="Apodaca">Apodaca</option>
+                            <option value="Querétaro">Querétaro</option>
+                            <option value="Guadalajara">Guadalajara</option>
+                            <option value="México">México</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-400 mb-1">Defecto / Trabajo Reportado *</label>
+                    <textarea id="remolque-form-defecto" required rows="2" placeholder="Describa el daño, fuga o falla detectada en la caja o remolque..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none"></textarea>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-400 mb-1">Avances Técnicos / Notas de Reparación</label>
+                    <textarea id="remolque-form-reporte" rows="2" placeholder="Piezas desmontadas, pruebas realizadas, pendientes..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none"></textarea>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2">
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Mecánico Asignado</label>
+                        <input type="text" id="remolque-form-mecanico" placeholder="Ej: Roberto Soto" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Folio Almacén Vinculado</label>
+                        <input type="text" id="remolque-form-folio" placeholder="Ej: 4051" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none font-mono">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Costo Estimado ($ MXN)</label>
+                        <input type="number" id="remolque-form-costo" placeholder="Ej: 3500" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none font-mono">
+                    </div>
+                </div>
+
+                <div class="pt-2 border-t border-[#3A3D42] flex justify-end gap-2 mt-1">
+                    <button type="button" onclick="cerrarModalNuevoRemolque()" class="px-3 py-1.5 rounded-xl border border-[#3A3D42] text-slate-300 hover:bg-[#282A2E] font-bold">Cancelar</button>
+                    <button type="submit" class="btn-cess-gold text-black font-black px-4 py-1.5 rounded-xl flex items-center gap-1.5 shadow">
+                        <i class="fa-solid fa-save"></i> Guardar Remolque
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- ======================================================== -->
     <!-- MODAL 8: AJUSTES & CONFIGURACIÓN -->
     <!-- ======================================================== -->
     <div id="modal-ajustes" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
@@ -2725,7 +3083,12 @@
                 </button>
 
                 <div class="pt-3 border-t border-[#3A3D42]">
-                    <span class="block font-bold text-slate-300 mb-1">Sincronización con Taller Flotilla-v2.xlsx</span>
+                    <span class="block font-bold text-slate-300 mb-1">Protección y Respaldo de Unidades</span>
+                    <button onclick="recuperarUnidadesDesdeDispositivo()" class="w-full bg-[#141518] hover:bg-[#282A2E] text-emerald-400 border border-emerald-800/60 py-2 rounded-xl font-bold transition flex items-center justify-center gap-2 mb-2">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Rescatar Unidades de este Dispositivo
+                    </button>
+                    <p class="text-[10px] text-slate-500 mb-2">Si el jefe de taller o tú capturaron unidades en este celular o PC, este botón las sube al servidor para que nadie las pierda.</p>
+                    
                     <button onclick="sincronizarConExcelServidor()" class="w-full bg-[#282A2E] hover:bg-[#3A3D42] text-[#C59B27] border border-[#3A3D42] py-2 rounded-xl font-bold transition flex items-center justify-center gap-2">
                         <i class="fa-solid fa-file-excel"></i> Re-importar desde Excel
                     </button>
@@ -2807,6 +3170,7 @@
 
             // Cargar métricas de Preventivos y Rescates para insignias
             cargarResumenCabeceras();
+            cargarContadorUnidadesLiberadas();
             cargarNombresColumnas();
 
             // Verificar estado del túnel en segundo plano
@@ -3164,14 +3528,60 @@
                 if (res.ok) {
                     const json = await res.json();
                     if (json.data && Array.isArray(json.data)) {
-                        baseDatos = json.data;
+                        const serverUnits = json.data;
+                        const mapa = new Map();
+                        // 1. Cargar unidades del servidor
+                        serverUnits.forEach(u => { if (u && u.id) mapa.set(String(u.id).trim(), u); });
+                        // 2. Fusión protectora: Si el dispositivo tiene unidades locales que no están en el servidor, PRESERVARLAS
+                        let huboNuevasLocales = false;
+                        if (Array.isArray(baseDatos)) {
+                            baseDatos.forEach(u => {
+                                if (u && u.id) {
+                                    const key = String(u.id).trim();
+                                    if (!mapa.has(key)) {
+                                        mapa.set(key, u);
+                                        huboNuevasLocales = true;
+                                    }
+                                }
+                            });
+                        }
+                        baseDatos = Array.from(mapa.values());
                         sanitizarBaseDatos();
-                        guardarDatosLocales(false);
+                        guardarDatosLocales(huboNuevasLocales);
                         actualizarTimestampSincronizacion();
                     }
                 }
             } catch (e) {
                 console.warn('Usando datos locales offline:', e.message);
+            }
+        }
+
+        function recuperarUnidadesDesdeDispositivo() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) {
+                    mostrarToast('No hay datos guardados en la memoria de este equipo');
+                    return;
+                }
+                const locales = JSON.parse(raw);
+                if (!Array.isArray(locales) || locales.length === 0) {
+                    mostrarToast('No se encontraron unidades en este dispositivo');
+                    return;
+                }
+                const mapa = new Map();
+                locales.forEach(u => { if (u && u.id) mapa.set(String(u.id).trim(), u); });
+                baseDatos.forEach(u => {
+                    const key = String(u.id).trim();
+                    if (!mapa.has(key)) mapa.set(key, u);
+                });
+                baseDatos = Array.from(mapa.values());
+                sanitizarBaseDatos();
+                guardarDatosLocales(true);
+                renderizarTablero();
+                actualizarSelectoresUnidades();
+                mostrarToast(`✅ ${baseDatos.length} unidades sincronizadas a la nube exitosamente`);
+            } catch(e) {
+                mostrarToast('Error al procesar datos del dispositivo');
             }
         }
 
@@ -3202,6 +3612,10 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(baseDatos)
                 }).catch(() => {});
+
+                if (typeof window.guardarTableroEnFirebase === 'function') {
+                    window.guardarTableroEnFirebase(baseDatos);
+                }
             }
         }
 
@@ -3224,6 +3638,7 @@
                 tablero: document.getElementById('vista-tablero'),
                 preventivos: document.getElementById('vista-preventivos'),
                 rescates: document.getElementById('vista-rescates'),
+                remolques: document.getElementById('vista-remolques'),
                 historial: document.getElementById('vista-historial'),
                 bitacoras: document.getElementById('vista-bitacoras'),
                 analitica: document.getElementById('vista-analitica')
@@ -3233,6 +3648,7 @@
                 tablero: document.getElementById('nav-btn-tablero'),
                 preventivos: document.getElementById('nav-btn-preventivos'),
                 rescates: document.getElementById('nav-btn-rescates'),
+                remolques: document.getElementById('nav-btn-remolques'),
                 historial: document.getElementById('nav-btn-historial'),
                 bitacoras: document.getElementById('nav-btn-bitacoras'),
                 analitica: document.getElementById('nav-btn-analitica')
@@ -3257,6 +3673,8 @@
                 cargarModuloPreventivos();
             } else if (vista === 'rescates') {
                 cargarModuloRescates();
+            } else if (vista === 'remolques') {
+                cargarModuloRemolques();
             } else if (vista === 'historial') {
                 const idActual = document.getElementById('input-buscar-historial-id').value.trim() || '96';
                 seleccionarUnidadHistorial(idActual);
@@ -3562,6 +3980,9 @@
                     <div class="flex items-center gap-1">
                         <button onclick="abrirModalAvanceRapido(event, '${unidad.id}')" class="bg-[#C59B27]/10 hover:bg-[#C59B27] text-[#DFB743] hover:text-black border border-[#C59B27]/50 px-2 py-0.5 rounded-lg text-[11px] font-bold transition flex items-center gap-1 shadow-sm" title="Registrar nuevo avance o estatus">
                             <i class="fa-solid fa-plus text-[9px]"></i> <span>Avance</span>
+                        </button>
+                        <button onclick="abrirModalLiberarUnidad('${unidad.id}')" class="text-slate-400 hover:text-cyan-300 p-1 rounded-lg hover:bg-cyan-950/40 text-xs transition" title="Registrar salida a viaje / Liberar unidad del tablero">
+                            <i class="fa-solid fa-truck-fast"></i>
                         </button>
                         <button onclick="abrirEdicionRapida(event, '${unidad.id}')" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-[#282A2E] text-xs transition" title="Edición rápida">
                             <i class="fa-solid fa-pen-to-square"></i>
@@ -3923,10 +4344,13 @@
             } catch (e) {}
         }
 
-        // --- FUNCIONES MODAL ACCESO JEFE DE TALLER ---
+        // --- FUNCIONES MODAL INSTALAR APP (CELULAR O PC) ---
         function abrirModalInstalarJefe() {
             const modal = document.getElementById('modal-instalar-jefe');
             if (modal) modal.classList.remove('hidden');
+            const url = obtenerEnlaceCompartible();
+            const inp = document.getElementById('input-url-instalar-app');
+            if (inp) inp.value = url;
         }
 
         function cerrarModalInstalarJefe() {
@@ -3934,9 +4358,38 @@
             if (modal) modal.classList.add('hidden');
         }
 
+        function copiarTextoAlPortapapeles(texto, mensajeToast = 'Copiado al portapapeles') {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(texto).then(() => {
+                    mostrarToast(mensajeToast);
+                }).catch(() => {
+                    copiarFallback(texto, mensajeToast);
+                });
+            } else {
+                copiarFallback(texto, mensajeToast);
+            }
+        }
+
+        function copiarFallback(texto, mensajeToast) {
+            const ta = document.createElement('textarea');
+            ta.value = texto;
+            ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
+            document.body.appendChild(ta);
+            ta.focus();
+            ta.select();
+            try {
+                document.execCommand('copy');
+                mostrarToast(mensajeToast);
+            } catch (e) {
+                mostrarToast('Presiona Ctrl+C para copiar');
+            }
+            if (ta.parentNode) document.body.removeChild(ta);
+        }
+
         function obtenerEnlaceCompartible() {
-            // Si ya estamos navegando en un enlace público HTTPS (Cloudflare, etc.), ese es el enlace en vivo garantizado
-            if (window.location.origin && (window.location.origin.includes('trycloudflare.com') || (window.location.protocol === 'https:' && !window.location.origin.includes('localhost')))) {
+            // Si ya estamos navegando en un enlace público HTTPS (Render, Cloudflare, etc.), ese es el enlace en vivo garantizado
+            if (window.location.origin && (window.location.origin.includes('onrender.com') || window.location.origin.includes('trycloudflare.com') || (window.location.protocol === 'https:' && !window.location.origin.includes('localhost')))) {
                 return window.location.origin;
             }
             if (urlTunelActual && urlTunelActual.startsWith('http')) return urlTunelActual;
@@ -3944,26 +4397,12 @@
             if (inputVal && inputVal.startsWith('http')) return inputVal;
             const localTxt = (document.getElementById('txt-local-ip') || {}).innerText;
             if (localTxt && localTxt.startsWith('http')) return localTxt;
-            return `http://${window.location.hostname || 'localhost'}:8080`;
-        }
-
-        function enviarEnlaceAJefeWhatsApp() {
-            const url = obtenerEnlaceCompartible();
-            const mensaje = `*TALLER PRO - CONTROL CESS*\n` +
-                `Hola, te comparto el acceso directo al *Tablero de Taller* interactivo.\n\n` +
-                `*Enlace de Acceso en Vivo:* ${url}\n\n` +
-                `*Para instalarlo en tu celular como App:*\n` +
-                `1. Abre el enlace.\n` +
-                `2. En Android (Chrome): Toca los 3 puntos (⋮) > "Agregar a la pantalla principal" o "Instalar".\n` +
-                `3. En iPhone (Safari): Toca Compartir > "Agregar al inicio".\n\n` +
-                `Ya puedes mover tarjetas, escribir avances con teclado, dictar por voz y ver el historial diario.`;
-            const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`;
-            window.open(waUrl, '_blank');
+            return window.location.origin || `http://${window.location.hostname || 'localhost'}:8080`;
         }
 
         function copiarEnlaceJefe() {
             const url = obtenerEnlaceCompartible();
-            copiarTextoAlPortapapeles(url, 'Enlace para el Jefe de Taller copiado al portapapeles');
+            copiarTextoAlPortapapeles(url, 'Enlace de la aplicación copiado al portapapeles');
         }
 
         // --- 6. MODAL COMPARTIR (ENLACE EN VIVO 100% FUNCIONAL, EXCEL, WHATSAPP) ---
@@ -4128,25 +4567,149 @@
             }
         }
 
-        function generarPreviewWhatsApp() {
+        let modoBitacoraCompartir = 'detallada'; // 'detallada' | 'resumen'
+
+        function cambiarModoBitacoraCompartir(modo) {
+            modoBitacoraCompartir = modo;
+            const btnDet = document.getElementById('btn-modo-bitacora-detallada');
+            const btnRes = document.getElementById('btn-modo-bitacora-resumen');
+            if (btnDet && btnRes) {
+                if (modo === 'detallada') {
+                    btnDet.className = "px-2.5 py-1 rounded-lg text-[10px] font-bold bg-[#C59B27] text-black transition";
+                    btnRes.className = "px-2.5 py-1 rounded-lg text-[10px] font-bold text-slate-400 hover:text-white transition";
+                } else {
+                    btnRes.className = "px-2.5 py-1 rounded-lg text-[10px] font-bold bg-[#C59B27] text-black transition";
+                    btnDet.className = "px-2.5 py-1 rounded-lg text-[10px] font-bold text-slate-400 hover:text-white transition";
+                }
+            }
+            generarPreviewWhatsApp();
+        }
+
+        function generarBitacoraDetalladaWhatsApp() {
+            const linkPublico = obtenerEnlaceCompartible();
+            const fechaStr = new Date().toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            const inversionTotal = baseDatos.reduce((acc, u) => acc + (Number(u.costo) || 0) + (Number(u.costo_refacciones) || 0), 0);
+
+            let txt = `*BITÁCORA OPERATIVA • TALLER PRO CESS*\n`;
+            txt += `*${fechaStr.toUpperCase()}*\n`;
+            txt += `*Total Unidades en Tablero:* ${baseDatos.length} | Inversión: $${inversionTotal.toLocaleString()} MXN\n`;
+            txt += `────────────────────────────\n\n`;
+
+            const etapas = [
+                { id: 'mayor', emoji: '🔴', titulo: (nombresColumnas && nombresColumnas.mayor) || 'Reparación Mayor / Presupuesto' },
+                { id: 'proceso', emoji: '🟡', titulo: (nombresColumnas && nombresColumnas.proceso) || 'En Reparación Activa' },
+                { id: 'listo', emoji: '🟢', titulo: (nombresColumnas && nombresColumnas.listo) || 'Listas para Entrega' },
+                { id: 'considerar', emoji: '🔍', titulo: (nombresColumnas && nombresColumnas.considerar) || 'A Considerar / Detecciones' }
+            ];
+
+            etapas.forEach(etapa => {
+                const unidadesCol = baseDatos.filter(u => u.estado === etapa.id);
+                txt += `${etapa.emoji} *${etapa.titulo.toUpperCase()}* (${unidadesCol.length})\n`;
+                if (unidadesCol.length === 0) {
+                    txt += `  _(Sin unidades en esta etapa)_\n\n`;
+                    return;
+                }
+
+                unidadesCol.forEach(u => {
+                    txt += `• *Unidad ${u.id}*`;
+                    if (u.sucursal && u.sucursal !== 'Apodaca') txt += ` [${u.sucursal}]`;
+                    txt += `\n`;
+
+                    if (u.defecto) {
+                        txt += `   └ Trabajo: ${u.defecto}\n`;
+                    }
+
+                    // Avance técnico (primera línea relevante)
+                    const avanceTexto = (u.reporte || u.notas || '').trim();
+                    if (avanceTexto && avanceTexto !== u.defecto) {
+                        const primeraLinea = avanceTexto.split('\n')[0].substring(0, 120);
+                        txt += `   └ Avance: ${primeraLinea}\n`;
+                    }
+
+                    // Folio de almacén
+                    if (u.folio_almacen) {
+                        txt += `   └ Folio Almacén: #${u.folio_almacen}\n`;
+                    }
+
+                    // Costo
+                    const costoU = (Number(u.costo) || 0) + (Number(u.costo_refacciones) || 0);
+                    if (costoU > 0) {
+                        txt += `   └ Costo Estimado: $${costoU.toLocaleString()} MXN\n`;
+                    }
+
+                    // MARCAR SI LE TOCA PREVENTIVO
+                    const prev = Array.isArray(cachePreventivos) ? cachePreventivos.find(p => {
+                        const pId = String(p.unidad || '').trim();
+                        const uId = String(u.id || '').trim();
+                        return pId === uId || (Number(pId) > 0 && Number(pId) === Number(uId));
+                    }) : null;
+
+                    if (prev) {
+                        const estNorm = (prev.estatus || '').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+                        const kmRest = Number(prev.km_restantes) || 0;
+                        if (estNorm === 'VENCIDO') {
+                            const exceso = kmRest < 0 ? Math.abs(kmRest).toLocaleString() : '0';
+                            txt += `   🚨 *LE TOCA PREVENTIVO: VENCIDO (-${exceso} km)*\n`;
+                        } else if (estNorm === 'PROXIMO') {
+                            txt += `   ⚠️ *LE TOCA PREVENTIVO: PRÓXIMO (Restan ${Math.round(kmRest).toLocaleString()} km)*\n`;
+                        } else if (estNorm === 'VIGENTE') {
+                            txt += `   ✅ Preventivo al día (Restan ${Math.round(kmRest).toLocaleString()} km)\n`;
+                        }
+                    }
+
+                    txt += `\n`;
+                });
+            });
+
+            // Rescates carreteros si hay activos
+            if (Array.isArray(cacheRescates) && cacheRescates.length > 0) {
+                const activos = cacheRescates.filter(r => (r.estatus || '').toLowerCase() !== 'concluido' && (r.estatus || '').toLowerCase() !== 'terminado');
+                if (activos.length > 0) {
+                    txt += `🚨 *RESCATES CARRETEROS ACTIVOS* (${activos.length})\n`;
+                    activos.forEach(r => {
+                        txt += `• *Unidad ${r.unidad}* | ${r.tramo_carretero || r.ubicacion || 'En ruta'}\n`;
+                        txt += `   └ Falla: ${r.falla_reportada || r.descripcion}\n`;
+                        txt += `   └ Estatus: ${(r.estatus || 'En ruta').toUpperCase()}\n\n`;
+                    });
+                }
+            }
+
+            txt += `────────────────────────────\n`;
+            txt += `🔗 *Tablero Interactivo en Vivo:*\n${linkPublico}\n`;
+            txt += `_(Consulta avances, costos y actualiza estatus en tiempo real)_`;
+
+            return txt;
+        }
+
+        function generarResumenCortoWhatsApp() {
             const mayor = baseDatos.filter(u => u.estado === 'mayor');
             const proceso = baseDatos.filter(u => u.estado === 'proceso');
             const listo = baseDatos.filter(u => u.estado === 'listo');
-            const inversionTotal = baseDatos.reduce((acc, u) => acc + (Number(u.costo) || 0), 0);
+            const considerar = baseDatos.filter(u => u.estado === 'considerar');
+            const inversionTotal = baseDatos.reduce((acc, u) => acc + (Number(u.costo) || 0) + (Number(u.costo_refacciones) || 0), 0);
 
             const linkPublico = obtenerEnlaceCompartible();
             const fechaStr = new Date().toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-            let txt = `*REPORTE GERENCIAL • TALLER PRO CESS*\n`;
+            let txt = `*REPORTE EJECUTIVO • TALLER PRO CESS*\n`;
             txt += `*${fechaStr.toUpperCase()}*\n`;
             txt += `*Total en Taller:* ${baseDatos.length} unidades\n`;
-            txt += `• [Reparación Mayor / Presupuesto]: ${mayor.length}\n`;
-            txt += `• [En Proceso Activo]: ${proceso.length}\n`;
-            txt += `• [Listas para Entrega]: ${listo.length}\n`;
+            if (considerar.length > 0) txt += `• [${(nombresColumnas && nombresColumnas.considerar) || 'A Considerar'}]: ${considerar.length}\n`;
+            txt += `• [${(nombresColumnas && nombresColumnas.mayor) || 'Reparación Mayor'}]: ${mayor.length}\n`;
+            txt += `• [${(nombresColumnas && nombresColumnas.proceso) || 'En Reparación'}]: ${proceso.length}\n`;
+            txt += `• [${(nombresColumnas && nombresColumnas.listo) || 'Listas para Entrega'}]: ${listo.length}\n`;
             txt += `*Inversión Cotizada Total:* $${inversionTotal.toLocaleString()} MXN\n`;
-            txt += `------------------------------------\n`;
+            txt += `────────────────────────────\n`;
             txt += `*Tablero Interactivo en Vivo:*\n${linkPublico}\n`;
             txt += `_(Acceso directo desde cualquier celular o computadora)_`;
+
+            return txt;
+        }
+
+        function generarPreviewWhatsApp() {
+            const txt = (modoBitacoraCompartir === 'detallada') 
+                ? generarBitacoraDetalladaWhatsApp() 
+                : generarResumenCortoWhatsApp();
 
             const box = document.getElementById('preview-whatsapp-resumen') || document.getElementById('preview-whatsapp-jefe');
             if (box) box.innerText = txt;
@@ -4157,9 +4720,7 @@
 
         function copiarResumenWhatsApp() {
             const txt = generarPreviewWhatsApp();
-            navigator.clipboard.writeText(txt).then(() => {
-                mostrarToast('Resumen ejecutivo copiado para WhatsApp');
-            });
+            copiarTextoAlPortapapeles(txt, modoBitacoraCompartir === 'detallada' ? 'Bitácora detallada copiada para WhatsApp' : 'Resumen ejecutivo copiado para WhatsApp');
         }
 
         const copiarResumenWhatsAppJefe = copiarResumenWhatsApp;
@@ -6139,6 +6700,157 @@
         function verFotoCompleta(url) {
             const win = window.open();
             win.document.write(`<body style="margin:0;background:#000;display:flex;align-items:center;justify-content:center;height:100vh;"><img src="${url}" style="max-width:100%;max-height:100%;object-fit:contain;">
+
+    <!-- ======================================================== -->
+    <!-- MODAL ESPECIAL: LIBERAR UNIDAD / SALIDA A VIAJE -->
+    <!-- ======================================================== -->
+    <div id="modal-liberar-unidad" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
+        <div class="bg-[#1E1E1E] border border-cyan-600/70 rounded-2xl w-full max-w-md p-5 flex flex-col shadow-2xl animate-in fade-in duration-150">
+            <div class="flex justify-between items-center mb-3 pb-2 border-b border-[#3A3D42]">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-cyan-950 border border-cyan-600 text-cyan-400 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-truck-fast"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white">Liberar Unidad / Salida a Viaje</h3>
+                        <p class="text-[11px] text-slate-400" id="liberar-unidad-id-txt">Unidad --</p>
+                    </div>
+                </div>
+                <button onclick="cerrarModalLiberarUnidad()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
+            </div>
+
+            <form onsubmit="confirmarLiberarUnidad(event)" class="flex flex-col gap-3 text-xs">
+                <div>
+                    <label class="block font-bold text-slate-400 mb-1">Motivo de Salida del Taller *</label>
+                    <select id="liberar-unidad-motivo" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-cyan-500 focus:outline-none">
+                        <option value="Asignada a viaje / Salió a ruta">Asignada a viaje / Salió a ruta</option>
+                        <option value="Trabajo concluido / Lista en patio">Trabajo concluido / Lista en patio</option>
+                        <option value="Servicio completado / Liberada">Servicio completado / Liberada</option>
+                        <option value="Traslado a otra base / patio">Traslado a otra base / patio</option>
+                        <option value="Liberada con observaciones menores">Liberada con observaciones menores</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-400 mb-1">Odómetro de Salida (Km actual opcional)</label>
+                    <input type="number" id="liberar-unidad-km" placeholder="Ej: 1485000" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white font-mono text-xs focus:border-cyan-500 focus:outline-none">
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-400 mb-1">Notas de Cierre y Entrega</label>
+                    <textarea id="liberar-unidad-notas" rows="2" placeholder="Detalle de pruebas finales, entrega al operador o pendientes para siguiente viaje..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-cyan-500 focus:outline-none"></textarea>
+                </div>
+
+                <div class="bg-cyan-950/40 border border-cyan-800/60 p-2.5 rounded-xl text-[11px] text-cyan-200">
+                    <p class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-shield-check text-cyan-400"></i> Conservación Total de Información</p>
+                    <p class="text-slate-300 mt-1">La unidad se retira del tablero diario pero <b>todo su historial clínico, avances técnicos, folios y costos quedan 100% guardados</b> y consultables en la pestaña de Historial por Unidad.</p>
+                </div>
+
+                <div class="pt-2 border-t border-[#3A3D42] flex justify-end gap-2 mt-1">
+                    <button type="button" onclick="cerrarModalLiberarUnidad()" class="px-3 py-1.5 rounded-xl border border-[#3A3D42] text-slate-300 hover:bg-[#282A2E] font-bold">Cancelar</button>
+                    <button type="submit" class="bg-cyan-600 hover:bg-cyan-500 text-black font-black px-4 py-1.5 rounded-xl flex items-center gap-1.5 shadow">
+                        <i class="fa-solid fa-truck-fast"></i> Confirmar Salida y Archivar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- MODAL: CONSULTA DE UNIDADES LIBERADAS / SALIDAS A VIAJE -->
+    <!-- ======================================================== -->
+    <div id="modal-unidades-liberadas" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
+        <div class="bg-[#1E1E1E] border border-emerald-600/70 rounded-2xl w-full max-w-2xl p-5 flex flex-col shadow-2xl animate-in fade-in duration-150 max-h-[90vh]">
+            <div class="flex justify-between items-center mb-3 pb-2 border-b border-[#3A3D42]">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-950 border border-emerald-600 text-emerald-400 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-flag-checkered"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white">Unidades Liberadas de Taller y Salidas a Viaje</h3>
+                        <p class="text-[11px] text-slate-400">Unidades que concluyeron reparaciones y salieron a ruta</p>
+                    </div>
+                </div>
+                <button onclick="cerrarModalUnidadesLiberadas()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
+            </div>
+
+            <div class="overflow-y-auto custom-scroll flex-1 pr-1 flex flex-col gap-2.5" id="contenedor-unidades-liberadas-lista">
+                <div class="p-8 text-center text-slate-500 font-mono text-xs"><i class="fa-solid fa-spinner fa-spin mr-2 text-[#C59B27]"></i> Cargando unidades liberadas...</div>
+            </div>
+
+            <div class="pt-3 border-t border-[#3A3D42] flex justify-between items-center text-xs">
+                <span class="text-slate-500 text-[11px]" id="txt-contador-liberadas-modal">0 unidades archivadas</span>
+                <button type="button" onclick="cerrarModalUnidadesLiberadas()" class="px-4 py-1.5 rounded-xl bg-[#282A2E] hover:bg-[#3A3D42] text-white font-bold">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- MODAL: REGISTRAR / ACTUALIZAR SERVICIO PREVENTIVO -->
+    <!-- ======================================================== -->
+    <div id="modal-actualizar-servicio-preventivo" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
+        <div class="bg-[#1E1E1E] border border-[#C59B27]/70 rounded-2xl w-full max-w-md p-5 flex flex-col shadow-2xl animate-in fade-in duration-150">
+            <div class="flex justify-between items-center mb-3 pb-2 border-b border-[#3A3D42]">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-[#2D2612] border border-[#C59B27] text-[#DFB743] flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-wrench"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white">Registrar Servicio Preventivo Realizado</h3>
+                        <p class="text-[11px] text-slate-400">Actualiza el semáforo y reinicia los kilómetros restantes</p>
+                    </div>
+                </div>
+                <button onclick="cerrarModalActualizarServicio()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
+            </div>
+
+            <form onsubmit="guardarServicioPreventivoForm(event)" class="flex flex-col gap-3 text-xs">
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Número de Unidad *</label>
+                        <input type="text" id="prev-form-unidad" required placeholder="Ej: 8" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white font-bold text-sm focus:border-[#C59B27] focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Fecha de Realización *</label>
+                        <input type="text" id="prev-form-fecha" required class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs font-mono focus:border-[#C59B27] focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Kilometraje al Servicio *</label>
+                        <input type="number" id="prev-form-km" required placeholder="Ej: 278234" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white font-mono text-xs focus:border-[#C59B27] focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Tipo de Tracto</label>
+                        <select id="prev-form-tracto" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none">
+                            <option value="SITRAK">SITRAK / Sinotruk (30,000 km)</option>
+                            <option value="Cascadia">Cascadia / Freightliner (35,000 km)</option>
+                            <option value="T680">Kenworth T680 (35,000 km)</option>
+                            <option value="LT">International LT (35,000 km)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-400 mb-1">Costo Total ($ MXN opcional)</label>
+                    <input type="number" id="prev-form-costo" placeholder="Ej: 6500" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white font-mono text-xs focus:border-[#C59B27] focus:outline-none">
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-400 mb-1">Observaciones / Factura / Proveedor</label>
+                    <textarea id="prev-form-observaciones" rows="2" placeholder="Cambio de aceite 15W40, filtros de aire y combustible, revisión de frenos..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none"></textarea>
+                </div>
+
+                <div class="pt-2 border-t border-[#3A3D42] flex justify-end gap-2 mt-1">
+                    <button type="button" onclick="cerrarModalActualizarServicio()" class="px-3 py-1.5 rounded-xl border border-[#3A3D42] text-slate-300 hover:bg-[#282A2E] font-bold">Cancelar</button>
+                    <button type="submit" class="btn-cess-gold text-black font-black px-4 py-1.5 rounded-xl flex items-center gap-1.5 shadow">
+                        <i class="fa-solid fa-save"></i> Guardar y Pasar a Vigente
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </body>`);
         }
 
@@ -6886,10 +7598,17 @@
 
         async function cargarResumenCabeceras() {
             try {
-                const [resPrev, resResc] = await Promise.all([
+                const [resPrev, resResc, resRem] = await Promise.all([
                     fetch('/api/preventivos?t=' + Date.now()).then(r => r.ok ? r.json() : null).catch(() => null),
-                    fetch('/api/rescates?t=' + Date.now()).then(r => r.ok ? r.json() : null).catch(() => null)
+                    fetch('/api/rescates?t=' + Date.now()).then(r => r.ok ? r.json() : null).catch(() => null),
+                    fetch('/api/remolques?t=' + Date.now()).then(r => r.ok ? r.json() : null).catch(() => null)
                 ]);
+
+                if (resRem && resRem.remolques) {
+                    cacheRemolques = resRem.remolques;
+                    try { localStorage.setItem('taller_remolques_cache', JSON.stringify(cacheRemolques)); } catch(e) {}
+                    actualizarMetricasRemolques(resRem.stats || {});
+                }
 
                 if (resPrev) {
                     cachePreventivos = resPrev.data || resPrev.preventivos || [];
@@ -7973,7 +8692,207 @@
             }
         }
 
-        // --- 3. MODAL DE AVANCE RÁPIDO Y DICTADO POR VOZ ---
+
+        // ========================================================
+        // --- 2.5 MÓDULO DE CAJAS Y REMOLQUES CESS ---
+        // ========================================================
+        let cacheRemolques = [];
+        let subTabRemolquesActual = 'tablero'; // 'tablero' | 'tabla'
+
+        async function cargarModuloRemolques() {
+            try {
+                const res = await fetch('/api/remolques?t=' + Date.now(), { cache: 'no-store' });
+                if (res.ok) {
+                    const data = await res.json();
+                    cacheRemolques = data.remolques || [];
+                    actualizarMetricasRemolques(data.stats || {});
+                    renderizarModuloRemolques();
+                }
+            } catch (e) {
+                console.warn('Error cargando remolques:', e);
+                try {
+                    const local = localStorage.getItem('taller_remolques_cache');
+                    if (local) {
+                        cacheRemolques = JSON.parse(local);
+                        actualizarMetricasRemolques();
+                        renderizarModuloRemolques();
+                    }
+                } catch (err) {}
+            }
+        }
+
+        function actualizarMetricasRemolques(stats) {
+            const list = cacheRemolques;
+            const total = list.length;
+            const considerar = list.filter(r => r.estado === 'considerar').length;
+            const mayor = list.filter(r => r.estado === 'mayor').length;
+            const proceso = list.filter(r => r.estado === 'proceso').length;
+            const listo = list.filter(r => r.estado === 'listo').length;
+
+            const elTotal = document.getElementById('rem-kpi-total');
+            const elCons = document.getElementById('rem-kpi-considerar');
+            const elMay = document.getElementById('rem-kpi-mayor');
+            const elProc = document.getElementById('rem-kpi-proceso');
+            const elListo = document.getElementById('rem-kpi-listo');
+            const badgeNav = document.getElementById('badge-nav-remolques');
+
+            if (elTotal) elTotal.innerText = total;
+            if (elCons) elCons.innerText = considerar;
+            if (elMay) elMay.innerText = mayor;
+            if (elProc) elProc.innerText = proceso;
+            if (elListo) elListo.innerText = listo;
+            if (badgeNav) badgeNav.innerText = `${total} Activas`;
+
+            const bCons = document.getElementById('badge-col-rem-considerar');
+            const bMay = document.getElementById('badge-col-rem-mayor');
+            const bProc = document.getElementById('badge-col-rem-proceso');
+            const bListo = document.getElementById('badge-col-rem-listo');
+            if (bCons) bCons.innerText = considerar;
+            if (bMay) bMay.innerText = mayor;
+            if (bProc) bProc.innerText = proceso;
+            if (bListo) bListo.innerText = listo;
+        }
+
+        function cambiarSubTabRemolques(subTab) {
+            subTabRemolquesActual = subTab;
+            const vistaTablero = document.getElementById('remolques-vista-tablero');
+            const vistaTabla = document.getElementById('remolques-vista-tabla');
+            const btnTablero = document.getElementById('rem-subtab-btn-tablero');
+            const btnTabla = document.getElementById('rem-subtab-btn-tabla');
+
+            if (subTab === 'tablero') {
+                if (vistaTablero) vistaTablero.classList.remove('hidden');
+                if (vistaTabla) vistaTabla.classList.add('hidden');
+                if (btnTablero) btnTablero.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-[#C59B27] text-black shadow flex items-center gap-1.5";
+                if (btnTabla) btnTabla.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white hover:bg-[#282A2E] flex items-center gap-1.5";
+                renderizarTableroRemolques();
+            } else {
+                if (vistaTablero) vistaTablero.classList.add('hidden');
+                if (vistaTabla) vistaTabla.classList.remove('hidden');
+                if (btnTabla) btnTabla.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-[#C59B27] text-black shadow flex items-center gap-1.5";
+                if (btnTablero) btnTablero.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white hover:bg-[#282A2E] flex items-center gap-1.5";
+                renderizarTablaRemolques();
+            }
+        }
+
+        function filtrarRemolques() {
+            renderizarModuloRemolques();
+        }
+
+        function obtenerRemolquesFiltrados() {
+            const filtroTipo = (document.getElementById('filtro-remolque-tipo') || {}).value || 'TODOS';
+            const busqueda = ((document.getElementById('filtro-remolque-busqueda') || {}).value || '').trim().toLowerCase();
+
+            return cacheRemolques.filter(r => {
+                if (filtroTipo !== 'TODOS' && r.tipo !== filtroTipo) return false;
+                if (busqueda) {
+                    const matchesId = String(r.id || '').toLowerCase().includes(busqueda);
+                    const matchesMarca = String(r.marca || '').toLowerCase().includes(busqueda);
+                    const matchesPlacas = String(r.placas || '').toLowerCase().includes(busqueda);
+                    const matchesDefecto = String(r.defecto || '').toLowerCase().includes(busqueda);
+                    const matchesSistema = String(r.sistema || '').toLowerCase().includes(busqueda);
+                    const matchesMecanico = String(r.mecanico || '').toLowerCase().includes(busqueda);
+                    const matchesFolio = String(r.folio_almacen || '').toLowerCase().includes(busqueda);
+                    if (!matchesId && !matchesMarca && !matchesPlacas && !matchesDefecto && !matchesSistema && !matchesMecanico && !matchesFolio) {
+                        return false;
+                    }
+                }
+                return true;
+            });
+        }
+
+        function renderizarModuloRemolques() {
+            if (subTabRemolquesActual === 'tablero') {
+                renderizarTableroRemolques();
+            } else {
+                renderizarTablaRemolques();
+            }
+        }
+
+        function renderizarTableroRemolques() {
+            const columnas = {
+                considerar: document.getElementById('remolques-col-considerar'),
+                mayor: document.getElementById('remolques-col-mayor'),
+                proceso: document.getElementById('remolques-col-proceso'),
+                listo: document.getElementById('remolques-col-listo')
+            };
+
+            Object.values(columnas).forEach(col => { if (col) col.innerHTML = ''; });
+
+            const filtrados = obtenerRemolquesFiltrados();
+
+            const agrupados = { considerar: [], mayor: [], proceso: [], listo: [] };
+            filtrados.forEach(r => {
+                const est = r.estado || 'proceso';
+                if (agrupados[est]) agrupados[est].push(r);
+                else agrupados.proceso.push(r);
+            });
+
+            Object.keys(agrupados).forEach(colId => {
+                const contenedor = columnas[colId];
+                if (!contenedor) return;
+
+                const items = agrupados[colId];
+                if (items.length === 0) {
+                    contenedor.innerHTML = `<div class="p-4 text-center text-slate-500 text-xs italic border border-dashed border-[#3A3D42] rounded-xl">Sin cajas en esta etapa</div>`;
+                    return;
+                }
+
+                items.forEach(r => {
+                    const card = document.createElement('div');
+                    card.className = "bg-[#141518] border border-[#3A3D42] hover:border-[#C59B27] rounded-xl p-3 flex flex-col gap-2.5 transition shadow-lg group";
+
+                    let icono = 'fa-screwdriver-wrench';
+                    if (r.sistema && r.sistema.includes('Frenos')) icono = 'fa-ring';
+                    else if (r.sistema && r.sistema.includes('Llantas')) icono = 'fa-circle-dot';
+                    else if (r.sistema && r.sistema.includes('Suspensión')) icono = 'fa-up-down';
+                    else if (r.sistema && r.sistema.includes('Estructural')) icono = 'fa-cubes';
+                    else if (r.sistema && r.sistema.includes('Eléctrico')) icono = 'fa-bolt';
+                    else if (r.sistema && r.sistema.includes('Thermo')) icono = 'fa-snowflake';
+                    else if (r.sistema && r.sistema.includes('Quinta')) icono = 'fa-link';
+
+                    const folioBadge = r.folio_almacen ? `<span class="bg-blue-950 text-blue-300 font-mono text-[9px] px-1.5 py-0.5 rounded border border-blue-800" title="Folio de Almacén"><i class="fa-solid fa-boxes-stacked mr-1"></i>#${r.folio_almacen}</span>` : '';
+
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start gap-2">
+                            <div class="flex items-center gap-2">
+                                <span class="w-7 h-7 rounded-lg bg-[#282A2E] border border-[#3A3D42] text-[#DFB743] flex items-center justify-center text-xs font-black">
+                                    <i class="fa-solid fa-trailer"></i>
+                                </span>
+                                <div>
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="font-black text-sm text-white font-mono tracking-wider">${r.id}</span>
+                                        ${folioBadge}
+                                    </div>
+                                    <span class="text-[10px] text-slate-400 block">${r.tipo} ${r.marca ? '• ' + r.marca : ''} ${r.anio ? '(' + r.anio + ')' : ''}</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <button onclick="editarRemolque('${r.id}')" class="text-slate-400 hover:text-white p-1 rounded hover:bg-[#282A2E]" title="Editar caja">
+                                    <i class="fa-solid fa-pen-to-square text-xs"></i>
+                                </button>
+                                <button onclick="eliminarRemolque('${r.id}')" class="text-slate-500 hover:text-red-400 p-1 rounded hover:bg-red-950/40" title="Eliminar">
+                                    <i class="fa-solid fa-trash-can text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap items-center gap-1.5">
+                            <span class="bg-[#1E1E1E] text-slate-300 text-[10px] px-2 py-0.5 rounded border border-[#3A3D42] font-semibold flex items-center gap-1">
+                                <i class="fa-solid ${icono} text-[#C59B27]"></i> ${r.sistema || 'General'}
+                            </span>
+                            ${r.placas ? `<span class="bg-[#1E1E1E] text-slate-400 font-mono text-[10px] px-1.5 py-0.5 rounded border border-[#3A3D42]">${r.placas}</span>` : ''}
+                            <span class="text-[10px] text-slate-500 ml-auto font-mono">${r.sucursal || 'Apodaca'}</span>
+                        </div>
+
+                        <div class="bg-[#1E1E1E] p-2 rounded-lg border border-[#3A3D42]/60 text-xs text-slate-200">
+                            <p class="font-medium text-slate-200 text-[11px] leading-snug">${r.defecto || 'Sin detalle de falla'}</p>
+                            ${r.reporte ? `<p class="mt-1.5 pt-1.5 border-t border-[#3A3D42]/50 text-[10px] text-slate-400 italic"><i class="fa-solid fa-wrench mr-1 text-[#C59B27]"></i>${r.reporte}</p>` : ''}
+                        </div>
+
+                        <div class="flex items-center justify-between text-[10px] text-slate-400 pt-1 border-t border-[#3A3D42]/60">
+                            <span><i class="fa-solid fa-user-gear text-slate-500 mr-1"></i>${r.mecanico || 'Sin asignar'}</span>
+                            <span class="font-bold text-white font-mono">${r.costo ? '
         let unidadAvanceActiva = null;
 
         function abrirModalAvanceRapido(event, id) {
@@ -8282,7 +9201,7 @@
     <!-- Sincronización en Tiempo Real con Firebase Firestore (Sistema Control CESS Combustible) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
             projectId: "diesel-cess-40bbf",
@@ -8296,6 +9215,46 @@
         try {
             const app = initializeApp(firebaseConfig);
             const db = getFirestore(app);
+
+            // Sincronización en vivo del Tablero de Taller (Persistencia a prueba de reinicios/deploys)
+            window.guardarTableroEnFirebase = async function(unidades) {
+                try {
+                    if (!Array.isArray(unidades) || unidades.length === 0) return;
+                    const ref = doc(db, 'taller_pro_tablero', 'estado_actual');
+                    await setDoc(ref, {
+                        unidades: unidades,
+                        ultima_actualizacion: new Date().toISOString(),
+                        autor: 'Taller Pro'
+                    }, { merge: true });
+                } catch(e) {
+                    console.info('Firebase tablero sync opcional:', e.message);
+                }
+            };
+
+            onSnapshot(doc(db, 'taller_pro_tablero', 'estado_actual'), (docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    if (Array.isArray(data.unidades) && data.unidades.length > 0) {
+                        const mapa = new Map();
+                        data.unidades.forEach(u => { if (u && u.id) mapa.set(String(u.id).trim(), u); });
+                        if (Array.isArray(baseDatos)) {
+                            baseDatos.forEach(u => {
+                                if (u && u.id && !mapa.has(String(u.id).trim())) {
+                                    mapa.set(String(u.id).trim(), u);
+                                }
+                            });
+                        }
+                        baseDatos = Array.from(mapa.values());
+                        sanitizarBaseDatos();
+                        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(baseDatos)); } catch (e) {}
+                        if (vistaActual === 'tablero') renderizarTablero();
+                        actualizarSelectoresUnidades();
+                        actualizarTimestampSincronizacion();
+                    }
+                }
+            }, (err) => {
+                console.info('Firebase tablero snapshot info:', err.message);
+            });
 
             // Sincronización en vivo de preventivos por unidad
             onSnapshot(collection(db, 'preventivos'), (snapshot) => {
@@ -8353,6 +9312,254 @@
         } catch (e) {
             console.warn('Conexión Firebase opcional:', e);
         }
+
+        // ========================================================
+        // --- GESTIÓN DE SALIDAS A VIAJE Y UNIDADES ARCHIVADAS ---
+        // ========================================================
+        let cacheUnidadesLiberadas = [];
+
+        function abrirModalLiberarUnidad(id) {
+            const u = id ? baseDatos.find(x => String(x.id).trim() === String(id).trim()) : unidadActiva;
+            if (!u) return;
+            unidadActiva = u;
+
+            const txt = document.getElementById('liberar-unidad-id-txt');
+            if (txt) txt.innerText = `Unidad ${u.id} (${u.sucursal || 'Patio'})`;
+
+            document.getElementById('liberar-unidad-motivo').value = 'Asignada a viaje / Salió a ruta';
+            document.getElementById('liberar-unidad-km').value = '';
+            document.getElementById('liberar-unidad-notas').value = '';
+
+            document.getElementById('modal-liberar-unidad').classList.remove('hidden');
+        }
+
+        function cerrarModalLiberarUnidad() {
+            document.getElementById('modal-liberar-unidad').classList.add('hidden');
+        }
+
+        async function confirmarLiberarUnidad(e) {
+            e.preventDefault();
+            if (!unidadActiva) return;
+            const id = String(unidadActiva.id).trim();
+            const motivo = document.getElementById('liberar-unidad-motivo').value;
+            const km_salida = document.getElementById('liberar-unidad-km').value.trim();
+            const notas = document.getElementById('liberar-unidad-notas').value.trim();
+
+            mostrarToast(`Registrando salida a viaje de Unidad ${id}...`);
+
+            try {
+                const res = await fetch(`/api/unidad/${encodeURIComponent(id)}/liberar`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ motivo, km_salida, notas })
+                });
+
+                if (res.ok) {
+                    baseDatos = baseDatos.filter(u => String(u.id).trim() !== id);
+                    guardarDatosLocales(false);
+                    renderizarTablero();
+                    actualizarSelectoresUnidades();
+                    cerrarModalLiberarUnidad();
+                    cerrarModalExpediente();
+                    cargarContadorUnidadesLiberadas();
+                    mostrarToast(`🚀 Unidad ${id} liberada a viaje. Historial y avances protegidos al 100%.`);
+                } else {
+                    mostrarToast('Error al registrar salida de unidad');
+                }
+            } catch (err) {
+                baseDatos = baseDatos.filter(u => String(u.id).trim() !== id);
+                guardarDatosLocales();
+                renderizarTablero();
+                cerrarModalLiberarUnidad();
+                cerrarModalExpediente();
+                mostrarToast(`Unidad ${id} retirada del tablero.`);
+            }
+        }
+
+        function eliminarDefinitivoUnidadActiva() {
+            if (!unidadActiva) return;
+            if (confirm(`¿Eliminar definitivamente la Unidad ${unidadActiva.id} por error de captura?`)) {
+                baseDatos = baseDatos.filter(u => String(u.id).trim() !== String(unidadActiva.id).trim());
+                guardarDatosLocales();
+                renderizarTablero();
+                actualizarSelectoresUnidades();
+                cerrarModalExpediente();
+                mostrarToast('Unidad eliminada');
+            }
+        }
+
+        async function abrirModalUnidadesLiberadas() {
+            const modal = document.getElementById('modal-unidades-liberadas');
+            const cont = document.getElementById('contenedor-unidades-liberadas-lista');
+            if (modal) modal.classList.remove('hidden');
+
+            try {
+                const res = await fetch('/api/unidades/archivadas?t=' + Date.now(), { cache: 'no-store' });
+                if (res.ok) {
+                    const data = await res.json();
+                    cacheUnidadesLiberadas = data.archivadas || [];
+                    renderizarListaUnidadesLiberadas();
+                } else {
+                    cont.innerHTML = '<p class="text-slate-500 italic text-center p-6">No hay unidades liberadas registradas aún.</p>';
+                }
+            } catch (err) {
+                cont.innerHTML = '<p class="text-slate-500 italic text-center p-6">Error al cargar unidades liberadas.</p>';
+            }
+        }
+
+        function cerrarModalUnidadesLiberadas() {
+            document.getElementById('modal-unidades-liberadas').classList.add('hidden');
+        }
+
+        function renderizarListaUnidadesLiberadas() {
+            const cont = document.getElementById('contenedor-unidades-liberadas-lista');
+            const txtCount = document.getElementById('txt-contador-liberadas-modal');
+            if (!cont) return;
+
+            if (txtCount) txtCount.innerText = `${cacheUnidadesLiberadas.length} unidades liberadas en archivo`;
+
+            if (cacheUnidadesLiberadas.length === 0) {
+                cont.innerHTML = '<p class="text-slate-500 italic text-center p-6">No hay unidades liberadas a viaje registradas.</p>';
+                return;
+            }
+
+            cont.innerHTML = cacheUnidadesLiberadas.map(u => {
+                const avancesCount = Array.isArray(u.avances) ? u.avances.length : 0;
+                return `
+                    <div class="bg-[#141518] border border-[#3A3D42] hover:border-emerald-500/60 p-3 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-lg bg-emerald-950 border border-emerald-700 text-emerald-400 flex items-center justify-center font-black font-mono text-sm">
+                                ${u.id}
+                            </span>
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <span class="font-bold text-white text-xs">Unidad ${u.id} (${u.sucursal || 'Patio'})</span>
+                                    <span class="bg-[#1E1E1E] text-emerald-300 text-[10px] font-mono px-1.5 py-0.5 rounded border border-emerald-800">
+                                        ${u.motivo_salida || 'Salida a viaje'}
+                                    </span>
+                                </div>
+                                <p class="text-[11px] text-slate-400 mt-0.5 line-clamp-1">${u.reporte || u.defecto || 'Sin notas'}</p>
+                                <span class="text-[10px] text-slate-500 font-mono">Liberada el: ${u.fecha_salida || '-'} • ${avancesCount} avances técnicos</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 shrink-0">
+                            <button onclick="verUnidadEnVistaHistorial('${u.id}'); cerrarModalUnidadesLiberadas();" class="bg-[#1E1E1E] hover:bg-[#282A2E] text-[#C59B27] border border-[#3A3D42] px-2.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1">
+                                <i class="fa-solid fa-clock-rotate-left"></i> Historial
+                            </button>
+                            <button onclick="reincorporarUnidadAlTablero('${u.id}')" class="bg-cyan-950/70 hover:bg-cyan-900 text-cyan-300 border border-cyan-800 px-2.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1" title="Mover de vuelta al tablero activo">
+                                <i class="fa-solid fa-arrow-rotate-left"></i> Reincorporar
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function reincorporarUnidadAlTablero(id) {
+            mostrarToast(`Reincorporando Unidad ${id} al tablero...`);
+            try {
+                const res = await fetch(`/api/unidad/${encodeURIComponent(id)}/reincorporar`, { method: 'POST' });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.unidad) {
+                        const existIdx = baseDatos.findIndex(x => String(x.id).trim() === String(id).trim());
+                        if (existIdx >= 0) baseDatos[existIdx] = data.unidad;
+                        else baseDatos.unshift(data.unidad);
+                    }
+                    guardarDatosLocales(false);
+                    renderizarTablero();
+                    actualizarSelectoresUnidades();
+                    cerrarModalUnidadesLiberadas();
+                    cargarContadorUnidadesLiberadas();
+                    mostrarToast(`Unidad ${id} reincorporada al tablero de taller.`);
+                } else {
+                    mostrarToast('Error al reincorporar unidad');
+                }
+            } catch(e) {
+                mostrarToast('Error de conexión');
+            }
+        }
+
+        async function cargarContadorUnidadesLiberadas() {
+            try {
+                const res = await fetch('/api/unidades/archivadas?t=' + Date.now(), { cache: 'no-store' });
+                if (res.ok) {
+                    const data = await res.json();
+                    const cnt = (data.archivadas || []).length;
+                    const el = document.getElementById('cont-unidades-liberadas');
+                    if (el) el.innerText = cnt;
+                }
+            } catch(e) {}
+        }
+
+        // --- GESTIÓN DE ACTUALIZACIÓN DE SERVICIOS PREVENTIVOS ---
+        function abrirModalActualizarServicio(id) {
+            const inputUnidad = document.getElementById('prev-form-unidad');
+            if (inputUnidad) {
+                inputUnidad.value = id || '';
+                if (id) {
+                    const p = cachePreventivos.find(x => String(x.unidad).trim() === String(id).trim());
+                    if (p) {
+                        document.getElementById('prev-form-km').value = p.km_actual || '';
+                        document.getElementById('prev-form-tracto').value = p.tipo_tracto || 'Cascadia';
+                    }
+                }
+            }
+            const hoy = new Intl.DateTimeFormat('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(new Date());
+            document.getElementById('prev-form-fecha').value = hoy;
+            document.getElementById('prev-form-costo').value = '';
+            document.getElementById('prev-form-observaciones').value = '';
+
+            document.getElementById('modal-actualizar-servicio-preventivo').classList.remove('hidden');
+        }
+
+        function cerrarModalActualizarServicio() {
+            document.getElementById('modal-actualizar-servicio-preventivo').classList.add('hidden');
+        }
+
+        async function guardarServicioPreventivoForm(e) {
+            e.preventDefault();
+            const unidad = document.getElementById('prev-form-unidad').value.trim();
+            const fecha = document.getElementById('prev-form-fecha').value.trim();
+            const km = Number(document.getElementById('prev-form-km').value) || 0;
+            const tracto = document.getElementById('prev-form-tracto').value;
+            const costo = Number(document.getElementById('prev-form-costo').value) || 0;
+            const obs = document.getElementById('prev-form-observaciones').value.trim();
+
+            if (!unidad || !km) {
+                mostrarToast('Por favor completa el número de unidad y el kilometraje');
+                return;
+            }
+
+            mostrarToast(`Guardando servicio preventivo de Unidad ${unidad}...`);
+
+            try {
+                const res = await fetch(`/api/preventivo/${encodeURIComponent(unidad)}/actualizar-servicio`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        km_actual: km,
+                        fecha_realizado: fecha,
+                        tipo_tracto: tracto,
+                        costo,
+                        observaciones: obs
+                    })
+                });
+
+                if (res.ok) {
+                    cerrarModalActualizarServicio();
+                    mostrarToast(`✅ Servicio de Unidad ${unidad} guardado. Pasó a VIGENTE (+35,000 km).`);
+                    await cargarModuloPreventivos();
+                    await cargarResumenCabeceras();
+                    if (vistaActual === 'tablero') renderizarTablero();
+                } else {
+                    mostrarToast('Error al guardar servicio');
+                }
+            } catch(e) {
+                mostrarToast('Error de conexión al guardar servicio');
+            }
+        }
+
     </script>
 </body>
 </html>
