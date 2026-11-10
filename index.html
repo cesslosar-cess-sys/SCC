@@ -8892,7 +8892,224 @@
 
                         <div class="flex items-center justify-between text-[10px] text-slate-400 pt-1 border-t border-[#3A3D42]/60">
                             <span><i class="fa-solid fa-user-gear text-slate-500 mr-1"></i>${r.mecanico || 'Sin asignar'}</span>
-                            <span class="font-bold text-white font-mono">${r.costo ? '
+                            <span class="font-bold text-white font-mono">${r.costo ? '$' + Number(r.costo).toLocaleString() + ' MXN' : '$0'}</span>
+                        </div>
+
+                        <!-- Botones táctiles de cambio de columna -->
+                        <div class="flex items-center justify-between gap-1 pt-1.5 border-t border-[#3A3D42]/40">
+                            <button onclick="cambiarEstadoRemolque('${r.id}', 'considerar')" title="Mover a A Considerar" class="flex-1 py-1 px-1 rounded text-[9px] font-bold text-center transition ${colId === 'considerar' ? 'bg-yellow-500 text-black' : 'bg-[#1E1E1E] text-yellow-400 hover:bg-yellow-950/40 border border-[#3A3D42]'}">
+                                Considerar
+                            </button>
+                            <button onclick="cambiarEstadoRemolque('${r.id}', 'mayor')" title="Mover a Rep. Mayor" class="flex-1 py-1 px-1 rounded text-[9px] font-bold text-center transition ${colId === 'mayor' ? 'bg-amber-500 text-black' : 'bg-[#1E1E1E] text-amber-400 hover:bg-amber-950/40 border border-[#3A3D42]'}">
+                                Mayor
+                            </button>
+                            <button onclick="cambiarEstadoRemolque('${r.id}', 'proceso')" title="Mover a En Reparación" class="flex-1 py-1 px-1 rounded text-[9px] font-bold text-center transition ${colId === 'proceso' ? 'bg-cyan-500 text-black' : 'bg-[#1E1E1E] text-cyan-400 hover:bg-cyan-950/40 border border-[#3A3D42]'}">
+                                Proceso
+                            </button>
+                            <button onclick="cambiarEstadoRemolque('${r.id}', 'listo')" title="Mover a Listo para Patio" class="flex-1 py-1 px-1 rounded text-[9px] font-bold text-center transition ${colId === 'listo' ? 'bg-emerald-500 text-black' : 'bg-[#1E1E1E] text-emerald-400 hover:bg-emerald-950/40 border border-[#3A3D42]'}">
+                                Listo
+                            </button>
+                        </div>
+                    `;
+                    contenedor.appendChild(card);
+                });
+            });
+        }
+
+        function renderizarTablaRemolques() {
+            const tbody = document.getElementById('tabla-remolques-body');
+            const txtTotal = document.getElementById('rem-total-tabla-txt');
+            if (!tbody) return;
+
+            const filtrados = obtenerRemolquesFiltrados();
+            if (txtTotal) txtTotal.innerText = `${filtrados.length} registros`;
+
+            if (filtrados.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="11" class="p-6 text-center text-slate-500 italic">No se encontraron cajas o remolques con los filtros seleccionados.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtrados.map(r => {
+                let badgeEstado = '';
+                if (r.estado === 'considerar') {
+                    badgeEstado = `<span class="bg-yellow-950 text-yellow-300 border border-yellow-800 text-[10px] px-2 py-0.5 rounded font-bold">A Considerar</span>`;
+                } else if (r.estado === 'mayor') {
+                    badgeEstado = `<span class="bg-amber-950 text-amber-300 border border-amber-800 text-[10px] px-2 py-0.5 rounded font-bold">Rep. Mayor</span>`;
+                } else if (r.estado === 'proceso') {
+                    badgeEstado = `<span class="bg-cyan-950 text-cyan-300 border border-cyan-800 text-[10px] px-2 py-0.5 rounded font-bold">En Reparación</span>`;
+                } else {
+                    badgeEstado = `<span class="bg-emerald-950 text-emerald-300 border border-emerald-800 text-[10px] px-2 py-0.5 rounded font-bold">Listo Patio</span>`;
+                }
+
+                const folio = r.folio_almacen ? `<span class="font-mono text-cyan-400 font-bold">#${r.folio_almacen}</span>` : '<span class="text-slate-600">-</span>';
+
+                return `
+                    <tr class="hover:bg-[#1E1E1E] transition">
+                        <td class="p-3 font-mono font-black text-white text-xs">${r.id}</td>
+                        <td class="p-3 text-slate-300 font-bold">${r.tipo} <span class="text-[10px] text-slate-500 block font-normal">${r.marca || ''}</span></td>
+                        <td class="p-3 font-mono text-slate-400 text-xs">${r.placas || '-'}${r.anio ? ` <span class="text-slate-500 block text-[10px]">${r.anio}</span>` : ''}</td>
+                        <td class="p-3 text-slate-300 font-semibold">${r.sistema || 'General'}</td>
+                        <td class="p-3 text-slate-200 max-w-xs truncate" title="${r.defecto || ''}">${r.defecto || '-'}</td>
+                        <td class="p-3 text-slate-400 max-w-xs truncate text-[11px] italic" title="${r.reporte || ''}">${r.reporte || '-'}</td>
+                        <td class="p-3 text-slate-300 text-xs">${r.mecanico || 'Sin asignar'}</td>
+                        <td class="p-3">${folio}</td>
+                        <td class="p-3 text-right font-mono font-bold text-white">${r.costo ? '$' + Number(r.costo).toLocaleString() : '$0'}</td>
+                        <td class="p-3 text-center">${badgeEstado}</td>
+                        <td class="p-3 text-center">
+                            <div class="flex items-center justify-center gap-1">
+                                <button onclick="editarRemolque('${r.id}')" class="p-1 rounded bg-[#282A2E] hover:bg-[#3A3D42] text-slate-300 hover:text-white" title="Editar">
+                                    <i class="fa-solid fa-pen-to-square text-xs"></i>
+                                </button>
+                                <button onclick="eliminarRemolque('${r.id}')" class="p-1 rounded bg-red-950/60 hover:bg-red-900 text-red-300" title="Eliminar">
+                                    <i class="fa-solid fa-trash-can text-xs"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function abrirModalNuevoRemolque() {
+            document.getElementById('modal-remolque-titulo').innerText = 'Registrar Caja / Remolque';
+            document.getElementById('remolque-form-es-edicion').value = 'false';
+            document.getElementById('remolque-form-id').value = '';
+            document.getElementById('remolque-form-id').disabled = false;
+            document.getElementById('remolque-form-tipo').value = "Caja Seca 53'";
+            document.getElementById('remolque-form-marca').value = '';
+            document.getElementById('remolque-form-anio').value = '';
+            document.getElementById('remolque-form-placas').value = '';
+            document.getElementById('remolque-form-estado').value = 'proceso';
+            document.getElementById('remolque-form-sistema').value = 'Frenos / Cámaras';
+            document.getElementById('remolque-form-defecto').value = '';
+            document.getElementById('remolque-form-reporte').value = '';
+            document.getElementById('remolque-form-mecanico').value = '';
+            document.getElementById('remolque-form-folio').value = '';
+            document.getElementById('remolque-form-costo').value = '';
+            document.getElementById('remolque-form-sucursal').value = 'Apodaca';
+
+            document.getElementById('modal-nuevo-remolque').classList.remove('hidden');
+            setTimeout(() => document.getElementById('remolque-form-id').focus(), 100);
+        }
+
+        function editarRemolque(id) {
+            const r = cacheRemolques.find(x => String(x.id).toUpperCase() === String(id).toUpperCase());
+            if (!r) return;
+
+            document.getElementById('modal-remolque-titulo').innerText = `Editar Caja / Remolque ${r.id}`;
+            document.getElementById('remolque-form-es-edicion').value = 'true';
+            const inputId = document.getElementById('remolque-form-id');
+            inputId.value = r.id;
+            inputId.disabled = true;
+
+            document.getElementById('remolque-form-tipo').value = r.tipo || "Caja Seca 53'";
+            document.getElementById('remolque-form-marca').value = r.marca || '';
+            document.getElementById('remolque-form-anio').value = r.anio || '';
+            document.getElementById('remolque-form-placas').value = r.placas || '';
+            document.getElementById('remolque-form-estado').value = r.estado || 'proceso';
+            document.getElementById('remolque-form-sistema').value = r.sistema || 'Frenos / Cámaras';
+            document.getElementById('remolque-form-defecto').value = r.defecto || '';
+            document.getElementById('remolque-form-reporte').value = r.reporte || '';
+            document.getElementById('remolque-form-mecanico').value = r.mecanico || '';
+            document.getElementById('remolque-form-folio').value = r.folio_almacen || '';
+            document.getElementById('remolque-form-costo').value = r.costo || '';
+            document.getElementById('remolque-form-sucursal').value = r.sucursal || 'Apodaca';
+
+            document.getElementById('modal-nuevo-remolque').classList.remove('hidden');
+        }
+
+        function cerrarModalNuevoRemolque() {
+            document.getElementById('modal-nuevo-remolque').classList.add('hidden');
+        }
+
+        async function guardarRemolqueForm(e) {
+            e.preventDefault();
+            const id = document.getElementById('remolque-form-id').value.trim().toUpperCase();
+            if (!id) return;
+
+            const data = {
+                id: id,
+                tipo: document.getElementById('remolque-form-tipo').value,
+                marca: document.getElementById('remolque-form-marca').value.trim(),
+                anio: document.getElementById('remolque-form-anio').value.trim(),
+                placas: document.getElementById('remolque-form-placas').value.trim().toUpperCase(),
+                estado: document.getElementById('remolque-form-estado').value,
+                sistema: document.getElementById('remolque-form-sistema').value,
+                defecto: document.getElementById('remolque-form-defecto').value.trim(),
+                reporte: document.getElementById('remolque-form-reporte').value.trim(),
+                mecanico: document.getElementById('remolque-form-mecanico').value.trim(),
+                folio_almacen: document.getElementById('remolque-form-folio').value.trim(),
+                costo: Number(document.getElementById('remolque-form-costo').value) || 0,
+                sucursal: document.getElementById('remolque-form-sucursal').value
+            };
+
+            try {
+                const res = await fetch(`/api/remolque/${encodeURIComponent(id)}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (res.ok) {
+                    cerrarModalNuevoRemolque();
+                    mostrarToast(`Caja ${id} guardada con éxito`);
+                    await cargarModuloRemolques();
+                } else {
+                    mostrarToast('Error al guardar remolque');
+                }
+            } catch (err) {
+                console.error(err);
+                mostrarToast('Error de conexión al guardar remolque');
+            }
+        }
+
+        async function cambiarEstadoRemolque(id, nuevoEstado) {
+            try {
+                const item = cacheRemolques.find(x => String(x.id).toUpperCase() === String(id).toUpperCase());
+                if (item) {
+                    item.estado = nuevoEstado;
+                    actualizarMetricasRemolques();
+                    renderizarTableroRemolques();
+                }
+
+                const res = await fetch(`/api/remolque/${encodeURIComponent(id)}/estado`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nuevoEstado })
+                });
+
+                if (res.ok) {
+                    mostrarToast(`Caja ${id} movida a ${nuevoEstado.toUpperCase()}`);
+                } else {
+                    await cargarModuloRemolques();
+                }
+            } catch (err) {
+                console.error(err);
+                mostrarToast('Error al actualizar estado');
+            }
+        }
+
+        async function eliminarRemolque(id) {
+            if (!confirm(`¿Deseas dar de baja o eliminar el remolque / caja ${id}?`)) return;
+
+            try {
+                const res = await fetch(`/api/remolque/${encodeURIComponent(id)}`, {
+                    method: 'DELETE'
+                });
+
+                if (res.ok) {
+                    mostrarToast(`Remolque ${id} eliminado`);
+                    await cargarModuloRemolques();
+                } else {
+                    mostrarToast('Error al eliminar remolque');
+                }
+            } catch (err) {
+                console.error(err);
+                mostrarToast('Error de conexión al eliminar');
+            }
+        }
+
+        // --- 3. MODAL DE AVANCE RÁPIDO Y DICTADO POR VOZ ---
         let unidadAvanceActiva = null;
 
         function abrirModalAvanceRapido(event, id) {
