@@ -448,7 +448,7 @@
                     </div>
                     <div>
                         <span class="block text-[11px] text-slate-400 font-bold uppercase">Total Flota Monitoreada</span>
-                        <span class="text-lg font-black text-white font-mono" id="prev-kpi-total">74</span>
+                        <span class="text-lg font-black text-white font-mono" id="prev-kpi-total">76</span>
                     </div>
                 </div>
                 <div class="bg-[#141518] p-3.5 rounded-xl border border-red-900/60 flex items-center gap-3">
@@ -466,7 +466,7 @@
                     </div>
                     <div>
                         <span class="block text-[11px] text-amber-300 font-bold uppercase">Próximos a Vencer</span>
-                        <span class="text-lg font-black text-amber-400 font-mono" id="prev-kpi-proximos">3</span>
+                        <span class="text-lg font-black text-amber-400 font-mono" id="prev-kpi-proximos">8</span>
                     </div>
                 </div>
                 <div class="bg-[#141518] p-3.5 rounded-xl border border-emerald-900/60 flex items-center gap-3">
@@ -475,7 +475,7 @@
                     </div>
                     <div>
                         <span class="block text-[11px] text-emerald-300 font-bold uppercase">Servicios al Día</span>
-                        <span class="text-lg font-black text-emerald-400 font-mono" id="prev-kpi-vigentes">64</span>
+                        <span class="text-lg font-black text-emerald-400 font-mono" id="prev-kpi-vigentes">61</span>
                     </div>
                 </div>
             </div>
@@ -484,16 +484,16 @@
             <div class="bg-[#1E1E1E] border border-[#3A3D42] rounded-2xl p-4 shadow-xl flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
                 <div class="flex flex-wrap items-center gap-1.5">
                     <button onclick="filtrarPreventivosPorEstatus('TODOS')" id="btn-filtro-prev-todos" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-[#C59B27] text-black shadow-sm">
-                        Todos (<span id="cnt-filtro-prev-todos">74</span>)
+                        Todos (<span id="cnt-filtro-prev-todos">76</span>)
                     </button>
                     <button onclick="filtrarPreventivosPorEstatus('VENCIDO')" id="btn-filtro-prev-vencido" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-[#141518] text-red-400 border border-red-900/60 hover:bg-red-950/40">
                         Vencidos (<span id="cnt-filtro-prev-vencidos">7</span>)
                     </button>
                     <button onclick="filtrarPreventivosPorEstatus('PROXIMO')" id="btn-filtro-prev-proximo" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-[#141518] text-amber-400 border border-amber-900/60 hover:bg-amber-950/40">
-                        Próximos (<span id="cnt-filtro-prev-proximos">3</span>)
+                        Próximos (<span id="cnt-filtro-prev-proximos">8</span>)
                     </button>
                     <button onclick="filtrarPreventivosPorEstatus('VIGENTE')" id="btn-filtro-prev-vigente" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-[#141518] text-emerald-400 border border-emerald-900/60 hover:bg-emerald-950/40">
-                        Vigentes (<span id="cnt-filtro-prev-vigentes">64</span>)
+                        Vigentes (<span id="cnt-filtro-prev-vigentes">61</span>)
                     </button>
                 </div>
 
@@ -4927,8 +4927,8 @@
             const domPrevVenc = document.getElementById('ana-kpi-prev-vencidos');
             const prevVencidos = cachePreventivos.filter(p => (p.estatus||'').toUpperCase() === 'VENCIDO').length;
             const prevVigentes = cachePreventivos.filter(p => (p.estatus||'').toUpperCase() === 'VIGENTE').length;
-            if (domPrevVig) domPrevVig.innerText = prevVigentes || 60;
-            if (domPrevVenc) domPrevVenc.innerText = `${prevVencidos || 22} Unidades Vencidas`;
+            if (domPrevVig) domPrevVig.innerText = prevVigentes || 61;
+            if (domPrevVenc) domPrevVenc.innerText = `${prevVencidos !== undefined ? prevVencidos : 7} Unidades Vencidas`;
 
             // Rescates Carreteros
             const domRescTotal = document.getElementById('ana-kpi-rescates-total');
@@ -7668,15 +7668,28 @@
             mostrarToast('Bitácora de preventivos descargada.');
         }
 
-        // Callbacks para actualización directa en tiempo real desde Firebase
+        // Callbacks para actualización directa en tiempo real desde Firebase (Sistema Control CESS Combustible)
         window.actualizarPreventivosDesdeFirebase = function(list) {
             if (Array.isArray(list) && list.length > 0) {
-                cachePreventivos = list;
+                // Fusión inteligente: Si ya tenemos el catálogo oficial calibrado, actualizamos cada unidad sin perder el resto
+                if (cachePreventivos.length > 0) {
+                    list.forEach(item => {
+                        const idx = cachePreventivos.findIndex(p => String(p.unidad).trim() === String(item.unidad).trim());
+                        if (idx >= 0) {
+                            cachePreventivos[idx] = { ...cachePreventivos[idx], ...item };
+                        } else {
+                            cachePreventivos.push(item);
+                        }
+                    });
+                } else {
+                    cachePreventivos = list;
+                }
+
                 const stats = {
-                    total: list.length,
-                    vigentes: list.filter(p => (p.estatus||'').toUpperCase() === 'VIGENTE').length,
-                    vencidos: list.filter(p => (p.estatus||'').toUpperCase() === 'VENCIDO').length,
-                    proximos: list.filter(p => (p.estatus||'').toUpperCase().includes('PROXIM')).length
+                    total: cachePreventivos.length,
+                    vigentes: cachePreventivos.filter(p => (p.estatus||'').toUpperCase() === 'VIGENTE').length,
+                    vencidos: cachePreventivos.filter(p => (p.estatus||'').toUpperCase() === 'VENCIDO').length,
+                    proximos: cachePreventivos.filter(p => (p.estatus||'').toUpperCase().includes('PROXIM')).length
                 };
                 actualizarMetricasPreventivos(stats);
                 if (subTabPreventivosActiva === 'unidades') {
