@@ -2498,6 +2498,12 @@
             window.addEventListener('online', actualizarEstadoConexion);
             window.addEventListener('offline', actualizarEstadoConexion);
 
+            // Cargar caché local de preventivos de inmediato para marcas instantáneas en tarjetas
+            try {
+                const prevLocal = localStorage.getItem('cess_preventivos_cache');
+                if (prevLocal) cachePreventivos = JSON.parse(prevLocal);
+            } catch(e) {}
+
             // Cargar datos locales de inmediato
             const guardadoLocal = localStorage.getItem(STORAGE_KEY);
             if (guardadoLocal) {
@@ -3057,6 +3063,55 @@
 
             const costoTotalUnidad = (Number(unidad.costo) || 0) + (Number(unidad.costo_refacciones) || 0);
 
+            // Buscar estatus de mantenimiento preventivo para esta unidad (sincronizado con Control Diésel)
+            const preventivoInfo = Array.isArray(cachePreventivos) ? cachePreventivos.find(p => {
+                const pId = String(p.unidad || '').trim();
+                const uId = String(unidad.id || '').trim();
+                return pId === uId || (Number(pId) > 0 && Number(pId) === Number(uId));
+            }) : null;
+
+            let bannerPreventivo = '';
+            let badgePreventivoChip = '';
+
+            if (preventivoInfo) {
+                const estNorm = (preventivoInfo.estatus || '').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+                const kmRest = Number(preventivoInfo.km_restantes) || 0;
+
+                if (estNorm === 'VENCIDO') {
+                    const kmExcedidos = kmRest < 0 ? Math.abs(kmRest).toLocaleString() : '0';
+                    bannerPreventivo = `
+                        <div data-no-expediente="true" onclick="cambiarVistaPrincipal('preventivos')" class="bg-gradient-to-r from-red-950/95 via-red-900/90 to-red-950/95 border-2 border-red-500 rounded-xl px-2.5 py-1.5 flex items-center justify-between text-xs animate-pulse cursor-pointer shadow-lg shadow-red-950/50 hover:brightness-110 transition group" title="Mantenimiento preventivo vencido en control de diésel. Haz clic para ver kilometrajes.">
+                            <div class="flex items-center gap-1.5 font-bold">
+                                <span class="w-2.5 h-2.5 rounded-full bg-red-400 animate-ping"></span>
+                                <i class="fa-solid fa-triangle-exclamation text-red-300 text-sm"></i>
+                                <span class="uppercase tracking-wide font-black text-[11px] text-white">¡Le Toca Preventivo (Vencido)!</span>
+                            </div>
+                            <span class="font-mono font-black text-[10px] bg-black/80 px-2 py-0.5 rounded text-red-300 border border-red-500/80 shrink-0">
+                                -${kmExcedidos} km
+                            </span>
+                        </div>
+                    `;
+                } else if (estNorm === 'PROXIMO' || estNorm === 'PRÓXIMO') {
+                    bannerPreventivo = `
+                        <div data-no-expediente="true" onclick="cambiarVistaPrincipal('preventivos')" class="bg-gradient-to-r from-amber-950/90 to-amber-900/80 border border-amber-600/90 hover:border-amber-400 text-amber-200 rounded-xl px-2.5 py-1 flex items-center justify-between text-xs cursor-pointer shadow-sm transition" title="Aprovechar estancia en taller: mantenimiento preventivo próximo">
+                            <div class="flex items-center gap-1.5 font-bold">
+                                <i class="fa-solid fa-clock-rotate-left text-amber-400 text-xs"></i>
+                                <span class="text-[11px] font-bold text-amber-300">Preventivo Próximo</span>
+                            </div>
+                            <span class="font-mono font-bold text-[10px] text-amber-200 bg-amber-900/70 px-2 py-0.5 rounded border border-amber-700/60 shrink-0">
+                                Restan ${kmRest.toLocaleString()} km
+                            </span>
+                        </div>
+                    `;
+                } else if (estNorm === 'VIGENTE') {
+                    badgePreventivoChip = `
+                        <span class="bg-emerald-950/70 text-emerald-300 border border-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1" title="Preventivo al día (${kmRest.toLocaleString()} km restantes)">
+                            <i class="fa-solid fa-shield-halved text-emerald-400"></i> Preventivo al Día
+                        </span>
+                    `;
+                }
+            }
+
             // Badges opcionales
             let badgeRescate = unidad.es_rescate ? `
                 <span class="bg-amber-950/90 border border-amber-500/80 text-amber-300 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 animate-pulse" title="Atención de Rescate Carretero SOS">
@@ -3086,6 +3141,9 @@
                 else if (unidad.prioridad === 'BAJA') prioridadColor = 'bg-blue-950/80 text-blue-300 border-blue-600/80';
 
                 card.innerHTML = `
+                    <!-- Alerta de Preventivo si aplica -->
+                    ${bannerPreventivo}
+
                     <!-- Encabezado Detección -->
                     <div class="flex items-center justify-between gap-1">
                         <div class="flex items-center gap-2">
@@ -3200,6 +3258,9 @@
             const nomListo = (nombresColumnas && nombresColumnas.listo) || 'Lista';
 
             card.innerHTML = `
+                <!-- Alerta de Preventivo Vencido o Próximo -->
+                ${bannerPreventivo}
+
                 <!-- Cabecera Limpia: Unidad, Sucursal y Acciones Rápidas -->
                 <div class="flex items-center justify-between gap-1">
                     <div class="flex items-center gap-1.5">
@@ -6541,7 +6602,17 @@
                     fetch('/api/rescates?t=' + Date.now()).then(r => r.ok ? r.json() : null).catch(() => null)
                 ]);
 
-                if (resPrev && resPrev.resumen) {
+                if (resPrev) {
+                    cachePreventivos = resPrev.data || resPrev.preventivos || [];
+                    try { localStorage.setItem('cess_preventivos_cache', JSON.stringify(cachePreventivos)); } catch(e) {}
+                    const stats = resPrev.resumen || resPrev.stats || {};
+                    actualizarMetricasPreventivos(stats);
+                    if (vistaActual === 'tablero') {
+                        renderizarTablero();
+                    }
+                }
+
+                if (resPrev && (resPrev.resumen || resPrev.stats)) {
                     const vencidos = resPrev.resumen.vencidos || 0;
                     const navBadgePrev = document.getElementById('badge-nav-preventivos');
                     if (navBadgePrev) {
