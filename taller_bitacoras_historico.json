@@ -1,5 +1,285 @@
 [
   {
+    "id": "snap_20261109_2359",
+    "fecha": "2026-11-09",
+    "hora": "23:59:59",
+    "titulo": "Cierre Oficial de Bitácora - lunes, 9 de noviembre de 2026",
+    "responsable": "Cierre Automático de Medianoche (00:00 hrs)",
+    "resumen": {
+      "total": 19,
+      "mayor": 5,
+      "proceso": 7,
+      "listo": 7,
+      "costo_acumulado": 62274
+    },
+    "notas_cierre": "Corte automático de medianoche (12:00 AM). Las unidades continúan su ciclo de trabajo hacia el nuevo día.",
+    "movimientos": [
+      {
+        "id": "mov_1794259503652_955",
+        "fecha": "2026-11-09",
+        "hora": "03:25:03 p.m.",
+        "unidad_id": "94",
+        "tipo": "actualizacion",
+        "descripcion": "Unidad 94: Filtro de gases del EGR • Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer\n\nUnidad en preuba ya que ya se remplazo el bote del EGR",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1794259360144_730",
+        "fecha": "2026-11-09",
+        "hora": "03:22:40 p.m.",
+        "unidad_id": "94",
+        "tipo": "movimiento_kanban",
+        "descripcion": "Movimiento rápido: De 'En Reparación Activa' a 'Listas para Entrega'",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1794250780987_359",
+        "fecha": "2026-11-09",
+        "hora": "12:59:40 p.m.",
+        "unidad_id": "004",
+        "tipo": "actualizacion",
+        "descripcion": "Unidad 004: Unidad lista y limpia por dntro\nOJO pendiente entrar a MTTO SITRAK",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1794250569867_969",
+        "fecha": "2026-11-09",
+        "hora": "12:56:09 p.m.",
+        "unidad_id": "68",
+        "tipo": "movimiento_kanban",
+        "descripcion": "Movimiento rápido: De 'Listas para Entrega' a 'Reparación Mayor ($$)'",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1794248627533_787",
+        "fecha": "2026-11-09",
+        "hora": "12:23:47 p.m.",
+        "unidad_id": "003",
+        "tipo": "movimiento_kanban",
+        "descripcion": "Movimiento rápido: De 'En Reparación Activa' a 'Listas para Entrega'",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1794248543240_937",
+        "fecha": "2026-11-09",
+        "hora": "12:22:23 p.m.",
+        "unidad_id": "83",
+        "tipo": "actualizacion",
+        "descripcion": "Unidad 83: bujes y pernos de direccion",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_1794246179888_639",
+        "fecha": "2026-11-09",
+        "hora": "11:42:59 a.m.",
+        "unidad_id": "40",
+        "tipo": "movimiento_kanban",
+        "descripcion": "Movimiento rápido: De 'Listas para Entrega' a 'Listas para Entrega'",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_init_1794233864846",
+        "hora": "00:00:00",
+        "unidad_id": "TODAS",
+        "tipo": "apertura",
+        "descripcion": "Apertura de jornada diaria. Se arranca con el estatus del cierre de ayer (2026-11-06).",
+        "autor": "Sistema Taller Pro"
+      }
+    ],
+    "unidades": [
+      {
+        "id": "008",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "MTTO a agencia SITRAK",
+        "notas": "",
+        "reporte": "MTTO a agencia SITRAK",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-09"
+      },
+      {
+        "id": "003",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "unidad lista recien salida de agencia Sitrak",
+        "notas": "",
+        "reporte": "unidad lista recien salida de agencia Sitrak",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-09"
+      },
+      {
+        "id": "83",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "bujes y pernos de direccion",
+        "notas": "",
+        "reporte": "bujes y pernos de direccion",
+        "costo": 0,
+        "fechaRefaccion": "2026-06-11"
+      },
+      {
+        "id": "42",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Daño en defensa  y tuba burros por golpe ocacionado por el operador  Revicion de potenciometo y parametos y reparacion de clima",
+        "notas": "",
+        "reporte": "Daño en defensa  y tuba burros por golpe ocacionado por el operador  Revicion de potenciometo y parametos y reparacion de clima",
+        "costo": 0,
+        "fechaRefaccion": "2026-05-12"
+      },
+      {
+        "id": "004",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Unidad lista y limpia por dntro\nOJO pendiente entrar a MTTO SITRAK",
+        "notas": "",
+        "reporte": "Unidad lista y limpia por dntro\nOJO pendiente entrar a MTTO SITRAK",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-09"
+      },
+      {
+        "id": "68",
+        "sucursal": "Apodaca",
+        "estado": "mayor",
+        "defecto": "Unidad lista y limpia por dntro",
+        "notas": "",
+        "reporte": "Unidad lista y limpia por dntro",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "92",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Unidad lista y limpia por dntro",
+        "notas": "",
+        "reporte": "Unidad lista y limpia por dntro",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "85",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Unidad lista y limpia por dntro",
+        "notas": "",
+        "reporte": "Unidad lista y limpia por dntro",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "96",
+        "sucursal": "Querétaro",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Pendiente por compra de motor",
+        "reporte": "Falla de motor • Pendiente por compra de motor",
+        "costo": 1290,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "90",
+        "sucursal": "Apodaca",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Pendiente por compra de motor",
+        "reporte": "Falla de motor • Pendiente por compra de motor",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "91",
+        "sucursal": "Querétaro",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Refacciones (mangas, empaques, ligas e inyectores) asciende a $60,984 MXN (compras al 16/11/26)",
+        "reporte": "Falla de motor • Refacciones (mangas, empaques, ligas e inyectores) asciende a $60,984 MXN (compras al 16/11/26)",
+        "costo": 60984,
+        "fechaRefaccion": "2026-11-16"
+      },
+      {
+        "id": "97",
+        "sucursal": "Apodaca",
+        "estado": "mayor",
+        "defecto": "Bomba de aceite y cálipers",
+        "notas": "Motor montado; pendiente bomba de aceite, cálipers delanteros y revisión traseros (compras 23/11/26)",
+        "reporte": "Bomba de aceite y cálipers • Motor montado; pendiente bomba de aceite, cálipers delanteros y revisión traseros (compras 23/11/26)",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-23"
+      },
+      {
+        "id": "11",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Calentamiento de motor",
+        "notas": "Pendiente ingresar a agencia Sitrak. Falla al accionar el retardador",
+        "reporte": "Calentamiento de motor • Pendiente ingresar a agencia Sitrak. Falla al accionar el retardador",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "74",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Cálipers traseros",
+        "notas": "Compra programada para el 09/11/26",
+        "reporte": "Cálipers traseros • Compra programada para el 09/11/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-09"
+      },
+      {
+        "id": "94",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Filtro de gases del EGR • Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer\n\nUnidad en preuba ya que ya se remplazo el bote del EGR",
+        "notas": "Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer",
+        "reporte": "Filtro de gases del EGR • Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer\n\nUnidad en preuba ya que ya se remplazo el bote del EGR",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-09"
+      },
+      {
+        "id": "81",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Enllantado pendiente • Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+        "notas": "Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+        "reporte": "Enllantado pendiente • Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "41",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "unidad lista para entrega y limpia por dentro",
+        "notas": "En proceso de compra. Fecha estimada de entrega: 29/10/26",
+        "reporte": "unidad lista para entrega y limpia por dentro",
+        "costo": 0,
+        "fechaRefaccion": "2026-05-11"
+      },
+      {
+        "id": "63",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Revision de cabeza de motor por paso de combustible al aceite",
+        "notas": "En proceso de cambio de válvula niveladora suspensión, amortiguadores delanteros y enllantado",
+        "reporte": "Revision de cabeza de motor por paso de combustible al aceite",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "18",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "unidad disponible para entrega para pato ya que ya trae daño en anillos (COMPRECION VOLTEADA)",
+        "notas": "",
+        "reporte": "unidad disponible para entrega para pato ya que ya trae daño en anillos (COMPRECION VOLTEADA)",
+        "costo": 0,
+        "fechaRefaccion": ""
+      }
+    ]
+  },
+  {
     "id": "snap_20261106_2359",
     "fecha": "2026-11-06",
     "hora": "23:59:59",

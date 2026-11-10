@@ -201,8 +201,8 @@
                     <span>Tablero de Taller</span>
                 </button>
 
-                <!-- Pestaña 2: Mantenimientos Preventivos (Control CESS Diesel) -->
-                <button onclick="cambiarVistaPrincipal('preventivos')" id="nav-btn-preventivos" class="px-3.5 py-1.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 transition text-slate-400 hover:text-white hover:bg-[#282A2E]" title="Semáforo de servicios preventivos vinculados a Control Diésel">
+                <!-- Pestaña 2: Mantenimientos Preventivos CESS -->
+                <button onclick="cambiarVistaPrincipal('preventivos')" id="nav-btn-preventivos" class="px-3.5 py-1.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 transition text-slate-400 hover:text-white hover:bg-[#282A2E]" title="Semáforo de servicios preventivos y kilometrajes de la flota CESS">
                     <i class="fa-solid fa-shield-halved text-cyan-400"></i>
                     <span>Preventivos</span>
                     <span id="badge-nav-preventivos" class="bg-red-950 text-red-300 text-[10px] font-mono px-1.5 py-0.5 rounded border border-red-800 hidden sm:inline">22 Vencidos</span>
@@ -397,10 +397,10 @@
     </div>
 
     <!-- ======================================================== -->
-    <!-- VISTA: MANTENIMIENTOS PREVENTIVOS (CONTROL CESS DIESEL) -->
+    <!-- VISTA: MANTENIMIENTOS PREVENTIVOS CESS -->
     <!-- ======================================================== -->
     <div id="vista-preventivos" class="flex-1 hidden max-w-7xl w-full mx-auto p-3 sm:p-6 flex-col gap-5">
-        <!-- Encabezado y Filtros Preventivos -->
+        <!-- Encabezado y Navegación de Preventivos Vinculados a Combustible -->
         <div class="bg-[#1E1E1E] border border-[#3A3D42] rounded-2xl p-4 sm:p-5 shadow-xl flex flex-col gap-4">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
@@ -411,19 +411,55 @@
                         <h2 class="text-base sm:text-lg font-black text-white flex items-center gap-2">
                             Mantenimientos Preventivos <span class="text-xs bg-[#C59B27] text-black px-2 py-0.5 rounded font-black">CESS</span>
                         </h2>
-                        <p class="text-xs text-slate-400">Control oficial de kilometrajes y calendarización de servicios por unidad (vinculado a Control Diésel).</p>
+                        <p class="text-xs text-slate-400">Control oficial de kilometrajes y calendarización de servicios por unidad (Flota CESS).</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 flex-wrap">
                     <button onclick="cargarModuloPreventivos()" class="bg-[#282A2E] hover:bg-[#3A3D42] text-slate-200 border border-[#3A3D42] px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow">
-                        <i class="fa-solid fa-arrows-rotate text-cyan-400"></i> Actualizar Preventivos
+                        <i class="fa-solid fa-arrows-rotate text-cyan-400"></i> Sincronizar Ahora
                     </button>
-                    <button onclick="exportarExcelPreventivos()" class="bg-emerald-950 hover:bg-emerald-900 text-emerald-300 border border-emerald-700/80 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow">
+                    <button id="btn-exportar-prev-activo" onclick="exportarSegunSubTabPreventivos()" class="bg-emerald-950 hover:bg-emerald-900 text-emerald-300 border border-emerald-700/80 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow">
                         <i class="fa-solid fa-file-excel"></i> Exportar
                     </button>
                 </div>
             </div>
 
+            <!-- Banner Informativo: Vinculación Oficial con Sistema de Control CESS Combustible -->
+            <div class="bg-gradient-to-r from-cyan-950/40 via-[#1A2333]/60 to-[#141518] border border-cyan-800/50 rounded-xl px-3.5 py-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-7 h-7 rounded-lg bg-cyan-900/50 text-cyan-300 flex items-center justify-center font-bold text-xs shrink-0">
+                        <i class="fa-solid fa-link"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-white flex items-center gap-2 flex-wrap">
+                            <span>Vinculado a: <strong>Sistema de Control CESS Combustible</strong></span>
+                            <span class="inline-flex items-center gap-1 text-[10px] text-emerald-400 bg-emerald-950/90 px-2 py-0.5 rounded-full border border-emerald-800 font-mono">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> EN VIVO
+                            </span>
+                        </div>
+                        <p class="text-[11px] text-slate-400">Datos y odómetros gobernados desde el módulo oficial de preventivos. Modo supervisión y consulta para taller.</p>
+                    </div>
+                </div>
+                <div class="text-[11px] text-amber-300/90 bg-amber-950/40 px-3 py-1 rounded-lg border border-amber-800/40 self-start sm:self-auto flex items-center gap-1.5 shrink-0">
+                    <i class="fa-solid fa-lock text-[#C59B27]"></i> Registros centralizados desde preventivos
+                </div>
+            </div>
+
+            <!-- Selector de Sub-Pestañas: [1. Estado Actual por Unidad] vs [2. Bitácora de Preventivos] -->
+            <div class="flex items-center gap-2 pt-1 border-t border-[#3A3D42]/60 flex-wrap">
+                <button id="btn-subtab-prev-unidades" onclick="cambiarSubTabPreventivos('unidades')" class="px-3.5 py-2 rounded-xl text-xs font-black transition bg-[#C59B27] text-black shadow flex items-center gap-2">
+                    <i class="fa-solid fa-list-check"></i> Estado Actual por Unidad (<span id="tab-cnt-unidades">83</span>)
+                </button>
+                <button id="btn-subtab-prev-bitacora" onclick="cambiarSubTabPreventivos('bitacora')" class="px-3.5 py-2 rounded-xl text-xs font-bold transition bg-[#141518] text-slate-300 hover:text-white border border-[#3A3D42] flex items-center gap-2">
+                    <i class="fa-solid fa-clock-rotate-left text-cyan-400"></i> Bitácora Histórica de Mantenimientos (<span id="tab-cnt-bitacora">106</span>)
+                </button>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- SUB-VISTA 1: ESTADO ACTUAL POR UNIDAD     -->
+        <!-- ========================================== -->
+        <div id="seccion-prev-unidades" class="flex flex-col gap-4">
             <!-- KPI Cards de Preventivos -->
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
                 <div class="bg-[#141518] p-3.5 rounded-xl border border-[#3A3D42] flex items-center gap-3">
@@ -436,12 +472,12 @@
                     </div>
                 </div>
                 <div class="bg-[#141518] p-3.5 rounded-xl border border-red-900/60 flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-lg bg-red-950 border border-red-800 text-red-400 flex items-center justify-center font-bold animate-pulse">
+                    <div class="w-9 h-9 rounded-lg bg-red-950 border border-red-800 text-red-400 flex items-center justify-center font-bold">
                         <i class="fa-solid fa-triangle-exclamation"></i>
                     </div>
                     <div>
                         <span class="block text-[11px] text-red-300 font-bold uppercase">Servicios Vencidos</span>
-                        <span class="text-lg font-black text-red-400 font-mono" id="prev-kpi-vencidos">0</span>
+                        <span class="text-lg font-black text-red-400 font-mono" id="prev-kpi-vencidos">19</span>
                     </div>
                 </div>
                 <div class="bg-[#141518] p-3.5 rounded-xl border border-amber-900/60 flex items-center gap-3">
@@ -450,7 +486,7 @@
                     </div>
                     <div>
                         <span class="block text-[11px] text-amber-300 font-bold uppercase">Próximos a Vencer</span>
-                        <span class="text-lg font-black text-amber-400 font-mono" id="prev-kpi-proximos">0</span>
+                        <span class="text-lg font-black text-amber-400 font-mono" id="prev-kpi-proximos">5</span>
                     </div>
                 </div>
                 <div class="bg-[#141518] p-3.5 rounded-xl border border-emerald-900/60 flex items-center gap-3">
@@ -459,65 +495,160 @@
                     </div>
                     <div>
                         <span class="block text-[11px] text-emerald-300 font-bold uppercase">Servicios al Día</span>
-                        <span class="text-lg font-black text-emerald-400 font-mono" id="prev-kpi-vigentes">0</span>
+                        <span class="text-lg font-black text-emerald-400 font-mono" id="prev-kpi-vigentes">59</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Filtros Rápidos y Buscador -->
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 border-t border-[#3A3D42]/60">
-                <div class="flex flex-wrap items-center gap-1.5 w-full sm:w-auto">
-                    <button onclick="filtrarPreventivosPorEstatus('TODOS')" id="btn-filtro-prev-todos" class="px-3 py-1 rounded-lg text-xs font-bold transition bg-[#C59B27] text-black">
+            <!-- Filtros Rápidos, Ordenamiento y Buscador -->
+            <div class="bg-[#1E1E1E] border border-[#3A3D42] rounded-2xl p-4 shadow-xl flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
+                <div class="flex flex-wrap items-center gap-1.5">
+                    <button onclick="filtrarPreventivosPorEstatus('TODOS')" id="btn-filtro-prev-todos" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-[#C59B27] text-black shadow-sm">
                         Todos (<span id="cnt-filtro-prev-todos">83</span>)
                     </button>
-                    <button onclick="filtrarPreventivosPorEstatus('VENCIDO')" id="btn-filtro-prev-vencido" class="px-3 py-1 rounded-lg text-xs font-bold transition bg-[#141518] text-red-400 border border-red-900/60 hover:bg-red-950/40">
-                        Vencidos (<span id="cnt-filtro-prev-vencidos">0</span>)
+                    <button onclick="filtrarPreventivosPorEstatus('VENCIDO')" id="btn-filtro-prev-vencido" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-[#141518] text-red-400 border border-red-900/60 hover:bg-red-950/40">
+                        Vencidos (<span id="cnt-filtro-prev-vencidos">19</span>)
                     </button>
-                    <button onclick="filtrarPreventivosPorEstatus('PROXIMO')" id="btn-filtro-prev-proximo" class="px-3 py-1 rounded-lg text-xs font-bold transition bg-[#141518] text-amber-400 border border-amber-900/60 hover:bg-amber-950/40">
-                        Próximos (<span id="cnt-filtro-prev-proximos">0</span>)
+                    <button onclick="filtrarPreventivosPorEstatus('PROXIMO')" id="btn-filtro-prev-proximo" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-[#141518] text-amber-400 border border-amber-900/60 hover:bg-amber-950/40">
+                        Próximos (<span id="cnt-filtro-prev-proximos">5</span>)
                     </button>
-                    <button onclick="filtrarPreventivosPorEstatus('VIGENTE')" id="btn-filtro-prev-vigente" class="px-3 py-1 rounded-lg text-xs font-bold transition bg-[#141518] text-emerald-400 border border-emerald-900/60 hover:bg-emerald-950/40">
-                        Vigentes (<span id="cnt-filtro-prev-vigentes">0</span>)
+                    <button onclick="filtrarPreventivosPorEstatus('VIGENTE')" id="btn-filtro-prev-vigente" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-[#141518] text-emerald-400 border border-emerald-900/60 hover:bg-emerald-950/40">
+                        Vigentes (<span id="cnt-filtro-prev-vigentes">59</span>)
                     </button>
                 </div>
-                <div class="relative w-full sm:w-64">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-500 text-xs"></i>
-                    <input type="text" id="input-buscar-preventivo" oninput="aplicarFiltroPreventivos()" placeholder="Buscar por unidad o división..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl pl-8 pr-3 py-1.5 text-white text-xs focus:border-[#C59B27] focus:outline-none">
+
+                <!-- Selector de Ordenamiento Amigable -->
+                <div class="flex items-center gap-2 flex-wrap">
+                    <div class="flex items-center gap-1.5 bg-[#141518] border border-[#3A3D42] rounded-xl px-2.5 py-1 text-xs">
+                        <i class="fa-solid fa-arrow-down-wide-short text-[#C59B27] text-xs"></i>
+                        <span class="text-slate-400 font-bold text-[11px]">Ordenar:</span>
+                        <select id="select-orden-preventivos" onchange="cambiarOrdenPreventivos(this.value)" class="bg-transparent text-slate-200 font-bold text-xs focus:outline-none cursor-pointer">
+                            <option value="vencidos_mayor_exceso" class="bg-[#1E1E1E]">🚨 Mayor Exceso de Km (Más Críticas)</option>
+                            <option value="vencidos_menor_exceso" class="bg-[#1E1E1E]">Menor Exceso de Km</option>
+                            <option value="km_restantes_asc" class="bg-[#1E1E1E]">Km Restantes: Menor a Mayor</option>
+                            <option value="km_restantes_desc" class="bg-[#1E1E1E]">Km Restantes: Mayor a Menor</option>
+                            <option value="unidad_asc" class="bg-[#1E1E1E]">Número de Unidad (1, 2, 3...)</option>
+                            <option value="km_actual_desc" class="bg-[#1E1E1E]">Mayor Kilometraje Actual</option>
+                        </select>
+                    </div>
+
+                    <div class="relative flex-1 sm:w-56">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-500 text-xs"></i>
+                        <input type="text" id="input-buscar-preventivo" oninput="aplicarFiltroPreventivos()" placeholder="Buscar unidad..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl pl-8 pr-3 py-1.5 text-white text-xs focus:border-[#C59B27] focus:outline-none">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla Responsiva de Unidades Preventivos -->
+            <div class="bg-[#1E1E1E] border border-[#3A3D42] rounded-2xl overflow-hidden shadow-xl">
+                <div class="overflow-x-auto custom-scroll max-h-[65vh]">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-[#141518] text-slate-300 font-bold border-b border-[#3A3D42] sticky top-0 z-10 uppercase text-[10px] tracking-wider">
+                            <tr>
+                                <th onclick="ordenarPreventivosPorColumna('unidad')" class="p-3 cursor-pointer hover:text-white transition select-none" title="Ordenar por número de unidad">
+                                    Unidad <span id="th-sort-unidad" class="text-[#C59B27] font-black text-[10px]"></span>
+                                </th>
+                                <th onclick="ordenarPreventivosPorColumna('division')" class="p-3 cursor-pointer hover:text-white transition select-none" title="Ordenar por división">
+                                    División <span id="th-sort-division" class="text-[#C59B27] font-black text-[10px]"></span>
+                                </th>
+                                <th onclick="ordenarPreventivosPorColumna('km_actual')" class="p-3 text-right cursor-pointer hover:text-white transition select-none" title="Ordenar por kilometraje actual">
+                                    Km Actual <span id="th-sort-km_actual" class="text-[#C59B27] font-black text-[10px]"></span>
+                                </th>
+                                <th onclick="ordenarPreventivosPorColumna('km_ultimo_servicio')" class="p-3 text-right cursor-pointer hover:text-white transition select-none" title="Ordenar por km del último servicio">
+                                    Último Servicio <span id="th-sort-km_ultimo_servicio" class="text-[#C59B27] font-black text-[10px]"></span>
+                                </th>
+                                <th class="p-3">Fecha Realizado</th>
+                                <th onclick="ordenarPreventivosPorColumna('km_proximo_servicio')" class="p-3 text-right cursor-pointer hover:text-white transition select-none" title="Ordenar por km del próximo servicio">
+                                    Próximo Km <span id="th-sort-km_proximo_servicio" class="text-[#C59B27] font-black text-[10px]"></span>
+                                </th>
+                                <th onclick="ordenarPreventivosPorColumna('km_restantes')" class="p-3 text-right cursor-pointer hover:text-[#C59B27] transition select-none bg-[#1A1813]/70 border-b-2 border-[#C59B27]" title="Clic para alternar orden: Mayor o Menor exceso">
+                                    Km Restantes <span id="th-sort-km_restantes" class="text-[#C59B27] font-black text-[10px]">▼</span>
+                                </th>
+                                <th onclick="ordenarPreventivosPorColumna('estatus')" class="p-3 text-center cursor-pointer hover:text-white transition select-none" title="Ordenar por estatus">
+                                    Estatus <span id="th-sort-estatus" class="text-[#C59B27] font-black text-[10px]"></span>
+                                </th>
+                                <th class="p-3 text-center">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-preventivos-body" class="divide-y divide-[#3A3D42]/60 font-medium">
+                            <tr>
+                                <td colspan="9" class="p-8 text-center text-slate-500">
+                                    <i class="fa-solid fa-spinner fa-spin text-xl text-[#C59B27] mb-2"></i>
+                                    <span class="block">Cargando preventivos de la flota CESS...</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
 
-        <!-- Tabla Responsiva de Preventivos -->
-        <div class="bg-[#1E1E1E] border border-[#3A3D42] rounded-2xl overflow-hidden shadow-xl">
-            <div class="overflow-x-auto custom-scroll max-h-[65vh]">
-                <table class="w-full text-left text-xs">
-                    <thead class="bg-[#141518] text-slate-300 font-bold border-b border-[#3A3D42] sticky top-0 z-10 uppercase text-[10px] tracking-wider">
-                        <tr>
-                            <th class="p-3">Unidad</th>
-                            <th class="p-3">División</th>
-                            <th class="p-3 text-right">Km Actual</th>
-                            <th class="p-3 text-right">Último Servicio Km</th>
-                            <th class="p-3">Fecha Realizado</th>
-                            <th class="p-3 text-right">Próximo Km</th>
-                            <th class="p-3 text-right">Km Restantes</th>
-                            <th class="p-3 text-center">Estatus</th>
-                            <th class="p-3 text-center">Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabla-preventivos-body" class="divide-y divide-[#3A3D42]/60 font-medium">
-                        <tr>
-                            <td colspan="9" class="p-8 text-center text-slate-500">
-                                <i class="fa-solid fa-spinner fa-spin text-xl text-[#C59B27] mb-2"></i>
-                                <span class="block">Cargando preventivos desde Control Diésel...</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        <!-- ========================================== -->
+        <!-- SUB-VISTA 2: BITÁCORA HISTÓRICA           -->
+        <!-- ========================================== -->
+        <div id="seccion-prev-bitacora" class="hidden flex-col gap-4">
+            <!-- Barra de Búsqueda y Ordenamiento de Bitácora -->
+            <div class="bg-[#1E1E1E] border border-[#3A3D42] rounded-2xl p-4 shadow-xl flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-cyan-950 border border-cyan-800 text-cyan-400 flex items-center justify-center font-bold text-xs shrink-0">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-black text-white">Historial de Mantenimientos Preventivos</h3>
+                        <p class="text-[11px] text-slate-400">Registros de servicios realizados, odómetros de intervención y observaciones.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 flex-wrap">
+                    <div class="flex items-center gap-1.5 bg-[#141518] border border-[#3A3D42] rounded-xl px-2.5 py-1 text-xs">
+                        <i class="fa-solid fa-arrow-down-wide-short text-[#C59B27] text-xs"></i>
+                        <span class="text-slate-400 font-bold text-[11px]">Ordenar:</span>
+                        <select id="select-orden-bitacora" onchange="cambiarOrdenBitacora(this.value)" class="bg-transparent text-slate-200 font-bold text-xs focus:outline-none cursor-pointer">
+                            <option value="fecha_desc" class="bg-[#1E1E1E]">Fecha: Más Reciente Primero</option>
+                            <option value="fecha_asc" class="bg-[#1E1E1E]">Fecha: Más Antigua Primero</option>
+                            <option value="unidad_asc" class="bg-[#1E1E1E]">Unidad (1, 2, 3...)</option>
+                            <option value="km_desc" class="bg-[#1E1E1E]">Mayor Km al Momento del Servicio</option>
+                        </select>
+                    </div>
+
+                    <div class="relative flex-1 sm:w-64">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-500 text-xs"></i>
+                        <input type="text" id="input-buscar-bitacora" oninput="aplicarFiltroBitacora()" placeholder="Buscar en bitácora por unidad, fecha..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl pl-8 pr-3 py-1.5 text-white text-xs focus:border-[#C59B27] focus:outline-none">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de Bitácora -->
+            <div class="bg-[#1E1E1E] border border-[#3A3D42] rounded-2xl overflow-hidden shadow-xl">
+                <div class="overflow-x-auto custom-scroll max-h-[65vh]">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-[#141518] text-slate-300 font-bold border-b border-[#3A3D42] sticky top-0 z-10 uppercase text-[10px] tracking-wider">
+                            <tr>
+                                <th class="p-3">Fecha</th>
+                                <th class="p-3">Unidad</th>
+                                <th class="p-3 text-right">Km Servicio</th>
+                                <th class="p-3 text-right">Intervalo</th>
+                                <th class="p-3">Tracto / Marca</th>
+                                <th class="p-3 text-center">Litros Aceite</th>
+                                <th class="p-3 text-right">Costo s/IVA</th>
+                                <th class="p-3 text-right">Costo Total</th>
+                                <th class="p-3">Observaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-bitacora-prev-body" class="divide-y divide-[#3A3D42]/60 font-medium">
+                            <tr>
+                                <td colspan="9" class="p-8 text-center text-slate-500">
+                                    <i class="fa-solid fa-spinner fa-spin text-xl text-[#C59B27] mb-2"></i>
+                                    <span class="block">Cargando bitácora histórica de preventivos...</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- ======================================================== -->
     <!-- VISTA: RESCATES CARRETEROS (AUXILIO VIAL EN RUTA) -->
     <!-- ======================================================== -->
     <div id="vista-rescates" class="flex-1 hidden max-w-7xl w-full mx-auto p-3 sm:p-6 flex-col gap-5">
@@ -2079,7 +2210,7 @@
     <!-- MODAL ESPECIAL: DETALLE DE FOLIO DE ALMACÉN CESS -->
     <!-- ======================================================== -->
     <div id="modal-detalle-folio-almacen" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
-        <div class="bg-[#1E1E1E] border border-indigo-600/70 rounded-2xl w-full max-w-2xl p-5 flex flex-col shadow-2xl animate-in fade-in duration-150 max-h-[90vh] overflow-y-auto custom-scroll">
+        <div class="bg-[#1E1E1E] border border-indigo-600/70 rounded-2xl w-full max-w-2xl p-5 flex flex-col shadow-2xl animate-in fade-in duration-150 max-h-[92vh] overflow-y-auto custom-scroll">
             <div class="flex justify-between items-center mb-3 pb-2 border-b border-[#3A3D42]">
                 <div class="flex items-center gap-2">
                     <div class="w-9 h-9 rounded-xl bg-indigo-950 border border-indigo-600 text-indigo-400 flex items-center justify-center font-bold text-base">
@@ -2088,6 +2219,9 @@
                     <div>
                         <h3 class="text-sm font-bold text-white flex items-center gap-2">
                             Salida de Almacén <span id="det-folio-num-badge" class="font-mono text-indigo-400 font-black">#----</span>
+                            <span class="inline-flex items-center gap-1 text-[9px] text-emerald-400 bg-emerald-950/80 px-2 py-0.2 rounded-full border border-emerald-800 font-mono">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Sincronizado
+                            </span>
                         </h3>
                         <p class="text-[11px] text-slate-400">Detalle de refacciones y costos surtidos por Almacén CESS</p>
                     </div>
@@ -2111,6 +2245,21 @@
                 </div>
             </div>
 
+            <!-- Barra de Acciones Bidireccionales con Almacén -->
+            <div class="flex items-center justify-between gap-2 mb-2.5 pb-2 border-b border-[#3A3D42]/60 flex-wrap">
+                <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                    <i class="fa-solid fa-boxes-stacked text-indigo-400"></i> Piezas Surtidas en este Folio:
+                </span>
+                <div class="flex items-center gap-2">
+                    <button onclick="sincronizarFolioActivoManual()" class="bg-[#282A2E] hover:bg-[#3A3D42] text-slate-200 border border-[#3A3D42] px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm" title="Re-consultar movimientos en almacén">
+                        <i class="fa-solid fa-arrows-rotate text-cyan-400"></i> Sincronizar en Vivo
+                    </button>
+                    <button onclick="abrirModalSurtirPiezaDirecta()" class="bg-emerald-950 hover:bg-emerald-900 text-emerald-300 border border-emerald-700/80 px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm" title="Agregar otra refacción de almacén a este folio">
+                        <i class="fa-solid fa-plus-circle"></i> Surtir Refacción
+                    </button>
+                </div>
+            </div>
+
             <!-- Tabla de Refacciones -->
             <div class="border border-[#3A3D42] rounded-xl overflow-hidden mb-3">
                 <table class="w-full text-left text-xs">
@@ -2121,6 +2270,7 @@
                             <th class="p-2.5 text-center">Cantidad</th>
                             <th class="p-2.5 text-right">P. Unitario</th>
                             <th class="p-2.5 text-right">Subtotal</th>
+                            <th class="p-2.5 text-center">Acción</th>
                         </tr>
                     </thead>
                     <tbody id="det-folio-tabla-body" class="divide-y divide-[#3A3D42]/60">
@@ -2131,7 +2281,7 @@
 
             <div class="pt-2 border-t border-[#3A3D42] flex justify-between items-center text-xs">
                 <button type="button" id="btn-desvincular-folio" onclick="desvincularFolioDeUnidad()" class="text-red-400 hover:text-red-300 font-bold flex items-center gap-1 hover:underline">
-                    <i class="fa-solid fa-link-slash"></i> Desvincular de esta unidad
+                    <i class="fa-solid fa-link-slash"></i> Desvincular folio de esta unidad
                 </button>
                 <button type="button" onclick="cerrarModalDetalleFolio()" class="bg-[#282A2E] hover:bg-[#3A3D42] text-white px-4 py-1.5 rounded-xl font-bold">
                     Cerrar
@@ -2140,7 +2290,106 @@
         </div>
     </div>
 
-    <!-- ======================================================== -->
+    <!-- MODAL: SURTIR REFACCIÓN DIRECTA A FOLIO DESDE ALMACÉN -->
+    <div id="modal-surtir-pieza-folio" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
+        <div class="bg-[#1E1E1E] border border-emerald-600/70 rounded-2xl w-full max-w-md p-5 flex flex-col shadow-2xl animate-in fade-in duration-150">
+            <div class="flex justify-between items-center mb-3 pb-2 border-b border-[#3A3D42]">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-950 border border-emerald-600 text-emerald-400 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-box-open"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white">Surtir Refacción de Almacén</h3>
+                        <p class="text-[11px] text-slate-400">Folio <span id="surtir-modal-folio-num" class="text-emerald-400 font-bold font-mono">#----</span></p>
+                    </div>
+                </div>
+                <button onclick="cerrarModalSurtirPiezaDirecta()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
+            </div>
+
+            <div class="flex flex-col gap-3 text-xs">
+                <div>
+                    <label class="block font-bold text-slate-300 mb-1">Buscar y Seleccionar Refacción del Catálogo *</label>
+                    <input type="text" id="input-buscar-pieza-surtir" oninput="filtrarPiezasParaSurtir()" placeholder="Buscar por nombre o número de parte..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl px-3 py-2 text-white text-xs focus:border-emerald-500 focus:outline-none mb-1.5">
+                    
+                    <div id="lista-piezas-surtir-catalogo" class="max-h-40 overflow-y-auto custom-scroll border border-[#3A3D42] rounded-xl divide-y divide-[#3A3D42]/60 bg-[#141518]">
+                        <!-- Renderizado dinámico de piezas del catálogo -->
+                    </div>
+                </div>
+
+                <div id="caja-pieza-seleccionada-surtir" class="hidden flex-col gap-1.5 p-2.5 bg-emerald-950/30 border border-emerald-800/60 rounded-xl">
+                    <strong id="txt-pieza-sel-desc" class="text-white text-xs block">Refacción seleccionada</strong>
+                    <div class="flex items-center justify-between text-[11px] text-slate-400">
+                        <span id="txt-pieza-sel-stock">Stock actual: --</span>
+                        <span id="txt-pieza-sel-precio" class="text-emerald-400 font-mono font-bold">$0 MXN</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-bold text-slate-300 mb-1">Cantidad a Surtir *</label>
+                        <input type="number" id="input-cant-surtir" value="1" min="1" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl px-3 py-2 text-white font-mono font-bold text-xs focus:border-emerald-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-300 mb-1">Entregado A</label>
+                        <input type="text" id="input-solicitante-surtir" value="Personal de Taller" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl px-3 py-2 text-white text-xs focus:border-emerald-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="pt-2 border-t border-[#3A3D42] flex justify-end gap-2 mt-1">
+                    <button type="button" onclick="cerrarModalSurtirPiezaDirecta()" class="px-3 py-1.5 rounded-xl border border-[#3A3D42] text-slate-300 hover:bg-[#282A2E] font-bold">Cancelar</button>
+                    <button type="button" id="btn-confirmar-surtir-pieza" onclick="confirmarSurtidoPiezaDirecta()" disabled class="bg-emerald-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-emerald-500 text-white px-4 py-1.5 rounded-xl font-bold flex items-center gap-1.5 shadow">
+                        <i class="fa-solid fa-check"></i> Despachar y Sumar Costo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: MODIFICAR / DEVOLVER PIEZA DEL FOLIO -->
+    <div id="modal-editar-pieza-folio" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
+        <div class="bg-[#1E1E1E] border border-amber-600/70 rounded-2xl w-full max-w-sm p-5 flex flex-col shadow-2xl animate-in fade-in duration-150">
+            <div class="flex justify-between items-center mb-3 pb-2 border-b border-[#3A3D42]">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-amber-950 border border-amber-600 text-amber-400 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-pencil"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white">Modificar Pieza de Almacén</h3>
+                        <p class="text-[11px] text-slate-400">Ajuste de cantidad o devolución</p>
+                    </div>
+                </div>
+                <button onclick="cerrarModalEditarPiezaFolio()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
+            </div>
+
+            <div class="flex flex-col gap-3 text-xs">
+                <input type="hidden" id="edit-pieza-mov-id">
+                <div>
+                    <span class="text-[11px] text-slate-400 uppercase font-bold block mb-1">Refacción:</span>
+                    <strong id="edit-pieza-desc" class="text-white block bg-[#141518] p-2 rounded-xl border border-[#3A3D42]">--</strong>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-bold text-slate-300 mb-1">Nueva Cantidad *</label>
+                        <input type="number" id="edit-pieza-cantidad" min="0" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl px-3 py-2 text-white font-mono font-bold text-xs focus:border-amber-500 focus:outline-none">
+                        <p class="text-[10px] text-slate-400 mt-1">Si pones 0, la pieza se devuelve al almacén.</p>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-300 mb-1">Precio Unitario ($)</label>
+                        <input type="number" id="edit-pieza-precio" step="0.01" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl px-3 py-2 text-white font-mono font-bold text-xs focus:border-amber-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="pt-2 border-t border-[#3A3D42] flex justify-end gap-2 mt-1">
+                    <button type="button" onclick="cerrarModalEditarPiezaFolio()" class="px-3 py-1.5 rounded-xl border border-[#3A3D42] text-slate-300 hover:bg-[#282A2E] font-bold">Cancelar</button>
+                    <button type="button" onclick="confirmarEdicionPiezaFolio()" class="bg-amber-600 hover:bg-amber-500 text-black px-4 py-1.5 rounded-xl font-bold flex items-center gap-1.5 shadow">
+                        <i class="fa-solid fa-save"></i> Guardar Ajuste
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL ESPECIAL: REGISTRAR AVANCE RÁPIDO DE UNIDAD -->
     <!-- ======================================================== -->
     <div id="modal-avance-rapido" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
@@ -2221,26 +2470,37 @@
                         <i class="fa-solid fa-barcode"></i>
                     </div>
                     <div>
-                        <h3 class="text-sm font-bold text-white">Vincular Salida de Almacén CESS</h3>
+                        <h3 class="text-sm font-bold text-white">Vincular / Generar Folio de Almacén CESS</h3>
                         <p class="text-[11px] text-slate-400">Unidad <span id="vincular-modal-unidad-num" class="text-indigo-400 font-bold font-mono text-xs">--</span></p>
                     </div>
                 </div>
                 <button onclick="cerrarModalVincularAlmacen()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
             </div>
 
-            <div class="flex flex-col gap-3 text-xs">
+            <!-- Selector de Modo: [Folio Existente] vs [Generar Nuevo Folio] -->
+            <div class="flex items-center gap-1.5 p-1 bg-[#141518] rounded-xl border border-[#3A3D42] mb-3">
+                <button type="button" id="btn-tab-vincular-existente" onclick="cambiarModoVincularFolio('existente')" class="flex-1 py-1.5 rounded-lg text-xs font-bold transition bg-indigo-600 text-white flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-magnifying-glass"></i> Vincular Folio Existente
+                </button>
+                <button type="button" id="btn-tab-vincular-nuevo" onclick="cambiarModoVincularFolio('nuevo')" class="flex-1 py-1.5 rounded-lg text-xs font-bold transition text-slate-300 hover:text-white flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-plus-circle text-emerald-400"></i> Generar / Solicitar Nuevo
+                </button>
+            </div>
+
+            <!-- MODO 1: VINCULAR FOLIO EXISTENTE DE ALMACÉN -->
+            <div id="panel-vincular-existente" class="flex flex-col gap-3 text-xs">
                 <div>
                     <label class="block font-bold text-slate-300 mb-1">Número de Folio de Salida de Almacén *</label>
                     <div class="flex items-center gap-2">
                         <div class="relative flex-1">
                             <span class="absolute left-3 top-2.5 text-slate-500 font-mono font-bold">#</span>
-                            <input type="text" id="input-folio-almacen" placeholder="Ej: 4047" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl pl-7 pr-3 py-2 text-white font-mono font-bold text-sm focus:border-indigo-500 focus:outline-none">
+                            <input type="text" id="input-folio-almacen" placeholder="Ej: 4047, 4071..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl pl-7 pr-3 py-2 text-white font-mono font-bold text-sm focus:border-indigo-500 focus:outline-none">
                         </div>
                         <button type="button" onclick="consultarFolioAlmacenBoton()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-3 py-2 rounded-xl text-xs transition flex items-center gap-1.5 shadow">
                             <i class="fa-solid fa-magnifying-glass"></i> Buscar Folio
                         </button>
                     </div>
-                    <p class="text-[10px] text-slate-400 mt-1">Ingresa el folio de la nota o vale de salida firmado en Almacén CESS.</p>
+                    <p class="text-[10px] text-slate-400 mt-1">Busca el folio del vale de refacciones emitido en el Sistema de Almacén.</p>
                 </div>
 
                 <!-- Resultado de la consulta del folio -->
@@ -2267,10 +2527,46 @@
                     </button>
                 </div>
             </div>
+
+            <!-- MODO 2: GENERAR / SOLICITAR NUEVO FOLIO PARA ALMACÉN -->
+            <div id="panel-vincular-nuevo" class="hidden flex-col gap-3 text-xs">
+                <div class="bg-indigo-950/40 border border-indigo-800/60 rounded-xl p-2.5 text-slate-300 text-[11px] flex items-center gap-2">
+                    <i class="fa-solid fa-bell text-[#DFB743] text-sm shrink-0"></i>
+                    <span>Este folio se enviará en automático al <strong>Sistema de Almacén</strong> para que el almacenista lo surta y administre.</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-bold text-slate-300 mb-1">Número de Folio Sugerido *</label>
+                        <input type="text" id="nuevo-folio-num" placeholder="Calculando..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl px-3 py-2 text-[#DFB743] font-mono font-black text-sm focus:border-indigo-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-300 mb-1">Solicitado Por *</label>
+                        <input type="text" id="nuevo-folio-solicitante" value="Encargado de Taller" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl px-3 py-2 text-white text-xs focus:border-indigo-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-300 mb-1">Motivo / Trabajos en Taller *</label>
+                    <input type="text" id="nuevo-folio-motivo" placeholder="Ej: Cambio de balatas y filtros de combustible" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl px-3 py-2 text-white text-xs focus:border-indigo-500 focus:outline-none">
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-300 mb-1">Refacciones Solicitadas al Almacén *</label>
+                    <textarea id="nuevo-folio-refacciones" rows="2" placeholder="Ej: 2 Balatas traseras, 1 Filtro de combustible Donaldson, Grasa..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-indigo-500 focus:outline-none"></textarea>
+                    <p class="text-[10px] text-slate-400 mt-0.5">El almacenista verá esta lista en Almacén CESS para surtir las piezas de inmediato.</p>
+                </div>
+
+                <div class="pt-2 border-t border-[#3A3D42] flex justify-end gap-2 mt-1">
+                    <button type="button" onclick="cerrarModalVincularAlmacen()" class="px-3 py-1.5 rounded-xl border border-[#3A3D42] text-slate-300 hover:bg-[#282A2E] font-bold">Cancelar</button>
+                    <button type="button" onclick="generarNuevoFolioAlmacenBoton()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-1.5 rounded-xl font-bold flex items-center gap-1.5 shadow">
+                        <i class="fa-solid fa-paper-plane"></i> Generar Folio y Notificar a Almacén
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- ======================================================== -->
     <!-- MODAL ESPECIAL: REGISTRAR RESCATE CARRETERO (AUXILIO VIAL) -->
     <!-- ======================================================== -->
     <div id="modal-nuevo-rescate" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
@@ -2590,6 +2886,19 @@
                                 actualizarUIJornada();
                             }
                             actualizarTimestampSincronizacion();
+                        } else if (msg.type === 'almacen_folio_updated') {
+                            if (Array.isArray(msg.units)) {
+                                baseDatos = msg.units;
+                                sanitizarBaseDatos();
+                                guardarDatosLocales(false);
+                                if (vistaActual === 'tablero') renderizarTablero();
+                                actualizarSelectoresUnidades();
+                            }
+                            const modalDet = document.getElementById('modal-detalle-folio-almacen');
+                            if (modalDet && !modalDet.classList.contains('hidden') && unidadVincularActiva) {
+                                abrirDetalleFolioAlmacen(null, unidadVincularActiva.id);
+                            }
+                            mostrarToast(`📦 Folio #${msg.folio || ''} actualizado desde Almacén CESS`);
                         } else if (msg.type === 'units_updated') {
                             if (Array.isArray(msg.units)) {
                                 baseDatos = msg.units;
@@ -3063,7 +3372,7 @@
 
             const costoTotalUnidad = (Number(unidad.costo) || 0) + (Number(unidad.costo_refacciones) || 0);
 
-            // Buscar estatus de mantenimiento preventivo para esta unidad (sincronizado con Control Diésel)
+            // Buscar estatus de mantenimiento preventivo para esta unidad (sincronizado con Control CESS)
             const preventivoInfo = Array.isArray(cachePreventivos) ? cachePreventivos.find(p => {
                 const pId = String(p.unidad || '').trim();
                 const uId = String(unidad.id || '').trim();
@@ -3080,26 +3389,25 @@
                 if (estNorm === 'VENCIDO') {
                     const kmExcedidos = kmRest < 0 ? Math.abs(kmRest).toLocaleString() : '0';
                     bannerPreventivo = `
-                        <div data-no-expediente="true" onclick="cambiarVistaPrincipal('preventivos')" class="bg-gradient-to-r from-red-950/95 via-red-900/90 to-red-950/95 border-2 border-red-500 rounded-xl px-2.5 py-1.5 flex items-center justify-between text-xs animate-pulse cursor-pointer shadow-lg shadow-red-950/50 hover:brightness-110 transition group" title="Mantenimiento preventivo vencido en control de diésel. Haz clic para ver kilometrajes.">
-                            <div class="flex items-center gap-1.5 font-bold">
-                                <span class="w-2.5 h-2.5 rounded-full bg-red-400 animate-ping"></span>
-                                <i class="fa-solid fa-triangle-exclamation text-red-300 text-sm"></i>
-                                <span class="uppercase tracking-wide font-black text-[11px] text-white">¡Le Toca Preventivo (Vencido)!</span>
+                        <div data-no-expediente="true" onclick="cambiarVistaPrincipal('preventivos')" class="bg-[#241719] hover:bg-[#2E1C1F] border border-red-800/60 hover:border-red-600/80 rounded-xl px-2.5 py-1 flex items-center justify-between text-xs cursor-pointer transition shadow-sm group" title="Mantenimiento preventivo vencido. Haz clic para ver kilometrajes en Preventivos.">
+                            <div class="flex items-center gap-1.5 font-semibold text-red-300 text-[11px]">
+                                <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                                <span>Preventivo Vencido</span>
                             </div>
-                            <span class="font-mono font-black text-[10px] bg-black/80 px-2 py-0.5 rounded text-red-300 border border-red-500/80 shrink-0">
+                            <span class="font-mono text-[10px] text-red-300 font-bold bg-red-950/90 px-1.5 py-0.5 rounded border border-red-800/70">
                                 -${kmExcedidos} km
                             </span>
                         </div>
                     `;
                 } else if (estNorm === 'PROXIMO' || estNorm === 'PRÓXIMO') {
                     bannerPreventivo = `
-                        <div data-no-expediente="true" onclick="cambiarVistaPrincipal('preventivos')" class="bg-gradient-to-r from-amber-950/90 to-amber-900/80 border border-amber-600/90 hover:border-amber-400 text-amber-200 rounded-xl px-2.5 py-1 flex items-center justify-between text-xs cursor-pointer shadow-sm transition" title="Aprovechar estancia en taller: mantenimiento preventivo próximo">
-                            <div class="flex items-center gap-1.5 font-bold">
-                                <i class="fa-solid fa-clock-rotate-left text-amber-400 text-xs"></i>
-                                <span class="text-[11px] font-bold text-amber-300">Preventivo Próximo</span>
+                        <div data-no-expediente="true" onclick="cambiarVistaPrincipal('preventivos')" class="bg-[#221C13] hover:bg-[#2C2317] border border-amber-800/60 hover:border-amber-600/80 rounded-xl px-2.5 py-1 flex items-center justify-between text-xs cursor-pointer transition shadow-sm group" title="Servicio preventivo próximo. Haz clic para ver kilometrajes en Preventivos.">
+                            <div class="flex items-center gap-1.5 font-semibold text-amber-300 text-[11px]">
+                                <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                                <span>Preventivo Próximo</span>
                             </div>
-                            <span class="font-mono font-bold text-[10px] text-amber-200 bg-amber-900/70 px-2 py-0.5 rounded border border-amber-700/60 shrink-0">
-                                Restan ${kmRest.toLocaleString()} km
+                            <span class="font-mono text-[10px] text-amber-300 font-bold bg-amber-950/90 px-1.5 py-0.5 rounded border border-amber-800/70">
+                                Restan ${Math.round(kmRest).toLocaleString()} km
                             </span>
                         </div>
                     `;
@@ -4640,7 +4948,7 @@
             const prevVencidos = cachePreventivos.filter(p => (p.estatus||'').toUpperCase() === 'VENCIDO').length;
             const prevVigentes = cachePreventivos.filter(p => (p.estatus||'').toUpperCase() === 'VIGENTE').length;
             if (domPrevVig) domPrevVig.innerText = prevVigentes || 60;
-            if (domPrevVenc) domPrevVenc.innerText = `${prevVencidos || 22} Vencidos en diésel`;
+            if (domPrevVenc) domPrevVenc.innerText = `${prevVencidos || 22} Unidades Vencidas`;
 
             // Rescates Carreteros
             const domRescTotal = document.getElementById('ana-kpi-rescates-total');
@@ -5850,7 +6158,8 @@
 
         function verFotoCompleta(url) {
             const win = window.open();
-            win.document.write(`<body style="margin:0;background:#000;display:flex;align-items:center;justify-content:center;height:100vh;"><img src="${url}" style="max-width:100%;max-height:100%;object-fit:contain;"></body>`);
+            win.document.write(`<body style="margin:0;background:#000;display:flex;align-items:center;justify-content:center;height:100vh;"><img src="${url}" style="max-width:100%;max-height:100%;object-fit:contain;">
+</body>`);
         }
 
         // --- DICTADO POR VOZ ---
@@ -6764,11 +7073,11 @@
             unidadVincularActiva = u;
             document.getElementById('det-folio-num-badge').innerText = `#${u.folio_almacen}`;
             document.getElementById('det-folio-unidad').innerText = `Unidad ${u.id} (${u.sucursal || 'Patio'})`;
-            document.getElementById('det-folio-solicitante').innerText = 'Consultando...';
+            document.getElementById('det-folio-solicitante').innerText = 'Consultando Almacén CESS...';
             document.getElementById('det-folio-costo-total').innerText = '$0 MXN';
 
             const tbody = document.getElementById('det-folio-tabla-body');
-            tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-1 text-indigo-400"></i> Cargando desglose de refacciones...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-1 text-indigo-400"></i> Cargando desglose oficial de refacciones...</td></tr>';
 
             document.getElementById('modal-detalle-folio-almacen').classList.remove('hidden');
 
@@ -6779,15 +7088,23 @@
                     document.getElementById('det-folio-solicitante').innerText = json.solicitante || 'Personal Taller';
                     document.getElementById('det-folio-costo-total').innerText = `$${(json.costo_total || 0).toLocaleString()} MXN`;
 
-                    tbody.innerHTML = (json.items || []).map(it => `
-                        <tr class="hover:bg-[#141518]/60 transition text-xs">
-                            <td class="p-2.5 font-mono text-indigo-300 font-bold">${it.numero_parte}</td>
-                            <td class="p-2.5 text-white font-medium">${it.descripcion}</td>
-                            <td class="p-2.5 text-center font-bold text-slate-200">${it.cantidad}</td>
-                            <td class="p-2.5 text-right font-mono text-slate-400">$${Number(it.precio_unitario||0).toLocaleString()}</td>
-                            <td class="p-2.5 text-right font-mono text-[#DFB743] font-bold">$${Number(it.total_costo||0).toLocaleString()}</td>
-                        </tr>
-                    `).join('');
+                    tbody.innerHTML = (json.items || []).map(it => {
+                        const safeDesc = (it.descripcion || '').replace(/'/g, "\\'");
+                        return `
+                            <tr class="hover:bg-[#141518]/60 transition text-xs">
+                                <td class="p-2.5 font-mono text-indigo-300 font-bold">${it.numero_parte || '--'}</td>
+                                <td class="p-2.5 text-white font-medium">${it.descripcion}</td>
+                                <td class="p-2.5 text-center font-bold text-slate-200 font-mono">${it.cantidad}</td>
+                                <td class="p-2.5 text-right font-mono text-slate-400">$${Number(it.precio_unitario||0).toLocaleString()}</td>
+                                <td class="p-2.5 text-right font-mono text-[#DFB743] font-bold">$${Number(it.total_costo||0).toLocaleString()}</td>
+                                <td class="p-2.5 text-center">
+                                    <button onclick="abrirModalEditarPiezaFolio('${it.id_item}', ${it.cantidad}, ${Number(it.precio_unitario||0)}, '${safeDesc}')" class="bg-amber-950/70 hover:bg-amber-900 text-amber-300 border border-amber-700/60 px-2 py-0.5 rounded text-[11px] font-bold transition flex items-center gap-1 mx-auto" title="Modificar cantidad o devolver pieza al almacén">
+                                        <i class="fa-solid fa-pencil text-[10px]"></i> Ajustar
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    }).join('');
                 } else {
                     const piezas = Array.isArray(u.piezas) ? u.piezas : [];
                     const costo = Number(u.costo_refacciones) || Number(u.costo) || 0;
@@ -6795,22 +7112,38 @@
                     document.getElementById('det-folio-costo-total').innerText = `$${costo.toLocaleString()} MXN`;
 
                     if (piezas.length === 0) {
-                        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500 italic">Folio vinculado con costo total de $${costo.toLocaleString()} MXN.</td></tr>`;
+                        tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-amber-300/80 italic bg-amber-950/20 rounded-xl"><i class="fa-solid fa-clock mr-1.5"></i> Folio #${u.folio_almacen} registrado y vinculado. En espera de surtido de refacciones desde Almacén.</td></tr>`;
                     } else {
-                        tbody.innerHTML = piezas.map(it => `
-                            <tr class="hover:bg-[#141518]/60 transition text-xs">
-                                <td class="p-2.5 font-mono text-indigo-300 font-bold">${it.numero_parte || '--'}</td>
-                                <td class="p-2.5 text-white font-medium">${it.descripcion}</td>
-                                <td class="p-2.5 text-center font-bold text-slate-200">${it.cantidad || 1}</td>
-                                <td class="p-2.5 text-right font-mono text-slate-400">$${Number(it.precio_unitario||it.total_costo||0).toLocaleString()}</td>
-                                <td class="p-2.5 text-right font-mono text-[#DFB743] font-bold">$${Number(it.total_costo||it.precio_unitario||0).toLocaleString()}</td>
-                            </tr>
-                        `).join('');
+                        tbody.innerHTML = piezas.map(it => {
+                            const safeDesc = (it.descripcion || '').replace(/'/g, "\\'");
+                            return `
+                                <tr class="hover:bg-[#141518]/60 transition text-xs">
+                                    <td class="p-2.5 font-mono text-indigo-300 font-bold">${it.numero_parte || '--'}</td>
+                                    <td class="p-2.5 text-white font-medium">${it.descripcion}</td>
+                                    <td class="p-2.5 text-center font-bold text-slate-200 font-mono">${it.cantidad || 1}</td>
+                                    <td class="p-2.5 text-right font-mono text-slate-400">$${Number(it.precio_unitario||0).toLocaleString()}</td>
+                                    <td class="p-2.5 text-right font-mono text-[#DFB743] font-bold">$${Number(it.total_costo||it.precio_unitario||0).toLocaleString()}</td>
+                                    <td class="p-2.5 text-center">
+                                        <button onclick="abrirModalEditarPiezaFolio('${it.id}', ${it.cantidad || 1}, ${Number(it.precio_unitario||0)}, '${safeDesc}')" class="bg-amber-950/70 hover:bg-amber-900 text-amber-300 border border-amber-700/60 px-2 py-0.5 rounded text-[11px] font-bold transition flex items-center gap-1 mx-auto" title="Modificar pieza">
+                                            <i class="fa-solid fa-pencil text-[10px]"></i> Ajustar
+                                        </button>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('');
                     }
                 }
             } catch(e) {
-                tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-red-400">Error al consultar desglose de almacén.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-red-400">Error al consultar desglose de almacén.</td></tr>';
             }
+        }
+
+        async function sincronizarFolioActivoManual() {
+            if (!unidadVincularActiva) return;
+            mostrarToast('Sincronizando folio en vivo con Almacén...');
+            await descargarDatosDelServidor();
+            await abrirDetalleFolioAlmacen(null, unidadVincularActiva.id);
+            mostrarToast('¡Folio sincronizado al 100%!');
         }
 
         function cerrarModalDetalleFolio() {
@@ -6823,7 +7156,8 @@
 
             delete unidadVincularActiva.folio_almacen;
             delete unidadVincularActiva.costo_refacciones;
-            unidadVincularActiva.piezas = [];
+            unidadVincularActiva.piezas = (unidadVincularActiva.piezas || []).filter(p => !p.folio_almacen);
+            unidadVincularActiva.costo = Number(unidadVincularActiva.costo_mano_obra || 0);
 
             guardarDatosLocales();
             renderizarTablero();
@@ -6831,23 +7165,216 @@
             mostrarToast(`Folio desvinculado de Unidad ${unidadVincularActiva.id}`);
         }
 
-        // --- 1. MÓDULO DE MANTENIMIENTOS PREVENTIVOS (CONTROL DIÉSEL EN TIEMPO REAL) ---
-        let cachePreventivos = [];
-        let filtroPreventivoEstatus = 'TODOS';
+        // --- SUB-MÓDULOS DE DESPACHO DIRECTO Y EDICIÓN DE REFACCIONES ---
+        let catalogoAlmacenParaSurtir = [];
+        let piezaSeleccionadaParaSurtir = null;
 
-        async function cargarModuloPreventivos() {
-            const tbody = document.getElementById('tabla-preventivos-body');
-            if (!tbody) return;
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="9" class="p-8 text-center text-slate-500">
-                        <i class="fa-solid fa-spinner fa-spin text-xl text-[#C59B27] mb-2"></i>
-                        <span class="block">Cargando preventivos desde Control Diésel...</span>
-                    </td>
-                </tr>
-            `;
+        async function abrirModalSurtirPiezaDirecta() {
+            if (!unidadVincularActiva || !unidadVincularActiva.folio_almacen) return;
+            document.getElementById('surtir-modal-folio-num').innerText = `#${unidadVincularActiva.folio_almacen} (Unidad ${unidadVincularActiva.id})`;
+            document.getElementById('input-cant-surtir').value = 1;
+            document.getElementById('input-solicitante-surtir').value = `Taller Unidad ${unidadVincularActiva.id}`;
+            document.getElementById('caja-pieza-seleccionada-surtir').classList.add('hidden');
+            document.getElementById('btn-confirmar-surtir-pieza').disabled = true;
+            piezaSeleccionadaParaSurtir = null;
+
+            document.getElementById('modal-surtir-pieza-folio').classList.remove('hidden');
+
+            // Cargar catálogo de refacciones si está vacío
+            if (catalogoAlmacenParaSurtir.length === 0) {
+                try {
+                    const res = await fetch('/api/almacen/inventario?t=' + Date.now());
+                    if (res.ok) {
+                        const json = await res.json();
+                        catalogoAlmacenParaSurtir = json.catalog || [];
+                    }
+                } catch(e) {}
+            }
+            filtrarPiezasParaSurtir();
+        }
+
+        function cerrarModalSurtirPiezaDirecta() {
+            document.getElementById('modal-surtir-pieza-folio').classList.add('hidden');
+        }
+
+        function filtrarPiezasParaSurtir() {
+            const query = (document.getElementById('input-buscar-pieza-surtir')?.value || '').trim().toLowerCase();
+            const cont = document.getElementById('lista-piezas-surtir-catalogo');
+            if (!cont) return;
+
+            let filtrados = catalogoAlmacenParaSurtir.filter(p => {
+                if (!query) return true;
+                const txt = `${p.descripcion || ''} ${p.numero_parte || ''} ${p.marca || ''}`.toLowerCase();
+                return txt.includes(query);
+            }).slice(0, 20);
+
+            if (filtrados.length === 0) {
+                cont.innerHTML = '<p class="p-3 text-center text-slate-500 italic">No se encontraron refacciones en almacén</p>';
+                return;
+            }
+
+            cont.innerHTML = filtrados.map(p => {
+                const pu = Number(p.precio_unitario || 0);
+                const safeDesc = (p.descripcion || '').replace(/'/g, "\\'");
+                return `
+                    <div onclick="seleccionarPiezaParaSurtir('${p.id}', '${safeDesc}', ${Number(p.stock_actual||0)}, ${pu})" class="p-2 hover:bg-[#282A2E] cursor-pointer transition flex items-center justify-between text-xs">
+                        <div>
+                            <strong class="text-white block">${p.descripcion}</strong>
+                            <span class="text-[10px] text-slate-400 font-mono">Parte: ${p.numero_parte || '--'} • Marca: ${p.marca || 'CESS'}</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-emerald-400 font-mono font-bold block">$${pu.toLocaleString()} MXN</span>
+                            <span class="text-[10px] text-slate-400 font-mono">Stock: ${p.stock_actual || 0} ${p.unidad || 'PZ'}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function seleccionarPiezaParaSurtir(id, desc, stock, precio) {
+            piezaSeleccionadaParaSurtir = { id, desc, stock, precio };
+            document.getElementById('txt-pieza-sel-desc').innerText = desc;
+            document.getElementById('txt-pieza-sel-stock').innerText = `Stock en almacén: ${stock} PZ`;
+            document.getElementById('txt-pieza-sel-precio').innerText = `$${precio.toLocaleString()} MXN c/u`;
+            document.getElementById('caja-pieza-seleccionada-surtir').classList.remove('hidden');
+            document.getElementById('caja-pieza-seleccionada-surtir').classList.add('flex');
+            document.getElementById('btn-confirmar-surtir-pieza').disabled = false;
+        }
+
+        async function confirmarSurtidoPiezaDirecta() {
+            if (!unidadVincularActiva || !piezaSeleccionadaParaSurtir) return;
+
+            const folio = unidadVincularActiva.folio_almacen;
+            const cant = Number(document.getElementById('input-cant-surtir').value) || 1;
+            const solicitante = document.getElementById('input-solicitante-surtir').value.trim();
 
             try {
+                const res = await fetch(`/api/almacen/folio/${folio}/surtir-pieza`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id_pieza: piezaSeleccionadaParaSurtir.id,
+                        cantidad: cant,
+                        solicitante: solicitante || `Taller Unidad ${unidadVincularActiva.id}`,
+                        unidad_camion: unidadVincularActiva.id
+                    })
+                });
+
+                if (res.ok) {
+                    mostrarToast(`${cant} PZ de ${piezaSeleccionadaParaSurtir.desc} surtidas con éxito`);
+                    cerrarModalSurtirPiezaDirecta();
+                    await descargarDatosDelServidor();
+                    await abrirDetalleFolioAlmacen(null, unidadVincularActiva.id);
+                    renderizarTablero();
+                } else {
+                    mostrarToast('Error al registrar surtido en almacén');
+                }
+            } catch(e) {
+                mostrarToast('Error de conexión');
+            }
+        }
+
+        // Modal de ajuste de piezas
+        let piezaEditarActiva = null;
+
+        function abrirModalEditarPiezaFolio(idMov, cant, precio, desc) {
+            piezaEditarActiva = { idMov, cant, precio, desc };
+            document.getElementById('edit-pieza-mov-id').value = idMov;
+            document.getElementById('edit-pieza-desc').innerText = desc;
+            document.getElementById('edit-pieza-cantidad').value = cant;
+            document.getElementById('edit-pieza-precio').value = precio;
+            document.getElementById('modal-editar-pieza-folio').classList.remove('hidden');
+        }
+
+        function cerrarModalEditarPiezaFolio() {
+            document.getElementById('modal-editar-pieza-folio').classList.add('hidden');
+            piezaEditarActiva = null;
+        }
+
+        async function confirmarEdicionPiezaFolio() {
+            if (!unidadVincularActiva || !piezaEditarActiva) return;
+
+            const folio = unidadVincularActiva.folio_almacen;
+            const nuevaCant = Number(document.getElementById('edit-pieza-cantidad').value);
+            const nuevoPrecio = Number(document.getElementById('edit-pieza-precio').value);
+
+            try {
+                const res = await fetch(`/api/almacen/folio/${folio}/modificar-pieza`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id_movimiento: piezaEditarActiva.idMov,
+                        nueva_cantidad: nuevaCant,
+                        nuevo_precio_unitario: nuevoPrecio
+                    })
+                });
+
+                if (res.ok) {
+                    mostrarToast(nuevaCant <= 0 ? 'Pieza devuelta al almacén' : 'Pieza actualizada correctamente');
+                    cerrarModalEditarPiezaFolio();
+                    await descargarDatosDelServidor();
+                    await abrirDetalleFolioAlmacen(null, unidadVincularActiva.id);
+                    renderizarTablero();
+                } else {
+                    mostrarToast('Error al modificar pieza');
+                }
+            } catch(e) {
+                mostrarToast('Error de conexión');
+            }
+        }
+
+        // --- 1. MÓDULO DE MANTENIMIENTOS PREVENTIVOS (VINCULADO A CONTROL CESS COMBUSTIBLE) ---
+        let cachePreventivos = [];
+        let cacheBitacora = [];
+        let subTabPreventivosActiva = 'unidades'; // 'unidades' | 'bitacora'
+        let filtroPreventivoEstatus = 'TODOS';
+        let ordenPreventivosActual = 'vencidos_mayor_exceso';
+        let columnaSortPreventivos = 'km_restantes';
+        let direccionSortPreventivos = 'asc';
+        let ordenBitacoraActual = 'fecha_desc';
+
+        function cambiarSubTabPreventivos(tab) {
+            subTabPreventivosActiva = tab;
+            const btnUni = document.getElementById('btn-subtab-prev-unidades');
+            const btnBit = document.getElementById('btn-subtab-prev-bitacora');
+            const secUni = document.getElementById('seccion-prev-unidades');
+            const secBit = document.getElementById('seccion-prev-bitacora');
+            const btnExp = document.getElementById('btn-exportar-prev-activo');
+
+            if (tab === 'unidades') {
+                if (btnUni) btnUni.className = "px-3.5 py-2 rounded-xl text-xs font-black transition bg-[#C59B27] text-black shadow flex items-center gap-2";
+                if (btnBit) btnBit.className = "px-3.5 py-2 rounded-xl text-xs font-bold transition bg-[#141518] text-slate-300 hover:text-white border border-[#3A3D42] flex items-center gap-2";
+                if (secUni) secUni.classList.remove('hidden');
+                if (secBit) secBit.classList.add('hidden');
+                if (btnExp) btnExp.innerHTML = '<i class="fa-solid fa-file-excel"></i> Exportar Unidades';
+                renderizarTablaPreventivos();
+            } else {
+                if (btnUni) btnUni.className = "px-3.5 py-2 rounded-xl text-xs font-bold transition bg-[#141518] text-slate-300 hover:text-white border border-[#3A3D42] flex items-center gap-2";
+                if (btnBit) btnBit.className = "px-3.5 py-2 rounded-xl text-xs font-black transition bg-[#C59B27] text-black shadow flex items-center gap-2";
+                if (secUni) secUni.classList.add('hidden');
+                if (secBit) secBit.classList.remove('hidden');
+                if (btnExp) btnExp.innerHTML = '<i class="fa-solid fa-file-excel"></i> Exportar Bitácora';
+                renderizarTablaBitacora();
+            }
+        }
+
+        async function cargarModuloPreventivos() {
+            const tbodyUni = document.getElementById('tabla-preventivos-body');
+            const tbodyBit = document.getElementById('tabla-bitacora-prev-body');
+            
+            if (tbodyUni) {
+                tbodyUni.innerHTML = `
+                    <tr>
+                        <td colspan="9" class="p-8 text-center text-slate-500">
+                            <i class="fa-solid fa-spinner fa-spin text-xl text-[#C59B27] mb-2"></i>
+                            <span class="block">Cargando unidades vinculadas a Control CESS Combustible...</span>
+                        </td>
+                    </tr>
+                `;
+            }
+
+            try {
+                // 1. Cargar estado de preventivos por unidad
                 const res = await fetch('/api/preventivos?t=' + Date.now(), { cache: 'no-store' });
                 if (res.ok) {
                     const json = await res.json();
@@ -6855,19 +7382,34 @@
                     const resumen = json.resumen || json.stats || {};
                     actualizarMetricasPreventivos(resumen);
                     renderizarTablaPreventivos();
-                } else {
-                    throw new Error('Respuesta no exitosa');
+                }
+
+                // 2. Cargar bitácora histórica
+                const resBit = await fetch('/api/preventivos/bitacora?t=' + Date.now(), { cache: 'no-store' });
+                if (resBit.ok) {
+                    const jsonBit = await resBit.json();
+                    cacheBitacora = jsonBit.data || jsonBit.bitacora || [];
+                    const tabBitSpan = document.getElementById('tab-cnt-bitacora');
+                    if (tabBitSpan) tabBitSpan.innerText = cacheBitacora.length;
+                    renderizarTablaBitacora();
+                }
+
+                // Sincronizar tarjetas del tablero
+                if (typeof renderizarTablero === 'function') {
+                    renderizarTablero();
                 }
             } catch (e) {
                 console.warn('Error cargando preventivos:', e);
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="9" class="p-6 text-center text-red-400">
-                            <i class="fa-solid fa-triangle-exclamation mb-1 text-base"></i>
-                            <p>No se pudo conectar con el servidor de preventivos.</p>
-                        </td>
-                    </tr>
-                `;
+                if (tbodyUni) {
+                    tbodyUni.innerHTML = `
+                        <tr>
+                            <td colspan="9" class="p-6 text-center text-red-400">
+                                <i class="fa-solid fa-triangle-exclamation mb-1 text-base"></i>
+                                <p>No se pudo sincronizar preventivos con el servidor.</p>
+                            </td>
+                        </tr>
+                    `;
+                }
             }
         }
 
@@ -6886,6 +7428,7 @@
             if (document.getElementById('cnt-filtro-prev-vigentes')) document.getElementById('cnt-filtro-prev-vigentes').innerText = vigentes;
             if (document.getElementById('cnt-filtro-prev-proximos')) document.getElementById('cnt-filtro-prev-proximos').innerText = proximos;
             if (document.getElementById('cnt-filtro-prev-vencidos')) document.getElementById('cnt-filtro-prev-vencidos').innerText = vencidos;
+            if (document.getElementById('tab-cnt-unidades')) document.getElementById('tab-cnt-unidades').innerText = total;
 
             const navBadge = document.getElementById('badge-nav-preventivos');
             if (navBadge) {
@@ -6902,7 +7445,7 @@
                 const btn = document.getElementById(`btn-filtro-prev-${k}`);
                 if (!btn) return;
                 if (k.toUpperCase() === est) {
-                    btn.className = "px-3 py-1 rounded-lg text-xs font-bold transition bg-[#C59B27] text-black";
+                    btn.className = "px-3 py-1.5 rounded-xl text-xs font-bold transition bg-[#C59B27] text-black shadow-sm";
                 } else {
                     const colors = {
                         todos: "bg-[#141518] text-slate-300 border border-[#3A3D42]",
@@ -6910,13 +7453,29 @@
                         proximo: "bg-[#141518] text-amber-400 border border-amber-900/60 hover:bg-amber-950/40",
                         vigente: "bg-[#141518] text-emerald-400 border border-emerald-900/60 hover:bg-emerald-950/40"
                     };
-                    btn.className = `px-3 py-1 rounded-lg text-xs font-bold transition ${colors[k]}`;
+                    btn.className = `px-3 py-1.5 rounded-xl text-xs font-bold transition ${colors[k]}`;
                 }
             });
             renderizarTablaPreventivos();
         }
 
         function aplicarFiltroPreventivos() {
+            renderizarTablaPreventivos();
+        }
+
+        function cambiarOrdenPreventivos(orden) {
+            ordenPreventivosActual = orden;
+            renderizarTablaPreventivos();
+        }
+
+        function ordenarPreventivosPorColumna(col) {
+            if (columnaSortPreventivos === col) {
+                direccionSortPreventivos = (direccionSortPreventivos === 'asc') ? 'desc' : 'asc';
+            } else {
+                columnaSortPreventivos = col;
+                direccionSortPreventivos = (col === 'km_restantes') ? 'asc' : 'asc';
+            }
+            ordenPreventivosActual = 'columna_dinamica';
             renderizarTablaPreventivos();
         }
 
@@ -6930,10 +7489,51 @@
                 const estNorm = (item.estatus || '').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
                 if (filtroPreventivoEstatus !== 'TODOS' && estNorm !== filtroPreventivoEstatus) return false;
                 if (query) {
-                    const txt = `${item.unidad} ${item.division || ''} ${item.estatus || ''}`.toLowerCase();
+                    const txt = `${item.unidad} ${item.division || ''} ${item.marca || ''} ${item.tipo_tracto || ''} ${item.estatus || ''}`.toLowerCase();
                     if (!txt.includes(query)) return false;
                 }
                 return true;
+            });
+
+            // Aplicar ordenamiento
+            if (ordenPreventivosActual === 'vencidos_mayor_exceso') {
+                filtrados.sort((a, b) => (Number(a.km_restantes) || 0) - (Number(b.km_restantes) || 0));
+            } else if (ordenPreventivosActual === 'vencidos_menor_exceso') {
+                filtrados.sort((a, b) => (Number(b.km_restantes) || 0) - (Number(a.km_restantes) || 0));
+            } else if (ordenPreventivosActual === 'km_restantes_asc') {
+                filtrados.sort((a, b) => (Number(a.km_restantes) || 0) - (Number(b.km_restantes) || 0));
+            } else if (ordenPreventivosActual === 'km_restantes_desc') {
+                filtrados.sort((a, b) => (Number(b.km_restantes) || 0) - (Number(a.km_restantes) || 0));
+            } else if (ordenPreventivosActual === 'unidad_asc') {
+                filtrados.sort((a, b) => String(a.unidad).localeCompare(String(b.unidad), undefined, { numeric: true }));
+            } else if (ordenPreventivosActual === 'km_actual_desc') {
+                filtrados.sort((a, b) => (Number(b.km_actual) || 0) - (Number(a.km_actual) || 0));
+            } else if (ordenPreventivosActual === 'columna_dinamica') {
+                filtrados.sort((a, b) => {
+                    let valA = a[columnaSortPreventivos];
+                    let valB = b[columnaSortPreventivos];
+                    if (typeof valA === 'number' || !isNaN(Number(valA))) {
+                        valA = Number(valA) || 0;
+                        valB = Number(valB) || 0;
+                        return direccionSortPreventivos === 'asc' ? valA - valB : valB - valA;
+                    } else {
+                        valA = String(valA || '').toLowerCase();
+                        valB = String(valB || '').toLowerCase();
+                        return direccionSortPreventivos === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
+                    }
+                });
+            }
+
+            // Actualizar flechas de orden en encabezados
+            ['unidad', 'division', 'km_actual', 'km_ultimo_servicio', 'km_proximo_servicio', 'km_restantes', 'estatus'].forEach(col => {
+                const ind = document.getElementById(`th-sort-${col}`);
+                if (ind) {
+                    if (columnaSortPreventivos === col) {
+                        ind.innerText = direccionSortPreventivos === 'asc' ? ' ▲' : ' ▼';
+                    } else {
+                        ind.innerText = '';
+                    }
+                }
             });
 
             if (filtrados.length === 0) {
@@ -6952,7 +7552,7 @@
                 let badgeColor = 'bg-emerald-950 text-emerald-300 border-emerald-800';
                 let textoEstatus = 'Al Día';
                 if (estNorm === 'VENCIDO') {
-                    badgeColor = 'bg-red-950 text-red-300 border-red-800 animate-pulse font-black';
+                    badgeColor = 'bg-red-950 text-red-300 border-red-800 font-black';
                     textoEstatus = 'Vencido';
                 } else if (estNorm === 'PROXIMO' || estNorm === 'PRÓXIMO') {
                     badgeColor = 'bg-amber-950 text-amber-300 border-amber-800 font-bold';
@@ -6960,18 +7560,18 @@
                 }
 
                 const kmRestantes = Number(item.km_restantes) || 0;
-                const kmClass = kmRestantes < 0 ? 'text-red-400 font-bold' : (kmRestantes < 3000 ? 'text-amber-400 font-bold' : 'text-slate-300');
+                const kmClass = kmRestantes < 0 ? 'text-red-400 font-black' : (kmRestantes <= 4000 ? 'text-amber-400 font-bold' : 'text-slate-300');
 
                 return `
                     <tr class="hover:bg-[#282A2E]/50 transition">
                         <td class="p-3 font-black text-white font-mono text-sm flex items-center gap-1.5">
-                            <span class="w-2.5 h-2.5 rounded-full ${estNorm === 'VENCIDO' ? 'bg-red-500 animate-pulse' : (estNorm === 'PROXIMO' ? 'bg-amber-400' : 'bg-emerald-500')}"></span>
+                            <span class="w-2.5 h-2.5 rounded-full ${estNorm === 'VENCIDO' ? 'bg-red-500' : (estNorm === 'PROXIMO' || estNorm === 'PRÓXIMO' ? 'bg-amber-400' : 'bg-emerald-500')}"></span>
                             Unidad ${item.unidad}
                         </td>
-                        <td class="p-3 text-slate-400">${item.division || 'Foráneo'}</td>
+                        <td class="p-3 text-slate-400">${item.division || 'RL'}</td>
                         <td class="p-3 text-right font-mono text-slate-200">${(Number(item.km_actual)||0).toLocaleString()} km</td>
                         <td class="p-3 text-right font-mono text-slate-400">${(Number(item.km_ultimo_servicio || item.km_mtto_anterior)||0).toLocaleString()} km</td>
-                        <td class="p-3 text-slate-300">${item.fecha_ultimo_servicio || item.fecha_realizado || '--'}</td>
+                        <td class="p-3 text-slate-300 font-mono text-[11px]">${item.fecha_ultimo_servicio || item.fecha_realizado || '--'}</td>
                         <td class="p-3 text-right font-mono text-slate-300">${(Number(item.km_proximo_servicio || item.proximo_mtto_km)||0).toLocaleString()} km</td>
                         <td class="p-3 text-right font-mono ${kmClass}">${kmRestantes.toLocaleString()} km</td>
                         <td class="p-3 text-center">
@@ -6989,13 +7589,143 @@
             }).join('');
         }
 
+        // --- MÉTODOS DE LA BITÁCORA HISTÓRICA DE PREVENTIVOS ---
+        function aplicarFiltroBitacora() {
+            renderizarTablaBitacora();
+        }
+
+        function cambiarOrdenBitacora(orden) {
+            ordenBitacoraActual = orden;
+            renderizarTablaBitacora();
+        }
+
+        function renderizarTablaBitacora() {
+            const tbody = document.getElementById('tabla-bitacora-prev-body');
+            if (!tbody) return;
+
+            const query = (document.getElementById('input-buscar-bitacora')?.value || '').trim().toLowerCase();
+
+            let filtrados = cacheBitacora.filter(item => {
+                if (!query) return true;
+                const txt = `${item.unidad} ${item.fecha || ''} ${item.tipo_tracto || ''} ${item.marca || ''} ${item.observaciones || ''}`.toLowerCase();
+                return txt.includes(query);
+            });
+
+            // Ordenamiento de bitácora
+            filtrados.sort((a, b) => {
+                if (ordenBitacoraActual === 'fecha_desc' || ordenBitacoraActual === 'fecha_asc') {
+                    const parseF = (str) => {
+                        if (!str) return 0;
+                        const m = String(str).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+                        if (m) return new Date(m[3], m[2]-1, m[1]).getTime();
+                        return new Date(str).getTime() || 0;
+                    };
+                    const diff = parseF(b.fecha) - parseF(a.fecha);
+                    return ordenBitacoraActual === 'fecha_desc' ? diff : -diff;
+                } else if (ordenBitacoraActual === 'unidad_asc') {
+                    return String(a.unidad).localeCompare(String(b.unidad), undefined, { numeric: true });
+                } else if (ordenBitacoraActual === 'km_desc') {
+                    return (Number(b.km_actual) || 0) - (Number(a.km_actual) || 0);
+                }
+                return 0;
+            });
+
+            if (filtrados.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="9" class="p-8 text-center text-slate-500 italic">
+                            No se encontraron registros en la bitácora con el término buscado.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = filtrados.map(item => {
+                const costoSinIva = Number(item.costo_sin_iva) || 0;
+                const costoTotal = Number(item.costo_total) || 0;
+
+                return `
+                    <tr class="hover:bg-[#282A2E]/50 transition">
+                        <td class="p-3 font-mono text-slate-300 font-bold">${item.fecha || '--'}</td>
+                        <td class="p-3 font-mono font-black text-white text-sm">Unidad ${item.unidad}</td>
+                        <td class="p-3 text-right font-mono text-cyan-300 font-bold">${(Number(item.km_actual)||0).toLocaleString()} km</td>
+                        <td class="p-3 text-right font-mono text-slate-400">${(Number(item.intervalo)||35000).toLocaleString()} km</td>
+                        <td class="p-3 text-slate-300">${item.tipo_tracto || item.marca || 'Cascadia'}</td>
+                        <td class="p-3 text-center font-mono text-slate-300">${item.litros_aceite ? item.litros_aceite + ' L' : '--'}</td>
+                        <td class="p-3 text-right font-mono text-slate-400">${costoSinIva > 0 ? '$' + costoSinIva.toLocaleString('es-MX', {minimumFractionDigits: 2}) : '$0.00'}</td>
+                        <td class="p-3 text-right font-mono text-emerald-400 font-bold">${costoTotal > 0 ? '$' + costoTotal.toLocaleString('es-MX', {minimumFractionDigits: 2}) : '$0.00'}</td>
+                        <td class="p-3 text-slate-400 text-[11px] max-w-xs truncate" title="${item.observaciones || ''}">${item.observaciones || '--'}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function exportarSegunSubTabPreventivos() {
+            if (subTabPreventivosActiva === 'bitacora') {
+                exportarExcelBitacora();
+            } else {
+                exportarExcelPreventivos();
+            }
+        }
+
+        function exportarExcelBitacora() {
+            if (cacheBitacora.length === 0) {
+                mostrarToast('No hay registros de bitácora para exportar');
+                return;
+            }
+            let csv = "Fecha,Unidad,Km Actual al Servicio,Intervalo,Tipo Tracto,Marca,Litros Aceite,Costo Sin IVA,Costo Total,Observaciones\n";
+            cacheBitacora.forEach(b => {
+                csv += `"${b.fecha}","${b.unidad}","${b.km_actual || ''}","${b.intervalo || ''}","${b.tipo_tracto || ''}","${b.marca || ''}","${b.litros_aceite || ''}","${b.costo_sin_iva || ''}","${b.costo_total || ''}","${(b.observaciones || '').replace(/"/g, '""')}"\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `CESS_Bitacora_Preventivos_${new Date().toISOString().slice(0,10)}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+            mostrarToast('Bitácora de preventivos descargada.');
+        }
+
+        // Callbacks para actualización directa en tiempo real desde Firebase
+        window.actualizarPreventivosDesdeFirebase = function(list) {
+            if (Array.isArray(list) && list.length > 0) {
+                cachePreventivos = list;
+                const stats = {
+                    total: list.length,
+                    vigentes: list.filter(p => (p.estatus||'').toUpperCase() === 'VIGENTE').length,
+                    vencidos: list.filter(p => (p.estatus||'').toUpperCase() === 'VENCIDO').length,
+                    proximos: list.filter(p => (p.estatus||'').toUpperCase().includes('PROXIM')).length
+                };
+                actualizarMetricasPreventivos(stats);
+                if (subTabPreventivosActiva === 'unidades') {
+                    renderizarTablaPreventivos();
+                }
+                if (typeof renderizarTablero === 'function') {
+                    renderizarTablero();
+                }
+            }
+        };
+
+        window.actualizarBitacoraDesdeFirebase = function(list) {
+            if (Array.isArray(list) && list.length > 0) {
+                cacheBitacora = list;
+                const tabBitSpan = document.getElementById('tab-cnt-bitacora');
+                if (tabBitSpan) tabBitSpan.innerText = cacheBitacora.length;
+                if (subTabPreventivosActiva === 'bitacora') {
+                    renderizarTablaBitacora();
+                }
+            }
+        };
+
         async function ingresarPreventivoATaller(numUnidad) {
             const id = String(numUnidad).trim();
             let u = baseDatos.find(x => String(x.id) === id);
             if (u) {
                 u.estado = 'proceso';
                 u.reporte = `Mantenimiento Preventivo Programado (Servicio Mayor de Filtros y Aceite). ` + (u.reporte ? `\nObservaciones: ${u.reporte}` : '');
-                agregarEventoHistorial(u.id, `Ingreso por Mantenimiento Preventivo desde módulo diésel`, 'preventivo');
+                agregarEventoHistorial(u.id, `Ingreso por Mantenimiento Preventivo programado`, 'preventivo');
             } else {
                 u = {
                     id: id,
@@ -7375,6 +8105,23 @@
             document.getElementById('caja-resultado-folio').classList.remove('flex');
             document.getElementById('btn-confirmar-vincular').disabled = true;
 
+            cambiarModoVincularFolio('existente');
+
+            // Pre-cargar valores para generación de nuevo folio
+            let maxF = 4075;
+            baseDatos.forEach(unit => {
+                const n = parseInt(unit.folio_almacen, 10);
+                if (!isNaN(n) && n >= 4000 && n < 9999 && n > maxF) maxF = n;
+            });
+            const inputNum = document.getElementById('nuevo-folio-num');
+            if (inputNum) inputNum.value = String(maxF + 1);
+
+            const inputMot = document.getElementById('nuevo-folio-motivo');
+            if (inputMot) inputMot.value = u.reporte || u.falla || `Reparación y mantenimiento de Unidad ${u.id}`;
+
+            const inputRef = document.getElementById('nuevo-folio-refacciones');
+            if (inputRef) inputRef.value = '';
+
             document.getElementById('modal-vincular-almacen').classList.remove('hidden');
 
             if (u.folio_almacen) {
@@ -7473,7 +8220,146 @@
             }
         }
 
+        function cambiarModoVincularFolio(modo) {
+            const pExistente = document.getElementById('panel-vincular-existente');
+            const pNuevo = document.getElementById('panel-vincular-nuevo');
+            const bExistente = document.getElementById('btn-tab-vincular-existente');
+            const bNuevo = document.getElementById('btn-tab-vincular-nuevo');
+
+            if (!pExistente || !pNuevo || !bExistente || !bNuevo) return;
+
+            if (modo === 'nuevo') {
+                pExistente.classList.add('hidden');
+                pNuevo.classList.remove('hidden');
+                pNuevo.classList.add('flex');
+                bNuevo.className = 'flex-1 py-1.5 rounded-lg text-xs font-bold transition bg-emerald-600 text-white flex items-center justify-center gap-1.5 shadow-sm';
+                bExistente.className = 'flex-1 py-1.5 rounded-lg text-xs font-bold transition text-slate-300 hover:text-white flex items-center justify-center gap-1.5';
+            } else {
+                pNuevo.classList.add('hidden');
+                pNuevo.classList.remove('flex');
+                pExistente.classList.remove('hidden');
+                bExistente.className = 'flex-1 py-1.5 rounded-lg text-xs font-bold transition bg-indigo-600 text-white flex items-center justify-center gap-1.5 shadow-sm';
+                bNuevo.className = 'flex-1 py-1.5 rounded-lg text-xs font-bold transition text-slate-300 hover:text-white flex items-center justify-center gap-1.5';
+            }
+        }
+
+        async function generarNuevoFolioAlmacenBoton() {
+            if (!unidadVincularActiva) return;
+
+            const folio = (document.getElementById('nuevo-folio-num')?.value || '').trim();
+            const solicitante = (document.getElementById('nuevo-folio-solicitante')?.value || '').trim() || 'Encargado de Taller';
+            const motivo = (document.getElementById('nuevo-folio-motivo')?.value || '').trim();
+            const refacciones = (document.getElementById('nuevo-folio-refacciones')?.value || '').trim();
+
+            if (!motivo) {
+                mostrarToast('Por favor escribe el motivo o trabajo a realizar');
+                return;
+            }
+
+            try {
+                mostrarToast('Generando folio y comunicando con Almacén...');
+                const res = await fetch(`/api/unidad/${unidadVincularActiva.id}/generar-folio-almacen`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ folio, solicitante, motivo, refacciones })
+                });
+
+                if (res.ok) {
+                    const json = await res.json();
+                    if (json.unidad) {
+                        const idx = baseDatos.findIndex(x => String(x.id) === String(unidadVincularActiva.id));
+                        if (idx !== -1) baseDatos[idx] = json.unidad;
+                    } else {
+                        unidadVincularActiva.folio_almacen = json.folio || folio;
+                    }
+                    guardarDatosLocales(false);
+                    renderizarTablero();
+                    mostrarToast(`Folio #${json.folio || folio} generado y enviado a Almacén`);
+                    cerrarModalVincularAlmacen();
+                } else {
+                    mostrarToast('Error al generar folio en almacén');
+                }
+            } catch (e) {
+                mostrarToast('Error de conexión con el servidor');
+            }
+        }
+
         window.addEventListener('DOMContentLoaded', inicializarAplicacion);
+    </script>
+    <!-- Sincronización en Tiempo Real con Firebase Firestore (Sistema Control CESS Combustible) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            projectId: "diesel-cess-40bbf",
+            appId: "1:547567995047:web:943c8b668f26574062b382",
+            storageBucket: "diesel-cess-40bbf.firebasestorage.app",
+            apiKey: "AIzaSyDg9Q5n2A3UghhmGoI21uNQP5MKFbXJpgs",
+            authDomain: "diesel-cess-40bbf.firebaseapp.com",
+            messagingSenderId: "547567995047"
+        };
+
+        try {
+            const app = initializeApp(firebaseConfig);
+            const db = getFirestore(app);
+
+            // Sincronización en vivo de preventivos por unidad
+            onSnapshot(collection(db, 'preventivos'), (snapshot) => {
+                const list = [];
+                snapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    list.push({
+                        unidad: String(data.unidad || docSnap.id).trim(),
+                        division: data.division || 'RL',
+                        marca: data.marca || '',
+                        tipo_tracto: data.tipo_tracto || 'Cascadia',
+                        km_actual: Number(data.km_actual || 0),
+                        km_mtto_anterior: Number(data.km_mtto_anterior || 0),
+                        fecha_realizado: data.fecha_realizado || '--',
+                        proximo_mtto_km: Number(data.proximo_mtto_km || 0),
+                        km_restantes: Number(data.km_restantes || 0),
+                        estatus: data.estatus || 'VIGENTE',
+                        ubicacion: data.ubicacion || ''
+                    });
+                });
+                if (list.length > 0 && typeof window.actualizarPreventivosDesdeFirebase === 'function') {
+                    window.actualizarPreventivosDesdeFirebase(list);
+                }
+            }, (err) => {
+                console.info('Firebase preventivos snapshot info:', err.message);
+            });
+
+            // Sincronización en vivo de bitácora histórica
+            onSnapshot(collection(db, 'preventivos_historial'), (snapshot) => {
+                const list = [];
+                snapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    list.push({
+                        id: docSnap.id,
+                        unidad: String(data.unidad || '').trim(),
+                        fecha: data.fecha || '',
+                        km_actual: Number(data.km_actual || 0),
+                        intervalo: Number(data.intervalo || 35000),
+                        tipo_tracto: data.tipo_tracto || '',
+                        marca: data.marca || '',
+                        litros_aceite: data.litros_aceite || '',
+                        costo_sin_iva: Number(data.costo_sin_iva || 0),
+                        costo_total: Number(data.costo_total || 0),
+                        observaciones: data.observaciones || '',
+                        timestamp: data.timestamp
+                    });
+                });
+                if (list.length > 0 && typeof window.actualizarBitacoraDesdeFirebase === 'function') {
+                    window.actualizarBitacoraDesdeFirebase(list);
+                }
+            }, (err) => {
+                console.info('Firebase bitácora snapshot info:', err.message);
+            });
+
+        } catch (e) {
+            console.warn('Conexión Firebase opcional:', e);
+        }
     </script>
 </body>
 </html>

@@ -1,80 +1,17 @@
 {
-  "fecha": "2026-11-09",
+  "fecha": "2026-11-10",
   "hora_inicio": "00:00:00",
-  "titulo": "Jornada Activa - lunes, 9 de noviembre de 2026",
+  "titulo": "Jornada Activa - martes, 10 de noviembre de 2026",
   "estado": "ACTIVA",
-  "jornada_iniciada_con": "Cierre del día anterior (2026-11-06)",
+  "jornada_iniciada_con": "Cierre del día anterior (2026-11-09)",
   "proximo_corte_automatico": "Medianoche (00:00:00)",
   "movimientos": [
     {
-      "id": "mov_1794259503652_955",
-      "fecha": "2026-11-09",
-      "hora": "03:25:03 p.m.",
-      "unidad_id": "94",
-      "tipo": "actualizacion",
-      "descripcion": "Unidad 94: Filtro de gases del EGR • Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer\n\nUnidad en preuba ya que ya se remplazo el bote del EGR",
-      "autor": "Jefe de Taller"
-    },
-    {
-      "id": "mov_1794259360144_730",
-      "fecha": "2026-11-09",
-      "hora": "03:22:40 p.m.",
-      "unidad_id": "94",
-      "tipo": "movimiento_kanban",
-      "descripcion": "Movimiento rápido: De 'En Reparación Activa' a 'Listas para Entrega'",
-      "autor": "Jefe de Taller"
-    },
-    {
-      "id": "mov_1794250780987_359",
-      "fecha": "2026-11-09",
-      "hora": "12:59:40 p.m.",
-      "unidad_id": "004",
-      "tipo": "actualizacion",
-      "descripcion": "Unidad 004: Unidad lista y limpia por dntro\nOJO pendiente entrar a MTTO SITRAK",
-      "autor": "Jefe de Taller"
-    },
-    {
-      "id": "mov_1794250569867_969",
-      "fecha": "2026-11-09",
-      "hora": "12:56:09 p.m.",
-      "unidad_id": "68",
-      "tipo": "movimiento_kanban",
-      "descripcion": "Movimiento rápido: De 'Listas para Entrega' a 'Reparación Mayor ($$)'",
-      "autor": "Jefe de Taller"
-    },
-    {
-      "id": "mov_1794248627533_787",
-      "fecha": "2026-11-09",
-      "hora": "12:23:47 p.m.",
-      "unidad_id": "003",
-      "tipo": "movimiento_kanban",
-      "descripcion": "Movimiento rápido: De 'En Reparación Activa' a 'Listas para Entrega'",
-      "autor": "Jefe de Taller"
-    },
-    {
-      "id": "mov_1794248543240_937",
-      "fecha": "2026-11-09",
-      "hora": "12:22:23 p.m.",
-      "unidad_id": "83",
-      "tipo": "actualizacion",
-      "descripcion": "Unidad 83: bujes y pernos de direccion",
-      "autor": "Jefe de Taller"
-    },
-    {
-      "id": "mov_1794246179888_639",
-      "fecha": "2026-11-09",
-      "hora": "11:42:59 a.m.",
-      "unidad_id": "40",
-      "tipo": "movimiento_kanban",
-      "descripcion": "Movimiento rápido: De 'Listas para Entrega' a 'Listas para Entrega'",
-      "autor": "Jefe de Taller"
-    },
-    {
-      "id": "mov_init_1794233864846",
+      "id": "mov_init_1794290428742",
       "hora": "00:00:00",
       "unidad_id": "TODAS",
       "tipo": "apertura",
-      "descripcion": "Apertura de jornada diaria. Se arranca con el estatus del cierre de ayer (2026-11-06).",
+      "descripcion": "Apertura de jornada diaria. Se arranca con el estatus del cierre de ayer (2026-11-09).",
       "autor": "Sistema Taller Pro"
     }
   ]

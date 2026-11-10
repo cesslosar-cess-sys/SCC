@@ -80,50 +80,48 @@ function saveTitulosColumnas(titulos) {
     }
 }
 
-function getPreventivos() {
+function getPreventivosData() {
+    const freshCachePath = path.join(__dirname, 'combustible_preventivos_cache.json');
+    if (fs.existsSync(freshCachePath)) {
+        try {
+            return JSON.parse(fs.readFileSync(freshCachePath, 'utf8'));
+        } catch(e) {}
+    }
+    const webCachePath = path.join(__dirname, 'web', 'src', 'data', 'initial_cache.json');
+    if (fs.existsSync(webCachePath)) {
+        try {
+            const raw = JSON.parse(fs.readFileSync(webCachePath, 'utf8'));
+            return {
+                preventivos: raw.preventivos || [],
+                bitacora: raw.preventivos_historial || [],
+                stats: { total: (raw.preventivos || []).length }
+            };
+        } catch(e) {}
+    }
     const dieselCachePath = path.join(__dirname, 'diesel_local_cache.json');
-    const preventivosJsonPath = path.join(__dirname, 'taller_preventivos.json');
-    let rawList = [];
-
-    // Priorizar diesel_local_cache.json si existe para datos frescos de kilometraje
     if (fs.existsSync(dieselCachePath)) {
         try {
             const cache = JSON.parse(fs.readFileSync(dieselCachePath, 'utf8'));
-            if (cache && Array.isArray(cache.preventivos) && cache.preventivos.length > 0) {
-                rawList = cache.preventivos;
+            if (cache && Array.isArray(cache.preventivos)) {
+                return {
+                    preventivos: cache.preventivos,
+                    bitacora: cache.preventivos_historial || [],
+                    stats: { total: cache.preventivos.length }
+                };
             }
         } catch(e) {}
     }
+    return { preventivos: [], bitacora: [], stats: { total: 0 } };
+}
 
-    if (rawList.length === 0 && fs.existsSync(preventivosJsonPath)) {
-        try {
-            const p = JSON.parse(fs.readFileSync(preventivosJsonPath, 'utf8'));
-            if (Array.isArray(p)) rawList = p;
-        } catch(e) {}
-    }
+function getPreventivos() {
+    const data = getPreventivosData();
+    return data.preventivos || [];
+}
 
-    return rawList.map(p => {
-        const kmActual = Number(p.km_actual) || 0;
-        const proxKm = Number(p.proximo_mtto_km || p.km_proximo_servicio) || 0;
-        const ultKm = Number(p.km_mtto_anterior || p.km_ultimo_servicio) || 0;
-        const kmRest = p.km_restantes !== undefined ? Number(p.km_restantes) : (proxKm - kmActual);
-
-        let est = 'VIGENTE';
-        if (kmRest < 0) est = 'VENCIDO';
-        else if (kmRest <= 3000) est = 'PROXIMO';
-
-        return {
-            unidad: String(p.unidad || '').trim(),
-            division: p.division || 'Foráneo',
-            km_actual: kmActual,
-            km_ultimo_servicio: ultKm,
-            fecha_ultimo_servicio: p.fecha_realizado || p.fecha_ultimo_servicio || '--',
-            km_proximo_servicio: proxKm,
-            km_restantes: kmRest,
-            estatus: est,
-            estatus_label: est === 'VENCIDO' ? 'Vencido' : (est === 'PROXIMO' ? 'Próximo' : 'Al Día')
-        };
-    });
+function getBitacoraPreventivos() {
+    const data = getPreventivosData();
+    return data.bitacora || [];
 }
 
 function getRescates() {
@@ -247,6 +245,103 @@ function saveAlmacenData(data) {
         console.error('Error guardando almacen_datos.json:', e);
         return false;
     }
+}
+
+// =========================================================================
+// SINCRONIZADOR BIDIRECCIONAL EN TIEMPO REAL: TALLER PRO <-> ALMACÉN CESS
+// =========================================================================
+function sincronizarFoliosConAlmacen(origen = 'Watcher Almacén') {
+    const almacenData = getAlmacenData();
+    const movimientos = almacenData.movimientos || [];
+    const catalog = almacenData.catalog || {};
+    let unidades = getUnidades();
+    let huboCambios = false;
+
+    unidades.forEach(unidad => {
+        if (!unidad.folio_almacen) return;
+        const folioBuscado = String(unidad.folio_almacen).trim();
+
+        // Movimientos de salida vinculados a este folio o unidad
+        const movsFolio = movimientos.filter(m => 
+            String(m.folio || '').trim() === folioBuscado && (m.tipo === 'S' || !m.tipo)
+        );
+
+        let nuevoCostoRefacciones = 0;
+        const piezasActualizadas = movsFolio.map((m, idx) => {
+            const itemCat = catalog[m.id_pieza] || {};
+            const pu = Number(m.precio_unitario !== undefined ? m.precio_unitario : (itemCat.precio_unitario || 0));
+            const cant = Number(m.cantidad) || 1;
+            const total = pu * cant;
+            nuevoCostoRefacciones += total;
+            return {
+                id: m.id || `pz_alm_${Date.now()}_${idx}`,
+                id_pieza: m.id_pieza,
+                numero_parte: m.numero_parte || itemCat.numero_parte || '',
+                descripcion: m.descripcion || itemCat.descripcion || 'Refacción',
+                marca: m.marca || itemCat.marca || '',
+                cantidad: cant,
+                unidad_medida: m.unidad || itemCat.unidad || 'PZ',
+                precio_unitario: pu,
+                costo_total: total,
+                folio_almacen: folioBuscado,
+                solicitante: m.solicitante || 'Almacén CESS',
+                estado: 'RECIBIDA_TALLER',
+                fecha_recepcion: m.fecha || new Date().toISOString().slice(0, 10),
+                hora_recepcion: m.hora || ''
+            };
+        });
+
+        const costoPrevio = Number(unidad.costo_refacciones) || 0;
+        const cantPrevias = Array.isArray(unidad.piezas) ? unidad.piezas.filter(p => p.folio_almacen === folioBuscado).length : 0;
+
+        // Comprobar si hubo cambios en cantidad, piezas o costo
+        if (Math.abs(costoPrevio - nuevoCostoRefacciones) > 0.01 || cantPrevias !== piezasActualizadas.length) {
+            huboCambios = true;
+            unidad.costo_refacciones = nuevoCostoRefacciones;
+            
+            // Conservar piezas de otros folios o manuales
+            const piezasOtras = (unidad.piezas || []).filter(p => p.folio_almacen !== folioBuscado);
+            unidad.piezas = [...piezasOtras, ...piezasActualizadas];
+            
+            // Recalcular costo total de la unidad
+            unidad.costo = (Number(unidad.costo_mano_obra) || 0) + nuevoCostoRefacciones;
+            
+            if (!Array.isArray(unidad.historial)) unidad.historial = [];
+            unidad.historial.unshift({
+                fecha: new Date().toLocaleDateString('es-MX') + ' ' + new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
+                evento: `Almacén sincronizó Folio #${folioBuscado}: ${piezasActualizadas.length} piezas surtidas (${nuevoCostoRefacciones.toLocaleString()} MXN)`,
+                tipo: 'almacen_sync',
+                autor: origen
+            });
+
+            console.log(`>>> [Sincronización Bidireccional] Unidad ${unidad.id} vinculada a Folio #${folioBuscado} actualizada: ${piezasActualizadas.length} refacciones (${nuevoCostoRefacciones} MXN)`);
+        }
+    });
+
+    if (huboCambios) {
+        saveUnidades(unidades, origen);
+        if (typeof broadcastSSE === 'function') {
+            broadcastSSE('almacen_folio_updated', {
+                mensaje: 'Refacciones y costos actualizados en vivo desde Almacén CESS',
+                timestamp: Date.now()
+            });
+        }
+    }
+}
+
+// Observador continuo de cambios físicos en almacen_datos.json
+try {
+    if (fs.existsSync(ALMACEN_DB_FILE)) {
+        fs.watchFile(ALMACEN_DB_FILE, { interval: 1000 }, (curr, prev) => {
+            if (curr.mtimeMs !== prev.mtimeMs) {
+                console.log('[Almacén Watcher] Cambio detectado en base de datos de almacén. Sincronizando con Taller Pro...');
+                sincronizarFoliosConAlmacen('Almacén CESS en tiempo real');
+            }
+        });
+        console.log('[Almacén Watcher] Monitoreo bidireccional activo sobre:', ALMACEN_DB_FILE);
+    }
+} catch(e) {
+    console.warn('[Almacén Watcher] No se pudo inicializar watchFile:', e.message);
 }
 
 function getUnidades() {
@@ -2500,10 +2595,253 @@ app.post('/api/unidad/:id/vincular-folio', (req, res) => {
     res.json({ success: true, unidad, itemsVinculados: piezasSurtidas.length, costoRefacciones });
 });
 
-// --- 23. MÓDULO DE MANTENIMIENTOS PREVENTIVOS (CONTROL CESS DIESEL) ---
+// --- GENERAR O SOLICITAR NUEVO FOLIO DE ALMACÉN DESDE TALLER ---
+app.post('/api/unidad/:id/generar-folio-almacen', (req, res) => {
+    const unitId = String(req.params.id).trim();
+    const { folio, motivo, refacciones, solicitante } = req.body;
+    let unidades = getUnidades();
+    let unidad = unidades.find(u => String(u.id) === unitId);
+    if (!unidad) return res.status(404).json({ error: 'Unidad no encontrada' });
+
+    const almacenData = getAlmacenData();
+    let nuevoFolio = String(folio || '').trim();
+    if (!nuevoFolio) {
+        // Generar consecutivo inteligente en rango 4000
+        let maxF = 4075;
+        (almacenData.movimientos || []).forEach(m => {
+            const n = parseInt(m.folio, 10);
+            if (!isNaN(n) && n >= 4000 && n < 9999 && n > maxF) maxF = n;
+        });
+        (almacenData.folios_taller || []).forEach(f => {
+            const n = parseInt(f.folio, 10);
+            if (!isNaN(n) && n >= 4000 && n < 9999 && n > maxF) maxF = n;
+        });
+        nuevoFolio = String(maxF + 1);
+    }
+
+    unidad.folio_almacen = nuevoFolio;
+    const desc = `Generado Folio de Almacén #${nuevoFolio}: ${motivo || 'Requisición de refacciones para reparación'}. Refacciones solicitadas: ${refacciones || 'Por surtir en almacén'}`;
+    
+    if (!Array.isArray(unidad.historial)) unidad.historial = [];
+    unidad.historial.unshift({
+        fecha: new Date().toLocaleDateString('es-MX') + ' ' + new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
+        evento: desc,
+        tipo: 'generacion_folio_almacen',
+        autor: solicitante || 'Encargado de Taller'
+    });
+
+    // Registrar en folios_taller de almacen_datos.json
+    if (!Array.isArray(almacenData.folios_taller)) almacenData.folios_taller = [];
+    const yaExisteIndex = almacenData.folios_taller.findIndex(f => String(f.folio).trim() === nuevoFolio);
+    const regFolio = {
+        folio: nuevoFolio,
+        unidad: unitId,
+        solicitante: solicitante || 'Encargado de Taller',
+        motivo: motivo || unidad.reporte || 'Reparación en taller',
+        refacciones_solicitadas: refacciones || 'Evaluación técnica',
+        fecha: new Date().toISOString().slice(0, 10),
+        hora: new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
+        estado_taller: unidad.estado || 'proceso',
+        estatus: 'ABIERTO',
+        creado_desde: 'Taller Pro CESS',
+        timestamp: new Date().toISOString()
+    };
+
+    if (yaExisteIndex !== -1) {
+        almacenData.folios_taller[yaExisteIndex] = regFolio;
+    } else {
+        almacenData.folios_taller.unshift(regFolio);
+    }
+    saveAlmacenData(almacenData);
+    saveUnidades(unidades, solicitante || 'Encargado de Taller');
+    registrarMovimientoJornada(unitId, 'generacion_folio_almacen', desc, solicitante || 'Encargado de Taller');
+
+    res.json({
+        success: true,
+        folio: nuevoFolio,
+        unidad,
+        mensaje: `Folio #${nuevoFolio} registrado en Almacén CESS y vinculado a Unidad ${unitId}`
+    });
+});
+
+// --- LISTAR TODOS LOS FOLIOS DE TALLER ACTIVOS PARA ALMACÉN ---
+app.get('/api/almacen/folios-taller', (req, res) => {
+    const almacenData = getAlmacenData();
+    const movimientos = almacenData.movimientos || [];
+    const catalog = almacenData.catalog || {};
+    const unidades = getUnidades();
+    const foliosRegistrados = almacenData.folios_taller || [];
+
+    // Mapear cada unidad con folio vinculado
+    const foliosMap = new Map();
+
+    // 1. Agregar folios que están en el tablero de taller
+    unidades.forEach(u => {
+        if (!u.folio_almacen) return;
+        const fol = String(u.folio_almacen).trim();
+        foliosMap.set(fol, {
+            folio: fol,
+            unidad: u.id,
+            estado_taller: u.estado || 'proceso',
+            defecto: u.defecto || u.reporte || 'Reparación en taller',
+            solicitante: 'Encargado de Taller',
+            fecha_apertura: u.fecha_ingreso || new Date().toISOString().slice(0, 10),
+            piezas: [],
+            costo_acumulado: 0
+        });
+    });
+
+    // 2. Agregar folios registrados en almacen_datos.json
+    foliosRegistrados.forEach(fr => {
+        const fol = String(fr.folio).trim();
+        if (!foliosMap.has(fol)) {
+            foliosMap.set(fol, {
+                folio: fol,
+                unidad: fr.unidad || '--',
+                estado_taller: fr.estado_taller || 'proceso',
+                defecto: fr.motivo || fr.refacciones_solicitadas || 'Reparación en taller',
+                solicitante: fr.solicitante || 'Encargado de Taller',
+                fecha_apertura: fr.fecha || new Date().toISOString().slice(0, 10),
+                piezas: [],
+                costo_acumulado: 0
+            });
+        }
+    });
+
+    // 3. Asociar salidas y calcular costos
+    const foliosLista = Array.from(foliosMap.values()).map(f => {
+        const movs = movimientos.filter(m => String(m.folio).trim() === f.folio && (m.tipo === 'S' || !m.tipo));
+        let costoTotal = 0;
+        const piezas = movs.map(m => {
+            const itemCat = catalog[m.id_pieza] || {};
+            const pu = Number(m.precio_unitario !== undefined ? m.precio_unitario : (itemCat.precio_unitario || 0));
+            const cant = Number(m.cantidad) || 1;
+            const sub = pu * cant;
+            costoTotal += sub;
+            return {
+                id_movimiento: m.id,
+                id_pieza: m.id_pieza,
+                numero_parte: m.numero_parte || itemCat.numero_parte || '',
+                descripcion: m.descripcion || itemCat.descripcion || 'Refacción',
+                cantidad: cant,
+                precio_unitario: pu,
+                subtotal: sub,
+                fecha: m.fecha || '',
+                hora: m.hora || ''
+            };
+        });
+
+        f.piezas = piezas;
+        f.costo_acumulado = costoTotal;
+        f.estatus = piezas.length > 0 ? 'CON_REFACCIONES_SURTIDAS' : 'PENDIENTE_SURTIR';
+        return f;
+    });
+
+    res.json({ success: true, count: foliosLista.length, folios: foliosLista });
+});
+
+// --- SURTIR REFACCIÓN DIRECTAMENTE A UN FOLIO DE TALLER ---
+app.post('/api/almacen/folio/:folio/surtir-pieza', (req, res) => {
+    const folio = String(req.params.folio).trim();
+    const { id_pieza, cantidad, solicitante, notas } = req.body;
+    const cant = Number(cantidad) || 1;
+
+    const almacenData = getAlmacenData();
+    const item = (almacenData.catalog || {})[id_pieza];
+    if (!item) {
+        return res.status(404).json({ error: 'Refacción no encontrada en el catálogo de almacén' });
+    }
+
+    // Descontar inventario
+    item.stock_actual = (Number(item.stock_actual) || 0) - cant;
+
+    const now = new Date();
+    const fecha = now.toISOString().slice(0, 10);
+    const hora = now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+
+    // Determinar unidad asociada
+    const unidades = getUnidades();
+    const uMatch = unidades.find(u => String(u.folio_almacen).trim() === folio);
+    const unidadCamion = uMatch ? uMatch.id : (req.body.unidad_camion || '');
+
+    const mov = {
+        id: `mov_${Date.now()}_${Math.round(Math.random() * 1000)}`,
+        tipo: 'S',
+        fecha,
+        hora,
+        id_pieza: item.id || id_pieza,
+        numero_parte: item.numero_parte || '',
+        descripcion: item.descripcion || '',
+        marca: item.marca || '',
+        almacen: item.almacen || 'Almacén de Refacciones',
+        almacen_id: item.almacen_id || 'refacciones',
+        ubicacion: `${item.rack || 'Rack 1'} / ${item.nivel || 'Nivel 1'}`,
+        cantidad: cant,
+        unidad_camion: String(unidadCamion).toUpperCase(),
+        folio: folio,
+        solicitante: solicitante || (uMatch ? `Taller Unidad ${uMatch.id}` : 'Taller Pro'),
+        precio_unitario: Number(item.precio_unitario || 0),
+        notas: notas || 'Surtido desde Centro de Vinculación Taller-Almacén',
+        timestamp: now.toISOString()
+    };
+
+    if (!Array.isArray(almacenData.movimientos)) almacenData.movimientos = [];
+    almacenData.movimientos.unshift(mov);
+    saveAlmacenData(almacenData);
+
+    // Sincronizar inmediatamente con Taller
+    sincronizarFoliosConAlmacen('Despacho Inmediato Almacén');
+
+    res.json({
+        success: true,
+        movimiento: mov,
+        mensaje: `${cant} PZ de "${item.descripcion}" surtidas al Folio #${folio} de Unidad ${unidadCamion || ''}`
+    });
+});
+
+// --- MODIFICAR PIEZA O CANTIDAD EN FOLIO DE ALMACÉN ---
+app.post('/api/almacen/folio/:folio/modificar-pieza', (req, res) => {
+    const folio = String(req.params.folio).trim();
+    const { id_movimiento, nueva_cantidad, nuevo_precio_unitario } = req.body;
+    const almacenData = getAlmacenData();
+    const mov = (almacenData.movimientos || []).find(m => String(m.id) === String(id_movimiento));
+    if (!mov) {
+        return res.status(404).json({ error: 'Movimiento no encontrado en la bitácora de almacén' });
+    }
+
+    const cantAnterior = Number(mov.cantidad) || 0;
+    const cantNueva = Number(nueva_cantidad);
+    const item = (almacenData.catalog || {})[mov.id_pieza];
+
+    if (cantNueva <= 0) {
+        // Devolución completa de la refacción
+        if (item) item.stock_actual = (Number(item.stock_actual) || 0) + cantAnterior;
+        almacenData.movimientos = almacenData.movimientos.filter(m => String(m.id) !== String(id_movimiento));
+    } else {
+        const dif = cantNueva - cantAnterior;
+        if (item) item.stock_actual = (Number(item.stock_actual) || 0) - dif;
+        mov.cantidad = cantNueva;
+        if (nuevo_precio_unitario !== undefined) {
+            mov.precio_unitario = Number(nuevo_precio_unitario);
+        }
+    }
+
+    saveAlmacenData(almacenData);
+    sincronizarFoliosConAlmacen('Ajuste de Pieza en Almacén');
+
+    res.json({
+        success: true,
+        mensaje: cantNueva <= 0 
+            ? 'Pieza devuelta al stock de almacén y retirada de la unidad'
+            : 'Cantidad y costo actualizados en Almacén y reflejados en Taller'
+    });
+});
+
+// --- 23. MÓDULO DE MANTENIMIENTOS PREVENTIVOS (VINCULADO A SISTEMA DE CONTROL CESS COMBUSTIBLE) ---
 app.get('/api/preventivos', (req, res) => {
-    const list = getPreventivos();
-    const stats = {
+    const cacheData = getPreventivosData();
+    const list = cacheData.preventivos || [];
+    const stats = cacheData.stats || {
         total: list.length,
         vigentes: list.filter(p => (p.estatus || '').toUpperCase() === 'VIGENTE').length,
         vencidos: list.filter(p => (p.estatus || '').toUpperCase() === 'VENCIDO').length,
@@ -2518,11 +2856,27 @@ app.get('/api/preventivos', (req, res) => {
 
     res.json({
         success: true,
+        source: 'Sistema de Control CESS Combustible (diesel-cess-40bbf)',
         data: list,
         preventivos: list,
         stats,
         resumen: stats,
         count: list.length
+    });
+});
+
+app.get('/api/preventivos/bitacora', (req, res) => {
+    let bitacora = getBitacoraPreventivos();
+    const unidadParam = req.query.unidad ? String(req.query.unidad).trim() : null;
+    if (unidadParam) {
+        bitacora = bitacora.filter(b => String(b.unidad).trim() === unidadParam);
+    }
+    res.json({
+        success: true,
+        source: 'Sistema de Control CESS Combustible - Bitácora Oficial',
+        data: bitacora,
+        bitacora: bitacora,
+        count: bitacora.length
     });
 });
 
