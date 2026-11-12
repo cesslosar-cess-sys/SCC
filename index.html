@@ -179,7 +179,7 @@
                 <button onclick="abrirModalAsistenteIA()" class="bg-[#282A2E] hover:bg-[#3A3D42] text-white border border-[#3A3D42] p-2 sm:px-3 sm:py-1.5 rounded-xl text-xs font-bold shadow flex items-center gap-1.5 transition" title="Consultas Gerenciales IA">
                     <i class="fa-solid fa-brain text-purple-400"></i> <span class="hidden md:inline">IA</span>
                 </button>
-                <button onclick="abrirModalAlmacen()" class="bg-[#282A2E] hover:bg-[#3A3D42] text-slate-200 border border-[#3A3D42] p-2 sm:px-2.5 rounded-xl text-xs font-bold transition" title="Catálogo de Almacén CESS">
+                <button onclick="abrirModalAlmacen()" class="bg-[#282A2E] hover:bg-[#3A3D42] text-slate-200 border border-[#3A3D42] p-2 sm:px-2.5 rounded-xl text-xs font-bold transition" title="Catálogo de Almacén">
                     <i class="fa-solid fa-boxes-stacked text-[#C59B27]"></i> <span class="hidden lg:inline">Almacén</span>
                 </button>
                 <button onclick="abrirModalAjustes()" class="bg-[#282A2E] hover:bg-[#3A3D42] text-slate-400 hover:text-white border border-[#3A3D42] p-2 rounded-xl text-xs transition" title="Ajustes y Sincronización">
@@ -1877,7 +1877,7 @@
                     <div id="box-agregar-pieza-expediente" class="hidden bg-[#1E1E1E] p-3 rounded-xl border border-[#C59B27]/60 flex flex-col gap-2">
                         <div class="flex justify-between items-center">
                             <span class="text-xs font-bold text-[#DFB743] flex items-center gap-1.5">
-                                <i class="fa-solid fa-magnifying-glass"></i> Catálogo Almacén CESS (833 piezas)
+                                <i class="fa-solid fa-magnifying-glass"></i> Catálogo Almacén (833 piezas)
                             </span>
                             <button onclick="toggleBuscadorPiezasExpediente(false)" class="text-slate-400 hover:text-white text-lg">&times;</button>
                         </div>
@@ -1936,7 +1936,7 @@
             <!-- Footer Modal con Opciones Administrativas -->
             <div class="p-3 bg-[#141518] border-t border-[#3A3D42] flex justify-between items-center text-xs">
                 <div class="flex items-center gap-2">
-                    <button onclick="abrirModalLiberarUnidad()" class="bg-blue-950 hover:bg-blue-900 text-blue-300 border border-blue-700/60 font-bold flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition" title="Registrar salida a viaje y retirar del tablero activo preservando todos los avances">
+                    <button onclick="abrirModalLiberarUnidad(event)" class="bg-blue-950 hover:bg-blue-900 text-blue-300 border border-blue-700/60 font-bold flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition" title="Registrar salida a viaje y retirar del tablero activo preservando todos los avances">
                         <i class="fa-solid fa-truck-fast text-cyan-400"></i> Liberar / Salida a Viaje
                     </button>
                     <button onclick="eliminarDefinitivoUnidadActiva()" class="text-slate-500 hover:text-red-400 text-[11px] p-1.5 rounded hover:bg-[#282A2E] transition" title="Eliminar registro (solo para errores de captura)">
@@ -2247,7 +2247,7 @@
                 <div class="bg-[#141518] p-3 rounded-xl border border-[#3A3D42] flex flex-col gap-2">
                     <div class="flex justify-between items-center">
                         <label class="text-[11px] font-bold text-white flex items-center gap-1.5">
-                            <i class="fa-solid fa-boxes-stacked text-[#C59B27]"></i> Refacciones y Piezas a Utilizar (Almacén CESS)
+                            <i class="fa-solid fa-boxes-stacked text-[#C59B27]"></i> Refacciones y Piezas a Utilizar (Almacén)
                         </label>
                         <span id="nueva-cant-piezas-badge" class="text-[10px] bg-[#282A2E] text-slate-400 px-2 py-0.5 rounded-full font-mono">0 seleccionadas</span>
                     </div>
@@ -2436,7 +2436,7 @@
                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Sincronizado
                             </span>
                         </h3>
-                        <p class="text-[11px] text-slate-400">Detalle de refacciones y costos surtidos por Almacén CESS</p>
+                        <p class="text-[11px] text-slate-400">Detalle de refacciones y costos surtidos por Almacén</p>
                     </div>
                 </div>
                 <button onclick="cerrarModalDetalleFolio()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
@@ -2683,7 +2683,7 @@
                         <i class="fa-solid fa-barcode"></i>
                     </div>
                     <div>
-                        <h3 class="text-sm font-bold text-white">Vincular / Generar Folio de Almacén CESS</h3>
+                        <h3 class="text-sm font-bold text-white">Vincular / Generar Folio de Almacén</h3>
                         <p class="text-[11px] text-slate-400">Unidad <span id="vincular-modal-unidad-num" class="text-indigo-400 font-bold font-mono text-xs">--</span></p>
                     </div>
                 </div>
@@ -2767,7 +2767,7 @@
                 <div>
                     <label class="block font-bold text-slate-300 mb-1">Refacciones Solicitadas al Almacén *</label>
                     <textarea id="nuevo-folio-refacciones" rows="2" placeholder="Ej: 2 Balatas traseras, 1 Filtro de combustible Donaldson, Grasa..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-indigo-500 focus:outline-none"></textarea>
-                    <p class="text-[10px] text-slate-400 mt-0.5">El almacenista verá esta lista en Almacén CESS para surtir las piezas de inmediato.</p>
+                    <p class="text-[10px] text-slate-400 mt-0.5">El almacenista verá esta lista en Almacén para surtir las piezas de inmediato.</p>
                 </div>
 
                 <div class="pt-2 border-t border-[#3A3D42] flex justify-end gap-2 mt-1">
@@ -3098,6 +3098,157 @@
         </div>
     </div>
 
+    
+<!-- ======================================================== -->
+    <!-- MODAL ESPECIAL: LIBERAR UNIDAD / SALIDA A VIAJE -->
+    <!-- ======================================================== -->
+    <div id="modal-liberar-unidad" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
+        <div class="bg-[#1E1E1E] border border-cyan-600/70 rounded-2xl w-full max-w-md p-5 flex flex-col shadow-2xl animate-in fade-in duration-150">
+            <div class="flex justify-between items-center mb-3 pb-2 border-b border-[#3A3D42]">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-cyan-950 border border-cyan-600 text-cyan-400 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-truck-fast"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white">Liberar Unidad / Salida a Viaje</h3>
+                        <p class="text-[11px] text-slate-400" id="liberar-unidad-id-txt">Unidad --</p>
+                    </div>
+                </div>
+                <button onclick="cerrarModalLiberarUnidad()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
+            </div>
+
+            <form onsubmit="confirmarLiberarUnidad(event)" class="flex flex-col gap-3 text-xs">
+                <div>
+                    <label class="block font-bold text-slate-400 mb-1">Motivo de Salida del Taller *</label>
+                    <select id="liberar-unidad-motivo" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-cyan-500 focus:outline-none">
+                        <option value="Asignada a viaje / Salió a ruta">Asignada a viaje / Salió a ruta</option>
+                        <option value="Trabajo concluido / Lista en patio">Trabajo concluido / Lista en patio</option>
+                        <option value="Servicio completado / Liberada">Servicio completado / Liberada</option>
+                        <option value="Traslado a otra base / patio">Traslado a otra base / patio</option>
+                        <option value="Liberada con observaciones menores">Liberada con observaciones menores</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-400 mb-1">Odómetro de Salida (Km actual opcional)</label>
+                    <input type="number" id="liberar-unidad-km" placeholder="Ej: 1485000" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white font-mono text-xs focus:border-cyan-500 focus:outline-none">
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-400 mb-1">Notas de Cierre y Entrega</label>
+                    <textarea id="liberar-unidad-notas" rows="2" placeholder="Detalle de pruebas finales, entrega al operador o pendientes para siguiente viaje..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-cyan-500 focus:outline-none"></textarea>
+                </div>
+
+                <div class="bg-cyan-950/40 border border-cyan-800/60 p-2.5 rounded-xl text-[11px] text-cyan-200">
+                    <p class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-shield-check text-cyan-400"></i> Conservación Total de Información</p>
+                    <p class="text-slate-300 mt-1">La unidad se retira del tablero diario pero <b>todo su historial clínico, avances técnicos, folios y costos quedan 100% guardados</b> y consultables en la pestaña de Historial por Unidad.</p>
+                </div>
+
+                <div class="pt-2 border-t border-[#3A3D42] flex justify-end gap-2 mt-1">
+                    <button type="button" onclick="cerrarModalLiberarUnidad()" class="px-3 py-1.5 rounded-xl border border-[#3A3D42] text-slate-300 hover:bg-[#282A2E] font-bold">Cancelar</button>
+                    <button type="submit" class="bg-cyan-600 hover:bg-cyan-500 text-black font-black px-4 py-1.5 rounded-xl flex items-center gap-1.5 shadow">
+                        <i class="fa-solid fa-truck-fast"></i> Confirmar Salida y Archivar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- MODAL: CONSULTA DE UNIDADES LIBERADAS / SALIDAS A VIAJE -->
+    <!-- ======================================================== -->
+    <div id="modal-unidades-liberadas" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
+        <div class="bg-[#1E1E1E] border border-emerald-600/70 rounded-2xl w-full max-w-2xl p-5 flex flex-col shadow-2xl animate-in fade-in duration-150 max-h-[90vh]">
+            <div class="flex justify-between items-center mb-3 pb-2 border-b border-[#3A3D42]">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-950 border border-emerald-600 text-emerald-400 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-flag-checkered"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white">Unidades Liberadas de Taller y Salidas a Viaje</h3>
+                        <p class="text-[11px] text-slate-400">Unidades que concluyeron reparaciones y salieron a ruta</p>
+                    </div>
+                </div>
+                <button onclick="cerrarModalUnidadesLiberadas()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
+            </div>
+
+            <div class="overflow-y-auto custom-scroll flex-1 pr-1 flex flex-col gap-2.5" id="contenedor-unidades-liberadas-lista">
+                <div class="p-8 text-center text-slate-500 font-mono text-xs"><i class="fa-solid fa-spinner fa-spin mr-2 text-[#C59B27]"></i> Cargando unidades liberadas...</div>
+            </div>
+
+            <div class="pt-3 border-t border-[#3A3D42] flex justify-between items-center text-xs">
+                <span class="text-slate-500 text-[11px]" id="txt-contador-liberadas-modal">0 unidades archivadas</span>
+                <button type="button" onclick="cerrarModalUnidadesLiberadas()" class="px-4 py-1.5 rounded-xl bg-[#282A2E] hover:bg-[#3A3D42] text-white font-bold">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- MODAL: REGISTRAR / ACTUALIZAR SERVICIO PREVENTIVO -->
+    <!-- ======================================================== -->
+    <div id="modal-actualizar-servicio-preventivo" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
+        <div class="bg-[#1E1E1E] border border-[#C59B27]/70 rounded-2xl w-full max-w-md p-5 flex flex-col shadow-2xl animate-in fade-in duration-150">
+            <div class="flex justify-between items-center mb-3 pb-2 border-b border-[#3A3D42]">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-[#2D2612] border border-[#C59B27] text-[#DFB743] flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-wrench"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white">Registrar Servicio Preventivo Realizado</h3>
+                        <p class="text-[11px] text-slate-400">Actualiza el semáforo y reinicia los kilómetros restantes</p>
+                    </div>
+                </div>
+                <button onclick="cerrarModalActualizarServicio()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
+            </div>
+
+            <form onsubmit="guardarServicioPreventivoForm(event)" class="flex flex-col gap-3 text-xs">
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Número de Unidad *</label>
+                        <input type="text" id="prev-form-unidad" required placeholder="Ej: 8" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white font-bold text-sm focus:border-[#C59B27] focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Fecha de Realización *</label>
+                        <input type="text" id="prev-form-fecha" required class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs font-mono focus:border-[#C59B27] focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Kilometraje al Servicio *</label>
+                        <input type="number" id="prev-form-km" required placeholder="Ej: 278234" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white font-mono text-xs focus:border-[#C59B27] focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Tipo de Tracto</label>
+                        <select id="prev-form-tracto" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none">
+                            <option value="SITRAK">SITRAK / Sinotruk (30,000 km)</option>
+                            <option value="Cascadia">Cascadia / Freightliner (35,000 km)</option>
+                            <option value="T680">Kenworth T680 (35,000 km)</option>
+                            <option value="LT">International LT (35,000 km)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-400 mb-1">Costo Total ($ MXN opcional)</label>
+                    <input type="number" id="prev-form-costo" placeholder="Ej: 6500" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white font-mono text-xs focus:border-[#C59B27] focus:outline-none">
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-400 mb-1">Observaciones / Factura / Proveedor</label>
+                    <textarea id="prev-form-observaciones" rows="2" placeholder="Cambio de aceite 15W40, filtros de aire y combustible, revisión de frenos..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none"></textarea>
+                </div>
+
+                <div class="pt-2 border-t border-[#3A3D42] flex justify-end gap-2 mt-1">
+                    <button type="button" onclick="cerrarModalActualizarServicio()" class="px-3 py-1.5 rounded-xl border border-[#3A3D42] text-slate-300 hover:bg-[#282A2E] font-bold">Cancelar</button>
+                    <button type="submit" class="btn-cess-gold text-black font-black px-4 py-1.5 rounded-xl flex items-center gap-1.5 shadow">
+                        <i class="fa-solid fa-save"></i> Guardar y Pasar a Vigente
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- TOAST DE NOTIFICACIÓN FLOTANTE -->
     <div id="toast-notificacion" class="fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-[#282A2E] border border-[#C59B27]/60 text-white px-5 py-2.5 rounded-full shadow-2xl hidden z-50 text-xs font-bold transition flex items-center gap-2 pointer-events-none">
         <i class="fa-solid fa-circle-check text-emerald-400"></i>
@@ -3242,7 +3393,7 @@
                             if (modalDet && !modalDet.classList.contains('hidden') && unidadVincularActiva) {
                                 abrirDetalleFolioAlmacen(null, unidadVincularActiva.id);
                             }
-                            mostrarToast(`📦 Folio #${msg.folio || ''} actualizado desde Almacén CESS`);
+                            mostrarToast(`📦 Folio #${msg.folio || ''} actualizado desde Almacén`);
                         } else if (msg.type === 'units_updated') {
                             if (Array.isArray(msg.units)) {
                                 baseDatos = msg.units;
@@ -3316,13 +3467,106 @@
             setInterval(checarActualizacionesSistema, 15000);
         }
 
+        
+        // =========================================================================
+        // MOTOR DE FUSIÓN INTELIGENTE: PROTECCIÓN TOTAL DE AVANCES, FOLIOS Y DATOS
+        // =========================================================================
+        function fusionarUnidadesInteligente(serverUnits) {
+            if (!Array.isArray(serverUnits) || serverUnits.length === 0) {
+                return baseDatos;
+            }
+
+            const mapa = new Map();
+
+            // 1. Iniciar con las unidades del servidor
+            serverUnits.forEach(su => {
+                if (!su || !su.id) return;
+                mapa.set(String(su.id).trim(), { ...su });
+            });
+
+            // 2. Fusión protectora con unidades locales
+            if (Array.isArray(baseDatos)) {
+                baseDatos.forEach(lu => {
+                    if (!lu || !lu.id) return;
+                    const key = String(lu.id).trim();
+
+                    if (!mapa.has(key)) {
+                        // Unidad agregada localmente que aún no está en el servidor: PRESERVARLA al 100%
+                        mapa.set(key, lu);
+                    } else {
+                        // Unidad existe en ambos: FUSIONAR sin perder avances, folios ni datos
+                        const su = mapa.get(key);
+
+                        // A) AVANCES TÉCNICOS: Combinar sin duplicados
+                        const avancesMap = new Map();
+                        const todosAvances = [...(su.avances || []), ...(lu.avances || [])];
+                        todosAvances.forEach(a => {
+                            if (!a) return;
+                            const aKey = a.id || `${a.fecha}_${a.hora}_${a.texto}`;
+                            if (!avancesMap.has(aKey)) {
+                                avancesMap.set(aKey, a);
+                            }
+                        });
+                        su.avances = Array.from(avancesMap.values()).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+                        if (su.avances.length > 0) {
+                            su.ultimo_avance = su.avances[0];
+                        }
+
+                        // B) FOLIO DE ALMACÉN / REPORTE
+                        if (!su.folio_almacen && lu.folio_almacen) {
+                            su.folio_almacen = lu.folio_almacen;
+                        }
+
+                        // C) REFACCIONES / PIEZAS
+                        const piezasMap = new Map();
+                        const todasPiezas = [...(su.piezas || []), ...(lu.piezas || [])];
+                        todasPiezas.forEach(p => {
+                            if (!p) return;
+                            const pKey = p.id || `${p.id_pieza}_${p.folio_almacen}_${p.descripcion}`;
+                            if (!piezasMap.has(pKey)) {
+                                piezasMap.set(pKey, p);
+                            }
+                        });
+                        su.piezas = Array.from(piezasMap.values());
+
+                        // D) COSTOS
+                        su.costo_refacciones = Math.max(Number(su.costo_refacciones) || 0, Number(lu.costo_refacciones) || 0);
+                        su.costo_mano_obra = Math.max(Number(su.costo_mano_obra) || 0, Number(lu.costo_mano_obra) || 0);
+                        su.costo = Math.max(Number(su.costo) || 0, Number(lu.costo) || 0, (Number(su.costo_mano_obra) || 0) + (Number(su.costo_refacciones) || 0));
+
+                        // E) HISTORIAL DE EVENTOS
+                        const histMap = new Map();
+                        const todoHist = [...(su.historial || []), ...(lu.historial || [])];
+                        todoHist.forEach(h => {
+                            if (!h) return;
+                            const hKey = `${h.fecha}_${h.evento}`;
+                            if (!histMap.has(hKey)) {
+                                histMap.set(hKey, h);
+                            }
+                        });
+                        su.historial = Array.from(histMap.values());
+
+                        // F) DETALLES DE FALLA Y NOTAS
+                        if ((!su.reporte || su.reporte === 'Sin novedades') && lu.reporte) su.reporte = lu.reporte;
+                        if (!su.defecto && lu.defecto) su.defecto = lu.defecto;
+                        if (!su.notas && lu.notas) su.notas = lu.notas;
+
+                        mapa.set(key, su);
+                    }
+                });
+            }
+
+            baseDatos = Array.from(mapa.values());
+            return baseDatos;
+        }
+
         async function forzarSincronizacionSilenciosa() {
             try {
                 const res = await fetch('/api/unidades?t=' + Date.now(), { cache: 'no-store' });
                 if (res.ok) {
                     const json = await res.json();
                     if (json.data && Array.isArray(json.data)) {
-                        baseDatos = json.data;
+                        fusionarUnidadesInteligente(json.data);
                         sanitizarBaseDatos();
                         guardarDatosLocales(false);
                         if (vistaActual === 'tablero') renderizarTablero();
@@ -3344,19 +3588,19 @@
                 if (res.ok) {
                     const json = await res.json();
                     if (json.data && Array.isArray(json.data)) {
-                        baseDatos = json.data;
+                        fusionarUnidadesInteligente(json.data);
                         sanitizarBaseDatos();
                         guardarDatosLocales(false);
                         renderizarTablero();
                         actualizarSelectoresUnidades();
                         actualizarTimestampSincronizacion();
                         actualizarBadgeRealtime(true);
-                        mostrarToast(`✅ Tablero sincronizado: ${baseDatos.length} unidades al momento`);
+                        mostrarToast(`✅ Tablero sincronizado: ${baseDatos.length} unidades (avances e historial protegidos)`);
                     }
                 }
                 await cargarJornadaServidor();
             } catch (e) {
-                mostrarToast('Aviso: Sin conexión con el servidor (Modo local)');
+                mostrarToast('Aviso: Sin conexión con el servidor (Modo local protegido)');
                 actualizarBadgeRealtime(false);
             } finally {
                 setTimeout(() => {
@@ -3382,7 +3626,7 @@
                             hist: (u.historial || []).length
                         })));
                         if (ultimaFirmaDatos !== firmaNueva) {
-                            baseDatos = json.data;
+                            fusionarUnidadesInteligente(json.data);
                             sanitizarBaseDatos();
                             guardarDatosLocales(false);
                             if (vistaActual === 'tablero') {
@@ -3528,26 +3772,9 @@
                 if (res.ok) {
                     const json = await res.json();
                     if (json.data && Array.isArray(json.data)) {
-                        const serverUnits = json.data;
-                        const mapa = new Map();
-                        // 1. Cargar unidades del servidor
-                        serverUnits.forEach(u => { if (u && u.id) mapa.set(String(u.id).trim(), u); });
-                        // 2. Fusión protectora: Si el dispositivo tiene unidades locales que no están en el servidor, PRESERVARLAS
-                        let huboNuevasLocales = false;
-                        if (Array.isArray(baseDatos)) {
-                            baseDatos.forEach(u => {
-                                if (u && u.id) {
-                                    const key = String(u.id).trim();
-                                    if (!mapa.has(key)) {
-                                        mapa.set(key, u);
-                                        huboNuevasLocales = true;
-                                    }
-                                }
-                            });
-                        }
-                        baseDatos = Array.from(mapa.values());
+                        fusionarUnidadesInteligente(json.data);
                         sanitizarBaseDatos();
-                        guardarDatosLocales(huboNuevasLocales);
+                        guardarDatosLocales(false);
                         actualizarTimestampSincronizacion();
                     }
                 }
@@ -3918,6 +4145,16 @@
             // =========================================================================
             let stripFolioAlmacen = '';
             if (unidad.folio_almacen) {
+                let costoRef = Number(unidad.costo_refacciones !== undefined ? unidad.costo_refacciones : 0);
+                if (!costoRef && Array.isArray(unidad.piezas) && unidad.piezas.length > 0) {
+                    costoRef = unidad.piezas.reduce((acc, p) => acc + (Number(p.costo_total) || (Number(p.cantidad || 1) * Number(p.precio_unitario || 0))), 0);
+                }
+                const costoTotalCard = Math.max(Number(unidad.costo) || 0, (Number(unidad.costo_mano_obra) || 0) + costoRef);
+                const cantPiezas = Array.isArray(unidad.piezas) ? unidad.piezas.length : 0;
+                const txtCostoCard = costoTotalCard > 0 
+                    ? `${costoTotalCard.toLocaleString()} MXN`
+                    : (cantPiezas > 0 ? '$0 (Por cotizar)' : 'Por surtir');
+
                 stripFolioAlmacen = `
                     <div data-no-expediente="true" onclick="abrirDetalleFolioAlmacen(event, '${unidad.id}')" class="bg-gradient-to-r from-indigo-950/90 to-purple-950/70 border border-indigo-500/80 rounded-xl p-2.5 flex items-center justify-between cursor-pointer hover:border-indigo-400 transition shadow-sm group" title="Clic para ver detalle de piezas y costos de Almacén">
                         <div class="flex items-center gap-2">
@@ -3925,13 +4162,13 @@
                                 <i class="fa-solid fa-receipt"></i>
                             </div>
                             <div>
-                                <span class="text-[9px] text-indigo-300 font-black uppercase tracking-wider block">ALMACÉN CESS</span>
+                                <span class="text-[9px] text-indigo-300 font-black uppercase tracking-wider block">ALMACÉN</span>
                                 <strong class="text-white font-mono text-xs">FOLIO #${unidad.folio_almacen}</strong>
                             </div>
                         </div>
                         <div class="text-right">
-                            <span class="text-[10px] text-indigo-200 block">${(unidad.piezas || []).length} refacciones</span>
-                            <span class="text-xs font-black text-[#DFB743] font-mono">$${(Number(unidad.costo_refacciones) || Number(unidad.costo) || 0).toLocaleString()} MXN</span>
+                            <span class="text-[10px] text-indigo-200 block font-medium">${cantPiezas} ${cantPiezas === 1 ? 'refacción' : 'refacciones'}</span>
+                            <span class="text-xs font-black ${costoTotalCard > 0 ? 'text-[#DFB743]' : 'text-amber-400'} font-mono">${txtCostoCard}</span>
                         </div>
                     </div>
                 `;
@@ -3981,7 +4218,7 @@
                         <button onclick="abrirModalAvanceRapido(event, '${unidad.id}')" class="bg-[#C59B27]/10 hover:bg-[#C59B27] text-[#DFB743] hover:text-black border border-[#C59B27]/50 px-2 py-0.5 rounded-lg text-[11px] font-bold transition flex items-center gap-1 shadow-sm" title="Registrar nuevo avance o estatus">
                             <i class="fa-solid fa-plus text-[9px]"></i> <span>Avance</span>
                         </button>
-                        <button onclick="abrirModalLiberarUnidad('${unidad.id}')" class="text-slate-400 hover:text-cyan-300 p-1 rounded-lg hover:bg-cyan-950/40 text-xs transition" title="Registrar salida a viaje / Liberar unidad del tablero">
+                        <button onclick="abrirModalLiberarUnidad(event, '${unidad.id}')" class="text-slate-400 hover:text-cyan-300 p-1 rounded-lg hover:bg-cyan-950/40 text-xs transition" title="Registrar salida a viaje / Liberar unidad del tablero">
                             <i class="fa-solid fa-truck-fast"></i>
                         </button>
                         <button onclick="abrirEdicionRapida(event, '${unidad.id}')" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-[#282A2E] text-xs transition" title="Edición rápida">
@@ -6174,7 +6411,7 @@
                         <i class="fa-solid fa-boxes-stacked text-[#C59B27]/50 text-xl"></i>
                         <p class="text-xs text-slate-400">No hay refacciones asignadas a esta orden todavía.</p>
                         <button onclick="toggleBuscadorPiezasExpediente(true)" class="text-[#C59B27] hover:underline text-xs font-bold mt-1">
-                            + Agregar refacción de Almacén CESS
+                            + Agregar refacción de Almacén
                         </button>
                     </div>
                 `;
@@ -6476,7 +6713,7 @@
             if (!resBox) return;
 
             resBox.classList.remove('hidden');
-            resBox.innerHTML = '<p class="text-[11px] text-slate-500 italic p-1">Buscando en Almacén CESS...</p>';
+            resBox.innerHTML = '<p class="text-[11px] text-slate-500 italic p-1">Buscando en Almacén...</p>';
 
             try {
                 const res = await fetch(`/api/almacen/inventario?q=${encodeURIComponent(q)}`);
@@ -6699,159 +6936,7 @@
 
         function verFotoCompleta(url) {
             const win = window.open();
-            win.document.write(`<body style="margin:0;background:#000;display:flex;align-items:center;justify-content:center;height:100vh;"><img src="${url}" style="max-width:100%;max-height:100%;object-fit:contain;">
-
-    <!-- ======================================================== -->
-    <!-- MODAL ESPECIAL: LIBERAR UNIDAD / SALIDA A VIAJE -->
-    <!-- ======================================================== -->
-    <div id="modal-liberar-unidad" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
-        <div class="bg-[#1E1E1E] border border-cyan-600/70 rounded-2xl w-full max-w-md p-5 flex flex-col shadow-2xl animate-in fade-in duration-150">
-            <div class="flex justify-between items-center mb-3 pb-2 border-b border-[#3A3D42]">
-                <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-lg bg-cyan-950 border border-cyan-600 text-cyan-400 flex items-center justify-center font-bold">
-                        <i class="fa-solid fa-truck-fast"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-sm font-bold text-white">Liberar Unidad / Salida a Viaje</h3>
-                        <p class="text-[11px] text-slate-400" id="liberar-unidad-id-txt">Unidad --</p>
-                    </div>
-                </div>
-                <button onclick="cerrarModalLiberarUnidad()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
-            </div>
-
-            <form onsubmit="confirmarLiberarUnidad(event)" class="flex flex-col gap-3 text-xs">
-                <div>
-                    <label class="block font-bold text-slate-400 mb-1">Motivo de Salida del Taller *</label>
-                    <select id="liberar-unidad-motivo" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-cyan-500 focus:outline-none">
-                        <option value="Asignada a viaje / Salió a ruta">Asignada a viaje / Salió a ruta</option>
-                        <option value="Trabajo concluido / Lista en patio">Trabajo concluido / Lista en patio</option>
-                        <option value="Servicio completado / Liberada">Servicio completado / Liberada</option>
-                        <option value="Traslado a otra base / patio">Traslado a otra base / patio</option>
-                        <option value="Liberada con observaciones menores">Liberada con observaciones menores</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block font-bold text-slate-400 mb-1">Odómetro de Salida (Km actual opcional)</label>
-                    <input type="number" id="liberar-unidad-km" placeholder="Ej: 1485000" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white font-mono text-xs focus:border-cyan-500 focus:outline-none">
-                </div>
-
-                <div>
-                    <label class="block font-bold text-slate-400 mb-1">Notas de Cierre y Entrega</label>
-                    <textarea id="liberar-unidad-notas" rows="2" placeholder="Detalle de pruebas finales, entrega al operador o pendientes para siguiente viaje..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-cyan-500 focus:outline-none"></textarea>
-                </div>
-
-                <div class="bg-cyan-950/40 border border-cyan-800/60 p-2.5 rounded-xl text-[11px] text-cyan-200">
-                    <p class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-shield-check text-cyan-400"></i> Conservación Total de Información</p>
-                    <p class="text-slate-300 mt-1">La unidad se retira del tablero diario pero <b>todo su historial clínico, avances técnicos, folios y costos quedan 100% guardados</b> y consultables en la pestaña de Historial por Unidad.</p>
-                </div>
-
-                <div class="pt-2 border-t border-[#3A3D42] flex justify-end gap-2 mt-1">
-                    <button type="button" onclick="cerrarModalLiberarUnidad()" class="px-3 py-1.5 rounded-xl border border-[#3A3D42] text-slate-300 hover:bg-[#282A2E] font-bold">Cancelar</button>
-                    <button type="submit" class="bg-cyan-600 hover:bg-cyan-500 text-black font-black px-4 py-1.5 rounded-xl flex items-center gap-1.5 shadow">
-                        <i class="fa-solid fa-truck-fast"></i> Confirmar Salida y Archivar
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- ======================================================== -->
-    <!-- MODAL: CONSULTA DE UNIDADES LIBERADAS / SALIDAS A VIAJE -->
-    <!-- ======================================================== -->
-    <div id="modal-unidades-liberadas" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
-        <div class="bg-[#1E1E1E] border border-emerald-600/70 rounded-2xl w-full max-w-2xl p-5 flex flex-col shadow-2xl animate-in fade-in duration-150 max-h-[90vh]">
-            <div class="flex justify-between items-center mb-3 pb-2 border-b border-[#3A3D42]">
-                <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-lg bg-emerald-950 border border-emerald-600 text-emerald-400 flex items-center justify-center font-bold">
-                        <i class="fa-solid fa-flag-checkered"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-sm font-bold text-white">Unidades Liberadas de Taller y Salidas a Viaje</h3>
-                        <p class="text-[11px] text-slate-400">Unidades que concluyeron reparaciones y salieron a ruta</p>
-                    </div>
-                </div>
-                <button onclick="cerrarModalUnidadesLiberadas()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
-            </div>
-
-            <div class="overflow-y-auto custom-scroll flex-1 pr-1 flex flex-col gap-2.5" id="contenedor-unidades-liberadas-lista">
-                <div class="p-8 text-center text-slate-500 font-mono text-xs"><i class="fa-solid fa-spinner fa-spin mr-2 text-[#C59B27]"></i> Cargando unidades liberadas...</div>
-            </div>
-
-            <div class="pt-3 border-t border-[#3A3D42] flex justify-between items-center text-xs">
-                <span class="text-slate-500 text-[11px]" id="txt-contador-liberadas-modal">0 unidades archivadas</span>
-                <button type="button" onclick="cerrarModalUnidadesLiberadas()" class="px-4 py-1.5 rounded-xl bg-[#282A2E] hover:bg-[#3A3D42] text-white font-bold">Cerrar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ======================================================== -->
-    <!-- MODAL: REGISTRAR / ACTUALIZAR SERVICIO PREVENTIVO -->
-    <!-- ======================================================== -->
-    <div id="modal-actualizar-servicio-preventivo" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
-        <div class="bg-[#1E1E1E] border border-[#C59B27]/70 rounded-2xl w-full max-w-md p-5 flex flex-col shadow-2xl animate-in fade-in duration-150">
-            <div class="flex justify-between items-center mb-3 pb-2 border-b border-[#3A3D42]">
-                <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-lg bg-[#2D2612] border border-[#C59B27] text-[#DFB743] flex items-center justify-center font-bold">
-                        <i class="fa-solid fa-wrench"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-sm font-bold text-white">Registrar Servicio Preventivo Realizado</h3>
-                        <p class="text-[11px] text-slate-400">Actualiza el semáforo y reinicia los kilómetros restantes</p>
-                    </div>
-                </div>
-                <button onclick="cerrarModalActualizarServicio()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
-            </div>
-
-            <form onsubmit="guardarServicioPreventivoForm(event)" class="flex flex-col gap-3 text-xs">
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block font-bold text-slate-400 mb-1">Número de Unidad *</label>
-                        <input type="text" id="prev-form-unidad" required placeholder="Ej: 8" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white font-bold text-sm focus:border-[#C59B27] focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block font-bold text-slate-400 mb-1">Fecha de Realización *</label>
-                        <input type="text" id="prev-form-fecha" required class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs font-mono focus:border-[#C59B27] focus:outline-none">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block font-bold text-slate-400 mb-1">Kilometraje al Servicio *</label>
-                        <input type="number" id="prev-form-km" required placeholder="Ej: 278234" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white font-mono text-xs focus:border-[#C59B27] focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block font-bold text-slate-400 mb-1">Tipo de Tracto</label>
-                        <select id="prev-form-tracto" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none">
-                            <option value="SITRAK">SITRAK / Sinotruk (30,000 km)</option>
-                            <option value="Cascadia">Cascadia / Freightliner (35,000 km)</option>
-                            <option value="T680">Kenworth T680 (35,000 km)</option>
-                            <option value="LT">International LT (35,000 km)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block font-bold text-slate-400 mb-1">Costo Total ($ MXN opcional)</label>
-                    <input type="number" id="prev-form-costo" placeholder="Ej: 6500" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white font-mono text-xs focus:border-[#C59B27] focus:outline-none">
-                </div>
-
-                <div>
-                    <label class="block font-bold text-slate-400 mb-1">Observaciones / Factura / Proveedor</label>
-                    <textarea id="prev-form-observaciones" rows="2" placeholder="Cambio de aceite 15W40, filtros de aire y combustible, revisión de frenos..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none"></textarea>
-                </div>
-
-                <div class="pt-2 border-t border-[#3A3D42] flex justify-end gap-2 mt-1">
-                    <button type="button" onclick="cerrarModalActualizarServicio()" class="px-3 py-1.5 rounded-xl border border-[#3A3D42] text-slate-300 hover:bg-[#282A2E] font-bold">Cancelar</button>
-                    <button type="submit" class="btn-cess-gold text-black font-black px-4 py-1.5 rounded-xl flex items-center gap-1.5 shadow">
-                        <i class="fa-solid fa-save"></i> Guardar y Pasar a Vigente
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-</body>`);
+            win.document.write(`<body style="margin:0;background:#000;display:flex;align-items:center;justify-content:center;height:100vh;"><img src="${url}" style="max-width:100%;max-height:100%;object-fit:contain;"></body>`);
         }
 
         // --- DICTADO POR VOZ ---
@@ -7469,7 +7554,7 @@
                     mostrarToast(vaACompra ? `Requisición de compra ${data.folio_oc} generada para Unidad ${unidadId}` : `Refacción asignada a Unidad ${unidadId} (pendiente de autorización)`);
                 }
             } catch (e) {
-                mostrarToast('Error con Almacén CESS');
+                mostrarToast('Error con Almacén');
             }
         }
 
@@ -7772,7 +7857,7 @@
             unidadVincularActiva = u;
             document.getElementById('det-folio-num-badge').innerText = `#${u.folio_almacen}`;
             document.getElementById('det-folio-unidad').innerText = `Unidad ${u.id} (${u.sucursal || 'Patio'})`;
-            document.getElementById('det-folio-solicitante').innerText = 'Consultando Almacén CESS...';
+            document.getElementById('det-folio-solicitante').innerText = 'Consultando Almacén...';
             document.getElementById('det-folio-costo-total').innerText = '$0 MXN';
 
             const tbody = document.getElementById('det-folio-tabla-body');
@@ -7789,16 +7874,27 @@
 
                     tbody.innerHTML = (json.items || []).map(it => {
                         const safeDesc = (it.descripcion || '').replace(/'/g, "\\'");
+                        const pu = Number(it.precio_unitario || 0);
+                        const tot = Number(it.total_costo || (it.cantidad * pu) || 0);
+                        const precioHtml = pu > 0 
+                            ? `${pu.toLocaleString()} MXN`
+                            : `<span class="text-amber-400 font-bold">$0</span> <span class="bg-amber-950 text-amber-300 text-[9px] px-1 py-0.5 rounded border border-amber-700/60 ml-0.5 font-bold">Por cotizar</span>`;
+                        const totHtml = tot > 0 
+                            ? `${tot.toLocaleString()} MXN`
+                            : `<span class="text-amber-400 font-bold">$0 MXN</span>`;
+                        const btnText = pu > 0 ? '<i class="fa-solid fa-pencil text-[10px]"></i> Ajustar' : '<i class="fa-solid fa-dollar-sign text-[10px]"></i> Asignar Costo';
+                        const btnClass = pu > 0 ? 'bg-[#282A2E] hover:bg-[#3A3D42] text-slate-300 hover:text-white border border-[#3A3D42]' : 'bg-amber-500 hover:bg-amber-400 text-black font-black border border-amber-400 shadow';
+
                         return `
                             <tr class="hover:bg-[#141518]/60 transition text-xs">
                                 <td class="p-2.5 font-mono text-indigo-300 font-bold">${it.numero_parte || '--'}</td>
                                 <td class="p-2.5 text-white font-medium">${it.descripcion}</td>
                                 <td class="p-2.5 text-center font-bold text-slate-200 font-mono">${it.cantidad}</td>
-                                <td class="p-2.5 text-right font-mono text-slate-400">$${Number(it.precio_unitario||0).toLocaleString()}</td>
-                                <td class="p-2.5 text-right font-mono text-[#DFB743] font-bold">$${Number(it.total_costo||0).toLocaleString()}</td>
+                                <td class="p-2.5 text-right font-mono text-slate-300">${precioHtml}</td>
+                                <td class="p-2.5 text-right font-mono text-[#DFB743] font-bold">${totHtml}</td>
                                 <td class="p-2.5 text-center">
-                                    <button onclick="abrirModalEditarPiezaFolio('${it.id_item}', ${it.cantidad}, ${Number(it.precio_unitario||0)}, '${safeDesc}')" class="bg-amber-950/70 hover:bg-amber-900 text-amber-300 border border-amber-700/60 px-2 py-0.5 rounded text-[11px] font-bold transition flex items-center gap-1 mx-auto" title="Modificar cantidad o devolver pieza al almacén">
-                                        <i class="fa-solid fa-pencil text-[10px]"></i> Ajustar
+                                    <button onclick="abrirModalEditarPiezaFolio('${it.id_item}', ${it.cantidad}, ${pu}, '${safeDesc}')" class="${btnClass} px-2 py-0.5 rounded text-[11px] font-bold transition flex items-center gap-1 mx-auto" title="Asignar o editar precio/cantidad">
+                                        ${btnText}
                                     </button>
                                 </td>
                             </tr>
@@ -7807,7 +7903,7 @@
                 } else {
                     const piezas = Array.isArray(u.piezas) ? u.piezas : [];
                     const costo = Number(u.costo_refacciones) || Number(u.costo) || 0;
-                    document.getElementById('det-folio-solicitante').innerText = 'Almacén Central CESS';
+                    document.getElementById('det-folio-solicitante').innerText = 'Almacén Central';
                     document.getElementById('det-folio-costo-total').innerText = `$${costo.toLocaleString()} MXN`;
 
                     if (piezas.length === 0) {
@@ -9279,7 +9375,7 @@
 
             caja.classList.remove('hidden');
             caja.classList.add('flex');
-            lista.innerHTML = `<p class="text-slate-400 p-3 text-center italic"><i class="fa-solid fa-spinner fa-spin mr-1 text-indigo-400"></i> Consultando salida en Almacén CESS...</p>`;
+            lista.innerHTML = `<p class="text-slate-400 p-3 text-center italic"><i class="fa-solid fa-spinner fa-spin mr-1 text-indigo-400"></i> Consultando salida en Almacén...</p>`;
 
             try {
                 const res = await fetch(`/api/almacen/folio/${folio}?t=` + Date.now());
@@ -9535,19 +9631,27 @@
         // ========================================================
         let cacheUnidadesLiberadas = [];
 
-        function abrirModalLiberarUnidad(id) {
-            const u = id ? baseDatos.find(x => String(x.id).trim() === String(id).trim()) : unidadActiva;
+        function abrirModalLiberarUnidad(event, id) {
+            if (event && event.stopPropagation) {
+                event.stopPropagation();
+            }
+            let targetId = typeof id === 'string' ? id : (typeof event === 'string' ? event : (unidadActiva ? unidadActiva.id : null));
+            const u = targetId ? baseDatos.find(x => String(x.id).trim() === String(targetId).trim()) : unidadActiva;
             if (!u) return;
             unidadActiva = u;
 
             const txt = document.getElementById('liberar-unidad-id-txt');
             if (txt) txt.innerText = `Unidad ${u.id} (${u.sucursal || 'Patio'})`;
 
-            document.getElementById('liberar-unidad-motivo').value = 'Asignada a viaje / Salió a ruta';
-            document.getElementById('liberar-unidad-km').value = '';
-            document.getElementById('liberar-unidad-notas').value = '';
+            const motivoEl = document.getElementById('liberar-unidad-motivo');
+            if (motivoEl) motivoEl.value = 'Asignada a viaje / Salió a ruta';
+            const kmEl = document.getElementById('liberar-unidad-km');
+            if (kmEl) kmEl.value = '';
+            const notasEl = document.getElementById('liberar-unidad-notas');
+            if (notasEl) notasEl.value = '';
 
-            document.getElementById('modal-liberar-unidad').classList.remove('hidden');
+            const modal = document.getElementById('modal-liberar-unidad');
+            if (modal) modal.classList.remove('hidden');
         }
 
         function cerrarModalLiberarUnidad() {
@@ -9654,6 +9758,7 @@
                                     <span class="bg-[#1E1E1E] text-emerald-300 text-[10px] font-mono px-1.5 py-0.5 rounded border border-emerald-800">
                                         ${u.motivo_salida || 'Salida a viaje'}
                                     </span>
+                                    ${u.folio_almacen ? `<span class="bg-indigo-950 text-indigo-300 font-mono text-[10px] px-2 py-0.5 rounded border border-indigo-700 font-bold flex items-center gap-1"><i class="fa-solid fa-receipt text-[9px]"></i>Folio #${u.folio_almacen}</span>` : ''}
                                 </div>
                                 <p class="text-[11px] text-slate-400 mt-0.5 line-clamp-1">${u.reporte || u.defecto || 'Sin notas'}</p>
                                 <span class="text-[10px] text-slate-500 font-mono">Liberada el: ${u.fecha_salida || '-'} • ${avancesCount} avances técnicos</span>

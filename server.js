@@ -291,6 +291,52 @@ function saveAlmacenData(data) {
 // =========================================================================
 // SINCRONIZADOR BIDIRECCIONAL EN TIEMPO REAL: TALLER PRO <-> ALMACÉN CESS
 // =========================================================================
+// =========================================================================
+// HELPER INTELIGENTE: PRECIOS UNITARIOS Y COSTOS DE REFACCIONES DE ALMACÉN
+// =========================================================================
+function getPiezaPrecioUnitario(m, catalog) {
+    if (m && m.precio_unitario !== undefined && m.precio_unitario !== null && m.precio_unitario !== '' && !isNaN(Number(m.precio_unitario)) && Number(m.precio_unitario) > 0) {
+        return Number(m.precio_unitario);
+    }
+    if (m && m.costo_unitario !== undefined && m.costo_unitario !== null && m.costo_unitario !== '' && !isNaN(Number(m.costo_unitario)) && Number(m.costo_unitario) > 0) {
+        return Number(m.costo_unitario);
+    }
+    if (!catalog || typeof catalog !== 'object') return 0;
+
+    // 1. Búsqueda por ID exacto en catálogo
+    if (m.id_pieza && catalog[m.id_pieza]) {
+        const item = catalog[m.id_pieza];
+        const p = Number(item.precio_unitario || item.costo || item.costo_unitario || item.precio || 0);
+        if (p > 0) return p;
+    }
+
+    // 2. Búsqueda por Número de Parte limpio
+    if (m.numero_parte) {
+        const np = String(m.numero_parte).trim().toLowerCase();
+        if (np) {
+            const item = Object.values(catalog).find(c => c.numero_parte && String(c.numero_parte).trim().toLowerCase() === np);
+            if (item) {
+                const p = Number(item.precio_unitario || item.costo || item.costo_unitario || item.precio || 0);
+                if (p > 0) return p;
+            }
+        }
+    }
+
+    // 3. Búsqueda por Descripción exacta
+    if (m.descripcion) {
+        const desc = String(m.descripcion).trim().toLowerCase();
+        if (desc) {
+            const item = Object.values(catalog).find(c => c.descripcion && String(c.descripcion).trim().toLowerCase() === desc);
+            if (item) {
+                const p = Number(item.precio_unitario || item.costo || item.costo_unitario || item.precio || 0);
+                if (p > 0) return p;
+            }
+        }
+    }
+
+    return 0;
+}
+
 function sincronizarFoliosConAlmacen(origen = 'Watcher Almacén') {
     const almacenData = getAlmacenData();
     const movimientos = almacenData.movimientos || [];
@@ -309,8 +355,8 @@ function sincronizarFoliosConAlmacen(origen = 'Watcher Almacén') {
 
         let nuevoCostoRefacciones = 0;
         const piezasActualizadas = movsFolio.map((m, idx) => {
-            const itemCat = catalog[m.id_pieza] || {};
-            const pu = Number(m.precio_unitario !== undefined ? m.precio_unitario : (itemCat.precio_unitario || 0));
+            const itemCat = catalog[m.id_pieza] || Object.values(catalog).find(c => c.numero_parte && c.numero_parte === m.numero_parte) || {};
+            const pu = getPiezaPrecioUnitario(m, catalog);
             const cant = Number(m.cantidad) || 1;
             const total = pu * cant;
             nuevoCostoRefacciones += total;
@@ -325,7 +371,7 @@ function sincronizarFoliosConAlmacen(origen = 'Watcher Almacén') {
                 precio_unitario: pu,
                 costo_total: total,
                 folio_almacen: folioBuscado,
-                solicitante: m.solicitante || 'Almacén CESS',
+                solicitante: m.solicitante || 'Almacén',
                 estado: 'RECIBIDA_TALLER',
                 fecha_recepcion: m.fecha || new Date().toISOString().slice(0, 10),
                 hora_recepcion: m.hora || ''
@@ -737,6 +783,7 @@ app.post('/api/jornada/movimiento', (req, res) => {
 // 3. Obtener todas las unidades
 app.get('/api/unidades', (req, res) => {
     getJornadaActual(); // valida medianoche si aplica
+    try { sincronizarFoliosConAlmacen('Consulta API /api/unidades'); } catch(e) {}
     const unidades = getUnidades();
     res.json({ success: true, count: unidades.length, data: unidades });
 });
@@ -1152,7 +1199,7 @@ app.post('/api/sincronizar-excel', (req, res) => {
             const reporte = defecto && notas ? (defecto + ' • ' + notas) : (defecto || notas || 'Sin novedades');
 
             const previa = mapExistentes.get(id);
-            const historial = previa && previa.historial ? previa.historial : [{
+            const historial = (previa && Array.isArray(previa.historial) && previa.historial.length > 0) ? previa.historial : [{
                 fecha: new Date().toLocaleString('es-MX'),
                 evento: 'Sincronización Excel: ' + reporte,
                 tipo: 'sistema',
@@ -1162,17 +1209,30 @@ app.post('/api/sincronizar-excel', (req, res) => {
 
             return {
                 id,
-                sucursal,
+                sucursal: (previa && previa.sucursal) ? previa.sucursal : sucursal,
                 estado: (previa && previa.estadoModificadoManualmente) ? previa.estado : estado,
-                defecto,
-                notas,
-                reporte,
-                categoriaFalla,
-                costo: costo > 0 ? costo : (previa ? previa.costo : 0),
-                fechaRefaccion: fechaRefaccion || (previa ? previa.fechaRefaccion : ''),
-                piezas: (previa && previa.piezas && previa.piezas.length > 0) ? previa.piezas : [],
-                historial
+                defecto: (previa && previa.defecto) ? previa.defecto : defecto,
+                notas: (previa && previa.notas) ? previa.notas : notas,
+                reporte: (previa && previa.reporte) ? previa.reporte : reporte,
+                categoriaFalla: (previa && previa.categoriaFalla) ? previa.categoriaFalla : categoriaFalla,
+                costo: (previa && Number(previa.costo) > 0) ? Number(previa.costo) : (costo > 0 ? costo : 0),
+                costo_refacciones: (previa && previa.costo_refacciones !== undefined) ? previa.costo_refacciones : 0,
+                costo_mano_obra: (previa && previa.costo_mano_obra !== undefined) ? previa.costo_mano_obra : 0,
+                folio_almacen: previa ? previa.folio_almacen : undefined,
+                fechaRefaccion: (previa && previa.fechaRefaccion) ? previa.fechaRefaccion : (fechaRefaccion || ''),
+                piezas: (previa && Array.isArray(previa.piezas)) ? previa.piezas : [],
+                avances: (previa && Array.isArray(previa.avances)) ? previa.avances : [],
+                ultimo_avance: previa ? previa.ultimo_avance : undefined,
+                historial,
+                estadoModificadoManualmente: previa ? previa.estadoModificadoManualmente : false
             };
+        });
+
+        // PRESERVAR UNIDADES TALLER: Si el taller agregó unidades que no están en el Excel, NUNCA borrarlas
+        existentes.forEach(u => {
+            if (u && u.id && !actualizadas.some(a => String(a.id).trim() === String(u.id).trim())) {
+                actualizadas.push(u);
+            }
         });
 
         saveUnidades(actualizadas);
@@ -2828,8 +2888,8 @@ app.get('/api/almacen/folio/:folio', (req, res) => {
     const catalog = almacenData.catalog || {};
     let costoTotal = 0;
     const items = movimientos.map(m => {
-        const itemCat = catalog[m.id_pieza] || {};
-        const pu = Number(m.precio_unitario || itemCat.precio_unitario || 0);
+        const itemCat = catalog[m.id_pieza] || Object.values(catalog).find(c => c.numero_parte && c.numero_parte === m.numero_parte) || {};
+        const pu = getPiezaPrecioUnitario(m, catalog);
         const cant = Number(m.cantidad) || 1;
         const total = pu * cant;
         costoTotal += total;
@@ -2872,8 +2932,8 @@ app.post('/api/unidad/:id/vincular-folio', (req, res) => {
     const catalog = almacenData.catalog || {};
     let costoRefacciones = 0;
     const piezasSurtidas = movimientos.map((m, idx) => {
-        const itemCat = catalog[m.id_pieza] || {};
-        const pu = Number(m.precio_unitario || itemCat.precio_unitario || 0);
+        const itemCat = catalog[m.id_pieza] || Object.values(catalog).find(c => c.numero_parte && c.numero_parte === m.numero_parte) || {};
+        const pu = getPiezaPrecioUnitario(m, catalog);
         const cant = Number(m.cantidad) || 1;
         const total = pu * cant;
         costoRefacciones += total;
@@ -3148,7 +3208,11 @@ app.post('/api/almacen/folio/:folio/modificar-pieza', (req, res) => {
         if (item) item.stock_actual = (Number(item.stock_actual) || 0) - dif;
         mov.cantidad = cantNueva;
         if (nuevo_precio_unitario !== undefined) {
-            mov.precio_unitario = Number(nuevo_precio_unitario);
+            const nuevoP = Number(nuevo_precio_unitario);
+            mov.precio_unitario = nuevoP;
+            if (item && (!item.precio_unitario || Number(item.precio_unitario) === 0)) {
+                item.precio_unitario = nuevoP;
+            }
         }
     }
 
@@ -3288,23 +3352,32 @@ app.get('/api/almacen/folio/:folio/detalle', (req, res) => {
     const folio = String(req.params.folio).trim();
     const data = getAlmacenData();
     const movimientos = data.movimientos || data.salidas || [];
+    const catalog = data.catalog || {};
 
-    const matches = movimientos.filter(m => String(m.folio).trim() === folio);
+    const matches = movimientos.filter(m => String(m.folio).trim() === folio && (m.tipo === 'S' || !m.tipo));
     if (matches.length === 0) {
-        return res.status(404).json({ success: false, error: 'Folio no encontrado en Almacén CESS' });
+        return res.status(404).json({ success: false, error: 'Folio no encontrado en Almacén' });
     }
 
-    const items = matches.map(m => ({
-        id_item: m.id || m.numero_parte,
-        numero_parte: m.numero_parte || '--',
-        descripcion: m.descripcion || m.concepto || 'Refacción',
-        cantidad: Number(m.cantidad) || 1,
-        precio_unitario: Number(m.precio_unitario || m.costo_unitario) || 0,
-        total_costo: (Number(m.cantidad) || 1) * (Number(m.precio_unitario || m.costo_unitario) || 0),
-        fecha: m.fecha || m.fecha_salida || '--',
-        solicitante: m.solicitante || m.entregado_a || '--',
-        unidad: m.unidad_camion || m.unidad || '--'
-    }));
+    const items = matches.map(m => {
+        const itemCat = catalog[m.id_pieza] || Object.values(catalog).find(c => c.numero_parte && c.numero_parte === m.numero_parte) || {};
+        const pu = getPiezaPrecioUnitario(m, catalog);
+        const cant = Number(m.cantidad) || 1;
+        const total = cant * pu;
+        return {
+            id_item: m.id || m.numero_parte,
+            id_pieza: m.id_pieza,
+            numero_parte: m.numero_parte || itemCat.numero_parte || '--',
+            descripcion: m.descripcion || itemCat.descripcion || m.concepto || 'Refacción',
+            marca: m.marca || itemCat.marca || '',
+            cantidad: cant,
+            precio_unitario: pu,
+            total_costo: total,
+            fecha: m.fecha || m.fecha_salida || '--',
+            solicitante: m.solicitante || m.entregado_a || '--',
+            unidad: m.unidad_camion || m.unidad || '--'
+        };
+    });
 
     const costoTotal = items.reduce((acc, it) => acc + it.total_costo, 0);
 
