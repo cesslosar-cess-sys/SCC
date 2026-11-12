@@ -1760,9 +1760,11 @@
             <!-- Header Modal -->
             <div class="p-4 bg-[#141518] border-b border-[#3A3D42] flex justify-between items-start">
                 <div>
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-2 flex-wrap">
                         <span class="text-2xl font-black text-white" id="exp-titulo">Unidad --</span>
                         <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-[#282A2E] text-[#C59B27] border border-[#3A3D42]" id="exp-terminal">--</span>
+                        <span id="exp-badge-archivada" class="hidden bg-cyan-950 text-cyan-300 border border-cyan-700 px-2.5 py-0.5 rounded-full text-[10px] font-bold font-mono">🏁 ARCHIVADA / SALIDA</span>
+                        <span id="exp-badge-folio" class="hidden bg-indigo-950 text-indigo-300 border border-indigo-700 px-2.5 py-0.5 rounded-full text-[10px] font-bold font-mono flex items-center gap-1"><i class="fa-solid fa-receipt text-[9px]"></i> <span id="exp-badge-folio-txt">Orden #--</span></span>
                     </div>
                     <p class="text-xs text-slate-400 mt-1 font-mono" id="exp-subtitulo">Expediente Digital Inalterable de Mantenimiento</p>
                 </div>
@@ -1935,12 +1937,15 @@
 
             <!-- Footer Modal con Opciones Administrativas -->
             <div class="p-3 bg-[#141518] border-t border-[#3A3D42] flex justify-between items-center text-xs">
-                <div class="flex items-center gap-2">
-                    <button onclick="abrirModalLiberarUnidad(event)" class="bg-blue-950 hover:bg-blue-900 text-blue-300 border border-blue-700/60 font-bold flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition" title="Registrar salida a viaje y retirar del tablero activo preservando todos los avances">
-                        <i class="fa-solid fa-truck-fast text-cyan-400"></i> Liberar / Salida a Viaje
+                <div class="flex items-center gap-2" id="exp-footer-acciones-admin">
+                    <button id="exp-btn-liberar" onclick="abrirModalLiberarUnidad(event)" class="bg-blue-950 hover:bg-blue-900 text-blue-300 border border-blue-700/60 font-bold flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition" title="Registrar salida a viaje y retirar del tablero activo preservando todos los avances">
+                        <i class="fa-solid fa-truck-fast text-cyan-400"></i> <span id="exp-btn-liberar-txt">Liberar / Salida a Viaje</span>
                     </button>
-                    <button onclick="eliminarDefinitivoUnidadActiva()" class="text-slate-500 hover:text-red-400 text-[11px] p-1.5 rounded hover:bg-[#282A2E] transition" title="Eliminar registro (solo para errores de captura)">
+                    <button id="exp-btn-eliminar" onclick="eliminarDefinitivoUnidadActiva()" class="text-slate-500 hover:text-red-400 text-[11px] p-1.5 rounded hover:bg-[#282A2E] transition" title="Retirar del tablero con candado de Orden de Mantenimiento">
                         <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                    <button id="exp-btn-sync-almacen" onclick="sincronizarAlmacenUnidad(unidadActiva ? unidadActiva.id : '')" class="bg-indigo-950 hover:bg-indigo-900 text-indigo-300 border border-indigo-700 font-bold flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition text-xs" title="Actualizar refacciones y costos directamente desde Almacén">
+                        <i class="fa-solid fa-arrows-rotate text-indigo-400"></i> Sync Almacén
                     </button>
                 </div>
                 <div class="flex items-center gap-2">
@@ -3118,6 +3123,19 @@
             </div>
 
             <form onsubmit="confirmarLiberarUnidad(event)" class="flex flex-col gap-3 text-xs">
+                <!-- CANDADO OBLIGATORIO: ORDEN DE MANTENIMIENTO / FOLIO -->
+                <div class="bg-amber-950/40 border border-amber-600/70 p-2.5 rounded-xl">
+                    <label class="block font-bold text-amber-300 mb-1 flex items-center justify-between text-xs">
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-lock text-amber-400"></i> Orden de Mantenimiento / Folio *</span>
+                        <span class="text-[10px] text-amber-300 font-bold uppercase tracking-wider bg-amber-900/60 px-1.5 py-0.5 rounded border border-amber-700/60">Obligatorio</span>
+                    </label>
+                    <div class="relative">
+                        <input type="text" id="liberar-unidad-folio" required placeholder="Ej: 4074 o OM-102" class="w-full bg-[#141518] border border-amber-600/70 rounded-xl p-2 text-white font-mono font-bold text-xs focus:border-amber-400 focus:outline-none pl-8 placeholder:text-slate-500">
+                        <i class="fa-solid fa-receipt absolute left-2.5 top-2.5 text-amber-400 text-xs"></i>
+                    </div>
+                    <p class="text-[10px] text-slate-300 mt-1 leading-tight">🔒 <b>Candado de seguridad:</b> Permite a Almacén vincular refacciones y costos aun después de que la unidad salga de taller.</p>
+                </div>
+
                 <div>
                     <label class="block font-bold text-slate-400 mb-1">Motivo de Salida del Taller *</label>
                     <select id="liberar-unidad-motivo" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-cyan-500 focus:outline-none">
@@ -3383,20 +3401,30 @@
                             actualizarTimestampSincronizacion();
                         } else if (msg.type === 'almacen_folio_updated') {
                             if (Array.isArray(msg.units)) {
-                                baseDatos = msg.units;
+                                fusionarUnidadesInteligente(msg.units);
                                 sanitizarBaseDatos();
                                 guardarDatosLocales(false);
                                 if (vistaActual === 'tablero') renderizarTablero();
                                 actualizarSelectoresUnidades();
+                            } else {
+                                sincronizarDatosSilencioso();
+                            }
+                            cargarContadorUnidadesLiberadas();
+                            const modalLib = document.getElementById('modal-unidades-liberadas');
+                            if (modalLib && !modalLib.classList.contains('hidden')) {
+                                abrirModalUnidadesLiberadas();
                             }
                             const modalDet = document.getElementById('modal-detalle-folio-almacen');
                             if (modalDet && !modalDet.classList.contains('hidden') && unidadVincularActiva) {
                                 abrirDetalleFolioAlmacen(null, unidadVincularActiva.id);
                             }
-                            mostrarToast(`📦 Folio #${msg.folio || ''} actualizado desde Almacén`);
+                            if (unidadActiva && document.getElementById('modal-expediente') && !document.getElementById('modal-expediente').classList.contains('hidden')) {
+                                abrirModalExpediente(unidadActiva.id);
+                            }
+                            mostrarToast(`📦 Refacciones y costos actualizados desde Almacén`);
                         } else if (msg.type === 'units_updated') {
                             if (Array.isArray(msg.units)) {
-                                baseDatos = msg.units;
+                                fusionarUnidadesInteligente(msg.units);
                                 sanitizarBaseDatos();
                                 guardarDatosLocales(false);
                                 if (vistaActual === 'tablero') renderizarTablero();
@@ -6333,26 +6361,78 @@
         }
 
         function eliminarUnidadActiva() {
-            if (!unidadActiva) return;
-            if (confirm(`¿Estás seguro de eliminar la Unidad ${unidadActiva.id} del tablero?`)) {
-                baseDatos = baseDatos.filter(u => String(u.id) !== String(unidadActiva.id));
-                guardarDatosLocales();
-                renderizarTablero();
-                actualizarSelectoresUnidades();
-                cerrarModalExpediente();
-                mostrarToast('Unidad eliminada');
-            }
+            eliminarDefinitivoUnidadActiva();
         }
 
-        function abrirModalExpediente(id) {
-            unidadActiva = baseDatos.find(u => String(u.id) === String(id));
-            if (!unidadActiva) return;
+        async function abrirModalExpediente(id) {
+            let u = baseDatos.find(x => String(x.id).trim() === String(id).trim());
+            if (!u) {
+                u = (cacheUnidadesLiberadas || []).find(x => String(x.id).trim() === String(id).trim());
+            }
+            if (!u) {
+                try {
+                    const resArch = await fetch('/api/unidades/archivadas?t=' + Date.now(), { cache: 'no-store' });
+                    if (resArch.ok) {
+                        const d = await resArch.json();
+                        cacheUnidadesLiberadas = d.archivadas || [];
+                        u = cacheUnidadesLiberadas.find(x => String(x.id).trim() === String(id).trim());
+                    }
+                } catch(e) {}
+            }
+            if (!u) {
+                mostrarToast(`Unidad ${id} no encontrada`);
+                return;
+            }
+            unidadActiva = u;
 
             document.getElementById('exp-titulo').innerText = `Unidad ${unidadActiva.id}`;
-            document.getElementById('exp-terminal').innerText = unidadActiva.sucursal.toUpperCase();
+            document.getElementById('exp-terminal').innerText = (unidadActiva.sucursal || 'Patio').toUpperCase();
             document.getElementById('exp-reporte').innerText = unidadActiva.reporte || unidadActiva.defecto || 'Sin observaciones';
-            document.getElementById('exp-costo').innerText = unidadActiva.costo > 0 ? `$${unidadActiva.costo.toLocaleString()} MXN` : '$0 MXN';
+            document.getElementById('exp-costo').innerText = unidadActiva.costo > 0 ? `$${Number(unidadActiva.costo).toLocaleString()} MXN` : '$0 MXN';
             document.getElementById('exp-fecha-refaccion').innerText = unidadActiva.fechaRefaccion || 'Sin programar';
+
+            // Badges de Archivo y Folio en el header
+            const badgeArch = document.getElementById('exp-badge-archivada');
+            if (badgeArch) {
+                if (unidadActiva.archivada) {
+                    badgeArch.classList.remove('hidden');
+                    badgeArch.innerText = `🏁 LIBERADA (${unidadActiva.fecha_salida || 'Salida a viaje'})`;
+                } else {
+                    badgeArch.classList.add('hidden');
+                }
+            }
+            const badgeFolio = document.getElementById('exp-badge-folio');
+            const txtFolio = document.getElementById('exp-badge-folio-txt');
+            if (badgeFolio && txtFolio) {
+                if (unidadActiva.folio_almacen) {
+                    badgeFolio.classList.remove('hidden');
+                    txtFolio.innerText = `Orden #${unidadActiva.folio_almacen}`;
+                } else {
+                    badgeFolio.classList.add('hidden');
+                }
+            }
+
+            // Adaptar botones del footer según estatus activa / archivada
+            const btnLib = document.getElementById('exp-btn-liberar');
+            const txtLib = document.getElementById('exp-btn-liberar-txt');
+            const btnElim = document.getElementById('exp-btn-eliminar');
+            if (unidadActiva.archivada) {
+                if (btnLib && txtLib) {
+                    btnLib.onclick = () => reincorporarUnidadAlTablero(unidadActiva.id);
+                    btnLib.className = "bg-cyan-950 hover:bg-cyan-900 text-cyan-300 border border-cyan-800 font-bold flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition text-xs";
+                    btnLib.title = "Devolver esta unidad al tablero de taller activo";
+                    btnLib.innerHTML = '<i class="fa-solid fa-arrow-rotate-left"></i> Reincorporar al Tablero';
+                }
+                if (btnElim) btnElim.classList.add('hidden');
+            } else {
+                if (btnLib && txtLib) {
+                    btnLib.onclick = (e) => abrirModalLiberarUnidad(e, unidadActiva.id);
+                    btnLib.className = "bg-blue-950 hover:bg-blue-900 text-blue-300 border border-blue-700/60 font-bold flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition text-xs";
+                    btnLib.title = "Registrar salida a viaje con candado de orden de mantenimiento";
+                    btnLib.innerHTML = '<i class="fa-solid fa-truck-fast text-cyan-400"></i> Liberar / Salida a Viaje';
+                }
+                if (btnElim) btnElim.classList.remove('hidden');
+            }
 
             const badgeEstado = document.getElementById('exp-badge-estado');
             const estilosEstado = {
@@ -6361,8 +6441,8 @@
                 listo: 'bg-emerald-950 text-emerald-300 border border-emerald-800'
             };
             const nombresEstado = { mayor: 'Reparación Mayor ($$)', proceso: 'En Proceso', listo: 'Lista' };
-            badgeEstado.className = `text-xs font-bold px-2 py-0.5 rounded-full ${estilosEstado[unidadActiva.estado]}`;
-            badgeEstado.innerText = nombresEstado[unidadActiva.estado];
+            badgeEstado.className = `text-xs font-bold px-2 py-0.5 rounded-full ${estilosEstado[unidadActiva.estado] || 'bg-[#282A2E]'}`;
+            badgeEstado.innerText = nombresEstado[unidadActiva.estado] || unidadActiva.estado;
 
             // Resaltar botón activo en el switcher de columnas del expediente
             const btnMayor = document.getElementById('exp-btn-col-mayor');
@@ -6376,7 +6456,7 @@
                 btnListo.className = `p-2 rounded-xl text-center font-bold text-xs flex flex-col items-center gap-1 border transition ${unidadActiva.estado === 'listo' ? 'bg-emerald-600 text-white border-emerald-400 font-black shadow' : 'bg-[#1E1E1E] text-slate-300 border-[#3A3D42] hover:bg-[#282A2E]'}`;
                 
                 if (btnMarcarEntrega) {
-                    if (unidadActiva.estado === 'listo') {
+                    if (unidadActiva.estado === 'listo' || unidadActiva.archivada) {
                         btnMarcarEntrega.classList.add('hidden');
                     } else {
                         btnMarcarEntrega.classList.remove('hidden');
@@ -7850,8 +7930,9 @@
 
         // --- CONTROLADORES DE MODAL: DETALLE DE FOLIO DE ALMACÉN ---
         async function abrirDetalleFolioAlmacen(event, id) {
-            if (event) event.stopPropagation();
-            const u = baseDatos.find(x => String(x.id) === String(id));
+            if (event && event.stopPropagation) event.stopPropagation();
+            let u = baseDatos.find(x => String(x.id).trim() === String(id).trim());
+            if (!u) u = (cacheUnidadesLiberadas || []).find(x => String(x.id).trim() === String(id).trim());
             if (!u || !u.folio_almacen) return;
 
             unidadVincularActiva = u;
@@ -7954,8 +8035,22 @@
             unidadVincularActiva.piezas = (unidadVincularActiva.piezas || []).filter(p => !p.folio_almacen);
             unidadVincularActiva.costo = Number(unidadVincularActiva.costo_mano_obra || 0);
 
-            guardarDatosLocales();
+            try {
+                await fetch(`/api/unidad/${encodeURIComponent(unidadVincularActiva.id)}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        folio_almacen: null,
+                        costo_refacciones: 0,
+                        piezas: unidadVincularActiva.piezas,
+                        costo: unidadVincularActiva.costo
+                    })
+                });
+            } catch(e) {}
+
+            guardarDatosLocales(false);
             renderizarTablero();
+            renderizarListaUnidadesLiberadas();
             cerrarModalDetalleFolio();
             mostrarToast(`Folio desvinculado de Unidad ${unidadVincularActiva.id}`);
         }
@@ -9318,8 +9413,9 @@
         let datosFolioConsultado = null;
 
         function abrirModalVincularAlmacen(event, id) {
-            if (event) event.stopPropagation();
-            const u = baseDatos.find(x => String(x.id) === String(id));
+            if (event && event.stopPropagation) event.stopPropagation();
+            let u = baseDatos.find(x => String(x.id).trim() === String(id).trim());
+            if (!u) u = (cacheUnidadesLiberadas || []).find(x => String(x.id).trim() === String(id).trim());
             if (!u) return;
 
             unidadVincularActiva = u;
@@ -9432,9 +9528,15 @@
                     if (json.unidad) {
                         const idx = baseDatos.findIndex(x => String(x.id) === String(unidadVincularActiva.id));
                         if (idx !== -1) baseDatos[idx] = json.unidad;
+                        const archIdx = (cacheUnidadesLiberadas || []).findIndex(x => String(x.id) === String(unidadVincularActiva.id));
+                        if (archIdx !== -1) cacheUnidadesLiberadas[archIdx] = json.unidad;
+                        if (unidadActiva && String(unidadActiva.id) === String(unidadVincularActiva.id)) {
+                            unidadActiva = json.unidad;
+                        }
                     }
                     guardarDatosLocales(false);
                     renderizarTablero();
+                    renderizarListaUnidadesLiberadas();
                     mostrarToast(`Folio #${folio} vinculado con éxito a Unidad ${unidadVincularActiva.id}`);
                     cerrarModalVincularAlmacen();
                 } else {
@@ -9636,12 +9738,15 @@
                 event.stopPropagation();
             }
             let targetId = typeof id === 'string' ? id : (typeof event === 'string' ? event : (unidadActiva ? unidadActiva.id : null));
-            const u = targetId ? baseDatos.find(x => String(x.id).trim() === String(targetId).trim()) : unidadActiva;
+            const u = targetId ? (baseDatos.find(x => String(x.id).trim() === String(targetId).trim()) || (cacheUnidadesLiberadas || []).find(x => String(x.id).trim() === String(targetId).trim())) : unidadActiva;
             if (!u) return;
             unidadActiva = u;
 
             const txt = document.getElementById('liberar-unidad-id-txt');
             if (txt) txt.innerText = `Unidad ${u.id} (${u.sucursal || 'Patio'})`;
+
+            const folioEl = document.getElementById('liberar-unidad-folio');
+            if (folioEl) folioEl.value = u.folio_almacen || '';
 
             const motivoEl = document.getElementById('liberar-unidad-motivo');
             if (motivoEl) motivoEl.value = 'Asignada a viaje / Salió a ruta';
@@ -9652,6 +9757,7 @@
 
             const modal = document.getElementById('modal-liberar-unidad');
             if (modal) modal.classList.remove('hidden');
+            if (folioEl && !u.folio_almacen) folioEl.focus();
         }
 
         function cerrarModalLiberarUnidad() {
@@ -9662,17 +9768,26 @@
             e.preventDefault();
             if (!unidadActiva) return;
             const id = String(unidadActiva.id).trim();
+            const folio = (document.getElementById('liberar-unidad-folio').value || '').trim();
             const motivo = document.getElementById('liberar-unidad-motivo').value;
             const km_salida = document.getElementById('liberar-unidad-km').value.trim();
             const notas = document.getElementById('liberar-unidad-notas').value.trim();
 
-            mostrarToast(`Registrando salida a viaje de Unidad ${id}...`);
+            // CANDADO DE SEGURIDAD OBLIGATORIO
+            if (!folio) {
+                mostrarToast('🔒 CANDADO DE SEGURIDAD: Es obligatorio indicar la Orden de Mantenimiento / Folio.');
+                const folioEl = document.getElementById('liberar-unidad-folio');
+                if (folioEl) folioEl.focus();
+                return;
+            }
+
+            mostrarToast(`Registrando salida con Orden #${folio} para Unidad ${id}...`);
 
             try {
                 const res = await fetch(`/api/unidad/${encodeURIComponent(id)}/liberar`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ motivo, km_salida, notas })
+                    body: JSON.stringify({ motivo, km_salida, notas, folio })
                 });
 
                 if (res.ok) {
@@ -9683,29 +9798,57 @@
                     cerrarModalLiberarUnidad();
                     cerrarModalExpediente();
                     cargarContadorUnidadesLiberadas();
-                    mostrarToast(`🚀 Unidad ${id} liberada a viaje. Historial y avances protegidos al 100%.`);
+                    mostrarToast(`🚀 Unidad ${id} liberada con Orden #${folio}. Vinculación con Almacén protegida al 100%.`);
                 } else {
-                    mostrarToast('Error al registrar salida de unidad');
+                    const err = await res.json().catch(() => ({}));
+                    mostrarToast(err.error || 'Error al registrar salida de unidad');
                 }
             } catch (err) {
-                baseDatos = baseDatos.filter(u => String(u.id).trim() !== id);
-                guardarDatosLocales();
-                renderizarTablero();
-                cerrarModalLiberarUnidad();
-                cerrarModalExpediente();
-                mostrarToast(`Unidad ${id} retirada del tablero.`);
+                mostrarToast('Error de conexión al liberar unidad');
             }
         }
 
-        function eliminarDefinitivoUnidadActiva() {
+        async function eliminarDefinitivoUnidadActiva() {
             if (!unidadActiva) return;
-            if (confirm(`¿Eliminar definitivamente la Unidad ${unidadActiva.id} por error de captura?`)) {
-                baseDatos = baseDatos.filter(u => String(u.id).trim() !== String(unidadActiva.id).trim());
-                guardarDatosLocales();
-                renderizarTablero();
-                actualizarSelectoresUnidades();
-                cerrarModalExpediente();
-                mostrarToast('Unidad eliminada');
+            const id = String(unidadActiva.id).trim();
+            let folio = String(unidadActiva.folio_almacen || '').trim();
+
+            if (!folio) {
+                folio = prompt(`🔒 CANDADO DE SEGURIDAD ACTIVO\n\nNinguna unidad puede retirarse o eliminarse sin una Orden de Mantenimiento / Folio para su control y vinculación con Almacén.\n\nPor favor, ingresa el número de Orden de Mantenimiento / Folio:`, '');
+                if (!folio || !folio.trim()) {
+                    mostrarToast('🔒 Acción cancelada: Se requiere Orden de Mantenimiento para retirar la unidad.');
+                    return;
+                }
+                folio = folio.trim();
+            }
+
+            if (confirm(`¿Retirar del tablero la Unidad ${id} con Orden de Mantenimiento #${folio}?\n\nLa tarjeta se retirará del tablero pero su historial clínico, avances y refacciones quedarán 100% resguardados en el archivo para que Almacén pueda vincular piezas en cualquier momento.`)) {
+                mostrarToast(`Archivando Unidad ${id} con Orden #${folio}...`);
+                try {
+                    const res = await fetch(`/api/unidad/${encodeURIComponent(id)}/liberar`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            motivo: 'Retirada del tablero activo con Orden de Mantenimiento #' + folio,
+                            folio: folio,
+                            notas: 'Retirada por encargado de taller; resguardada para vinculación con Almacén'
+                        })
+                    });
+                    if (res.ok) {
+                        baseDatos = baseDatos.filter(u => String(u.id).trim() !== id);
+                        guardarDatosLocales(false);
+                        renderizarTablero();
+                        actualizarSelectoresUnidades();
+                        cerrarModalExpediente();
+                        cargarContadorUnidadesLiberadas();
+                        mostrarToast(`✅ Unidad ${id} retirada del tablero y resguardada con Orden #${folio}.`);
+                    } else {
+                        const err = await res.json().catch(() => ({}));
+                        mostrarToast(err.error || 'Error al retirar la unidad');
+                    }
+                } catch(e) {
+                    mostrarToast('Error de conexión al retirar la unidad');
+                }
             }
         }
 
@@ -9746,35 +9889,85 @@
 
             cont.innerHTML = cacheUnidadesLiberadas.map(u => {
                 const avancesCount = Array.isArray(u.avances) ? u.avances.length : 0;
+                const piezasCount = Array.isArray(u.piezas) ? u.piezas.length : 0;
+                const costoTotal = Number(u.costo) || 0;
+                const tieneCostoOPiezas = costoTotal > 0 || piezasCount > 0;
+
+                const badgeFolio = u.folio_almacen 
+                    ? `<button onclick="abrirDetalleFolioAlmacen(event, '${u.id}')" class="bg-indigo-950 hover:bg-indigo-900 text-indigo-300 font-mono text-[11px] px-2.5 py-0.5 rounded border border-indigo-700 font-bold flex items-center gap-1 transition shadow-sm" title="Clic para ver refacciones vinculadas a este folio"><i class="fa-solid fa-receipt text-indigo-400"></i> Orden #${u.folio_almacen}</button>`
+                    : `<button onclick="abrirModalVincularAlmacen(event, '${u.id}')" class="bg-amber-950 hover:bg-amber-900 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded border border-amber-700 flex items-center gap-1 shadow-sm" title="Vincular número de orden de mantenimiento"><i class="fa-solid fa-plus-circle text-amber-400"></i> Asignar Orden</button>`;
+
+                const txtCostoPiezas = tieneCostoOPiezas
+                    ? `<span class="text-xs font-black text-[#DFB743] font-mono">$${costoTotal.toLocaleString()} MXN</span> <span class="text-[10px] text-slate-400 font-mono">(${piezasCount} pz)</span>`
+                    : `<span class="text-[11px] text-slate-500 italic">Sin refacciones anexadas</span>`;
+
                 return `
                     <div class="bg-[#141518] border border-[#3A3D42] hover:border-emerald-500/60 p-3 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition">
                         <div class="flex items-center gap-3">
-                            <span class="w-8 h-8 rounded-lg bg-emerald-950 border border-emerald-700 text-emerald-400 flex items-center justify-center font-black font-mono text-sm">
+                            <span class="w-8 h-8 rounded-lg bg-emerald-950 border border-emerald-700 text-emerald-400 flex items-center justify-center font-black font-mono text-sm shrink-0">
                                 ${u.id}
                             </span>
                             <div>
-                                <div class="flex items-center gap-2">
+                                <div class="flex items-center gap-2 flex-wrap">
                                     <span class="font-bold text-white text-xs">Unidad ${u.id} (${u.sucursal || 'Patio'})</span>
                                     <span class="bg-[#1E1E1E] text-emerald-300 text-[10px] font-mono px-1.5 py-0.5 rounded border border-emerald-800">
                                         ${u.motivo_salida || 'Salida a viaje'}
                                     </span>
-                                    ${u.folio_almacen ? `<span class="bg-indigo-950 text-indigo-300 font-mono text-[10px] px-2 py-0.5 rounded border border-indigo-700 font-bold flex items-center gap-1"><i class="fa-solid fa-receipt text-[9px]"></i>Folio #${u.folio_almacen}</span>` : ''}
+                                    ${badgeFolio}
+                                    ${txtCostoPiezas}
                                 </div>
-                                <p class="text-[11px] text-slate-400 mt-0.5 line-clamp-1">${u.reporte || u.defecto || 'Sin notas'}</p>
-                                <span class="text-[10px] text-slate-500 font-mono">Liberada el: ${u.fecha_salida || '-'} • ${avancesCount} avances técnicos</span>
+                                <p class="text-[11px] text-slate-400 mt-1 line-clamp-1">${u.reporte || u.defecto || 'Sin notas'}</p>
+                                <span class="text-[10px] text-slate-500 font-mono">Liberada el: ${u.fecha_salida || '-'} • ${avancesCount} avances clínicos</span>
                             </div>
                         </div>
-                        <div class="flex items-center gap-2 shrink-0">
-                            <button onclick="verUnidadEnVistaHistorial('${u.id}'); cerrarModalUnidadesLiberadas();" class="bg-[#1E1E1E] hover:bg-[#282A2E] text-[#C59B27] border border-[#3A3D42] px-2.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1">
-                                <i class="fa-solid fa-clock-rotate-left"></i> Historial
+                        <div class="flex items-center gap-1.5 shrink-0 flex-wrap justify-end">
+                            <button onclick="abrirDetalleFolioAlmacen(event, '${u.id}')" class="bg-indigo-950 hover:bg-indigo-900 text-indigo-200 border border-indigo-700/80 px-2.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm" title="Ver o editar refacciones de esta orden">
+                                <i class="fa-solid fa-receipt text-indigo-400"></i> Piezas
                             </button>
-                            <button onclick="reincorporarUnidadAlTablero('${u.id}')" class="bg-cyan-950/70 hover:bg-cyan-900 text-cyan-300 border border-cyan-800 px-2.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1" title="Mover de vuelta al tablero activo">
+                            <button onclick="sincronizarAlmacenUnidad('${u.id}')" class="bg-[#1E1E1E] hover:bg-[#282A2E] text-indigo-300 border border-indigo-800/60 px-2.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm" title="Consultar salidas recientes de Almacén para esta unidad">
+                                <i class="fa-solid fa-arrows-rotate text-indigo-400"></i> Sync
+                            </button>
+                            <button onclick="abrirModalExpediente('${u.id}'); cerrarModalUnidadesLiberadas();" class="bg-[#1E1E1E] hover:bg-[#282A2E] text-slate-200 border border-[#3A3D42] px-2.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm" title="Abrir expediente completo">
+                                <i class="fa-solid fa-folder-open text-[#C59B27]"></i> Expediente
+                            </button>
+                            <button onclick="reincorporarUnidadAlTablero('${u.id}')" class="bg-cyan-950/70 hover:bg-cyan-900 text-cyan-300 border border-cyan-800 px-2.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm" title="Mover de vuelta al tablero activo">
                                 <i class="fa-solid fa-arrow-rotate-left"></i> Reincorporar
                             </button>
                         </div>
                     </div>
                 `;
             }).join('');
+        }
+
+        async function sincronizarAlmacenUnidad(id) {
+            if (!id) return;
+            mostrarToast(`Sincronizando refacciones con Almacén para Unidad ${id}...`);
+            try {
+                const res = await fetch(`/api/unidad/${encodeURIComponent(id)}/sincronizar-almacen`, { method: 'POST' });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.unidad) {
+                        const idx = baseDatos.findIndex(x => String(x.id).trim() === String(id).trim());
+                        if (idx !== -1) baseDatos[idx] = data.unidad;
+                        const archIdx = (cacheUnidadesLiberadas || []).findIndex(x => String(x.id).trim() === String(id).trim());
+                        if (archIdx !== -1) cacheUnidadesLiberadas[archIdx] = data.unidad;
+                        if (unidadActiva && String(unidadActiva.id).trim() === String(id).trim()) {
+                            unidadActiva = data.unidad;
+                            abrirModalExpediente(id);
+                        }
+                    }
+                    guardarDatosLocales(false);
+                    renderizarTablero();
+                    renderizarListaUnidadesLiberadas();
+                    const cant = Array.isArray(data.unidad?.piezas) ? data.unidad.piezas.length : 0;
+                    const costo = Number(data.unidad?.costo) || 0;
+                    mostrarToast(`✅ Almacén sincronizado: ${cant} refacciones ($${costo.toLocaleString()} MXN)`);
+                } else {
+                    mostrarToast('Error al sincronizar con Almacén');
+                }
+            } catch(e) {
+                mostrarToast('Error de conexión con Almacén');
+            }
         }
 
         async function reincorporarUnidadAlTablero(id) {

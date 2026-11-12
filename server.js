@@ -342,13 +342,12 @@ function sincronizarFoliosConAlmacen(origen = 'Watcher Almacén') {
     const movimientos = almacenData.movimientos || [];
     const catalog = almacenData.catalog || {};
     let unidades = getUnidades();
+    let archivadas = getUnidadesArchivadas();
     let huboCambios = false;
+    let huboCambiosArchivadas = false;
 
-    unidades.forEach(unidad => {
-        if (!unidad.folio_almacen) return;
-        const folioBuscado = String(unidad.folio_almacen).trim();
-
-        // Movimientos de salida vinculados a este folio o unidad
+    // Helper para procesar piezas y costos de un folio
+    const procesarPiezasDeFolio = (folioBuscado) => {
         const movsFolio = movimientos.filter(m => 
             String(m.folio || '').trim() === folioBuscado && (m.tipo === 'S' || !m.tipo)
         );
@@ -377,17 +376,24 @@ function sincronizarFoliosConAlmacen(origen = 'Watcher Almacén') {
                 hora_recepcion: m.hora || ''
             };
         });
+        return { piezasActualizadas, nuevoCostoRefacciones };
+    };
+
+    // 1. Sincronizar unidades activas en el tablero
+    unidades.forEach(unidad => {
+        if (!unidad.folio_almacen) return;
+        const folioBuscado = String(unidad.folio_almacen).trim();
+        const { piezasActualizadas, nuevoCostoRefacciones } = procesarPiezasDeFolio(folioBuscado);
 
         const costoPrevio = Number(unidad.costo_refacciones) || 0;
-        const cantPrevias = Array.isArray(unidad.piezas) ? unidad.piezas.filter(p => p.folio_almacen === folioBuscado).length : 0;
+        const cantPrevias = Array.isArray(unidad.piezas) ? unidad.piezas.filter(p => String(p.folio_almacen).trim() === folioBuscado).length : 0;
 
-        // Comprobar si hubo cambios en cantidad, piezas o costo
         if (Math.abs(costoPrevio - nuevoCostoRefacciones) > 0.01 || cantPrevias !== piezasActualizadas.length) {
             huboCambios = true;
             unidad.costo_refacciones = nuevoCostoRefacciones;
             
             // Conservar piezas de otros folios o manuales
-            const piezasOtras = (unidad.piezas || []).filter(p => p.folio_almacen !== folioBuscado);
+            const piezasOtras = (unidad.piezas || []).filter(p => String(p.folio_almacen).trim() !== folioBuscado);
             unidad.piezas = [...piezasOtras, ...piezasActualizadas];
             
             // Recalcular costo total de la unidad
@@ -401,12 +407,47 @@ function sincronizarFoliosConAlmacen(origen = 'Watcher Almacén') {
                 autor: origen
             });
 
-            console.log(`>>> [Sincronización Bidireccional] Unidad ${unidad.id} vinculada a Folio #${folioBuscado} actualizada: ${piezasActualizadas.length} refacciones (${nuevoCostoRefacciones} MXN)`);
+            console.log(`>>> [Sincronización Bidireccional Activas] Unidad ${unidad.id} vinculada a Folio #${folioBuscado} actualizada: ${piezasActualizadas.length} refacciones (${nuevoCostoRefacciones} MXN)`);
+        }
+    });
+
+    // 2. Sincronizar unidades archivadas / liberadas (post-salida o retiradas del tablero)
+    archivadas.forEach(unidad => {
+        if (!unidad.folio_almacen) return;
+        const folioBuscado = String(unidad.folio_almacen).trim();
+        const { piezasActualizadas, nuevoCostoRefacciones } = procesarPiezasDeFolio(folioBuscado);
+
+        const costoPrevio = Number(unidad.costo_refacciones) || 0;
+        const cantPrevias = Array.isArray(unidad.piezas) ? unidad.piezas.filter(p => String(p.folio_almacen).trim() === folioBuscado).length : 0;
+
+        if (Math.abs(costoPrevio - nuevoCostoRefacciones) > 0.01 || cantPrevias !== piezasActualizadas.length) {
+            huboCambiosArchivadas = true;
+            unidad.costo_refacciones = nuevoCostoRefacciones;
+            
+            const piezasOtras = (unidad.piezas || []).filter(p => String(p.folio_almacen).trim() !== folioBuscado);
+            unidad.piezas = [...piezasOtras, ...piezasActualizadas];
+            unidad.costo = (Number(unidad.costo_mano_obra) || 0) + nuevoCostoRefacciones;
+            
+            if (!Array.isArray(unidad.historial)) unidad.historial = [];
+            unidad.historial.unshift({
+                fecha: new Date().toLocaleDateString('es-MX') + ' ' + new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
+                evento: `Almacén vinculó Folio #${folioBuscado} (Unidad Liberada/Archivada): ${piezasActualizadas.length} piezas surtidas (${nuevoCostoRefacciones.toLocaleString()} MXN)`,
+                tipo: 'almacen_sync',
+                autor: origen
+            });
+
+            console.log(`>>> [Sincronización Bidireccional Archivadas] Unidad Liberada ${unidad.id} vinculada a Folio #${folioBuscado} actualizada: ${piezasActualizadas.length} refacciones (${nuevoCostoRefacciones} MXN)`);
         }
     });
 
     if (huboCambios) {
         saveUnidades(unidades, origen);
+    }
+    if (huboCambiosArchivadas) {
+        saveUnidadesArchivadas(archivadas);
+    }
+
+    if (huboCambios || huboCambiosArchivadas) {
         if (typeof broadcastSSE === 'function') {
             broadcastSSE('almacen_folio_updated', {
                 mensaje: 'Refacciones y costos actualizados en vivo desde Almacén CESS',
@@ -806,6 +847,15 @@ app.post('/api/unidad/:id', (req, res) => {
     let index = unidades.findIndex(u => String(u.id) === unitId);
 
     if (index === -1) {
+        // Verificar si es una unidad archivada / liberada
+        let archivadas = getUnidadesArchivadas();
+        let archIdx = archivadas.findIndex(u => String(u.id).trim() === unitId);
+        if (archIdx !== -1) {
+            archivadas[archIdx] = { ...archivadas[archIdx], ...updates };
+            saveUnidadesArchivadas(archivadas);
+            return res.json({ success: true, action: 'updated_archived', data: archivadas[archIdx] });
+        }
+
         const nueva = {
             id: unitId,
             sucursal: updates.sucursal || 'Apodaca',
@@ -941,7 +991,7 @@ app.get('/api/unidades/archivadas', (req, res) => {
 
 app.post('/api/unidad/:id/liberar', (req, res) => {
     const unitId = String(req.params.id).trim();
-    const { motivo, notas, km_salida } = req.body || {};
+    const { motivo, notas, km_salida, folio, folio_almacen, orden_mantenimiento } = req.body || {};
     let unidades = getUnidades();
     const idx = unidades.findIndex(u => String(u.id).trim() === unitId);
 
@@ -950,13 +1000,23 @@ app.post('/api/unidad/:id/liberar', (req, res) => {
     }
 
     const unidad = unidades[idx];
+    const folioFinal = String(folio !== undefined ? folio : (folio_almacen || orden_mantenimiento || unidad.folio_almacen || '')).trim();
+
+    // CANDADO DE SEGURIDAD OBLIGATORIO: Se requiere Orden de Mantenimiento / Folio
+    if (!folioFinal) {
+        return res.status(400).json({
+            error: 'Candado de seguridad: Es obligatorio registrar o confirmar la Orden de Mantenimiento / Folio para dar salida o retirar la unidad del taller.'
+        });
+    }
+
+    unidad.folio_almacen = folioFinal;
     const fechaSalida = new Date().toLocaleDateString('es-MX');
     const horaSalida = new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
 
     const eventoSalida = {
         fecha: fechaSalida,
         hora: horaSalida,
-        evento: `Salida de taller: ${motivo || 'Asignada a viaje / Liberada'}. ${notas || ''}`.trim(),
+        evento: `Salida de taller: ${motivo || 'Asignada a viaje / Liberada'}. Orden #${folioFinal}. ${notas || ''}`.trim(),
         tipo: 'liberacion',
         km: km_salida || null
     };
@@ -968,7 +1028,7 @@ app.post('/api/unidad/:id/liberar', (req, res) => {
     unidad.avances.unshift({
         fecha: fechaSalida,
         hora: horaSalida,
-        texto: `🏁 Unidad liberada de taller: ${motivo || 'Asignada a viaje'}. ${notas || ''}`.trim(),
+        texto: `🏁 Unidad liberada de taller con Orden #${folioFinal}: ${motivo || 'Asignada a viaje'}. ${notas || ''}`.trim(),
         mecanico: 'Jefe de Taller',
         porcentaje: 100
     });
@@ -992,6 +1052,11 @@ app.post('/api/unidad/:id/liberar', (req, res) => {
     // Retirar del tablero activo
     unidades.splice(idx, 1);
     saveUnidades(unidades);
+
+    // Sincronizar inmediatamente piezas y costos de Almacén vinculados a esta orden
+    try {
+        sincronizarFoliosConAlmacen(`Salida Unidad ${unitId} con Orden #${folioFinal}`);
+    } catch(e) {}
 
     // Registrar en movimientos de jornada
     try {
@@ -1814,7 +1879,13 @@ app.post('/api/taller/pieza/agregar', (req, res) => {
 
         if (!unidad_id) return res.status(400).json({ error: 'Falta unidad_id' });
         let unidades = getUnidades();
+        let archivadas = getUnidadesArchivadas();
+        let esArchivada = false;
         let unidad = unidades.find(u => String(u.id) === String(unidad_id));
+        if (!unidad) {
+            unidad = archivadas.find(u => String(u.id) === String(unidad_id));
+            if (unidad) esArchivada = true;
+        }
         if (!unidad) return res.status(404).json({ error: `Unidad ${unidad_id} no encontrada` });
 
         if (!Array.isArray(unidad.piezas)) unidad.piezas = [];
@@ -1909,11 +1980,16 @@ app.post('/api/taller/pieza/agregar', (req, res) => {
             costo: pu * cant
         });
 
-        saveUnidades(unidades);
+        if (esArchivada) {
+            saveUnidadesArchivadas(archivadas);
+        } else {
+            saveUnidades(unidades);
+        }
         registrarMovimientoJornada(unidad_id, vaACompra ? 'orden_compra' : 'solicitud_almacen', eventoHistorial, solicitante || 'Jefe de Taller');
 
         res.json({
             success: true,
+            archivada: esArchivada,
             pieza: nuevaPieza,
             folio_oc,
             costo_total_unidad: unidad.costo,
@@ -2921,7 +2997,13 @@ app.post('/api/unidad/:id/vincular-folio', (req, res) => {
     if (!folio) return res.status(400).json({ error: 'Folio requerido' });
 
     let unidades = getUnidades();
+    let archivadas = getUnidadesArchivadas();
+    let esArchivada = false;
     let unidad = unidades.find(u => String(u.id) === unitId);
+    if (!unidad) {
+        unidad = archivadas.find(u => String(u.id) === unitId);
+        if (unidad) esArchivada = true;
+    }
     if (!unidad) return res.status(404).json({ error: 'Unidad no encontrada' });
 
     const almacenData = getAlmacenData();
@@ -2975,10 +3057,14 @@ app.post('/api/unidad/:id/vincular-folio', (req, res) => {
         autor: req.body.autor || 'Encargado de Taller'
     });
 
-    saveUnidades(unidades);
+    if (esArchivada) {
+        saveUnidadesArchivadas(archivadas);
+    } else {
+        saveUnidades(unidades);
+    }
     registrarMovimientoJornada(unitId, 'vinculacion_almacen', desc, req.body.autor || 'Encargado de Taller');
 
-    res.json({ success: true, unidad, itemsVinculados: piezasSurtidas.length, costoRefacciones });
+    res.json({ success: true, archivada: esArchivada, unidad, itemsVinculados: piezasSurtidas.length, costoRefacciones });
 });
 
 // --- GENERAR O SOLICITAR NUEVO FOLIO DE ALMACÉN DESDE TALLER ---
@@ -2986,7 +3072,13 @@ app.post('/api/unidad/:id/generar-folio-almacen', (req, res) => {
     const unitId = String(req.params.id).trim();
     const { folio, motivo, refacciones, solicitante } = req.body;
     let unidades = getUnidades();
+    let archivadas = getUnidadesArchivadas();
+    let esArchivada = false;
     let unidad = unidades.find(u => String(u.id) === unitId);
+    if (!unidad) {
+        unidad = archivadas.find(u => String(u.id) === unitId);
+        if (unidad) esArchivada = true;
+    }
     if (!unidad) return res.status(404).json({ error: 'Unidad no encontrada' });
 
     const almacenData = getAlmacenData();
@@ -3039,15 +3131,33 @@ app.post('/api/unidad/:id/generar-folio-almacen', (req, res) => {
         almacenData.folios_taller.unshift(regFolio);
     }
     saveAlmacenData(almacenData);
-    saveUnidades(unidades, solicitante || 'Encargado de Taller');
+    if (esArchivada) {
+        saveUnidadesArchivadas(archivadas);
+    } else {
+        saveUnidades(unidades, solicitante || 'Encargado de Taller');
+    }
     registrarMovimientoJornada(unitId, 'generacion_folio_almacen', desc, solicitante || 'Encargado de Taller');
 
     res.json({
         success: true,
+        archivada: esArchivada,
         folio: nuevoFolio,
         unidad,
         mensaje: `Folio #${nuevoFolio} registrado en Almacén CESS y vinculado a Unidad ${unitId}`
     });
+});
+
+// --- SINCRONIZACIÓN MANUAL DE ALMACÉN PARA UNA UNIDAD ESPECÍFICA (ACTIVA O ARCHIVADA) ---
+app.post('/api/unidad/:id/sincronizar-almacen', (req, res) => {
+    const unitId = String(req.params.id).trim();
+    try {
+        sincronizarFoliosConAlmacen(`Sync manual Unidad ${unitId}`);
+    } catch(e) {}
+    const unidades = getUnidades();
+    const archivadas = getUnidadesArchivadas();
+    const unidad = unidades.find(u => String(u.id).trim() === unitId) || archivadas.find(u => String(u.id).trim() === unitId);
+    if (!unidad) return res.status(404).json({ error: 'Unidad no encontrada' });
+    res.json({ success: true, unidad });
 });
 
 // --- LISTAR TODOS LOS FOLIOS DE TALLER ACTIVOS PARA ALMACÉN ---
@@ -3145,9 +3255,10 @@ app.post('/api/almacen/folio/:folio/surtir-pieza', (req, res) => {
     const fecha = now.toISOString().slice(0, 10);
     const hora = now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
 
-    // Determinar unidad asociada
+    // Determinar unidad asociada (en tablero activo o archivada)
     const unidades = getUnidades();
-    const uMatch = unidades.find(u => String(u.folio_almacen).trim() === folio);
+    const archivadas = getUnidadesArchivadas();
+    const uMatch = unidades.find(u => String(u.folio_almacen).trim() === folio) || archivadas.find(u => String(u.folio_almacen).trim() === folio);
     const unidadCamion = uMatch ? uMatch.id : (req.body.unidad_camion || '');
 
     const mov = {
