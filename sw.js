@@ -1,4 +1,4 @@
-const CACHE_NAME = 'taller-cess-gold-v25';
+const CACHE_NAME = 'taller-cess-gold-v26';
 const STATIC_ASSETS = [
     './icon.svg',
     './manifest.json'
@@ -9,7 +9,7 @@ self.addEventListener('install', (event) => {
     self.skipWaiting();
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            console.log('[SW v25] Instalando versión CESS Gold...');
+            console.log('[SW v26] Instalando versión CESS Gold...');
             return cache.addAll(STATIC_ASSETS);
         })
     );
@@ -22,7 +22,7 @@ self.addEventListener('activate', (event) => {
             return Promise.all(
                 keys.map((key) => {
                     if (key !== CACHE_NAME) {
-                        console.log('[SW v25] Eliminando caché obsoleta:', key);
+                        console.log('[SW v26] Eliminando caché obsoleta:', key);
                         return caches.delete(key);
                     }
                 })

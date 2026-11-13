@@ -415,7 +415,8 @@ function normalizarPieza(p, idx = 0) {
         };
     }
     const cant = Number(p.cantidad) > 0 ? Number(p.cantidad) : 1;
-    const pu = Number(p.precio_unitario) || 0;
+    const pu = Math.round((Number(p.precio_unitario) || 0) * 100) / 100;
+    const costoCalculado = Math.round((p.costo_total !== undefined ? Number(p.costo_total) : (pu * cant)) * 100) / 100;
     return {
         id: p.id || `pz_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
         id_pieza: p.id_pieza || null,
@@ -425,7 +426,7 @@ function normalizarPieza(p, idx = 0) {
         cantidad: cant,
         unidad_medida: p.unidad_medida || p.unidad || 'PZ',
         precio_unitario: pu,
-        costo_total: p.costo_total !== undefined ? Number(p.costo_total) : (pu * cant),
+        costo_total: costoCalculado,
         rack: p.rack || '',
         nivel: p.nivel || '',
         stock_disponible: p.stock_disponible !== undefined ? Number(p.stock_disponible) : (p.stock_actual !== undefined ? Number(p.stock_actual) : 0),
@@ -478,51 +479,46 @@ function saveAlmacenData(data) {
 }
 
 // =========================================================================
-// SINCRONIZADOR BIDIRECCIONAL EN TIEMPO REAL: TALLER PRO <-> ALMACÉN CESS
+// SINCRONIZADOR BIDIRECCIONAL EN TIEMPO REAL: TALLER PRO <-> ALMACÉN
 // =========================================================================
 // =========================================================================
 // HELPER INTELIGENTE: PRECIOS UNITARIOS Y COSTOS DE REFACCIONES DE ALMACÉN
 // =========================================================================
 function getPiezaPrecioUnitario(m, catalog) {
-    if (m && m.precio_unitario !== undefined && m.precio_unitario !== null && m.precio_unitario !== '' && !isNaN(Number(m.precio_unitario)) && Number(m.precio_unitario) > 0) {
-        return Number(m.precio_unitario);
-    }
-    if (m && m.costo_unitario !== undefined && m.costo_unitario !== null && m.costo_unitario !== '' && !isNaN(Number(m.costo_unitario)) && Number(m.costo_unitario) > 0) {
-        return Number(m.costo_unitario);
-    }
-    if (!catalog || typeof catalog !== 'object') return 0;
+    if (!catalog || typeof catalog !== 'object') catalog = {};
 
-    // 1. Búsqueda por ID exacto en catálogo
-    if (m.id_pieza && catalog[m.id_pieza]) {
+    // 1. Obtener precio de catálogo
+    let catPrice = 0;
+    if (m && m.id_pieza && catalog[m.id_pieza]) {
         const item = catalog[m.id_pieza];
-        const p = Number(item.precio_unitario || item.costo || item.costo_unitario || item.precio || 0);
-        if (p > 0) return p;
+        catPrice = Number(item.precio_unitario || item.costo || item.costo_unitario || item.precio || 0);
     }
-
-    // 2. Búsqueda por Número de Parte limpio
-    if (m.numero_parte) {
+    if (!catPrice && m && m.numero_parte) {
         const np = String(m.numero_parte).trim().toLowerCase();
         if (np) {
             const item = Object.values(catalog).find(c => c.numero_parte && String(c.numero_parte).trim().toLowerCase() === np);
-            if (item) {
-                const p = Number(item.precio_unitario || item.costo || item.costo_unitario || item.precio || 0);
-                if (p > 0) return p;
-            }
+            if (item) catPrice = Number(item.precio_unitario || item.costo || item.costo_unitario || item.precio || 0);
         }
     }
-
-    // 3. Búsqueda por Descripción exacta
-    if (m.descripcion) {
+    if (!catPrice && m && m.descripcion) {
         const desc = String(m.descripcion).trim().toLowerCase();
         if (desc) {
             const item = Object.values(catalog).find(c => c.descripcion && String(c.descripcion).trim().toLowerCase() === desc);
-            if (item) {
-                const p = Number(item.precio_unitario || item.costo || item.costo_unitario || item.precio || 0);
-                if (p > 0) return p;
-            }
+            if (item) catPrice = Number(item.precio_unitario || item.costo || item.costo_unitario || item.precio || 0);
         }
     }
 
+    const puMov = Number(m && m.precio_unitario !== undefined && m.precio_unitario !== null && m.precio_unitario !== '' && !isNaN(Number(m.precio_unitario)) ? m.precio_unitario : 0);
+    const cuMov = Number(m && m.costo_unitario !== undefined && m.costo_unitario !== null && m.costo_unitario !== '' && !isNaN(Number(m.costo_unitario)) ? m.costo_unitario : 0);
+    const movPrice = puMov > 0 ? puMov : cuMov;
+
+    // Corrección para error de coma decimal (ej. 1.327 en vez de 1327)
+    if (catPrice >= 100 && movPrice > 0 && movPrice < 10 && (catPrice / movPrice > 500)) {
+        return catPrice;
+    }
+
+    if (movPrice > 0) return movPrice;
+    if (catPrice > 0) return catPrice;
     return 0;
 }
 
@@ -549,16 +545,20 @@ function sincronizarFoliosConAlmacen(origen = 'Watcher Almacén') {
         const uIdClean = String(unidad.id || '').trim().toUpperCase();
         const uNumClean = uIdClean.replace(/^0+/, '');
 
-        // Buscar movimientos por folio Y por unidad_camion
+        // Buscar movimientos por folio (si tiene folio asignado) O por unidad (si aún no tiene folio)
         const movs = movimientos.filter(m => {
             if (m.anulado || (m.tipo && m.tipo !== 'S' && m.tipo !== 'E/S')) return false;
             const mFolio = String(m.folio || '').trim();
             const mUnidad = String(m.unidad_camion || '').trim().toUpperCase();
             const mUnidadClean = mUnidad.replace(/^0+/, '');
 
-            const matchFolio = folioBuscado && mFolio && mFolio === folioBuscado;
-            const matchUnidad = uIdClean && mUnidad && (mUnidad === uIdClean || (uNumClean && mUnidadClean === uNumClean));
-            return matchFolio || matchUnidad;
+            if (folioBuscado) {
+                // Si la unidad tiene folio asignado, SOLO vincular movimientos de ESE folio específico
+                return mFolio && mFolio === folioBuscado;
+            } else {
+                // Si no tiene folio, buscar por unidad
+                return uIdClean && mUnidad && (mUnidad === uIdClean || (uNumClean && mUnidadClean === uNumClean));
+            }
         });
 
         const movsMap = {};
@@ -571,14 +571,14 @@ function sincronizarFoliosConAlmacen(origen = 'Watcher Almacén') {
 
         const piezasActualizadas = movsUnicos.map((m, idx) => {
             const itemCat = catalog[m.id_pieza] || Object.values(catalog).find(c => c.numero_parte && c.numero_parte === m.numero_parte) || {};
-            const pu = getPiezaPrecioUnitario(m, catalog);
+            const pu = Math.round(getPiezaPrecioUnitario(m, catalog) * 100) / 100;
             const cant = Number(m.cantidad) || 1;
-            const total = pu * cant;
-            nuevoCostoRefacciones += total;
+            const total = Math.round(pu * cant * 100) / 100;
+            nuevoCostoRefacciones = Math.round((nuevoCostoRefacciones + total) * 100) / 100;
 
             const tipoTrabajo = m.tipo_trabajo || clasificarPiezaPreventivoOCorrectivo(m.descripcion, m.numero_parte);
-            if (tipoTrabajo === 'preventivo') nuevoCostoPreventivo += total;
-            else nuevoCostoCorrectivo += total;
+            if (tipoTrabajo === 'preventivo') nuevoCostoPreventivo = Math.round((nuevoCostoPreventivo + total) * 100) / 100;
+            else nuevoCostoCorrectivo = Math.round((nuevoCostoCorrectivo + total) * 100) / 100;
 
             return {
                 id: m.id || `pz_alm_${Date.now()}_${idx}`,
@@ -608,7 +608,7 @@ function sincronizarFoliosConAlmacen(origen = 'Watcher Almacén') {
             const uIdClean = String(unidad.id || '').trim().toUpperCase();
             const uNumClean = uIdClean.replace(/^0+/, '');
 
-            // Si no tiene folio asignado, autodetectar si en almacén se despacharon refacciones con folio a esta unidad
+            // Si no tiene folio asignado, autodetectar si en almacén se despacharon refacciones con folio a esta unidad (el más reciente, orden descendente)
             if (!unidad.folio_almacen) {
                 const movConFolio = movimientos.find(m => {
                     if (m.anulado || (m.tipo && m.tipo !== 'S')) return false;
@@ -625,19 +625,44 @@ function sincronizarFoliosConAlmacen(origen = 'Watcher Almacén') {
             const folioBuscado = String(unidad.folio_almacen || '').trim();
             if (!folioBuscado && !uIdClean) return;
 
-            const { piezasActualizadas, nuevoCostoRefacciones, nuevoCostoPreventivo, nuevoCostoCorrectivo } = procesarPiezasParaUnidad(unidad, folioBuscado);
+            let { piezasActualizadas, nuevoCostoRefacciones, nuevoCostoPreventivo, nuevoCostoCorrectivo } = procesarPiezasParaUnidad(unidad, folioBuscado);
             if (piezasActualizadas.length === 0 && !folioBuscado) return;
 
             const costoPrevio = Number(unidad.costo_refacciones) || 0;
             const cantPrevias = Array.isArray(unidad.piezas) ? unidad.piezas.length : 0;
 
-            if (Math.abs(costoPrevio - nuevoCostoRefacciones) > 0.01 || cantPrevias !== piezasActualizadas.length || !unidad.tipo_procedimiento) {
+            // Conservar ÚNICAMENTE piezas o servicios verdaderamente externos (orden de compra, servicio externo, o mano de obra)
+            // Descartar piezas viejas con folios que no coincidan con folioBuscado
+            const piezasExternasPrevias = (Array.isArray(unidad.piezas) ? unidad.piezas : []).filter(p => {
+                if (p.folio_almacen && folioBuscado && String(p.folio_almacen).trim() !== folioBuscado) return false;
+                if (p.es_servicio || p.tipo_item === 'SERVICIO') return true;
+                if (p.id_pieza && (p.id_pieza.startsWith('servicios_externos') || p.id_pieza.startsWith('externo') || p.id_pieza === 'SERVICIO')) return true;
+                if (p.proveedor_oc || p.folio_oc) return true;
+                return false;
+            }).filter(pe => {
+                // Evitar duplicar si el servicio externo ya vino en piezasActualizadas
+                return !piezasActualizadas.some(pa => pa.id === pe.id || (pa.id_pieza && pa.id_pieza === pe.id_pieza && pa.descripcion === pe.descripcion));
+            });
+
+            const piezasCombinadas = [...piezasActualizadas];
+            let costoExternasExtra = 0;
+            piezasExternasPrevias.forEach(pe => {
+                piezasCombinadas.push(pe);
+                const c = Math.round((Number(pe.costo_total) || (Number(pe.cantidad || 1) * Number(pe.precio_unitario || 0))) * 100) / 100;
+                costoExternasExtra = Math.round((costoExternasExtra + c) * 100) / 100;
+                if (pe.tipo_trabajo === 'preventivo') nuevoCostoPreventivo = Math.round((nuevoCostoPreventivo + c) * 100) / 100;
+                else nuevoCostoCorrectivo = Math.round((nuevoCostoCorrectivo + c) * 100) / 100;
+            });
+
+            const costoTotalRefaccionesFinal = Math.round((nuevoCostoRefacciones + costoExternasExtra) * 100) / 100;
+
+            if (Math.abs(costoPrevio - costoTotalRefaccionesFinal) > 0.01 || cantPrevias !== piezasCombinadas.length || !unidad.tipo_procedimiento) {
                 cambios = true;
-                unidad.costo_refacciones = nuevoCostoRefacciones;
-                unidad.costo_preventivo = nuevoCostoPreventivo;
-                unidad.costo_correctivo = nuevoCostoCorrectivo;
-                unidad.piezas = piezasActualizadas;
-                unidad.costo = (Number(unidad.costo_mano_obra) || 0) + (Number(unidad.costo_externo) || 0) + nuevoCostoRefacciones;
+                unidad.costo_refacciones = costoTotalRefaccionesFinal;
+                unidad.costo_preventivo = Math.round(nuevoCostoPreventivo * 100) / 100;
+                unidad.costo_correctivo = Math.round(nuevoCostoCorrectivo * 100) / 100;
+                unidad.piezas = piezasCombinadas;
+                unidad.costo = Math.round(((Number(unidad.costo_mano_obra) || 0) + (Number(unidad.costo_externo) || 0) + costoTotalRefaccionesFinal) * 100) / 100;
 
                 // Clasificar procedimiento de la unidad si no fue fijado manualmente
                 if (!unidad.tipo_procedimiento || unidad.tipo_procedimiento === 'general') {
@@ -686,6 +711,97 @@ function sincronizarFoliosConAlmacen(origen = 'Watcher Almacén') {
             });
         }
     }
+
+    try {
+        sincronizarRemolquesConAlmacen(origen);
+    } catch(eRem) {}
+}
+
+// Sincronización dinámica de Cajas y Remolques con Almacén
+function sincronizarRemolquesConAlmacen(origen = 'Sistema') {
+    const almacenData = getAlmacenData();
+    const movimientos = almacenData.movimientos || [];
+    const catalog = almacenData.catalog || {};
+    let remolques = getRemolques();
+    let huboCambios = false;
+
+    remolques.forEach(r => {
+        const rIdClean = String(r.id || '').trim().toUpperCase();
+        let folioBuscado = String(r.folio_almacen || '').trim();
+
+        // Autodetectar si en almacén se despacharon refacciones para este remolque (el más reciente)
+        if (!folioBuscado) {
+            const mov = movimientos.find(m => {
+                if (m.anulado || (m.tipo && m.tipo !== 'S')) return false;
+                const mU = String(m.unidad_camion || '').trim().toUpperCase();
+                return mU === rIdClean && m.folio && String(m.folio).trim();
+            });
+            if (mov) {
+                r.folio_almacen = String(mov.folio).trim();
+                folioBuscado = r.folio_almacen;
+                huboCambios = true;
+            }
+        }
+
+        if (!folioBuscado && !rIdClean) return;
+
+        // Buscar movimientos por folio específico o por id de remolque
+        const movs = movimientos.filter(m => {
+            if (m.anulado || (m.tipo && m.tipo !== 'S' && m.tipo !== 'E/S')) return false;
+            const mFolio = String(m.folio || '').trim();
+            const mUnidad = String(m.unidad_camion || '').trim().toUpperCase();
+            if (folioBuscado) {
+                return mFolio && mFolio === folioBuscado;
+            } else {
+                return rIdClean && mUnidad && mUnidad === rIdClean;
+            }
+        });
+
+        const movsMap = {};
+        movs.forEach(m => { if (m.id) movsMap[m.id] = m; });
+        const movsUnicos = Object.values(movsMap);
+
+        let nuevoCostoRefacciones = 0;
+        const piezasActualizadas = movsUnicos.map((m, idx) => {
+            const itemCat = catalog[m.id_pieza] || Object.values(catalog).find(c => c.numero_parte && c.numero_parte === m.numero_parte) || {};
+            const pu = Math.round(getPiezaPrecioUnitario(m, catalog) * 100) / 100;
+            const cant = Number(m.cantidad) || 1;
+            const total = Math.round(pu * cant * 100) / 100;
+            nuevoCostoRefacciones = Math.round((nuevoCostoRefacciones + total) * 100) / 100;
+
+            return {
+                id: m.id || `pz_rem_${Date.now()}_${idx}`,
+                id_pieza: m.id_pieza,
+                numero_parte: m.numero_parte || itemCat.numero_parte || '',
+                descripcion: m.descripcion || itemCat.descripcion || 'Refacción Remolque',
+                marca: m.marca || itemCat.marca || '',
+                cantidad: cant,
+                unidad_medida: m.unidad || itemCat.unidad || 'PZ',
+                precio_unitario: pu,
+                costo_total: total,
+                folio_almacen: m.folio || folioBuscado || r.folio_almacen || '',
+                solicitante: m.solicitante || 'Almacén',
+                estado: 'RECIBIDA_TALLER',
+                fecha_recepcion: m.fecha || new Date().toISOString().slice(0, 10),
+                hora_recepcion: m.hora || ''
+            };
+        });
+
+        const costoPrevio = Number(r.costo_refacciones) || 0;
+        const cantPrevia = Array.isArray(r.piezas) ? r.piezas.length : 0;
+
+        if (Math.abs(costoPrevio - nuevoCostoRefacciones) > 0.01 || cantPrevia !== piezasActualizadas.length) {
+            huboCambios = true;
+            r.costo_refacciones = nuevoCostoRefacciones;
+            r.piezas = piezasActualizadas;
+            r.costo = nuevoCostoRefacciones;
+        }
+    });
+
+    if (huboCambios) {
+        saveRemolques(remolques);
+    }
+    return huboCambios;
 }
 
 // Observador continuo de cambios físicos en almacen_datos.json
@@ -750,6 +866,15 @@ function broadcastSSE(type, payload = {}) {
 
 function saveUnidades(unidades, autor = 'Sistema') {
     if (Array.isArray(unidades)) {
+        // PROTECCIÓN ESTRICTA: Filtrar cualquier unidad previamente archivada/liberada para evitar resurrecciones
+        const archivadas = getUnidadesArchivadas();
+        const archivadasSet = new Set(archivadas.map(a => String(a.id).trim().toUpperCase()));
+        unidades = unidades.filter(u => {
+            if (!u || !u.id) return false;
+            const k = String(u.id).trim().toUpperCase();
+            return !archivadasSet.has(k) && !u.archivada;
+        });
+
         // Garantizar unicidad estricta por ID (evitar duplicados entre columnas)
         const mapa = new Map();
         unidades.forEach(u => {
@@ -776,6 +901,12 @@ function saveUnidades(unidades, autor = 'Sistema') {
         unidades = Array.from(mapa.values());
 
         unidades.forEach(u => {
+            if (u.costo !== undefined) u.costo = Math.round((Number(u.costo) || 0) * 100) / 100;
+            if (u.costo_refacciones !== undefined) u.costo_refacciones = Math.round((Number(u.costo_refacciones) || 0) * 100) / 100;
+            if (u.costo_preventivo !== undefined) u.costo_preventivo = Math.round((Number(u.costo_preventivo) || 0) * 100) / 100;
+            if (u.costo_correctivo !== undefined) u.costo_correctivo = Math.round((Number(u.costo_correctivo) || 0) * 100) / 100;
+            if (u.costo_mano_obra !== undefined) u.costo_mano_obra = Math.round((Number(u.costo_mano_obra) || 0) * 100) / 100;
+            if (u.costo_externo !== undefined) u.costo_externo = Math.round((Number(u.costo_externo) || 0) * 100) / 100;
             if (Array.isArray(u.piezas) && u.piezas.length > 0) {
                 u.piezas = u.piezas.map((p, idx) => normalizarPieza(p, idx)).filter(Boolean);
             }
@@ -1283,6 +1414,38 @@ app.post('/api/unidad/:id/liberar', (req, res) => {
     }
     saveUnidadesArchivadas(archivadas);
 
+    // CANDADO 2: Marcar liberación en Almacén y verificar salidas registradas
+    let salidasAlmacenCount = 0;
+    try {
+        const alm = getAlmacenData();
+        const movsSalida = (alm.movimientos || []).filter(m => String(m.folio || '').trim() === folioFinal && !m.anulado && m.tipo === 'S');
+        salidasAlmacenCount = movsSalida.length;
+
+        if (!Array.isArray(alm.folios_taller)) alm.folios_taller = [];
+        let ft = alm.folios_taller.find(f => String(f.folio || '').trim() === folioFinal);
+        if (!ft) {
+            ft = {
+                folio: folioFinal,
+                unidad: unitId,
+                solicitante: 'Taller CESS',
+                motivo: motivo || 'Salida de taller / Liberada a viaje',
+                fecha: fechaSalida,
+                hora: horaSalida,
+                timestamp: new Date().toISOString()
+            };
+            alm.folios_taller.push(ft);
+        }
+        ft.estado_folio = 'LIBERADO';
+        ft.estado_taller = 'listo';
+        ft.fecha_liberacion = fechaSalida;
+        ft.hora_liberacion = horaSalida;
+        ft.liberado_por = 'Taller / Salida a Viaje';
+        ft.salidas_count = salidasAlmacenCount;
+        saveAlmacenData(alm);
+    } catch (eAlm) {
+        console.error('Error registrando liberación en almacén:', eAlm);
+    }
+
     // Retirar del tablero activo
     unidades.splice(idx, 1);
     saveUnidades(unidades);
@@ -1291,6 +1454,10 @@ app.post('/api/unidad/:id/liberar', (req, res) => {
     try {
         sincronizarFoliosConAlmacen(`Salida Unidad ${unitId} con Orden #${folioFinal}`);
     } catch(e) {}
+
+    // Notificar en tiempo real a todos los clientes (SSE) para retirar la tarjeta de pantalla
+    broadcastSSE('unit_released', { unitId, folio: folioFinal, timestamp: Date.now() });
+    broadcastSSE('units_updated', { units: unidades, autor: `Salida Unidad ${unitId}`, count: unidades.length });
 
     // Registrar en movimientos de jornada
     try {
@@ -3239,6 +3406,7 @@ app.get('/api/almacen/folio/:folio', (req, res) => {
         folio: folioBuscado,
         count: items.length,
         costoTotal,
+        costo_total: costoTotal,
         items,
         unidad_camion: items[0]?.unidad_camion || null,
         solicitante: items[0]?.solicitante || null,
@@ -3291,17 +3459,18 @@ app.post('/api/unidad/:id/vincular-folio', (req, res) => {
     });
 
     unidad.folio_almacen = String(folio).trim();
-    unidad.costo_refacciones = costoRefacciones;
-    if (!Array.isArray(unidad.piezas)) unidad.piezas = [];
 
-    // Agregar piezas sin duplicar por id_pieza y folio
-    piezasSurtidas.forEach(np => {
-        const yaExiste = unidad.piezas.some(p => p.id_pieza === np.id_pieza && p.folio_almacen === folio);
-        if (!yaExiste) unidad.piezas.push(np);
-    });
+    // Conservar servicios externos y piezas manuales previas (no piezas viejas de otros folios de almacén)
+    const piezasExternas = (Array.isArray(unidad.piezas) ? unidad.piezas : []).filter(p => 
+        p.es_servicio || p.tipo_item === 'SERVICIO' || (p.id_pieza && (p.id_pieza.startsWith('servicios_externos') || p.id_pieza.startsWith('externo') || p.id_pieza === 'SERVICIO')) || p.proveedor_oc || p.folio_oc
+    );
+    const costoExternas = Math.round(piezasExternas.reduce((s, p) => s + (Number(p.costo_total) || (Number(p.cantidad || 1) * Number(p.precio_unitario || 0))), 0) * 100) / 100;
+
+    unidad.piezas = [...piezasExternas, ...piezasSurtidas];
+    unidad.costo_refacciones = Math.round((costoRefacciones + costoExternas) * 100) / 100;
 
     // Actualizar costo total de la unidad
-    unidad.costo = (Number(unidad.costo_mano_obra) || 0) + costoRefacciones;
+    unidad.costo = Math.round(((Number(unidad.costo_mano_obra) || 0) + (Number(unidad.costo_externo) || 0) + unidad.costo_refacciones) * 100) / 100;
 
     const desc = `Vinculado Folio Almacén #${folio}: ${piezasSurtidas.length} refacciones ($${costoRefacciones.toLocaleString()} MXN)`;
     if (!Array.isArray(unidad.historial)) unidad.historial = [];
@@ -3413,6 +3582,126 @@ app.post('/api/unidad/:id/sincronizar-almacen', (req, res) => {
     const unidad = unidades.find(u => String(u.id).trim() === unitId) || archivadas.find(u => String(u.id).trim() === unitId);
     if (!unidad) return res.status(404).json({ error: 'Unidad no encontrada' });
     res.json({ success: true, unidad });
+});
+
+// --- CONSULTAR FOLIOS DISPONIBLES O EXISTENTES EN ALMACÉN PARA UNA UNIDAD O GENERAL ---
+app.get('/api/almacen/folios-disponibles', (req, res) => {
+    const uTarget = String(req.query.unidad || '').trim().toUpperCase();
+    const uClean = uTarget.replace(/^0+/, '');
+
+    const almacenData = getAlmacenData();
+    const movimientos = almacenData.movimientos || [];
+    const catalog = almacenData.catalog || {};
+    const foliosTaller = almacenData.folios_taller || [];
+
+    const foliosMap = new Map();
+
+    movimientos.forEach(m => {
+        if (m.anulado || (m.tipo && m.tipo !== 'S' && m.tipo !== 'E/S')) return;
+        const fol = String(m.folio || '').trim();
+        if (!fol) return;
+
+        const mU = String(m.unidad_camion || '').trim().toUpperCase();
+        const mUClean = mU.replace(/^0+/, '');
+        const coincideUnidad = !uTarget || (mU && (mU === uTarget || (uClean && mUClean === uClean)));
+
+        if (!foliosMap.has(fol)) {
+            foliosMap.set(fol, {
+                folio: fol,
+                unidad: m.unidad_camion || '',
+                coincide_unidad: Boolean(coincideUnidad),
+                count: 0,
+                costo_total: 0,
+                costoTotal: 0,
+                fecha: m.fecha || '',
+                solicitante: m.solicitante || '',
+                items: []
+            });
+        }
+
+        const fObj = foliosMap.get(fol);
+        const pu = getPiezaPrecioUnitario(m, catalog);
+        const cant = Number(m.cantidad) || 1;
+        const total = pu * cant;
+
+        fObj.count += cant;
+        fObj.costo_total += total;
+        fObj.costoTotal += total;
+        if (m.fecha && (!fObj.fecha || m.fecha > fObj.fecha)) fObj.fecha = m.fecha;
+        if (m.solicitante && !fObj.solicitante) fObj.solicitante = m.solicitante;
+        if (coincideUnidad) fObj.coincide_unidad = true;
+        if (!fObj.unidad && m.unidad_camion) fObj.unidad = m.unidad_camion;
+
+        fObj.items.push({
+            id_pieza: m.id_pieza,
+            descripcion: m.descripcion || 'Refacción',
+            numero_parte: m.numero_parte || '',
+            cantidad: cant,
+            precio_unitario: pu,
+            costo_total: total
+        });
+    });
+
+    foliosTaller.forEach(ft => {
+        const fol = String(ft.folio || '').trim();
+        if (!fol) return;
+        const ftU = String(ft.unidad || '').trim().toUpperCase();
+        const ftUClean = ftU.replace(/^0+/, '');
+        const coincideUnidad = !uTarget || (ftU && (ftU === uTarget || (uClean && ftUClean === uClean)));
+
+        if (!foliosMap.has(fol)) {
+            foliosMap.set(fol, {
+                folio: fol,
+                unidad: ft.unidad || '',
+                coincide_unidad: Boolean(coincideUnidad),
+                count: 0,
+                costo_total: 0,
+                costoTotal: 0,
+                fecha: ft.fecha || '',
+                solicitante: ft.solicitante || '',
+                motivo: ft.motivo || '',
+                items: []
+            });
+        }
+    });
+
+    let lista = Array.from(foliosMap.values());
+    if (uTarget) {
+        lista.sort((a, b) => {
+            if (a.coincide_unidad && !b.coincide_unidad) return -1;
+            if (!a.coincide_unidad && b.coincide_unidad) return 1;
+            return (b.fecha || '').localeCompare(a.fecha || '');
+        });
+    } else {
+        lista.sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''));
+    }
+
+    res.json({
+        success: true,
+        unidad_consultada: uTarget || null,
+        total: lista.length,
+        folios: lista.slice(0, 30)
+    });
+});
+
+// --- SINCRONIZACIÓN DIRECTA DE ALMACÉN COMPLETO A TALLER ---
+app.post('/api/sync-almacen-data', (req, res) => {
+    const data = req.body;
+    if (!data || typeof data !== 'object') {
+        return res.status(400).json({ error: 'Datos de almacén inválidos' });
+    }
+    try {
+        saveAlmacenData(data);
+        sincronizarFoliosConAlmacen('Sync Directo API Almacén');
+        res.json({
+            success: true,
+            movimientos: (data.movimientos || []).length,
+            catalog: Object.keys(data.catalog || {}).length,
+            timestamp: new Date().toISOString()
+        });
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
 });
 
 // --- LISTAR TODOS LOS FOLIOS DE TALLER ACTIVOS PARA ALMACÉN ---
@@ -3707,14 +3996,14 @@ app.post('/api/unidad/:id/clasificar-pieza', (req, res) => {
 
     let cPrev = 0, cCorr = 0;
     (u.piezas || []).forEach(p => {
-        const cost = Number(p.costo_total) || (Number(p.cantidad || 1) * Number(p.precio_unitario || 0));
-        if (p.tipo_trabajo === 'preventivo') cPrev += cost;
-        else cCorr += cost;
+        const cost = Math.round((Number(p.costo_total) || (Number(p.cantidad || 1) * Number(p.precio_unitario || 0))) * 100) / 100;
+        if (p.tipo_trabajo === 'preventivo') cPrev = Math.round((cPrev + cost) * 100) / 100;
+        else cCorr = Math.round((cCorr + cost) * 100) / 100;
     });
     u.costo_preventivo = cPrev;
     u.costo_correctivo = cCorr;
-    u.costo_refacciones = cPrev + cCorr;
-    u.costo = (Number(u.costo_mano_obra) || 0) + (Number(u.costo_externo) || 0) + u.costo_refacciones;
+    u.costo_refacciones = Math.round((cPrev + cCorr) * 100) / 100;
+    u.costo = Math.round(((Number(u.costo_mano_obra) || 0) + (Number(u.costo_externo) || 0) + u.costo_refacciones) * 100) / 100;
 
     if (!Array.isArray(u.historial)) u.historial = [];
     u.historial.unshift({
@@ -3915,6 +4204,43 @@ app.get('/api/almacen/folio/:folio/detalle', (req, res) => {
 
     const matches = movimientos.filter(m => String(m.folio).trim() === folio && (m.tipo === 'S' || !m.tipo));
     if (matches.length === 0) {
+        // Fallback: buscar en unidades de taller si tienen este folio vinculado
+        const unidades = getUnidades();
+        const archivadas = getUnidadesArchivadas();
+        const uMatch = unidades.find(u => String(u.folio_almacen).trim() === folio) || archivadas.find(u => String(u.folio_almacen).trim() === folio);
+        if (uMatch && Array.isArray(uMatch.piezas) && uMatch.piezas.length > 0) {
+            const items = uMatch.piezas.map((pz, idx) => {
+                const pu = Number(pz.precio_unitario) || 0;
+                const cant = Number(pz.cantidad) || 1;
+                const tot = Number(pz.costo_total) || (pu * cant);
+                return {
+                    id_item: pz.id || 'pz_' + idx,
+                    id_pieza: pz.id_pieza || '',
+                    numero_parte: pz.numero_parte || '--',
+                    descripcion: pz.descripcion || 'Refacción',
+                    marca: pz.marca || '',
+                    cantidad: cant,
+                    precio_unitario: pu,
+                    total_costo: tot,
+                    costo_total: tot,
+                    fecha: pz.fecha_recepcion || '--',
+                    solicitante: pz.solicitante || 'Personal Taller',
+                    unidad: uMatch.id,
+                    tipo_trabajo: pz.tipo_trabajo || 'correctivo'
+                };
+            });
+            const costoTotal = items.reduce((acc, it) => acc + it.total_costo, 0);
+            return res.json({
+                success: true,
+                folio,
+                unidad: uMatch.id,
+                solicitante: 'Personal Taller',
+                fecha: items[0]?.fecha || '--',
+                items,
+                costo_total: costoTotal,
+                costoTotal: costoTotal
+            });
+        }
         return res.status(404).json({ success: false, error: 'Folio no encontrado en Almacén' });
     }
 
@@ -3932,6 +4258,7 @@ app.get('/api/almacen/folio/:folio/detalle', (req, res) => {
             cantidad: cant,
             precio_unitario: pu,
             total_costo: total,
+            costo_total: total,
             fecha: m.fecha || m.fecha_salida || '--',
             solicitante: m.solicitante || m.entregado_a || '--',
             unidad: m.unidad_camion || m.unidad || '--'
@@ -3947,7 +4274,8 @@ app.get('/api/almacen/folio/:folio/detalle', (req, res) => {
         solicitante: matches[0].solicitante || matches[0].entregado_a || '--',
         fecha: matches[0].fecha || matches[0].fecha_salida || '--',
         items,
-        costo_total: costoTotal
+        costo_total: costoTotal,
+        costoTotal: costoTotal
     });
 });
 
@@ -4097,7 +4425,8 @@ app.post('/api/remolque/:id', (req, res) => {
         mecanico: data.mecanico || 'Sin asignar',
         costo: Number(data.costo) || 0,
         sucursal: data.sucursal || 'Apodaca',
-        folio_almacen: data.folio_almacen || '',
+        folio_almacen: data.folio_almacen ? String(data.folio_almacen).trim() : '',
+        fecha: data.fecha || (data.fechaIngreso && data.fechaIngreso.includes('/') ? data.fechaIngreso.split('/').reverse().join('-') : new Date().toISOString().slice(0, 10)),
         fechaIngreso: data.fechaIngreso || new Date().toLocaleDateString('es-MX')
     };
 
@@ -4107,7 +4436,13 @@ app.post('/api/remolque/:id', (req, res) => {
         list.unshift(item);
     }
     saveRemolques(list);
-    res.json({ success: true, remolque: item });
+
+    // Sincronizar inmediatamente refacciones y costos con Almacén
+    try {
+        sincronizarRemolquesConAlmacen(`Guardado Remolque ${remolqueId}`);
+    } catch(e) {}
+
+    res.json({ success: true, remolque: list.find(r => String(r.id).toUpperCase() === remolqueId.toUpperCase()) || item });
 });
 
 app.post('/api/remolque/:id/estado', (req, res) => {
@@ -4136,6 +4471,7 @@ app.get('/api/exportar-excel-remolques', (req, res) => {
         const fechaHoy = getFechaActualISO();
         const rows = remolques.map(r => ({
             'No. Remolque / Caja': r.id,
+            'Fecha Ingreso': r.fechaIngreso || r.fecha || fechaHoy,
             'Tipo de Remolque': r.tipo,
             'Marca / Fabricante': r.marca || '',
             'Año': r.anio || '',
@@ -4146,9 +4482,9 @@ app.get('/api/exportar-excel-remolques', (req, res) => {
             'Avances Técnicos / Notas': r.reporte || '',
             'Mecánico Asignado': r.mecanico || 'Sin asignar',
             'Folio Almacén': r.folio_almacen ? `#${r.folio_almacen}` : 'Sin folio',
-            'Costo Estimado (MXN)': Number(r.costo) || 0,
-            'Patio / Ubicación': r.sucursal || 'Apodaca',
-            'Fecha Ingreso': r.fechaIngreso || ''
+            'Total Refacciones': Array.isArray(r.piezas) ? r.piezas.length : 0,
+            'Costo Refacciones ($ MXN)': (Math.round((Number(r.costo_refacciones || r.costo) || 0) * 100) / 100).toFixed(2),
+            'Patio / Ubicación': r.sucursal || 'Apodaca'
         }));
 
         const wb = xlsx.utils.book_new();

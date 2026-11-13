@@ -2,7 +2,12 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Taller Pro CESS">
+    <link rel="apple-touch-icon" href="./icon.svg">
+    <link rel="apple-touch-icon" sizes="192x192" href="./icon.svg">
     <title>Taller Pro • Control CESS</title>
     <link rel="manifest" href="./manifest.json">
     <link rel="icon" type="image/svg+xml" href="./icon.svg">
@@ -113,6 +118,75 @@
         .custom-scroll::-webkit-scrollbar-thumb { background: #3A3D42; border-radius: 9999px; }
         .custom-scroll::-webkit-scrollbar-thumb:hover { background: var(--color-cess-gold); }
 
+        
+        /* =========================================================================
+           OPTIMIZACIONES EXCLUSIVAS PARA IPHONE Y SMARTPHONES (FIELD & PATIO CESS)
+           ========================================================================= */
+        /* Prevenir auto-zoom molesto en iPhone al enfocar inputs */
+        @media (max-width: 768px) {
+            input, select, textarea {
+                font-size: 16px !important;
+            }
+            body {
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+            /* Modales responsivos estilo iOS Bottom Sheet en celulares */
+            .fixed.inset-0.z-50 {
+                align-items: flex-end !important;
+                padding: 0 !important;
+            }
+            .fixed.inset-0.z-50 > div {
+                border-bottom-left-radius: 0 !important;
+                border-bottom-right-radius: 0 !important;
+                border-top-left-radius: 1.5rem !important;
+                border-top-right-radius: 1.5rem !important;
+                max-height: 88dvh !important;
+                max-height: 88vh !important;
+                overflow-y: auto !important;
+                padding-bottom: calc(1.75rem + env(safe-area-inset-bottom)) !important;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+            /* Tablero Kanban en celulares: Vista Enfocada de 1 Columna (Full Width) */
+            .kanban-container {
+                display: block !important;
+                padding-left: 0.5rem !important;
+                padding-right: 0.5rem !important;
+                padding-top: 0.25rem !important;
+                padding-bottom: calc(6.5rem + env(safe-area-inset-bottom)) !important;
+                height: auto !important;
+                overflow-x: hidden !important;
+            }
+            .kanban-column {
+                min-width: 100% !important;
+                width: 100% !important;
+                height: auto !important;
+                max-height: calc(100dvh - 210px);
+                max-height: calc(100vh - 210px);
+                padding: 0.75rem !important;
+                border-radius: 1.25rem !important;
+            }
+            .kanban-column.hidden-on-mobile {
+                display: none !important;
+            }
+            /* Botones de tarjetas táctiles de mínimo 40px para patio */
+            .card button {
+                min-height: 38px;
+            }
+            .card {
+                padding: 1rem !important;
+                margin-bottom: 0.75rem;
+                touch-action: pan-y;
+            }
+            /* Vistas principales con espacio para dock inferior */
+            #vista-tablero, #vista-preventivos, #vista-rescates, #vista-remolques, #vista-historial, #vista-bitacoras, #vista-analitica {
+                padding-bottom: calc(5.5rem + env(safe-area-inset-bottom)) !important;
+            }
+        }
+        * {
+            -webkit-overflow-scrolling: touch;
+        }
+
         /* Estilo Botón Oro CESS */
         .btn-cess-gold {
             background-color: var(--color-cess-gold);
@@ -154,44 +228,53 @@
                 </div>
             </div>
 
-            <!-- Botones de Acción Global -->
+            <!-- Botones de Acción Global (Optimizados para Móvil y Desktop) -->
             <div class="flex items-center gap-1.5 sm:gap-2">
-                <!-- BOTÓN DE SINCRONIZACIÓN EN VIVO (1 TOQUE) -->
-                <button onclick="forzarSincronizacionManual()" id="btn-sincronizar-vivo" class="bg-[#282A2E] hover:bg-[#3A3D42] active:bg-[#141518] text-slate-200 border border-[#3A3D42] hover:border-[#C59B27] px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold shadow flex items-center gap-1.5 transition" title="Actualizar y sincronizar cambios en vivo ahora mismo">
+                <!-- BOTÓN DE SINCRONIZACIÓN EN VIVO (1 TOQUE EN CELULAR Y PC) -->
+                <button onclick="forzarSincronizacionManual()" id="btn-sincronizar-vivo" class="bg-[#282A2E] hover:bg-[#3A3D42] active:bg-[#141518] text-slate-200 border border-[#3A3D42] hover:border-[#C59B27] px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold shadow flex items-center gap-1.5 transition active:scale-95" title="Actualizar y sincronizar cambios en vivo ahora mismo">
                     <i class="fa-solid fa-arrows-rotate text-[#C59B27]" id="icono-sync-rotar"></i>
                     <span class="hidden sm:inline" id="texto-sync-btn">Sincronizar</span>
                 </button>
 
-                <!-- BOTÓN DESTACADO: COMPARTIR -->
-                <button onclick="abrirModalCompartir()" class="btn-cess-gold px-3 sm:px-3.5 py-1.5 rounded-xl text-xs flex items-center gap-1.5 shadow-lg shadow-[#C59B27]/20 transition" title="Compartir tablero y bitácora en vivo">
+                <!-- BOTÓN DESTACADO: COMPARTIR (DESKTOP / TABLET) -->
+                <button onclick="abrirModalCompartir()" class="hidden sm:flex btn-cess-gold px-3 sm:px-3.5 py-1.5 rounded-xl text-xs items-center gap-1.5 shadow-lg shadow-[#C59B27]/20 transition" title="Compartir tablero y bitácora en vivo">
                     <i class="fa-solid fa-share-nodes text-sm"></i>
                     <span class="font-black">Compartir</span>
                 </button>
 
-                <!-- BOTÓN INSTALAR APP (CELULAR O PC) -->
-                <button onclick="abrirModalInstalarJefe()" class="bg-[#282A2E] hover:bg-[#3A3D42] text-slate-200 border border-[#3A3D42] px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold shadow flex items-center gap-1.5 transition" title="Instalar aplicación en celular (Android / iOS) o computadora">
+                <!-- BOTÓN INSTALAR APP (DESKTOP) -->
+                <button onclick="abrirModalInstalarJefe()" class="hidden md:flex bg-[#282A2E] hover:bg-[#3A3D42] text-slate-200 border border-[#3A3D42] px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold shadow items-center gap-1.5 transition" title="Instalar aplicación en celular o computadora">
                     <i class="fa-solid fa-mobile-screen-button text-[#C59B27]"></i>
-                    <span class="hidden md:inline">Instalar App</span>
+                    <span class="hidden lg:inline">Instalar App</span>
                 </button>
 
-                <button onclick="abrirModalNuevaUnidad()" class="bg-[#282A2E] hover:bg-[#3A3D42] text-white border border-[#3A3D42] px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold shadow flex items-center gap-1.5 transition">
-                    <i class="fa-solid fa-plus text-[#C59B27]"></i> <span class="hidden sm:inline">Nueva</span> Unidad
+                <!-- BOTÓN NUEVA UNIDAD (DESKTOP) -->
+                <button onclick="abrirModalNuevaUnidad()" class="hidden sm:flex bg-[#282A2E] hover:bg-[#3A3D42] text-white border border-[#3A3D42] px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold shadow items-center gap-1.5 transition">
+                    <i class="fa-solid fa-plus text-[#C59B27]"></i> <span>Nueva Unidad</span>
                 </button>
-                <button onclick="abrirModalAsistenteIA()" class="bg-[#282A2E] hover:bg-[#3A3D42] text-white border border-[#3A3D42] p-2 sm:px-3 sm:py-1.5 rounded-xl text-xs font-bold shadow flex items-center gap-1.5 transition" title="Consultas Gerenciales IA">
-                    <i class="fa-solid fa-brain text-purple-400"></i> <span class="hidden md:inline">IA</span>
+
+                <!-- BOTONES SECUNDARIOS (DESKTOP) -->
+                <button onclick="abrirModalAsistenteIA()" class="hidden md:flex bg-[#282A2E] hover:bg-[#3A3D42] text-white border border-[#3A3D42] p-2 sm:px-3 sm:py-1.5 rounded-xl text-xs font-bold shadow items-center gap-1.5 transition" title="Consultas Gerenciales IA">
+                    <i class="fa-solid fa-brain text-purple-400"></i> <span class="hidden lg:inline">IA</span>
                 </button>
-                <button onclick="abrirModalAlmacen()" class="bg-[#282A2E] hover:bg-[#3A3D42] text-slate-200 border border-[#3A3D42] p-2 sm:px-2.5 rounded-xl text-xs font-bold transition" title="Catálogo de Almacén">
-                    <i class="fa-solid fa-boxes-stacked text-[#C59B27]"></i> <span class="hidden lg:inline">Almacén</span>
+                <button onclick="abrirModalAlmacen()" class="hidden lg:flex bg-[#282A2E] hover:bg-[#3A3D42] text-slate-200 border border-[#3A3D42] p-2 sm:px-2.5 rounded-xl text-xs font-bold transition" title="Catálogo de Almacén">
+                    <i class="fa-solid fa-boxes-stacked text-[#C59B27]"></i> <span class="hidden xl:inline">Almacén</span>
                 </button>
-                <button onclick="abrirModalAjustes()" class="bg-[#282A2E] hover:bg-[#3A3D42] text-slate-400 hover:text-white border border-[#3A3D42] p-2 rounded-xl text-xs transition" title="Ajustes y Sincronización">
+                <button onclick="abrirModalAjustes()" class="hidden md:flex bg-[#282A2E] hover:bg-[#3A3D42] text-slate-400 hover:text-white border border-[#3A3D42] p-2 rounded-xl text-xs transition" title="Ajustes y Sincronización">
                     <i class="fa-solid fa-gear"></i>
+                </button>
+
+                <!-- BOTÓN MENÚ MÓVIL (SÓLO SMARTPHONES): ACCESO RÁPIDO Y CÓMODO -->
+                <button onclick="abrirMenuMovil()" id="btn-header-menu-movil" class="md:hidden bg-[#282A2E] hover:bg-[#3A3D42] active:bg-[#141518] text-slate-200 border border-[#3A3D42] px-2.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition active:scale-95" title="Abrir Menú de Opciones">
+                    <i class="fa-solid fa-bars text-sm text-[#C59B27]"></i>
+                    <span class="text-[11px] font-black">Menú</span>
                 </button>
             </div>
         </div>
     </header>
 
     <!-- BARRA DE NAVEGACIÓN PRINCIPAL: 3 MÓDULOS CLAVE (ESTILO CESS) -->
-    <nav class="bg-[#1E1E1E]/95 border-b border-[#3A3D42] px-3 sm:px-6 py-2 sticky top-[57px] z-20 backdrop-blur shadow-md">
+    <nav class="hidden md:flex bg-[#1E1E1E]/95 border-b border-[#3A3D42] px-3 sm:px-6 py-2 sticky top-[57px] z-20 backdrop-blur shadow-md">
         <div class="max-w-7xl mx-auto flex items-center justify-between gap-2 overflow-x-auto custom-scroll">
             
             <!-- Selector de Pestañas -->
@@ -312,6 +395,28 @@
                 </div>
                 <button onclick="forzarSincronizacionManual()" class="bg-[#282A2E] hover:bg-[#3A3D42] text-white px-4 py-1.5 rounded-lg font-bold border border-[#3A3D42] shrink-0 transition">
                     <i class="fa-solid fa-arrows-rotate mr-1 text-[#C59B27]"></i> Sincronizar Ahora
+                </button>
+            </div>
+        </div>
+
+        <!-- SELECTOR DE COLUMNAS PARA SMARTPHONES (ESTILO iOS SEGMENTED CONTROL) -->
+        <div id="mobile-kanban-tabs" class="md:hidden sticky top-[48px] z-20 bg-[#141518]/95 backdrop-blur-md px-2.5 py-2 border-b border-[#3A3D42] shadow-sm">
+            <div class="grid grid-cols-4 gap-1.5 bg-[#1E1E1E] p-1 rounded-2xl border border-[#3A3D42]">
+                <button type="button" onclick="seleccionarColumnaMovil('considerar')" id="m-tab-considerar" class="m-tab-btn py-2 px-1 rounded-xl text-xs font-bold transition flex flex-col items-center justify-center gap-0.5 text-slate-400 active:scale-95">
+                    <span class="flex items-center gap-1 text-[11px] font-black"><span class="w-2 h-2 rounded-full bg-purple-500"></span> Eval</span>
+                    <span id="m-count-considerar" class="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded-full bg-purple-950/80 text-purple-300 border border-purple-800">0</span>
+                </button>
+                <button type="button" onclick="seleccionarColumnaMovil('mayor')" id="m-tab-mayor" class="m-tab-btn py-2 px-1 rounded-xl text-xs font-bold transition flex flex-col items-center justify-center gap-0.5 text-slate-400 active:scale-95">
+                    <span class="flex items-center gap-1 text-[11px] font-black"><span class="w-2 h-2 rounded-full bg-red-500"></span> Mayor</span>
+                    <span id="m-count-mayor" class="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded-full bg-red-950/80 text-red-300 border border-red-800">0</span>
+                </button>
+                <button type="button" onclick="seleccionarColumnaMovil('proceso')" id="m-tab-proceso" class="m-tab-btn py-2 px-1 rounded-xl text-xs font-black transition flex flex-col items-center justify-center gap-0.5 bg-[#C59B27] text-black shadow-md active:scale-95">
+                    <span class="flex items-center gap-1 text-[11px] font-black"><span class="w-2 h-2 rounded-full bg-black"></span> En Taller</span>
+                    <span id="m-count-proceso" class="text-[10px] font-mono font-black px-1.5 py-0.2 rounded-full bg-black/25 text-black border border-black/20">0</span>
+                </button>
+                <button type="button" onclick="seleccionarColumnaMovil('listo')" id="m-tab-listo" class="m-tab-btn py-2 px-1 rounded-xl text-xs font-bold transition flex flex-col items-center justify-center gap-0.5 text-slate-400 active:scale-95">
+                    <span class="flex items-center gap-1 text-[11px] font-black"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Listas</span>
+                    <span id="m-count-listo" class="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded-full bg-emerald-950/80 text-emerald-300 border border-emerald-800">0</span>
                 </button>
             </div>
         </div>
@@ -938,6 +1043,7 @@
                     <thead class="bg-[#141518] text-slate-400 font-bold border-b border-[#3A3D42] uppercase text-[10px]">
                         <tr>
                             <th class="p-3">No. Caja</th>
+                            <th class="p-3">Fecha Ingreso</th>
                             <th class="p-3">Tipo / Fabricante</th>
                             <th class="p-3">Placas / Año</th>
                             <th class="p-3">Sistema Afectado</th>
@@ -2395,13 +2501,16 @@
                 </div>
 
                 <div>
-                    <label class="block text-[11px] font-bold text-slate-400 mb-1">Defecto Mecánico / Falla Reportada *</label>
-                    <input type="text" id="form-defecto" required placeholder="Ej: Bomba de aceite y cálipers" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none">
+                    <label class="block text-[11px] font-bold text-slate-400 mb-1 flex items-center justify-between">
+                        <span>Defecto Mecánico / Diagnóstico Detallado *</span>
+                        <span class="text-[10px] text-amber-400/90 font-medium">Permite redactar varias líneas</span>
+                    </label>
+                    <textarea id="form-defecto" required rows="4" placeholder="Describe detalladamente todas las fallas, ruidos, códigos de falla o diagnóstico...&#10;Ej:&#10;- Pérdida de potencia en subida&#10;- Sensor de nivel de refrigerante dañado&#10;- Fuga de aire en manguera principal&#10;- Inyectores 2 y 4 con retorno alto" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2.5 text-white text-xs focus:border-[#C59B27] focus:outline-none leading-relaxed"></textarea>
                 </div>
 
                 <div>
-                    <label class="block text-[11px] font-bold text-slate-400 mb-1">Notas / Avances Detallados</label>
-                    <textarea id="form-notas" rows="2" placeholder="Detalle técnico de avance o piezas faltantes..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none"></textarea>
+                    <label class="block text-[11px] font-bold text-slate-400 mb-1">Notas Adicionales / Pruebas</label>
+                    <textarea id="form-notas" rows="2" placeholder="Observaciones adicionales, piezas pendientes o notas para el operador..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none"></textarea>
                 </div>
 
                 <!-- SECCIÓN REFACCIONES & ALMACÉN CESS EN ALTA DE ORDEN -->
@@ -2435,13 +2544,19 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-2">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-400 mb-1">Costo Estimado Total (MXN)</label>
+                        <label class="block text-[11px] font-bold text-slate-400 mb-1 flex items-center gap-1">
+                            <i class="fa-solid fa-receipt text-indigo-400"></i> Folio Almacén (Opcional)
+                        </label>
+                        <input type="text" id="form-folio" placeholder="Ej: 4099" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white font-mono text-xs focus:border-[#C59B27] focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-400 mb-1">Costo Estimado Total</label>
                         <input type="number" id="form-costo" placeholder="0" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-400 mb-1">Fecha Prog. Refacción</label>
+                        <label class="block text-[11px] font-bold text-slate-400 mb-1">Fecha Prog. Entrega</label>
                         <input type="date" id="form-fecha" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none">
                     </div>
                 </div>
@@ -2873,8 +2988,21 @@
 
             <!-- MODO 1: VINCULAR FOLIO EXISTENTE DE ALMACÉN -->
             <div id="panel-vincular-existente" class="flex flex-col gap-3 text-xs">
+                <!-- Folios Detectados en Almacén para esta Unidad -->
+                <div id="seccion-folios-sugeridos" class="flex flex-col gap-1.5 p-2.5 rounded-xl bg-indigo-950/40 border border-indigo-700/60 shadow-inner">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] text-indigo-300 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-sparkles text-[#DFB743]"></i> Folios con piezas detectadas en Almacén:
+                        </span>
+                        <span id="badge-folios-sug-count" class="text-[10px] bg-indigo-900/90 text-indigo-200 px-2 py-0.2 rounded-full font-mono font-bold border border-indigo-600/60">0</span>
+                    </div>
+                    <div id="lista-folios-sugeridos" class="flex flex-col gap-1.5 max-h-36 overflow-y-auto custom-scroll">
+                        <p class="text-slate-400 p-2 text-center italic text-[11px]"><i class="fa-solid fa-spinner fa-spin mr-1 text-indigo-400"></i> Consultando salidas de almacén...</p>
+                    </div>
+                </div>
+
                 <div>
-                    <label class="block font-bold text-slate-300 mb-1">Número de Folio de Salida de Almacén *</label>
+                    <label class="block font-bold text-slate-300 mb-1">O escribe manualmente el Folio *</label>
                     <div class="flex items-center gap-2">
                         <div class="relative flex-1">
                             <span class="absolute left-3 top-2.5 text-slate-500 font-mono font-bold">#</span>
@@ -3154,7 +3282,13 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-3 gap-2">
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    <div>
+                        <label class="block font-bold text-amber-300 mb-1 flex items-center gap-1">
+                            <i class="fa-regular fa-calendar text-[#DFB743]"></i> Fecha Ingreso *
+                        </label>
+                        <input type="date" id="remolque-form-fecha" required class="w-full bg-[#141518] border border-amber-600/60 rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none">
+                    </div>
                     <div>
                         <label class="block font-bold text-slate-400 mb-1">Marca / Fabricante</label>
                         <input type="text" id="remolque-form-marca" placeholder="Utility, Wabash, Fruehauf..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none">
@@ -3204,18 +3338,21 @@
                     <textarea id="remolque-form-reporte" rows="2" placeholder="Piezas desmontadas, pruebas realizadas, pendientes..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none"></textarea>
                 </div>
 
-                <div class="grid grid-cols-3 gap-2">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
                     <div>
                         <label class="block font-bold text-slate-400 mb-1">Mecánico Asignado</label>
                         <input type="text" id="remolque-form-mecanico" placeholder="Ej: Roberto Soto" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none">
                     </div>
-                    <div>
-                        <label class="block font-bold text-slate-400 mb-1">Folio Almacén Vinculado</label>
-                        <input type="text" id="remolque-form-folio" placeholder="Ej: 4051" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none font-mono">
+                    <div class="bg-blue-950/40 border border-blue-600/70 p-2 rounded-xl">
+                        <label class="block font-bold text-blue-300 mb-1 flex items-center justify-between text-xs">
+                            <span class="flex items-center gap-1"><i class="fa-solid fa-receipt text-blue-400"></i> Orden / Folio Almacén</span>
+                            <span class="text-[9px] text-blue-300 font-bold uppercase tracking-wider bg-blue-900/80 px-1 py-0.2 rounded border border-blue-700">Refacciones</span>
+                        </label>
+                        <input type="text" id="remolque-form-folio" placeholder="Ej: 4051 o OM-201" class="w-full bg-[#141518] border border-blue-500/60 rounded-lg p-1.5 text-white font-mono font-bold text-xs focus:border-blue-400 focus:outline-none">
                     </div>
                     <div>
                         <label class="block font-bold text-slate-400 mb-1">Costo Estimado ($ MXN)</label>
-                        <input type="number" id="remolque-form-costo" placeholder="Ej: 3500" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none font-mono">
+                        <input type="number" step="0.01" id="remolque-form-costo" placeholder="Ej: 3500.00" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none font-mono">
                     </div>
                 </div>
 
@@ -3296,9 +3433,10 @@
                         <span class="text-[10px] text-amber-300 font-bold uppercase tracking-wider bg-amber-900/60 px-1.5 py-0.5 rounded border border-amber-700/60">Obligatorio</span>
                     </label>
                     <div class="relative">
-                        <input type="text" id="liberar-unidad-folio" required placeholder="Ej: 4074 o OM-102" class="w-full bg-[#141518] border border-amber-600/70 rounded-xl p-2 text-white font-mono font-bold text-xs focus:border-amber-400 focus:outline-none pl-8 placeholder:text-slate-500">
+                        <input type="text" id="liberar-unidad-folio" required placeholder="Ej: 4077 o OM-102" oninput="verificarEstatusAlmacenParaLiberar(this.value, unidadActiva ? unidadActiva.id : '')" class="w-full bg-[#141518] border border-amber-600/70 rounded-xl p-2 text-white font-mono font-bold text-xs focus:border-amber-400 focus:outline-none pl-8 placeholder:text-slate-500">
                         <i class="fa-solid fa-receipt absolute left-2.5 top-2.5 text-amber-400 text-xs"></i>
                     </div>
+                    <div id="liberar-almacen-status" class="mt-2"></div>
                     <p class="text-[10px] text-slate-300 mt-1 leading-tight">🔒 <b>Candado de seguridad:</b> Permite a Almacén vincular refacciones y costos aun después de que la unidad salga de taller.</p>
                 </div>
 
@@ -3321,6 +3459,17 @@
                 <div>
                     <label class="block font-bold text-slate-400 mb-1">Notas de Cierre y Entrega</label>
                     <textarea id="liberar-unidad-notas" rows="2" placeholder="Detalle de pruebas finales, entrega al operador o pendientes para siguiente viaje..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-cyan-500 focus:outline-none"></textarea>
+                </div>
+
+                <!-- CANDADO 2: CONFIRMACIÓN Y LIBERACIÓN DE SALIDAS EN ALMACÉN -->
+                <div class="bg-emerald-950/30 border border-emerald-600/70 p-2.5 rounded-xl">
+                    <label class="flex items-start gap-2.5 cursor-pointer">
+                        <input type="checkbox" id="liberar-check-almacen" required class="mt-0.5 w-4 h-4 accent-emerald-500 rounded cursor-pointer">
+                        <div class="text-[11px] text-emerald-200">
+                            <span class="font-bold text-emerald-300 block mb-0.5 flex items-center gap-1"><i class="fa-solid fa-clipboard-check text-emerald-400"></i> Candado de Almacén: Salidas y refacciones liberadas *</span>
+                            <span class="text-slate-300">Confirmo que las refacciones, aceites, filtros o servicios de esta orden cuentan con sus salidas procesadas y liberadas en Almacén.</span>
+                        </div>
+                    </label>
                 </div>
 
                 <div class="bg-cyan-950/40 border border-cyan-800/60 p-2.5 rounded-xl text-[11px] text-cyan-200">
@@ -3464,7 +3613,7 @@
         let idArrastrando = null;
         let estadoEdicionRapida = 'proceso';
 
-        const STORAGE_KEY = 'taller_cess_v4';
+        const STORAGE_KEY = 'taller_cess_v5';
 
         // --- 2. INICIALIZACIÓN ---
         async function inicializarAplicacion() {
@@ -3588,6 +3737,16 @@
                                 abrirModalExpediente(unidadActiva.id);
                             }
                             mostrarToast(`📦 Refacciones y costos actualizados desde Almacén`);
+                        } else if (msg.type === 'unit_released') {
+                            const releasedId = String(msg.unitId || msg.id || '').trim();
+                            if (releasedId) {
+                                baseDatos = baseDatos.filter(u => String(u.id).trim() !== releasedId);
+                                guardarDatosLocales(false);
+                                if (vistaActual === 'tablero') renderizarTablero();
+                                actualizarSelectoresUnidades();
+                                cargarContadorUnidadesLiberadas();
+                                mostrarToast(`🚀 Unidad ${releasedId} liberada con Orden #${msg.folio || ''}`);
+                            }
                         } else if (msg.type === 'units_updated') {
                             if (Array.isArray(msg.units)) {
                                 fusionarUnidadesInteligente(msg.units);
@@ -3681,12 +3840,12 @@
             // 2. Fusión protectora con unidades locales
             if (Array.isArray(baseDatos)) {
                 baseDatos.forEach(lu => {
-                    if (!lu || !lu.id) return;
+                    if (!lu || !lu.id || lu.archivada) return;
                     const key = String(lu.id).trim();
 
                     if (!mapa.has(key)) {
-                        // Unidad agregada localmente que aún no está en el servidor: PRESERVARLA al 100%
-                        mapa.set(key, lu);
+                        // Si la unidad fue retirada o liberada en el servidor, no resucitarla
+                        return;
                     } else {
                         // Unidad existe en ambos: FUSIONAR sin perder avances, folios ni datos
                         const su = mapa.get(key);
@@ -3711,22 +3870,27 @@
                             su.folio_almacen = lu.folio_almacen;
                         }
 
-                        // C) REFACCIONES / PIEZAS
-                        const piezasMap = new Map();
-                        const todasPiezas = [...(su.piezas || []), ...(lu.piezas || [])];
-                        todasPiezas.forEach(p => {
-                            if (!p) return;
-                            const pKey = p.id || `${p.id_pieza}_${p.folio_almacen}_${p.descripcion}`;
-                            if (!piezasMap.has(pKey)) {
-                                piezasMap.set(pKey, p);
-                            }
-                        });
-                        su.piezas = Array.from(piezasMap.values());
+                        // C) REFACCIONES / PIEZAS (El servidor central es la fuente oficial)
+                        if (Array.isArray(su.piezas) && su.piezas.length > 0) {
+                            // Si el servidor ya tiene piezas del folio, conservar sólo servicios externos únicos del cliente
+                            const piezasLocalesExternas = (Array.isArray(lu.piezas) ? lu.piezas : []).filter(lp => {
+                                if (!lp) return false;
+                                if (lp.folio_almacen && su.folio_almacen && String(lp.folio_almacen).trim() !== String(su.folio_almacen).trim()) return false;
+                                const esExt = lp.es_servicio || lp.tipo_item === 'SERVICIO' || (lp.id_pieza && (lp.id_pieza.startsWith('servicios_externos') || lp.id_pieza.startsWith('externo') || lp.id_pieza === 'SERVICIO')) || lp.proveedor_oc || lp.folio_oc;
+                                return esExt && !su.piezas.some(sp => sp.id === lp.id || (sp.descripcion === lp.descripcion && sp.id_pieza === lp.id_pieza));
+                            });
+                            su.piezas = [...su.piezas, ...piezasLocalesExternas];
+                        } else if (Array.isArray(lu.piezas) && lu.piezas.length > 0) {
+                            su.piezas = lu.piezas;
+                        } else {
+                            su.piezas = [];
+                        }
 
-                        // D) COSTOS
-                        su.costo_refacciones = Math.max(Number(su.costo_refacciones) || 0, Number(lu.costo_refacciones) || 0);
-                        su.costo_mano_obra = Math.max(Number(su.costo_mano_obra) || 0, Number(lu.costo_mano_obra) || 0);
-                        su.costo = Math.max(Number(su.costo) || 0, Number(lu.costo) || 0, (Number(su.costo_mano_obra) || 0) + (Number(su.costo_refacciones) || 0));
+                        // D) COSTOS (Universalmente exactos con 2 decimales)
+                        su.costo_refacciones = Math.round((Number(su.costo_refacciones !== undefined ? su.costo_refacciones : (lu.costo_refacciones || 0))) * 100) / 100;
+                        su.costo_mano_obra = Math.round((Number(su.costo_mano_obra !== undefined ? su.costo_mano_obra : (lu.costo_mano_obra || 0))) * 100) / 100;
+                        su.costo_externo = Math.round((Number(su.costo_externo !== undefined ? su.costo_externo : (lu.costo_externo || 0))) * 100) / 100;
+                        su.costo = Math.round(((Number(su.costo_mano_obra) || 0) + (Number(su.costo_externo) || 0) + (Number(su.costo_refacciones) || 0)) * 100) / 100;
 
                         // E) HISTORIAL DE EVENTOS
                         const histMap = new Map();
@@ -4052,9 +4216,34 @@
             }
         }
 
+        // --- FORMATO UNIVERSAL DE PESOS MEXICANOS ($ MXN - SIEMPRE 2 DECIMALES) ---
+        function formatearNumero(val, decimals = 2) {
+            if (val === null || val === undefined || val === '' || isNaN(Number(val))) {
+                return (0).toFixed(decimals);
+            }
+            const num = Number(val);
+            return num.toLocaleString('en-US', {
+                minimumFractionDigits: decimals,
+                maximumFractionDigits: decimals
+            });
+        }
+
+        function formatearMoneda(val, conMxn = true) {
+            const formatted = formatearNumero(val, 2);
+            return `$${formatted}${conMxn ? ' MXN' : ''}`;
+        }
+
         // --- 3. GESTOR DE PESTAÑAS Y VISTAS PRINCIPALES ---
         function cambiarVistaPrincipal(vista) {
             vistaActual = vista;
+
+            // Actualizar estado activo en dock móvil
+            const dockTablero = document.getElementById('dock-btn-tablero');
+            const dockPrev = document.getElementById('dock-btn-preventivos');
+            const dockResc = document.getElementById('dock-btn-rescates');
+            if (dockTablero) dockTablero.className = vista === 'tablero' ? 'dock-btn flex-1 flex flex-col items-center gap-0.5 py-1 text-[#DFB743] font-black' : 'dock-btn flex-1 flex flex-col items-center gap-0.5 py-1 text-slate-400 font-medium';
+            if (dockPrev) dockPrev.className = vista === 'preventivos' ? 'dock-btn flex-1 flex flex-col items-center gap-0.5 py-1 text-cyan-400 font-black' : 'dock-btn flex-1 flex flex-col items-center gap-0.5 py-1 text-slate-400 font-medium';
+            if (dockResc) dockResc.className = vista === 'rescates' ? 'dock-btn flex-1 flex flex-col items-center gap-0.5 py-1 text-amber-400 font-black' : 'dock-btn flex-1 flex flex-col items-center gap-0.5 py-1 text-slate-400 font-medium';
             const vistas = {
                 tablero: document.getElementById('vista-tablero'),
                 preventivos: document.getElementById('vista-preventivos'),
@@ -4107,6 +4296,103 @@
         }
 
         // --- 4. VISTA 1: TABLERO KANBAN CON HTML5 DRAG & DROP (4 COLUMNAS) ---
+        
+        // =========================================================================
+        // CONTROLADOR MÓVIL (IPHONE / SMARTPHONES) - TALLER PRO CESS
+        // =========================================================================
+        let columnaMovilActiva = 'proceso'; // Por defecto: En Taller Activo
+
+        function seleccionarColumnaMovil(colKey) {
+            columnaMovilActiva = colKey;
+            actualizarColumnasMovil();
+        }
+
+        function actualizarColumnasMovil() {
+            const esMovil = window.innerWidth < 768;
+            const cols = ['considerar', 'mayor', 'proceso', 'listo'];
+            const tabStyles = {
+                considerar: { active: 'bg-purple-700 text-white font-black shadow-md', dot: 'bg-white' },
+                mayor: { active: 'bg-red-700 text-white font-black shadow-md', dot: 'bg-white' },
+                proceso: { active: 'bg-[#C59B27] text-black font-black shadow-md', dot: 'bg-black' },
+                listo: { active: 'bg-emerald-600 text-white font-black shadow-md', dot: 'bg-white' }
+            };
+
+            cols.forEach(k => {
+                const colEl = document.getElementById('col-' + k);
+                const tabEl = document.getElementById('m-tab-' + k);
+
+                if (esMovil) {
+                    if (k === columnaMovilActiva) {
+                        if (colEl) colEl.classList.remove('hidden-on-mobile');
+                        if (tabEl) {
+                            tabEl.className = `m-tab-btn py-2 px-1 rounded-xl text-xs transition flex flex-col items-center justify-center gap-0.5 active:scale-95 ${tabStyles[k].active}`;
+                        }
+                    } else {
+                        if (colEl) colEl.classList.add('hidden-on-mobile');
+                        if (tabEl) {
+                            tabEl.className = 'm-tab-btn py-2 px-1 rounded-xl text-xs font-bold transition flex flex-col items-center justify-center gap-0.5 text-slate-400 active:scale-95 bg-transparent';
+                        }
+                    }
+                } else {
+                    if (colEl) colEl.classList.remove('hidden-on-mobile');
+                }
+            });
+        }
+
+        function abrirMenuMovil() {
+            const drawer = document.getElementById('drawer-menu-movil');
+            if (drawer) {
+                drawer.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+            }
+        }
+
+        function cerrarMenuMovil() {
+            const drawer = document.getElementById('drawer-menu-movil');
+            if (drawer) {
+                drawer.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+            }
+        }
+
+        function cerrarMenuMovilSiFondo(e) {
+            if (e.target.id === 'drawer-menu-movil') {
+                cerrarMenuMovil();
+            }
+        }
+
+        // Listener de redimensionamiento de pantalla para alternar móvil y escritorio
+        window.addEventListener('resize', () => {
+            actualizarColumnasMovil();
+        });
+
+        // Soporte gestual táctil (Swipe) izquierda/derecha en iPhone para cambiar columna
+        document.addEventListener('DOMContentLoaded', () => {
+            const kanbanContainer = document.querySelector('.kanban-container');
+            if (kanbanContainer) {
+                let startX = 0, startY = 0;
+                kanbanContainer.addEventListener('touchstart', (e) => {
+                    startX = e.touches[0].clientX;
+                    startY = e.touches[0].clientY;
+                }, { passive: true });
+
+                kanbanContainer.addEventListener('touchend', (e) => {
+                    if (window.innerWidth >= 768) return;
+                    const deltaX = e.changedTouches[0].clientX - startX;
+                    const deltaY = e.changedTouches[0].clientY - startY;
+                    if (Math.abs(deltaX) > 60 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
+                        const orden = ['considerar', 'mayor', 'proceso', 'listo'];
+                        const idx = orden.indexOf(columnaMovilActiva);
+                        if (deltaX < 0 && idx < orden.length - 1) {
+                            seleccionarColumnaMovil(orden[idx + 1]);
+                        } else if (deltaX > 0 && idx > 0) {
+                            seleccionarColumnaMovil(orden[idx - 1]);
+                        }
+                    }
+                }, { passive: true });
+            }
+        });
+
         function renderizarTablero() {
             sanitizarBaseDatos();
             const dom = {
@@ -4154,11 +4440,18 @@
             if (document.getElementById('count-proceso')) document.getElementById('count-proceso').innerText = conteos.proceso;
             if (document.getElementById('count-listo')) document.getElementById('count-listo').innerText = conteos.listo;
 
+            // Actualizar contadores del selector móvil en iPhone
+            if (document.getElementById('m-count-considerar')) document.getElementById('m-count-considerar').innerText = conteos.considerar;
+            if (document.getElementById('m-count-mayor')) document.getElementById('m-count-mayor').innerText = conteos.mayor;
+            if (document.getElementById('m-count-proceso')) document.getElementById('m-count-proceso').innerText = conteos.proceso;
+            if (document.getElementById('m-count-listo')) document.getElementById('m-count-listo').innerText = conteos.listo;
+            actualizarColumnasMovil();
+
             document.getElementById('cont-todas').innerText = baseDatos.length;
             document.getElementById('cont-apodaca').innerText = conteos.apodaca;
             document.getElementById('cont-queretaro').innerText = conteos.queretaro;
 
-            document.getElementById('resumen-costo-total').innerText = `$${conteos.costoTotal.toLocaleString()} MXN`;
+            document.getElementById('resumen-costo-total').innerText = formatearMoneda(conteos.costoTotal);
 
             ['considerar', 'mayor', 'proceso', 'listo'].forEach(est => {
                 if (dom[est] && dom[est].children.length === 0) {
@@ -4170,9 +4463,9 @@
         function crearElementoTarjeta(unidad) {
             const card = document.createElement('div');
             card.id = `card-unit-${unidad.id}`;
-            card.className = `card card-stripe-${unidad.estado || 'proceso'} p-3.5 shadow-md cursor-grab active:cursor-grabbing flex flex-col gap-2.5 rounded-2xl`;
+            card.className = `card card-stripe-${unidad.estado || 'proceso'} p-4 shadow-md cursor-grab active:cursor-grabbing flex flex-col gap-2.5 rounded-2xl transition hover:border-[#555A62] hover:shadow-lg`;
             
-            // Atributos HTML5 Drag & Drop
+            // HTML5 Drag & Drop
             card.draggable = true;
             card.ondragstart = (e) => iniciarArrastre(e, unidad.id);
             card.ondragend = (e) => finalizarArrastre(e);
@@ -4191,76 +4484,60 @@
 
             const costoTotalUnidad = (Number(unidad.costo) || 0) + (Number(unidad.costo_refacciones) || 0);
 
-            // Buscar estatus de mantenimiento preventivo para esta unidad (sincronizado con Control CESS)
+            // 1. Alerta de Preventivo (si aplica) - Línea compacta, no invasiva
             const preventivoInfo = Array.isArray(cachePreventivos) ? cachePreventivos.find(p => {
                 const pId = String(p.unidad || '').trim();
                 const uId = String(unidad.id || '').trim();
                 return pId === uId || (Number(pId) > 0 && Number(pId) === Number(uId));
             }) : null;
 
-            let bannerPreventivo = '';
-            let badgePreventivoChip = '';
-
+            let alertaPreventivo = '';
             if (preventivoInfo) {
                 const estNorm = (preventivoInfo.estatus || '').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
                 const kmRest = Number(preventivoInfo.km_restantes) || 0;
-
                 if (estNorm === 'VENCIDO') {
-                    const kmExcedidos = kmRest < 0 ? Math.abs(kmRest).toLocaleString() : '0';
-                    bannerPreventivo = `
-                        <div data-no-expediente="true" onclick="cambiarVistaPrincipal('preventivos')" class="bg-[#241719] hover:bg-[#2E1C1F] border border-red-800/60 hover:border-red-600/80 rounded-xl px-2.5 py-1 flex items-center justify-between text-xs cursor-pointer transition shadow-sm group" title="Mantenimiento preventivo vencido. Haz clic para ver kilometrajes en Preventivos.">
-                            <div class="flex items-center gap-1.5 font-semibold text-red-300 text-[11px]">
-                                <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
-                                <span>Preventivo Vencido</span>
-                            </div>
-                            <span class="font-mono text-[10px] text-red-300 font-bold bg-red-950/90 px-1.5 py-0.5 rounded border border-red-800/70">
-                                -${kmExcedidos} km
+                    const kmExcedidos = kmRest < 0 ? Math.abs(kmRest).toLocaleString('es-MX') : '0';
+                    alertaPreventivo = `
+                        <div data-no-expediente="true" onclick="cambiarVistaPrincipal('preventivos')" class="bg-red-950/40 hover:bg-red-950/70 border border-red-800/60 rounded-lg px-2.5 py-1 flex items-center justify-between text-xs cursor-pointer transition" title="Mantenimiento preventivo vencido">
+                            <span class="text-red-300 font-bold text-[11px] flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span> Preventivo Vencido
                             </span>
+                            <span class="font-mono text-[10px] text-red-200 font-black bg-red-900/80 px-1.5 py-0.2 rounded border border-red-700/60">-${kmExcedidos} km</span>
                         </div>
                     `;
                 } else if (estNorm === 'PROXIMO' || estNorm === 'PRÓXIMO') {
-                    bannerPreventivo = `
-                        <div data-no-expediente="true" onclick="cambiarVistaPrincipal('preventivos')" class="bg-[#221C13] hover:bg-[#2C2317] border border-amber-800/60 hover:border-amber-600/80 rounded-xl px-2.5 py-1 flex items-center justify-between text-xs cursor-pointer transition shadow-sm group" title="Servicio preventivo próximo. Haz clic para ver kilometrajes en Preventivos.">
-                            <div class="flex items-center gap-1.5 font-semibold text-amber-300 text-[11px]">
-                                <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-                                <span>Preventivo Próximo</span>
-                            </div>
-                            <span class="font-mono text-[10px] text-amber-300 font-bold bg-amber-950/90 px-1.5 py-0.5 rounded border border-amber-800/70">
-                                Restan ${Math.round(kmRest).toLocaleString()} km
+                    alertaPreventivo = `
+                        <div data-no-expediente="true" onclick="cambiarVistaPrincipal('preventivos')" class="bg-amber-950/40 hover:bg-amber-950/70 border border-amber-800/60 rounded-lg px-2.5 py-1 flex items-center justify-between text-xs cursor-pointer transition" title="Servicio preventivo próximo">
+                            <span class="text-amber-300 font-bold text-[11px] flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-amber-400"></span> Preventivo Próximo
                             </span>
+                            <span class="font-mono text-[10px] text-amber-200 font-bold bg-amber-900/80 px-1.5 py-0.2 rounded border border-amber-700/60">Restan ${Math.round(kmRest).toLocaleString('es-MX')} km</span>
                         </div>
-                    `;
-                } else if (estNorm === 'VIGENTE') {
-                    badgePreventivoChip = `
-                        <span class="bg-emerald-950/70 text-emerald-300 border border-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1" title="Preventivo al día (${kmRest.toLocaleString()} km restantes)">
-                            <i class="fa-solid fa-shield-halved text-emerald-400"></i> Preventivo al Día
-                        </span>
                     `;
                 }
             }
 
-            // Badges opcionales
-            let badgeRescate = unidad.es_rescate ? `
-                <span class="bg-amber-950/90 border border-amber-500/80 text-amber-300 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 animate-pulse" title="Atención de Rescate Carretero SOS">
-                    <i class="fa-solid fa-truck-medical text-amber-400"></i> SOS RUTA
-                </span>
-            ` : '';
+            // 2. Clasificación de Procedimiento (Pill distintiva de alto contraste)
+            const cPrev = Number(unidad.costo_preventivo) || 0;
+            const cCorr = Number(unidad.costo_correctivo) || 0;
+            const tipoProc = unidad.tipo_procedimiento || (cPrev > 0 && cCorr > 0 ? 'mixto' : (cPrev > 0 ? 'preventivo' : (unidad.es_rescate ? 'rescate' : (unidad.proveedor_externo ? 'externo' : 'correctivo'))));
 
-            const reincidencia = detectarReincidenciaUnidad(unidad);
-            let badgeReincidencia = reincidencia.esReincidente ? `
-                <span class="bg-amber-950/70 border border-amber-600/70 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1" title="Falla recurrente detectada">
-                    <i class="fa-solid fa-triangle-exclamation"></i> Reincidente
-                </span>
-            ` : '';
-
-            let badgeFecha = unidad.fechaRefaccion ? `
-                <span class="bg-[#2D2612] text-[#DFB743] text-[10px] font-bold px-2 py-0.5 rounded-full border border-[#C59B27]/70 flex items-center gap-1">
-                    <i class="fa-solid fa-calendar-day"></i> ${unidad.fechaRefaccion}
-                </span>
-            ` : '';
+            let pillProcedimiento = '';
+            if (tipoProc === 'preventivo') {
+                pillProcedimiento = `<span class="bg-emerald-950 text-emerald-300 border border-emerald-700 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1"><i class="fa-solid fa-shield-halved text-emerald-400 text-[9px]"></i> PREVENTIVO</span>`;
+            } else if (tipoProc === 'rescate' || unidad.es_rescate) {
+                pillProcedimiento = `<span class="bg-amber-950 text-amber-300 border border-amber-500 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 animate-pulse"><i class="fa-solid fa-truck-medical text-amber-400 text-[9px]"></i> RESCATE SOS</span>`;
+            } else if (tipoProc === 'externo' || unidad.proveedor_externo) {
+                const prov = unidad.proveedor_externo ? unidad.proveedor_externo.slice(0, 10) : 'EXTERNO';
+                pillProcedimiento = `<span class="bg-purple-950 text-purple-300 border border-purple-600 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1"><i class="fa-solid fa-building-flag text-purple-400 text-[9px]"></i> ${prov}</span>`;
+            } else if (tipoProc === 'mixto') {
+                pillProcedimiento = `<span class="bg-indigo-950 text-indigo-300 border border-indigo-600 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1"><i class="fa-solid fa-arrows-split-up-and-left text-indigo-400 text-[9px]"></i> MIXTO</span>`;
+            } else {
+                pillProcedimiento = `<span class="bg-blue-950 text-blue-300 border border-blue-600 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1"><i class="fa-solid fa-wrench text-blue-400 text-[9px]"></i> CORRECTIVO</span>`;
+            }
 
             // =========================================================================
-            // CASO A: TARJETA EN COLUMNA "A CONSIDERAR / DETECCIONES" (EVALUACIÓN PREVIA)
+            // CASO A: TARJETA EN COLUMNA "A CONSIDERAR" (DETECCIÓN PREVIA)
             // =========================================================================
             if (unidad.estado === 'considerar') {
                 let prioridadColor = 'bg-amber-950/80 text-amber-300 border-amber-600/80';
@@ -4268,10 +4545,7 @@
                 else if (unidad.prioridad === 'BAJA') prioridadColor = 'bg-blue-950/80 text-blue-300 border-blue-600/80';
 
                 card.innerHTML = `
-                    <!-- Alerta de Preventivo si aplica -->
-                    ${bannerPreventivo}
-
-                    <!-- Encabezado Detección -->
+                    ${alertaPreventivo}
                     <div class="flex items-center justify-between gap-1">
                         <div class="flex items-center gap-2">
                             <span class="text-base font-black text-white font-mono flex items-center gap-1">
@@ -4291,34 +4565,12 @@
                         </div>
                     </div>
 
-                    <!-- Situación Detectada -->
                     <div class="bg-[#141518] p-2.5 rounded-xl border border-purple-900/40 text-xs flex flex-col gap-1.5">
-                        <div>
-                            <span class="text-[10px] text-purple-300 font-bold uppercase tracking-wider block">Situación / Anomalía</span>
-                            <p class="text-slate-200 line-clamp-3 leading-relaxed">${unidad.situacion_detectada || unidad.reporte || unidad.defecto || 'Sin detalle de anomalía'}</p>
-                        </div>
-
-                        ${unidad.refacciones_requeridas ? `
-                            <div class="pt-1.5 border-t border-[#3A3D42]/60 text-[11px] text-slate-300 flex items-center gap-1.5">
-                                <i class="fa-solid fa-wrench text-amber-400 text-xs shrink-0"></i>
-                                <span class="truncate">Refacciones: <strong>${unidad.refacciones_requeridas}</strong></span>
-                            </div>
-                        ` : ''}
-
-                        ${unidad.trabajos_requeridos ? `
-                            <div class="text-[11px] text-slate-300 flex items-center gap-1.5">
-                                <i class="fa-solid fa-list-check text-cyan-400 text-xs shrink-0"></i>
-                                <span class="truncate">Trabajos: <strong>${unidad.trabajos_requeridos}</strong></span>
-                            </div>
-                        ` : ''}
-
-                        <div class="pt-1 border-t border-[#3A3D42]/40 flex items-center justify-between text-[10px] text-slate-400">
-                            <span>Reportó: <strong class="text-slate-200">${unidad.reportado_por || 'Supervisor'}</strong></span>
-                            ${unidad.costo > 0 ? `<span class="font-mono text-purple-300 font-bold">Est: $${Number(unidad.costo).toLocaleString()} MXN</span>` : ''}
-                        </div>
+                        <span class="text-[10px] text-purple-300 font-bold uppercase tracking-wider block">Situación / Anomalía</span>
+                        <p class="text-slate-200 line-clamp-3 leading-relaxed">${unidad.situacion_detectada || unidad.reporte || unidad.defecto || 'Sin detalle de anomalía'}</p>
+                        ${unidad.costo > 0 ? `<div class="pt-1 border-t border-[#3A3D42]/40 flex justify-between text-[10px] text-slate-400 font-mono"><span>Estimado:</span> <strong class="text-purple-300">${formatearMoneda(unidad.costo)}</strong></div>` : ''}
                     </div>
 
-                    <!-- Botones para Avanzar a Reparación Activa (SIN OPCIÓN DE REGRESAR A CONSIDERAR) -->
                     <div class="pt-1 flex flex-col gap-1">
                         <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Avanzar a reparación:</span>
                         <div class="grid grid-cols-2 gap-1.5">
@@ -4335,7 +4587,7 @@
             }
 
             // =========================================================================
-            // CASO B: TARJETA EN TALLER ACTIVO (MAYOR, PROCESO, LISTA) - LIMPIA Y ARMÓNICA
+            // CASO B: TARJETA EN TALLER ACTIVO (LIMPIA, ESPACIOSA Y ELEGANTE)
             // =========================================================================
             let stripFolioAlmacen = '';
             if (unidad.folio_almacen) {
@@ -4343,78 +4595,48 @@
                 if (!costoRef && Array.isArray(unidad.piezas) && unidad.piezas.length > 0) {
                     costoRef = unidad.piezas.reduce((acc, p) => acc + (Number(p.costo_total) || (Number(p.cantidad || 1) * Number(p.precio_unitario || 0))), 0);
                 }
-                const costoTotalCard = Math.max(Number(unidad.costo) || 0, (Number(unidad.costo_mano_obra) || 0) + costoRef);
+                const costoTotalCard = Math.max(Number(unidad.costo) || 0, (Number(unidad.costo_mano_obra) || 0) + (Number(unidad.costo_externo) || 0) + costoRef);
                 const cantPiezas = Array.isArray(unidad.piezas) ? unidad.piezas.length : 0;
                 const txtCostoCard = costoTotalCard > 0 
-                    ? `${costoTotalCard.toLocaleString()} MXN`
-                    : (cantPiezas > 0 ? '$0 (Por cotizar)' : 'Por surtir');
+                    ? formatearMoneda(costoTotalCard)
+                    : (cantPiezas > 0 ? '$0.00 MXN (Por cotizar)' : 'Por surtir');
 
                 stripFolioAlmacen = `
-                    <div data-no-expediente="true" onclick="abrirDetalleFolioAlmacen(event, '${unidad.id}')" class="bg-gradient-to-r from-indigo-950/90 to-purple-950/70 border border-indigo-500/80 rounded-xl p-2.5 flex items-center justify-between cursor-pointer hover:border-indigo-400 transition shadow-sm group" title="Clic para ver detalle de piezas y costos de Almacén">
+                    <div data-no-expediente="true" onclick="abrirDetalleFolioAlmacen(event, '${unidad.id}')" class="bg-[#141518] hover:bg-[#1C1D21] border border-indigo-700/60 hover:border-indigo-500 rounded-xl px-3 py-2 flex items-center justify-between cursor-pointer transition shadow-sm group" title="Clic para ver desglose de refacciones y precios de Almacén">
                         <div class="flex items-center gap-2">
-                            <div class="w-7 h-7 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-xs shadow group-hover:scale-105 transition">
+                            <div class="w-7 h-7 rounded-lg bg-indigo-900/80 text-indigo-300 flex items-center justify-center font-bold text-xs shadow border border-indigo-700/60 group-hover:scale-105 transition">
                                 <i class="fa-solid fa-receipt"></i>
                             </div>
                             <div>
-                                <span class="text-[9px] text-indigo-300 font-black uppercase tracking-wider block">ALMACÉN</span>
-                                <strong class="text-white font-mono text-xs">FOLIO #${unidad.folio_almacen}</strong>
+                                <span class="text-[9px] text-indigo-400 font-black uppercase tracking-wider block">ALMACÉN FOLIO #${unidad.folio_almacen}</span>
+                                <span class="text-[11px] text-slate-300 font-medium">${cantPiezas} ${cantPiezas === 1 ? 'refacción' : 'refacciones'}</span>
                             </div>
                         </div>
                         <div class="text-right">
-                            <span class="text-[10px] text-indigo-200 block font-medium">${cantPiezas} ${cantPiezas === 1 ? 'refacción' : 'refacciones'}</span>
-                            <span class="text-xs font-black ${costoTotalCard > 0 ? 'text-[#DFB743]' : 'text-amber-400'} font-mono">${txtCostoCard}</span>
+                            <span class="text-xs font-black text-[#DFB743] font-mono block">${txtCostoCard}</span>
+                            <span class="text-[9px] text-indigo-300 font-bold group-hover:underline">Ver detalle ➔</span>
                         </div>
                     </div>
                 `;
             } else {
                 stripFolioAlmacen = `
-                    <div class="flex items-center justify-between text-[11px] py-0.5">
-                        <button onclick="abrirModalVincularAlmacen(event, '${unidad.id}')" class="text-indigo-400 hover:text-indigo-200 flex items-center gap-1 font-semibold transition text-xs">
-                            <i class="fa-solid fa-plus-circle text-xs"></i> Vincular Folio Almacén
+                    <div class="flex items-center justify-between text-xs py-1 px-1">
+                        <button data-no-expediente="true" onclick="abrirModalVincularAlmacen(event, '${unidad.id}')" class="bg-indigo-950/80 hover:bg-indigo-900 border border-indigo-700/70 text-indigo-300 px-2.5 py-1 rounded-lg font-bold text-[11px] flex items-center gap-1.5 transition shadow-sm">
+                            <i class="fa-solid fa-link text-[10px]"></i> Vincular Folio Almacén
                         </button>
-                        ${costoTotalUnidad > 0 ? `<span class="bg-red-950/70 text-red-300 text-[10px] font-bold px-2 py-0.5 rounded border border-red-800/80">$${costoTotalUnidad.toLocaleString()} MXN</span>` : '<span class="text-[10px] text-slate-500 font-mono">$0 MXN</span>'}
+                        <span class="text-xs font-mono font-bold text-slate-400">${formatearMoneda(costoTotalUnidad)}</span>
                     </div>
                 `;
             }
 
-            // Último avance compacto
-            let seccionAvanceCompacta = '';
+            // Último avance (1 sola línea limpia)
+            let seccionAvance = '';
             if (Array.isArray(unidad.avances) && unidad.avances.length > 0) {
                 const ultimoAvance = unidad.avances[unidad.avances.length - 1];
-                seccionAvanceCompacta = `
-                    <div class="bg-[#141518] px-2.5 py-1.5 rounded-lg border border-[#3A3D42]/60 text-[11px] flex items-center justify-between">
-                        <span class="text-slate-300 truncate mr-2"><strong class="text-[#DFB743] font-bold">Avance:</strong> ${ultimoAvance.texto}</span>
+                seccionAvance = `
+                    <div class="text-[11px] text-slate-300 flex items-center justify-between px-1">
+                        <span class="truncate mr-2"><strong class="text-[#DFB743] font-bold">Avance:</strong> ${ultimoAvance.texto}</span>
                         ${ultimoAvance.porcentaje ? `<span class="bg-cyan-950 text-cyan-300 text-[9px] font-mono font-bold px-1.5 py-0.2 rounded border border-cyan-800 shrink-0">${ultimoAvance.porcentaje}%</span>` : ''}
-                    </div>
-                `;
-            }
-
-            // Badge distintivo de tipo de procedimiento (Preventivo / Correctivo / Rescate / Externo / Mixto)
-            let badgeProcedimiento = '';
-            const cPrev = Number(unidad.costo_preventivo) || 0;
-            const cCorr = Number(unidad.costo_correctivo) || 0;
-            const tipoProc = unidad.tipo_procedimiento || (cPrev > 0 && cCorr > 0 ? 'mixto' : (cPrev > 0 ? 'preventivo' : (unidad.es_rescate ? 'rescate' : (unidad.proveedor_externo ? 'externo' : 'correctivo'))));
-            
-            if (tipoProc === 'preventivo') {
-                badgeProcedimiento = `<span class="bg-emerald-950/90 text-emerald-300 border border-emerald-600/80 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm" title="Mantenimiento Preventivo (Aceites, Filtros, Servicios)"><i class="fa-solid fa-shield-halved text-emerald-400 text-[9px]"></i> PREVENTIVO</span>`;
-            } else if (tipoProc === 'rescate' || unidad.es_rescate) {
-                badgeProcedimiento = `<span class="bg-amber-950/90 text-amber-300 border border-amber-500 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 animate-pulse shadow-sm" title="Atención de Rescate Carretero / Auxilio Vial"><i class="fa-solid fa-truck-medical text-amber-400 text-[9px]"></i> RESCATE SOS</span>`;
-            } else if (tipoProc === 'externo' || unidad.proveedor_externo) {
-                const provCorto = unidad.proveedor_externo ? unidad.proveedor_externo.slice(0, 12) : 'EXTERNO';
-                badgeProcedimiento = `<span class="bg-purple-950/90 text-purple-300 border border-purple-600 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm" title="Reparación en Taller / Proveedor Externo: ${unidad.proveedor_externo || 'Taller Externo'}"><i class="fa-solid fa-building-flag text-purple-400 text-[9px]"></i> ${provCorto}</span>`;
-            } else if (tipoProc === 'mixto') {
-                badgeProcedimiento = `<span class="bg-indigo-950/90 text-indigo-300 border border-indigo-600 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm" title="Servicio Mixto: Preventivo + Correctivo"><i class="fa-solid fa-arrows-split-up-and-left text-indigo-400 text-[9px]"></i> MIXTO</span>`;
-            } else {
-                badgeProcedimiento = `<span class="bg-blue-950/90 text-blue-300 border border-blue-600 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm" title="Mantenimiento Correctivo"><i class="fa-solid fa-wrench text-blue-400 text-[9px]"></i> CORRECTIVO</span>`;
-            }
-
-            // Desglose de inversión preventiva vs correctiva si aplica
-            let breakdownCostosHTML = '';
-            if (cPrev > 0 && cCorr > 0) {
-                breakdownCostosHTML = `
-                    <div class="flex items-center justify-between text-[10px] font-mono font-bold px-2 py-0.5 bg-[#141518] rounded-lg border border-[#3A3D42]/60 text-slate-300">
-                        <span class="text-emerald-400 flex items-center gap-1"><i class="fa-solid fa-shield-halved text-[9px]"></i> Prev: $${cPrev.toLocaleString()}</span>
-                        <span class="text-blue-400 flex items-center gap-1"><i class="fa-solid fa-wrench text-[9px]"></i> Corr: $${cCorr.toLocaleString()}</span>
                     </div>
                 `;
             }
@@ -4425,69 +4647,57 @@
             const nomListo = (nombresColumnas && nombresColumnas.listo) || 'Lista';
 
             card.innerHTML = `
-                <!-- Alerta de Preventivo Vencido o Próximo -->
-                ${bannerPreventivo}
+                <!-- 1. Alerta de Preventivo (si aplica) -->
+                ${alertaPreventivo}
 
-                <!-- Cabecera Limpia: Unidad, Sucursal, Badge Procedimiento y Acciones -->
+                <!-- 2. Cabecera Limpia: Unidad, Sucursal, Procedimiento y Editar -->
                 <div class="flex items-center justify-between gap-1">
-                    <div class="flex items-center gap-1.5 flex-wrap">
-                        <span class="text-base font-black text-white font-mono flex items-center gap-1">
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <span class="text-base font-black text-white font-mono flex items-center gap-1.5">
                             <i class="fa-solid fa-grip-vertical text-slate-500 text-xs"></i> Unidad ${unidad.id}
                         </span>
                         <span class="text-[10px] font-bold bg-[#141518] border border-[#3A3D42] px-2 py-0.5 rounded-full text-slate-300">
                             ${unidad.sucursal || 'Patio'}
                         </span>
-                        ${badgeProcedimiento}
+                        ${pillProcedimiento}
                     </div>
-                    <div class="flex items-center gap-1 shrink-0">
-                        <button onclick="abrirModalAvanceRapido(event, '${unidad.id}')" class="bg-[#C59B27]/10 hover:bg-[#C59B27] text-[#DFB743] hover:text-black border border-[#C59B27]/50 px-2 py-0.5 rounded-lg text-[11px] font-bold transition flex items-center gap-1 shadow-sm" title="Registrar nuevo avance o estatus">
-                            <i class="fa-solid fa-plus text-[9px]"></i> <span>Avance</span>
-                        </button>
-                        <button onclick="abrirModalLiberarUnidad(event, '${unidad.id}')" class="text-slate-400 hover:text-cyan-300 p-1 rounded-lg hover:bg-cyan-950/40 text-xs transition" title="Registrar salida a viaje / Liberar unidad del tablero">
-                            <i class="fa-solid fa-truck-fast"></i>
-                        </button>
-                        <button onclick="abrirEdicionRapida(event, '${unidad.id}')" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-[#282A2E] text-xs transition" title="Edición rápida">
-                            <i class="fa-solid fa-pen-to-square"></i>
-                        </button>
-                    </div>
+                    <button onclick="abrirEdicionRapida(event, '${unidad.id}')" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-[#282A2E] text-xs transition" title="Editar datos de unidad">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
                 </div>
 
-                <!-- Falla / Trabajo en Taller -->
-                <p onclick="abrirEdicionRapida(event, '${unidad.id}')" class="text-xs text-slate-200 line-clamp-2 leading-relaxed font-medium cursor-pointer hover:text-white transition select-text" title="Haz clic para editar texto">
+                <!-- 3. Trabajo / Observaciones en Taller -->
+                <p onclick="abrirEdicionRapida(event, '${unidad.id}')" class="text-xs text-slate-200 line-clamp-2 leading-relaxed font-medium cursor-pointer hover:text-white transition select-text px-0.5" title="Haz clic para editar observaciones">
                     ${unidad.reporte || unidad.defecto || '<span class="italic text-slate-500">Sin observaciones registradas...</span>'}
                 </p>
 
-                <!-- Desglose de Costos Preventivo vs Correctivo si es mixto -->
-                ${breakdownCostosHTML}
-
-                <!-- SECCIÓN DESTACADA: FOLIO Y REFACCIONES DE ALMACÉN -->
+                <!-- 4. Folio de Almacén e Inversión Total (Strip Principal) -->
                 ${stripFolioAlmacen}
 
-                <!-- Resumen de Último Avance -->
-                ${seccionAvanceCompacta}
+                <!-- 5. Último Avance Registrado -->
+                ${seccionAvance}
 
-                <!-- Badges Auxiliares (Solo si aplican) -->
-                ${(badgeRescate || badgeReincidencia || badgeFecha) ? `
-                    <div class="flex flex-wrap gap-1.5 items-center">
-                        ${badgeRescate}
-                        ${badgeReincidencia}
-                        ${badgeFecha}
-                    </div>
-                ` : ''}
+                <!-- 6. Botones de Acción de Taller: [+ Avance] y [Liberar] -->
+                <div class="grid grid-cols-2 gap-2 pt-1 border-t border-[#3A3D42]/40">
+                    <button onclick="abrirModalAvanceRapido(event, '${unidad.id}')" class="bg-[#282A2E] hover:bg-[#3A3D42] text-[#DFB743] hover:text-white border border-[#C59B27]/40 py-1.5 px-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm" title="Registrar nuevo avance">
+                        <i class="fa-solid fa-plus text-[10px]"></i> <span>+ Avance</span>
+                    </button>
+                    <button onclick="abrirModalLiberarUnidad(event, '${unidad.id}')" class="bg-cyan-950/70 hover:bg-cyan-900 text-cyan-300 border border-cyan-700/60 py-1.5 px-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm" title="Registrar salida a viaje">
+                        <i class="fa-solid fa-truck-fast text-[10px]"></i> <span>Liberar</span>
+                    </button>
+                </div>
 
-                <!-- Selector Táctil de 3 Columnas (EXCLUYE LA COLUMNA "A CONSIDERAR" PARA MANTENER EL ORDEN OPERATIVO) -->
-                <div class="pt-2 mt-0.5 border-t border-[#3A3D42]/60 flex flex-col gap-1">
-                    <div class="grid grid-cols-3 gap-1 bg-[#141518] p-1 rounded-xl border border-[#3A3D42]">
-                        <button onclick="cambiarEstadoDirecto(event, '${unidad.id}', 'mayor')" class="py-1 px-1 rounded-lg text-[10px] font-bold transition flex items-center justify-center gap-1 ${unidad.estado === 'mayor' ? 'bg-red-700 text-white shadow font-black' : 'text-slate-400 hover:text-red-300 hover:bg-[#282A2E]'}" title="Mover a Reparación Mayor">
-                            <span class="w-1.5 h-1.5 rounded-full ${unidad.estado === 'mayor' ? 'bg-white' : 'bg-red-500'}"></span> <span class="truncate">${nomMayor}</span>
-                        </button>
-                        <button onclick="cambiarEstadoDirecto(event, '${unidad.id}', 'proceso')" class="py-1 px-1 rounded-lg text-[10px] font-bold transition flex items-center justify-center gap-1 ${unidad.estado === 'proceso' ? 'bg-[#C59B27] text-black shadow font-black' : 'text-slate-400 hover:text-[#DFB743] hover:bg-[#282A2E]'}" title="Mover a En Reparación Activa">
-                            <span class="w-1.5 h-1.5 rounded-full ${unidad.estado === 'proceso' ? 'bg-black' : 'bg-amber-400'}"></span> <span class="truncate">${nomProceso}</span>
-                        </button>
-                        <button onclick="cambiarEstadoDirecto(event, '${unidad.id}', 'listo')" class="py-1 px-1 rounded-lg text-[10px] font-bold transition flex items-center justify-center gap-1 ${unidad.estado === 'listo' ? 'bg-emerald-600 text-white shadow font-black' : 'text-slate-400 hover:text-emerald-300 hover:bg-[#282A2E]'}" title="Mover a Listas para Entrega">
-                            <span class="w-1.5 h-1.5 rounded-full ${unidad.estado === 'listo' ? 'bg-white' : 'bg-emerald-400'}"></span> <span class="truncate">${nomListo}</span>
-                        </button>
-                    </div>
+                <!-- 7. Segmentador de Estado (Mayor, Proceso, Listo) -->
+                <div class="grid grid-cols-3 gap-1 bg-[#141518] p-1 rounded-xl border border-[#3A3D42]">
+                    <button onclick="cambiarEstadoDirecto(event, '${unidad.id}', 'mayor')" class="py-1 px-1 rounded-lg text-[10px] font-bold transition flex items-center justify-center gap-1 ${unidad.estado === 'mayor' ? 'bg-red-700 text-white shadow font-black' : 'text-slate-400 hover:text-red-300 hover:bg-[#282A2E]'}" title="Mover a Reparación Mayor">
+                        <span class="w-1.5 h-1.5 rounded-full ${unidad.estado === 'mayor' ? 'bg-white' : 'bg-red-500'}"></span> <span class="truncate">${nomMayor}</span>
+                    </button>
+                    <button onclick="cambiarEstadoDirecto(event, '${unidad.id}', 'proceso')" class="py-1 px-1 rounded-lg text-[10px] font-bold transition flex items-center justify-center gap-1 ${unidad.estado === 'proceso' ? 'bg-[#C59B27] text-black shadow font-black' : 'text-slate-400 hover:text-[#DFB743] hover:bg-[#282A2E]'}" title="Mover a En Reparación Activa">
+                        <span class="w-1.5 h-1.5 rounded-full ${unidad.estado === 'proceso' ? 'bg-black' : 'bg-amber-400'}"></span> <span class="truncate">${nomProceso}</span>
+                    </button>
+                    <button onclick="cambiarEstadoDirecto(event, '${unidad.id}', 'listo')" class="py-1 px-1 rounded-lg text-[10px] font-bold transition flex items-center justify-center gap-1 ${unidad.estado === 'listo' ? 'bg-emerald-600 text-white shadow font-black' : 'text-slate-400 hover:text-emerald-300 hover:bg-[#282A2E]'}" title="Mover a Listas para Entrega">
+                        <span class="w-1.5 h-1.5 rounded-full ${unidad.estado === 'listo' ? 'bg-white' : 'bg-emerald-400'}"></span> <span class="truncate">${nomListo}</span>
+                    </button>
                 </div>
             `;
             return card;
@@ -4664,7 +4874,7 @@
 
             document.getElementById('edit-rapido-id').value = u.id;
             document.getElementById('edicion-rapida-titulo').innerText = `Edición Rápida • Unidad ${u.id}`;
-            document.getElementById('edicion-rapida-subtitulo').innerText = `${u.sucursal} • Inversión actual: $${(u.costo||0).toLocaleString()} MXN`;
+            document.getElementById('edicion-rapida-subtitulo').innerText = `${u.sucursal} • Inversión actual: ${formatearMoneda(u.costo || 0)}`;
             document.getElementById('edit-rapido-reporte').value = u.reporte || u.defecto || '';
             document.getElementById('edit-rapido-costo').value = u.costo || '';
             document.getElementById('edit-rapido-fecha').value = u.fechaRefaccion || '';
@@ -5107,7 +5317,7 @@
 
             let txt = `*BITÁCORA OPERATIVA • TALLER PRO CESS*\n`;
             txt += `*${fechaStr.toUpperCase()}*\n`;
-            txt += `*Total Unidades en Tablero:* ${baseDatos.length} | Inversión: $${inversionTotal.toLocaleString()} MXN\n`;
+            txt += `*Total Unidades en Tablero:* ${baseDatos.length} | Inversión: ${formatearMoneda(inversionTotal)}\n`;
             txt += `────────────────────────────\n\n`;
 
             const etapas = [
@@ -5149,7 +5359,7 @@
                     // Costo
                     const costoU = (Number(u.costo) || 0) + (Number(u.costo_refacciones) || 0);
                     if (costoU > 0) {
-                        txt += `   └ Costo Estimado: $${costoU.toLocaleString()} MXN\n`;
+                        txt += `   └ Costo Estimado: ${formatearMoneda(costoU)}\n`;
                     }
 
                     // MARCAR SI LE TOCA PREVENTIVO
@@ -5213,7 +5423,7 @@
             txt += `• [${(nombresColumnas && nombresColumnas.mayor) || 'Reparación Mayor'}]: ${mayor.length}\n`;
             txt += `• [${(nombresColumnas && nombresColumnas.proceso) || 'En Reparación'}]: ${proceso.length}\n`;
             txt += `• [${(nombresColumnas && nombresColumnas.listo) || 'Listas para Entrega'}]: ${listo.length}\n`;
-            txt += `*Inversión Cotizada Total:* $${inversionTotal.toLocaleString()} MXN\n`;
+            txt += `*Inversión Cotizada Total:* ${formatearMoneda(inversionTotal)}\n`;
             txt += `────────────────────────────\n`;
             txt += `*Tablero Interactivo en Vivo:*\n${linkPublico}\n`;
             txt += `_(Acceso directo desde cualquier celular o computadora)_`;
@@ -5388,7 +5598,7 @@
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 font-mono text-xs">
                         <div class="bg-[#141518] p-2.5 rounded-xl border border-[#3A3D42]">
                             <span class="text-slate-500 block text-[10px]">Inversión Refacciones:</span>
-                            <span class="font-bold text-red-400 text-sm">$${(u.costo||0).toLocaleString()} MXN</span>
+                            <span class="font-bold text-red-400 text-sm">${formatearMoneda(u.costo || 0)}</span>
                         </div>
                         <div class="bg-[#141518] p-2.5 rounded-xl border border-[#3A3D42]">
                             <span class="text-slate-500 block text-[10px]">Días con Actividad:</span>
@@ -5516,7 +5726,7 @@
 
             let txt = `*EXPEDIENTE CLÍNICO - UNIDAD ${u.id} (${u.sucursal.toUpperCase()})*\n`;
             txt += `*Estatus:* ${u.estado.toUpperCase()} | *Falla:* ${u.reporte || u.defecto}\n`;
-            if (u.costo > 0) txt += `*Costo Refacciones:* $${u.costo.toLocaleString()} MXN\n`;
+            if (u.costo > 0) txt += `*Costo Refacciones:* ${formatearMoneda(u.costo)}\n`;
             if (u.fechaRefaccion) txt += `*Prog. Entrega:* ${u.fechaRefaccion}\n`;
             txt += `------------------------------------\n*HISTORIAL DÍA POR DÍA:*\n`;
 
@@ -5851,9 +6061,9 @@
 
             // 1. Actualizar Tarjetas KPI en DOM
             const domCostoTotal = document.getElementById('kpi-costo-total');
-            if (domCostoTotal) domCostoTotal.innerText = `$${costoTotal.toLocaleString()} MXN`;
+            if (domCostoTotal) domCostoTotal.innerText = formatearMoneda(costoTotal);
             const domCostoPromedio = document.getElementById('kpi-costo-promedio');
-            if (domCostoPromedio) domCostoPromedio.innerText = `$${costoPromedio.toLocaleString()} MXN`;
+            if (domCostoPromedio) domCostoPromedio.innerText = formatearMoneda(costoPromedio);
             const domTotalUnidades = document.getElementById('kpi-total-unidades');
             if (domTotalUnidades) domTotalUnidades.innerText = totalUnidades;
             const domDesgloseUnidades = document.getElementById('kpi-desglose-unidades');
@@ -5877,9 +6087,9 @@
 
             // Leyendas de Gráfica 3
             const txtApo = document.getElementById('gasto-txt-apodaca');
-            if (txtApo) txtApo.innerText = `$${(gastoSucursales.Apodaca || 0).toLocaleString()} MXN`;
+            if (txtApo) txtApo.innerText = formatearMoneda(gastoSucursales.Apodaca || 0);
             const txtQro = document.getElementById('gasto-txt-queretaro');
-            if (txtQro) txtQro.innerText = `$${(gastoSucursales.Querétaro || 0).toLocaleString()} MXN`;
+            if (txtQro) txtQro.innerText = formatearMoneda(gastoSucursales.Querétaro || 0);
 
             // Radar de Almacén
             const domPzStock = document.getElementById('ana-piezas-stock');
@@ -5889,7 +6099,7 @@
             const domPzInst = document.getElementById('ana-piezas-instaladas');
             if (domPzInst) domPzInst.innerText = piezasInstaladas;
             const domImpCompras = document.getElementById('ana-importe-compras');
-            if (domImpCompras) domImpCompras.innerText = `$${totalImporteCompras.toLocaleString()} MXN`;
+            if (domImpCompras) domImpCompras.innerText = formatearMoneda(totalImporteCompras);
 
             // --- CÁLCULO DE PROCEDIMIENTOS: PREVENTIVO VS CORRECTIVO VS RESCATE VS EXTERNO ---
             let localGastoPrev = 0;
@@ -5931,26 +6141,26 @@
 
             // Actualizar Tarjetas KPI de Procedimientos en DOM
             const domGastoPrev = document.getElementById('kpi-gasto-preventivo');
-            if (domGastoPrev) domGastoPrev.innerText = `$${gastoPrev.toLocaleString()} MXN`;
+            if (domGastoPrev) domGastoPrev.innerText = formatearMoneda(gastoPrev);
             const domPctPrev = document.getElementById('kpi-pct-preventivo');
             if (domPctPrev) domPctPrev.innerText = `${pctPrev}%`;
             const domCntPrev = document.getElementById('kpi-cnt-preventivo');
             if (domCntPrev) domCntPrev.innerText = `${conteosTipo.preventivo || 0} unidades preventivo`;
 
             const domGastoCorr = document.getElementById('kpi-gasto-correctivo');
-            if (domGastoCorr) domGastoCorr.innerText = `$${gastoCorr.toLocaleString()} MXN`;
+            if (domGastoCorr) domGastoCorr.innerText = formatearMoneda(gastoCorr);
             const domPctCorr = document.getElementById('kpi-pct-correctivo');
             if (domPctCorr) domPctCorr.innerText = `${pctCorr}%`;
             const domCntCorr = document.getElementById('kpi-cnt-correctivo');
             if (domCntCorr) domCntCorr.innerText = `${conteosTipo.correctivo || 0} unidades correctivo`;
 
             const domGastoResc = document.getElementById('kpi-gasto-rescate');
-            if (domGastoResc) domGastoResc.innerText = `$${gastoResc.toLocaleString()} MXN`;
+            if (domGastoResc) domGastoResc.innerText = formatearMoneda(gastoResc);
             const domCntResc = document.getElementById('kpi-cnt-rescate');
             if (domCntResc) domCntResc.innerText = `${conteosTipo.rescate || 0} SOS en ruta`;
 
             const domGastoExt = document.getElementById('kpi-gasto-externo');
-            if (domGastoExt) domGastoExt.innerText = `$${gastoExt.toLocaleString()} MXN`;
+            if (domGastoExt) domGastoExt.innerText = formatearMoneda(gastoExt);
             const domCntExt = document.getElementById('kpi-cnt-externo');
             if (domCntExt) domCntExt.innerText = `${conteosTipo.externo || 0} talleres ext.`;
 
@@ -5993,13 +6203,13 @@
                             <td class="py-2.5 px-3">
                                 <span class="font-bold text-white block text-[11px]">${u.categoriaFalla || 'General'}</span>
                                 <span class="text-slate-400 text-[10px] truncate max-w-xs block">${u.reporte || u.defecto || 'Sin detalle'}</span>
-                                ${(cPrevU > 0 || cCorrU > 0) ? `<span class="text-[9px] font-mono text-slate-400 block mt-0.5"><span class="text-emerald-400 font-bold">Prev: $${cPrevU.toLocaleString()}</span> • <span class="text-blue-400 font-bold">Corr: $${cCorrU.toLocaleString()}</span></span>` : ''}
+                                ${(cPrevU > 0 || cCorrU > 0) ? `<span class="text-[9px] font-mono text-slate-400 block mt-0.5"><span class="text-emerald-400 font-bold">Prev: ${formatearMoneda(cPrevU)}</span> • <span class="text-blue-400 font-bold">Corr: ${formatearMoneda(cCorrU)}</span></span>` : ''}
                             </td>
                             <td class="py-2.5 px-3 text-center">
                                 <span class="font-mono text-slate-300 font-bold bg-[#141518] px-2 py-0.5 rounded border border-[#3A3D42]">${cantPiezas} PZ</span>
                             </td>
                             <td class="py-2.5 px-3 text-right">
-                                <span class="font-mono font-black text-[#DFB743]">$${(Number(u.costo) || 0).toLocaleString()} MXN</span>
+                                <span class="font-mono font-black text-[#DFB743]">${formatearMoneda(u.costo || 0)}</span>
                             </td>
                             <td class="py-2.5 px-3 text-center">${badgeEst}</td>
                             <td class="py-2.5 px-3 text-right">
@@ -6037,7 +6247,7 @@
                         hallazgos.push({
                             icono: 'fa-circle-dollar-to-slot',
                             color: 'text-amber-400',
-                            texto: `La <b>Unidad ${topUnit.id}</b> concentra por sí sola el <b>${pctTop}% del presupuesto</b> ejercido ($${(Number(topUnit.costo)||0).toLocaleString()} MXN).`
+                            texto: `La <b>Unidad ${topUnit.id}</b> concentra por sí sola el <b>${pctTop}% del presupuesto</b> ejercido (${formatearMoneda(topUnit.costo || 0)}).`
                         });
                     }
                 }
@@ -6088,14 +6298,14 @@
             const rescTotal = cacheRescates.length || 2;
             const rescCosto = cacheRescates.reduce((sum, r) => sum + (Number(r.costo_real || r.costo_estimado) || 0), 0) || 7300;
             if (domRescTotal) domRescTotal.innerText = rescTotal;
-            if (domRescCosto) domRescCosto.innerText = `${rescCosto.toLocaleString()} MXN en ruta`;
+            if (domRescCosto) domRescCosto.innerText = `${formatearNumero(rescCosto)} MXN en ruta`;
 
             // Salidas de Almacén Vinculadas
             const domAlmGasto = document.getElementById('ana-kpi-almacen-gasto');
             const domAlmFolios = document.getElementById('ana-kpi-almacen-folios');
             const unidadesConFolio = unidades.filter(u => u.folio_almacen);
             const totalGastoRefacciones = unidadesConFolio.reduce((sum, u) => sum + (Number(u.costo_refacciones) || Number(u.costo) || 0), 0);
-            if (domAlmGasto) domAlmGasto.innerText = `${totalGastoRefacciones.toLocaleString()} MXN`;
+            if (domAlmGasto) domAlmGasto.innerText = formatearMoneda(totalGastoRefacciones);
             if (domAlmFolios) domAlmFolios.innerText = `${unidadesConFolio.length} folios vinculados`;
 
             // Tabla de Auditoría de Folios de Almacén
@@ -6110,7 +6320,7 @@
                             <td class="p-3 font-bold text-white font-mono">Unidad ${u.id}</td>
                             <td class="p-3 text-slate-300">${u.sucursal || 'Patio'}</td>
                             <td class="p-3 text-slate-300">${(u.piezas || []).length} refacción(es)</td>
-                            <td class="p-3 text-right font-mono font-bold text-[#DFB743]">${(Number(u.costo_refacciones) || Number(u.costo) || 0).toLocaleString()} MXN</td>
+                            <td class="p-3 text-right font-mono font-bold text-[#DFB743]">${formatearMoneda(Number(u.costo_refacciones) || Number(u.costo) || 0)}</td>
                             <td class="p-3 text-center">
                                 <button onclick="abrirDetalleFolioAlmacen(event, '${u.id}')" class="bg-indigo-950/80 hover:bg-indigo-700 text-indigo-300 hover:text-white border border-indigo-700/60 px-2 py-0.5 rounded-lg text-[10px] font-bold transition">
                                     Ver Detalle
@@ -6238,7 +6448,7 @@
                             tooltip: {
                                 callbacks: {
                                     label: function(c) {
-                                        return ` Inversión: $${(c.raw || 0).toLocaleString()} MXN`;
+                                        return ` Inversión: ${formatearMoneda(c.raw || 0)}`;
                                     }
                                 }
                             }
@@ -6329,7 +6539,7 @@
                             tooltip: {
                                 callbacks: {
                                     label: function(c) {
-                                        return ` Inversión: $${(c.raw || 0).toLocaleString()} MXN`;
+                                        return ` Inversión: ${formatearMoneda(c.raw || 0)}`;
                                     }
                                 }
                             }
@@ -6394,10 +6604,10 @@
                         `• En Proceso de Taller: *${proceso}*\n` +
                         `• Listas para Despacho: *${listo} (${dispPct}%)*\n\n` +
                         `*PRESUPUESTO EJERCIDO:*\n` +
-                        `• Inversión Acumulada: *$${costoTotal.toLocaleString()} MXN*\n` +
-                        `• Costo Promedio / Unidad: *$${costoPromedio.toLocaleString()} MXN*\n` +
-                        `• Apodaca: *$${(gastos.Apodaca || 0).toLocaleString()} MXN*\n` +
-                        `• Querétaro: *$${(gastos.Querétaro || 0).toLocaleString()} MXN*\n\n` +
+                        `• Inversión Acumulada: *${formatearMoneda(costoTotal)}*\n` +
+                        `• Costo Promedio / Unidad: *${formatearMoneda(costoPromedio)}*\n` +
+                        `• Apodaca: *${formatearMoneda(gastos.Apodaca || 0)}*\n` +
+                        `• Querétaro: *${formatearMoneda(gastos.Querétaro || 0)}*\n\n` +
                         `*TOP SISTEMAS CON FALLA:*\n` +
                         `${topSistemas || '  • Sin incidencias'}\n\n` +
                         `_Generado desde Taller Pro • Plataforma Operativa CESS_`;
@@ -6539,6 +6749,7 @@
             document.getElementById('form-notas').value = '';
             document.getElementById('form-costo').value = '';
             document.getElementById('form-fecha').value = '';
+            if (document.getElementById('form-folio')) document.getElementById('form-folio').value = '';
             document.getElementById('buscar-pieza-nueva-unidad').value = '';
             document.getElementById('resultados-busqueda-nueva-unidad').classList.add('hidden');
             const aviso = document.getElementById('aviso-unidad-existente');
@@ -6589,6 +6800,7 @@
             document.getElementById('form-notas').value = exist.notas || '';
             document.getElementById('form-costo').value = exist.costo || '';
             document.getElementById('form-fecha').value = exist.fechaRefaccion || '';
+            if (document.getElementById('form-folio')) document.getElementById('form-folio').value = exist.folio_almacen || '';
             document.getElementById('modal-form-titulo').innerHTML = `<i class="fa-solid fa-pen-to-square text-[#C59B27]"></i> Actualizar Unidad ${exist.id}`;
             const aviso = document.getElementById('aviso-unidad-existente');
             if (aviso) aviso.classList.add('hidden');
@@ -6612,7 +6824,7 @@
             piezasNuevaUnidad.forEach(p => {
                 sumaCosto += ((Number(p.precio_unitario) || 0) * (Number(p.cantidad) || 1));
             });
-            totalLbl.innerText = `$${sumaCosto.toLocaleString()} MXN`;
+            totalLbl.innerText = formatearMoneda(sumaCosto);
 
             const inputCosto = document.getElementById('form-costo');
             if (sumaCosto > 0 && (!inputCosto.value || parseFloat(inputCosto.value) === 0 || inputCosto.dataset.auto === "1")) {
@@ -6644,7 +6856,7 @@
                             ${pz.numero_parte ? `<span class="text-[10px] bg-[#141518] text-slate-300 font-mono px-1 rounded">${pz.numero_parte}</span>` : ''}
                         </div>
                         <span class="text-[10px] text-slate-400 font-mono block mt-0.5">
-                            Cant: ${pz.cantidad} PZ ${totalItem > 0 ? `• $${totalItem.toLocaleString()} MXN` : ''} • ${pz.rack || 'Almacén Central'}
+                            Cant: ${pz.cantidad} PZ ${totalItem > 0 ? `• ${formatearMoneda(totalItem)}` : ''} • ${pz.rack || 'Almacén Central'}
                         </span>
                     </div>
                     <div class="flex items-center gap-2">
@@ -6712,7 +6924,7 @@
                 itemDiv.innerHTML = `
                     <div class="flex-1 pr-2">
                         <span class="font-bold text-white text-xs block">${it.descripcion}</span>
-                        <span class="text-[10px] text-slate-400 font-mono">${it.numero_parte || 'S/N'} • ${it.marca || 'GEN'} • $${(it.precio_unitario || 0).toLocaleString()}</span>
+                        <span class="text-[10px] text-slate-400 font-mono">${it.numero_parte || 'S/N'} • ${it.marca || 'GEN'} • ${formatearMoneda(it.precio_unitario || 0)}</span>
                     </div>
                     <div class="text-right flex flex-col items-end gap-1">
                         ${stockBadge}
@@ -6791,6 +7003,7 @@
             const estado = document.getElementById('form-estado').value;
             const defecto = document.getElementById('form-defecto').value.trim();
             const notas = document.getElementById('form-notas').value.trim();
+            const folio = document.getElementById('form-folio') ? document.getElementById('form-folio').value.trim() : '';
             const costo = parseFloat(document.getElementById('form-costo').value) || 0;
             const fechaRefaccion = document.getElementById('form-fecha').value || '';
             const categoriaFalla = document.getElementById('form-categoria').value;
@@ -6813,6 +7026,7 @@
                 unidadExistente.tipo_procedimiento = tipo_procedimiento;
                 if (defecto) unidadExistente.defecto = defecto;
                 if (notas) unidadExistente.notas = notas;
+                if (folio) unidadExistente.folio_almacen = folio;
                 unidadExistente.reporte = reporte || unidadExistente.reporte;
                 if (costo > 0) unidadExistente.costo = costo;
                 if (fechaRefaccion) unidadExistente.fechaRefaccion = fechaRefaccion;
@@ -6849,6 +7063,7 @@
                     costo,
                     fechaRefaccion,
                     categoriaFalla,
+                    folio_almacen: folio || '',
                     piezas: [...piezasNuevaUnidad],
                     historial: [{
                         fecha: new Date().toLocaleString('es-MX'),
@@ -6924,7 +7139,7 @@
             document.getElementById('exp-titulo').innerText = `Unidad ${unidadActiva.id}`;
             document.getElementById('exp-terminal').innerText = (unidadActiva.sucursal || 'Patio').toUpperCase();
             document.getElementById('exp-reporte').innerText = unidadActiva.reporte || unidadActiva.defecto || 'Sin observaciones';
-            document.getElementById('exp-costo').innerText = unidadActiva.costo > 0 ? `$${Number(unidadActiva.costo).toLocaleString()} MXN` : '$0 MXN';
+            document.getElementById('exp-costo').innerText = formatearMoneda(unidadActiva.costo || 0);
             document.getElementById('exp-fecha-refaccion').innerText = unidadActiva.fechaRefaccion || 'Sin programar';
 
             // Badges de Archivo y Folio en el header
@@ -7047,8 +7262,22 @@
                 const um = pz.unidad_medida || 'PZ';
                 const pu = Number(pz.precio_unitario) || 0;
                 const totalItem = (Number(pz.costo_total) || (pu * cant));
+                const esServicio = Boolean(pz.es_servicio || pz.tipo_item === 'SERVICIO' || pz.almacen_id === 'servicios_externos');
 
-                if (pz.estado === 'EN_ORDEN_COMPRA') {
+                if (esServicio) {
+                    statusBadge = `
+                        <div class="bg-purple-950/80 border border-purple-600/80 text-purple-300 text-[11px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1.5">
+                            <i class="fa-solid fa-wrench text-purple-400"></i>
+                            <span>Servicio Externo (${pz.proveedor || pz.marca || 'Proveedor Externo'})</span>
+                        </div>
+                    `;
+                    botonesAccion = `
+                        <div class="flex items-center gap-1.5">
+                            ${pz.factura ? `<span class="text-[10px] bg-[#141518] border border-[#3A3D42] text-amber-300 px-1.5 py-0.5 rounded font-mono font-bold">Fact: ${pz.factura}</span>` : ''}
+                            <span class="text-[10px] text-slate-400 italic">Gasto externo aplicado</span>
+                        </div>
+                    `;
+                } else if (pz.estado === 'EN_ORDEN_COMPRA') {
                     statusBadge = `
                         <div class="bg-amber-950/80 border border-amber-600/80 text-amber-300 text-[11px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1.5">
                             <i class="fa-solid fa-clock text-amber-400"></i>
@@ -7124,13 +7353,15 @@
                         <div>
                             <div class="flex items-center gap-1.5 flex-wrap">
                                 <span class="font-black text-white text-xs">${pz.descripcion}</span>
-                                ${pz.numero_parte ? `<span class="text-[10px] bg-[#141518] border border-[#3A3D42] text-slate-300 font-mono px-1.5 py-0.2 rounded font-bold">${pz.numero_parte}</span>` : ''}
-                                ${pz.marca ? `<span class="text-[10px] text-slate-400 font-mono">(${pz.marca})</span>` : ''}
+                                ${esServicio ? `<span class="text-[10px] bg-purple-950 border border-purple-500 text-purple-300 font-bold px-2 py-0.5 rounded flex items-center gap-1"><i class="fa-solid fa-wrench"></i> SERVICIO EXTERNO</span>` : ''}
+                                ${pz.numero_parte && !esServicio ? `<span class="text-[10px] bg-[#141518] border border-[#3A3D42] text-slate-300 font-mono px-1.5 py-0.2 rounded font-bold">${pz.numero_parte}</span>` : ''}
+                                ${pz.proveedor ? `<span class="text-[10px] text-amber-400 font-bold flex items-center gap-1"><i class="fa-solid fa-building"></i> ${pz.proveedor}</span>` : (pz.marca ? `<span class="text-[10px] text-slate-400 font-mono">(${pz.marca})</span>` : '')}
+                                ${pz.factura ? `<span class="text-[10px] bg-[#141518] border border-[#3A3D42] text-slate-300 font-mono px-1.5 py-0.2 rounded font-bold">Fact: ${pz.factura}</span>` : ''}
                             </div>
                             <div class="flex items-center gap-2 mt-0.5 text-[10px] text-slate-400 font-mono">
                                 <span>${cant} ${um}</span>
-                                ${pu > 0 ? `<span>• $${pu.toLocaleString()} c/u</span>` : ''}
-                                ${totalItem > 0 ? `<span class="text-[#DFB743] font-bold">• Total: $${totalItem.toLocaleString()} MXN</span>` : ''}
+                                ${pu > 0 ? `<span>• ${formatearMoneda(pu)} c/u</span>` : ''}
+                                ${totalItem > 0 ? `<span class="text-[#DFB743] font-bold">• Total: ${formatearMoneda(totalItem)}</span>` : ''}
                                 <span>• ${ubicacionStr}</span>
                             </div>
                         </div>
@@ -7158,7 +7389,7 @@
             }
             if (unidadActiva && String(unidadActiva.id) === String(unidadActualizada.id)) {
                 unidadActiva = baseDatos[idx];
-                document.getElementById('exp-costo').innerText = unidadActiva.costo > 0 ? `$${unidadActiva.costo.toLocaleString()} MXN` : '$0 MXN';
+                document.getElementById('exp-costo').innerText = formatearMoneda(unidadActiva.costo || 0);
                 document.getElementById('exp-reporte').innerText = unidadActiva.reporte || unidadActiva.defecto || 'Sin observaciones';
                 renderizarRefaccionesExpediente();
                 renderizarTimelineExpediente();
@@ -7375,7 +7606,7 @@
                             <span class="font-bold text-white text-xs">${it.descripcion}</span>
                             <span class="text-[10px] bg-[#141518] text-slate-300 font-mono px-1 rounded">${it.numero_parte || 'S/N'}</span>
                         </div>
-                        <span class="text-[10px] text-slate-400 block font-mono mt-0.5">${it.marca || 'GEN'} • ${it.rack || 'Rack 1'} ${it.nivel || ''} • $${(it.precio_unitario || 0).toLocaleString()}</span>
+                        <span class="text-[10px] text-slate-400 block font-mono mt-0.5">${it.marca || 'GEN'} • ${it.rack || 'Rack 1'} ${it.nivel || ''} • ${formatearMoneda(it.precio_unitario || 0)}</span>
                     </div>
                     <div class="text-right flex flex-col items-end gap-1">
                         ${stockBadge}
@@ -7552,7 +7783,136 @@
 
         function verFotoCompleta(url) {
             const win = window.open();
-            win.document.write(`<body style="margin:0;background:#000;display:flex;align-items:center;justify-content:center;height:100vh;"><img src="${url}" style="max-width:100%;max-height:100%;object-fit:contain;"></body>`);
+            win.document.write(`<body style="margin:0;background:#000;display:flex;align-items:center;justify-content:center;height:100vh;"><img src="${url}" style="max-width:100%;max-height:100%;object-fit:contain;">
+    <!-- =========================================================================
+         DOCK DE NAVEGACIÓN INFERIOR NATIVO PARA SMARTPHONES (ESTILO iOS / PWA)
+         ========================================================================= -->
+    <nav id="mobile-bottom-dock" class="md:hidden fixed bottom-0 inset-x-0 bg-[#1E1E1E]/95 backdrop-blur-md border-t border-[#3A3D42] z-40 px-2 py-1 flex items-center justify-around shadow-2xl pb-[calc(0.4rem+env(safe-area-inset-bottom))]">
+        <button onclick="cambiarVistaPrincipal('tablero')" id="dock-btn-tablero" class="dock-btn flex-1 flex flex-col items-center gap-0.5 py-1 text-[#DFB743] transition active:scale-95">
+            <i class="fa-solid fa-table-columns text-base"></i>
+            <span class="text-[10px] font-black tracking-tight">Taller</span>
+        </button>
+        <button onclick="cambiarVistaPrincipal('preventivos')" id="dock-btn-preventivos" class="dock-btn flex-1 flex flex-col items-center gap-0.5 py-1 text-slate-400 transition active:scale-95 relative">
+            <i class="fa-solid fa-shield-halved text-base text-cyan-400"></i>
+            <span class="text-[10px] font-bold tracking-tight">Preventivos</span>
+            <span id="dock-badge-preventivos" class="absolute top-0.5 right-4 w-2 h-2 rounded-full bg-red-500 animate-pulse hidden"></span>
+        </button>
+        <button onclick="abrirModalNuevaUnidad()" class="flex flex-col items-center justify-center -mt-6 bg-gradient-to-tr from-[#C59B27] via-[#DFB743] to-[#C59B27] text-black w-13 h-13 w-[52px] h-[52px] rounded-full shadow-xl shadow-[#C59B27]/40 border-2 border-[#1E1E1E] active:scale-90 transition mx-1 shrink-0" title="Ingresar nueva unidad">
+            <i class="fa-solid fa-plus text-2xl font-black"></i>
+        </button>
+        <button onclick="cambiarVistaPrincipal('rescates')" id="dock-btn-rescates" class="dock-btn flex-1 flex flex-col items-center gap-0.5 py-1 text-slate-400 transition active:scale-95 relative">
+            <i class="fa-solid fa-truck-medical text-base text-amber-400"></i>
+            <span class="text-[10px] font-bold tracking-tight">Rescates</span>
+            <span id="dock-badge-rescates" class="absolute top-0.5 right-4 w-2 h-2 rounded-full bg-amber-500 hidden"></span>
+        </button>
+        <button onclick="abrirMenuMovil()" id="dock-btn-menu" class="dock-btn flex-1 flex flex-col items-center gap-0.5 py-1 text-slate-400 transition active:scale-95">
+            <i class="fa-solid fa-bars text-base text-slate-300"></i>
+            <span class="text-[10px] font-bold tracking-tight">Menú</span>
+        </button>
+    </nav>
+
+    <!-- DRAWER / HOJA DESLIZABLE DE MENÚ COMPLETO EN MÓVIL (iOS BOTTOM SHEET) -->
+    <div id="drawer-menu-movil" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden z-50 flex flex-col justify-end transition-opacity duration-200" onclick="cerrarMenuMovilSiFondo(event)">
+        <div class="bg-[#1E1E1E] border-t-2 border-[#C59B27] rounded-t-3xl p-5 flex flex-col gap-3 shadow-2xl max-h-[85vh] overflow-y-auto pb-[calc(2rem+env(safe-area-inset-bottom))] animate-in slide-in-from-bottom duration-200" onclick="event.stopPropagation()">
+            <!-- Agarrador estilo iOS -->
+            <div class="w-12 h-1 bg-slate-600 rounded-full mx-auto mb-2 shrink-0"></div>
+            
+            <div class="flex items-center justify-between pb-3 border-b border-[#3A3D42]">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-[#C59B27] text-black flex items-center justify-center font-black">
+                        <i class="fa-solid fa-truck-monster"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-black text-white">Módulos & Herramientas</h3>
+                        <p class="text-[11px] text-[#DFB743] font-bold">Control CESS Patio Central</p>
+                    </div>
+                </div>
+                <button onclick="cerrarMenuMovil()" class="text-slate-400 hover:text-white text-xl p-1 rounded-lg hover:bg-[#282A2E] leading-none transition">&times;</button>
+            </div>
+
+            <!-- Accesos a Módulos Operativos -->
+            <div class="grid grid-cols-2 gap-2 text-xs">
+                <button onclick="cerrarMenuMovil(); cambiarVistaPrincipal('remolques');" class="bg-[#282A2E] hover:bg-[#3A3D42] text-left p-3 rounded-2xl border border-[#3A3D42] flex items-center gap-2.5 transition active:scale-95">
+                    <div class="w-8 h-8 rounded-xl bg-amber-950 text-amber-400 border border-amber-800 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-trailer"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-white block">Remolques</span>
+                        <span class="text-[10px] text-slate-400">Cajas 53' y termos</span>
+                    </div>
+                </button>
+                <button onclick="cerrarMenuMovil(); cambiarVistaPrincipal('historial');" class="bg-[#282A2E] hover:bg-[#3A3D42] text-left p-3 rounded-2xl border border-[#3A3D42] flex items-center gap-2.5 transition active:scale-95">
+                    <div class="w-8 h-8 rounded-xl bg-indigo-950 text-indigo-400 border border-indigo-800 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-white block">Historial</span>
+                        <span class="text-[10px] text-slate-400">Por cada unidad</span>
+                    </div>
+                </button>
+                <button onclick="cerrarMenuMovil(); cambiarVistaPrincipal('bitacoras');" class="bg-[#282A2E] hover:bg-[#3A3D42] text-left p-3 rounded-2xl border border-[#3A3D42] flex items-center gap-2.5 transition active:scale-95">
+                    <div class="w-8 h-8 rounded-xl bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-calendar-days"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-white block">Bitácoras</span>
+                        <span class="text-[10px] text-slate-400">Rollover 24h</span>
+                    </div>
+                </button>
+                <button onclick="cerrarMenuMovil(); cambiarVistaPrincipal('analitica');" class="bg-[#282A2E] hover:bg-[#3A3D42] text-left p-3 rounded-2xl border border-[#3A3D42] flex items-center gap-2.5 transition active:scale-95">
+                    <div class="w-8 h-8 rounded-xl bg-yellow-950 text-[#DFB743] border border-yellow-800 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-white block">Analítica</span>
+                        <span class="text-[10px] text-slate-400">Gráficas e inversión</span>
+                    </div>
+                </button>
+                <button onclick="cerrarMenuMovil(); abrirModalUnidadesLiberadas();" class="bg-[#282A2E] hover:bg-[#3A3D42] text-left p-3 rounded-2xl border border-[#3A3D42] flex items-center gap-2.5 transition active:scale-95">
+                    <div class="w-8 h-8 rounded-xl bg-emerald-950 text-emerald-300 border border-emerald-700 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-flag-checkered"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-white block">Salidas a Viaje</span>
+                        <span class="text-[10px] text-slate-400">Unidades liberadas</span>
+                    </div>
+                </button>
+                <button onclick="cerrarMenuMovil(); abrirModalAlmacen();" class="bg-[#282A2E] hover:bg-[#3A3D42] text-left p-3 rounded-2xl border border-[#3A3D42] flex items-center gap-2.5 transition active:scale-95">
+                    <div class="w-8 h-8 rounded-xl bg-amber-950 text-[#DFB743] border border-amber-800 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-boxes-stacked"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-white block">Almacén</span>
+                        <span class="text-[10px] text-slate-400">Catálogo de piezas</span>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Accesos de Configuración y Enlace -->
+            <div class="pt-2 flex flex-col gap-2 border-t border-[#3A3D42]/60">
+                <button onclick="cerrarMenuMovil(); abrirModalCompartir();" class="btn-cess-gold w-full py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg transition active:scale-95">
+                    <i class="fa-solid fa-share-nodes text-sm"></i>
+                    <span class="font-black">Compartir Tablero en Vivo</span>
+                </button>
+                <div class="grid grid-cols-3 gap-2 text-xs">
+                    <button onclick="cerrarMenuMovil(); abrirModalInstalarJefe();" class="bg-[#282A2E] hover:bg-[#3A3D42] text-slate-200 border border-[#3A3D42] py-2 px-2 rounded-xl font-bold flex items-center justify-center gap-1.5 transition active:scale-95">
+                        <i class="fa-solid fa-mobile-screen-button text-[#C59B27]"></i> <span class="text-[11px]">Instalar App</span>
+                    </button>
+                    <button onclick="cerrarMenuMovil(); abrirModalAsistenteIA();" class="bg-[#282A2E] hover:bg-[#3A3D42] text-slate-200 border border-[#3A3D42] py-2 px-2 rounded-xl font-bold flex items-center justify-center gap-1.5 transition active:scale-95">
+                        <i class="fa-solid fa-brain text-purple-400"></i> <span class="text-[11px]">Asistente IA</span>
+                    </button>
+                    <button onclick="cerrarMenuMovil(); abrirModalAjustes();" class="bg-[#282A2E] hover:bg-[#3A3D42] text-slate-200 border border-[#3A3D42] py-2 px-2 rounded-xl font-bold flex items-center justify-center gap-1.5 transition active:scale-95">
+                        <i class="fa-solid fa-gear text-slate-400"></i> <span class="text-[11px]">Ajustes</span>
+                    </button>
+                </div>
+            </div>
+
+            <button onclick="cerrarMenuMovil()" class="mt-1 w-full bg-[#141518] hover:bg-[#282A2E] text-slate-400 hover:text-white py-2 rounded-xl text-xs font-bold border border-[#3A3D42] transition">
+                Cerrar Menú
+            </button>
+        </div>
+    </div>
+</body>`);
         }
 
         // --- DICTADO POR VOZ ---
@@ -7906,7 +8266,7 @@
                     const uBadge = it.unidad_camion ? `<span class="text-[#C59B27] font-bold">Unidad ${it.unidad_camion}</span> • ` : '';
                     return `<div class="text-[11px] text-slate-300 flex justify-between items-center py-0.5 border-b border-[#282A2E] last:border-0">
                         <span class="truncate pr-2">${uBadge}<b>${cant}x</b> ${desc} <span class="text-slate-500 font-mono">${np}</span></span>
-                        <span class="text-slate-400 font-mono text-[10px] shrink-0">$${((Number(it.precio_estimado || it.precio_unitario) || 0) * cant).toLocaleString()}</span>
+                        <span class="text-slate-400 font-mono text-[10px] shrink-0">${formatearMoneda((Number(it.precio_estimado || it.precio_unitario) || 0) * cant, false)}</span>
                     </div>`;
                 }).join('');
 
@@ -7922,7 +8282,7 @@
                             ${badgeTaller}
                         </div>
                         <div class="text-right">
-                            <span class="text-xs font-mono font-black text-emerald-400 block">$${(Number(ord.total_importe) || 0).toLocaleString()} MXN</span>
+                            <span class="text-xs font-mono font-black text-emerald-400 block">${formatearMoneda(Number(ord.total_importe) || 0)}</span>
                             <span class="text-[10px] text-slate-400 font-mono">${ord.fecha_creacion || ''}</span>
                         </div>
                     </div>
@@ -8052,7 +8412,7 @@
                         `*Proveedor:* ${ord.proveedor || 'Por asignar'}\n` +
                         `*Fecha:* ${ord.fecha_creacion || ''}\n` +
                         `*Artículos:*\n${itemsTxt}\n` +
-                        `*Importe Estimado:* $${(Number(ord.total_importe) || 0).toLocaleString()} MXN\n` +
+                        `*Importe Estimado:* ${formatearMoneda(Number(ord.total_importe) || 0)}\n` +
                         (ord.notas ? `*Notas:* ${ord.notas}\n` : '') +
                         `_Generado automáticamente desde Taller Pro & Almacén_`;
 
@@ -8114,7 +8474,7 @@
                             <span class="font-bold text-white">${it.descripcion}</span>
                             <span class="text-[10px] bg-[#1E1E1E] border border-[#3A3D42] px-1.5 py-0.2 rounded text-slate-300 font-mono">${it.numero_parte || 'S/N'}</span>
                         </div>
-                        <span class="text-[10px] text-slate-400 block mt-0.5 font-mono">Ubicación: ${it.rack || 'Rack 1'} ${it.nivel || ''} • Marca: ${it.marca || 'GEN'} • $${(it.precio_unitario || 0).toLocaleString()}</span>
+                        <span class="text-[10px] text-slate-400 block mt-0.5 font-mono">Ubicación: ${it.rack || 'Rack 1'} ${it.nivel || ''} • Marca: ${it.marca || 'GEN'} • ${formatearMoneda(it.precio_unitario || 0)}</span>
                     </div>
                     <div class="text-right flex flex-col items-end">
                         ${stockBadge}
@@ -8218,7 +8578,7 @@
 
         function mostrarResultadoVision(datos) {
             document.getElementById('esc-proveedor').innerText = `Proveedor: ${datos.proveedor || 'Sin especificar'}`;
-            document.getElementById('esc-total').innerText = `$${(datos.totalMxn || 0).toLocaleString()} MXN`;
+            document.getElementById('esc-total').innerText = formatearMoneda(datos.totalMxn || 0);
             if (datos.unidadSugerida) document.getElementById('esc-unidad-select').value = datos.unidadSugerida;
             document.getElementById('escaner-resultado').classList.remove('hidden');
         }
@@ -8230,7 +8590,7 @@
             if (!unidad) return;
 
             unidad.costo = cotizacionEscaneadaActual.totalMxn || unidad.costo;
-            agregarEventoHistorial(unidad.id, `Cotización autorizada: $${(cotizacionEscaneadaActual.totalMxn||0).toLocaleString()} MXN (${cotizacionEscaneadaActual.proveedor || 'Refacciones'})`, 'cotizacion_vision');
+            agregarEventoHistorial(unidad.id, `Cotización autorizada: ${formatearMoneda(cotizacionEscaneadaActual.totalMxn || 0)} (${cotizacionEscaneadaActual.proveedor || 'Refacciones'})`, 'cotizacion_vision');
             guardarDatosLocales();
             renderizarTablero();
             cerrarEscanerDocumentos();
@@ -8500,11 +8860,13 @@
             if (event && event.stopPropagation) event.stopPropagation();
             let u = baseDatos.find(x => String(x.id).trim() === String(id).trim());
             if (!u) u = (cacheUnidadesLiberadas || []).find(x => String(x.id).trim() === String(id).trim());
+            if (!u && typeof cacheRemolques !== 'undefined') u = (cacheRemolques || []).find(x => String(x.id).trim().toUpperCase() === String(id).trim().toUpperCase());
             if (!u || !u.folio_almacen) return;
 
             unidadVincularActiva = u;
             document.getElementById('det-folio-num-badge').innerText = `#${u.folio_almacen}`;
-            document.getElementById('det-folio-unidad').innerText = `Unidad ${u.id} (${u.sucursal || 'Patio'})`;
+            const tipoLabel = u.tipo ? `Caja / Remolque ${u.id}` : `Unidad ${u.id}`;
+            document.getElementById('det-folio-unidad').innerText = `${tipoLabel} (${u.sucursal || 'Patio'})`;
             document.getElementById('det-folio-solicitante').innerText = 'Consultando Almacén...';
             document.getElementById('det-folio-costo-total').innerText = '$0 MXN';
 
@@ -8525,7 +8887,7 @@
                 const json = await res.json();
                 if (res.ok && json.success) {
                     document.getElementById('det-folio-solicitante').innerText = json.solicitante || 'Personal Taller';
-                    document.getElementById('det-folio-costo-total').innerText = `$${(json.costo_total || 0).toLocaleString()} MXN`;
+                    document.getElementById('det-folio-costo-total').innerText = formatearMoneda(json.costo_total || 0);
 
                     // Calcular subtotales preventivo vs correctivo
                     let cPrev = 0, cCorr = 0;
@@ -8537,23 +8899,25 @@
                         else cCorr += tot;
                     });
 
+                    document.getElementById('det-folio-costo-total').innerText = formatearMoneda(json.costo_total !== undefined ? json.costo_total : (json.costoTotal || 0));
+
                     if (chipsEl) {
                         chipsEl.innerHTML = `
-                            ${cPrev > 0 ? `<span class="bg-emerald-950/80 text-emerald-300 border border-emerald-800 px-2 py-0.5 rounded font-mono font-bold">🛡️ Prev: $${cPrev.toLocaleString()}</span>` : ''}
-                            ${cCorr > 0 ? `<span class="bg-blue-950/80 text-blue-300 border border-blue-800 px-2 py-0.5 rounded font-mono font-bold">🔧 Corr: $${cCorr.toLocaleString()}</span>` : ''}
+                            ${cPrev > 0 ? `<span class="bg-emerald-950/80 text-emerald-300 border border-emerald-800 px-2 py-0.5 rounded font-mono font-bold">🛡️ Prev: ${formatearMoneda(cPrev)}</span>` : ''}
+                            ${cCorr > 0 ? `<span class="bg-blue-950/80 text-blue-300 border border-blue-800 px-2 py-0.5 rounded font-mono font-bold">🔧 Corr: ${formatearMoneda(cCorr)}</span>` : ''}
                         `;
                     }
 
                     tbody.innerHTML = (json.items || []).map(it => {
                         const safeDesc = (it.descripcion || '').replace(/'/g, "\\'");
                         const pu = Number(it.precio_unitario || 0);
-                        const tot = Number(it.total_costo || (it.cantidad * pu) || 0);
+                        const tot = Number(it.costo_total !== undefined ? it.costo_total : (it.total_costo || (it.cantidad * pu))) || 0;
                         const precioHtml = pu > 0 
-                            ? `${pu.toLocaleString()} MXN`
-                            : `<span class="text-amber-400 font-bold">$0</span> <span class="bg-amber-950 text-amber-300 text-[9px] px-1 py-0.5 rounded border border-amber-700/60 ml-0.5 font-bold">Por cotizar</span>`;
+                            ? formatearMoneda(pu)
+                            : `<span class="text-amber-400 font-bold">$0.00 MXN</span> <span class="bg-amber-950 text-amber-300 text-[9px] px-1 py-0.5 rounded border border-amber-700/60 ml-0.5 font-bold">Por cotizar</span>`;
                         const totHtml = tot > 0 
-                            ? `${tot.toLocaleString()} MXN`
-                            : `<span class="text-amber-400 font-bold">$0 MXN</span>`;
+                            ? formatearMoneda(tot)
+                            : `<span class="text-amber-400 font-bold">$0.00 MXN</span>`;
                         const btnText = pu > 0 ? '<i class="fa-solid fa-pencil text-[10px]"></i> Ajustar' : '<i class="fa-solid fa-dollar-sign text-[10px]"></i> Asignar Costo';
                         const btnClass = pu > 0 ? 'bg-[#282A2E] hover:bg-[#3A3D42] text-slate-300 hover:text-white border border-[#3A3D42]' : 'bg-amber-500 hover:bg-amber-400 text-black font-black border border-amber-400 shadow';
 
@@ -8570,7 +8934,7 @@
                                 <td class="p-2.5 text-right font-mono text-slate-300">${precioHtml}</td>
                                 <td class="p-2.5 text-right font-mono text-[#DFB743] font-bold">${totHtml}</td>
                                 <td class="p-2.5 text-center">
-                                    <button onclick="abrirModalEditarPiezaFolio('${it.id_item}', ${it.cantidad}, ${pu}, '${safeDesc}')" class="${btnClass} px-2 py-0.5 rounded text-[11px] font-bold transition flex items-center gap-1 mx-auto" title="Asignar o editar precio/cantidad">
+                                    <button onclick="abrirModalEditarPiezaFolio('${it.id_item || it.id}', ${it.cantidad}, ${pu}, '${safeDesc}')" class="${btnClass} px-2 py-0.5 rounded text-[11px] font-bold transition flex items-center gap-1 mx-auto" title="Asignar o editar precio/cantidad">
                                         ${btnText}
                                     </button>
                                 </td>
@@ -8581,12 +8945,12 @@
                     const piezas = Array.isArray(u.piezas) ? u.piezas : [];
                     const costo = Number(u.costo_refacciones) || Number(u.costo) || 0;
                     document.getElementById('det-folio-solicitante').innerText = 'Almacén Central';
-                    document.getElementById('det-folio-costo-total').innerText = `$${costo.toLocaleString()} MXN`;
+                    document.getElementById('det-folio-costo-total').innerText = formatearMoneda(costo);
 
                     if (chipsEl) {
                         chipsEl.innerHTML = `
-                            ${u.costo_preventivo > 0 ? `<span class="bg-emerald-950/80 text-emerald-300 border border-emerald-800 px-2 py-0.5 rounded font-mono font-bold">🛡️ Prev: $${Number(u.costo_preventivo).toLocaleString()}</span>` : ''}
-                            ${u.costo_correctivo > 0 ? `<span class="bg-blue-950/80 text-blue-300 border border-blue-800 px-2 py-0.5 rounded font-mono font-bold">🔧 Corr: $${Number(u.costo_correctivo).toLocaleString()}</span>` : ''}
+                            ${u.costo_preventivo > 0 ? `<span class="bg-emerald-950/80 text-emerald-300 border border-emerald-800 px-2 py-0.5 rounded font-mono font-bold">🛡️ Prev: ${formatearMoneda(u.costo_preventivo)}</span>` : ''}
+                            ${u.costo_correctivo > 0 ? `<span class="bg-blue-950/80 text-blue-300 border border-blue-800 px-2 py-0.5 rounded font-mono font-bold">🔧 Corr: ${formatearMoneda(u.costo_correctivo)}</span>` : ''}
                         `;
                     }
 
@@ -8596,6 +8960,8 @@
                         tbody.innerHTML = piezas.map(it => {
                             const safeDesc = (it.descripcion || '').replace(/'/g, "\\'");
                             const pTipo = it.tipo_trabajo || clasificarTextoPieza(it.descripcion, it.numero_parte);
+                            const puVal = Number(it.precio_unitario || 0);
+                            const totVal = Number(it.costo_total !== undefined ? it.costo_total : (it.total_costo || (it.cantidad * puVal))) || 0;
                             return `
                                 <tr class="hover:bg-[#141518]/60 transition text-xs">
                                     <td class="p-2.5 font-mono text-indigo-300 font-bold">${it.numero_parte || '--'}</td>
@@ -8606,8 +8972,8 @@
                                         </button>
                                     </td>
                                     <td class="p-2.5 text-center font-bold text-slate-200 font-mono">${it.cantidad || 1}</td>
-                                    <td class="p-2.5 text-right font-mono text-slate-400">$${Number(it.precio_unitario||0).toLocaleString()}</td>
-                                    <td class="p-2.5 text-right font-mono text-[#DFB743] font-bold">$${Number(it.costo_total||it.total_costo||it.precio_unitario||0).toLocaleString()}</td>
+                                    <td class="p-2.5 text-right font-mono text-slate-400">${formatearMoneda(puVal)}</td>
+                                    <td class="p-2.5 text-right font-mono text-[#DFB743] font-bold">${formatearMoneda(totVal)}</td>
                                     <td class="p-2.5 text-center">
                                         <button onclick="abrirModalEditarPiezaFolio('${it.id}', ${it.cantidad || 1}, ${Number(it.precio_unitario||0)}, '${safeDesc}')" class="bg-amber-950/70 hover:bg-amber-900 text-amber-300 border border-amber-700/60 px-2 py-0.5 rounded text-[11px] font-bold transition flex items-center gap-1 mx-auto" title="Modificar pieza">
                                             <i class="fa-solid fa-pencil text-[10px]"></i> Ajustar
@@ -8685,7 +9051,7 @@
                     const res = await fetch('/api/almacen/inventario?t=' + Date.now());
                     if (res.ok) {
                         const json = await res.json();
-                        catalogoAlmacenParaSurtir = json.catalog || [];
+                        catalogoAlmacenParaSurtir = Array.isArray(json.resultados) ? json.resultados : (Array.isArray(json.catalog) ? json.catalog : Object.values(json.catalog || {}));
                     }
                 } catch(e) {}
             }
@@ -8722,7 +9088,7 @@
                             <span class="text-[10px] text-slate-400 font-mono">Parte: ${p.numero_parte || '--'} • Marca: ${p.marca || 'CESS'}</span>
                         </div>
                         <div class="text-right">
-                            <span class="text-emerald-400 font-mono font-bold block">$${pu.toLocaleString()} MXN</span>
+                            <span class="text-emerald-400 font-mono font-bold block">${formatearMoneda(pu)}</span>
                             <span class="text-[10px] text-slate-400 font-mono">Stock: ${p.stock_actual || 0} ${p.unidad || 'PZ'}</span>
                         </div>
                     </div>
@@ -8734,7 +9100,7 @@
             piezaSeleccionadaParaSurtir = { id, desc, stock, precio };
             document.getElementById('txt-pieza-sel-desc').innerText = desc;
             document.getElementById('txt-pieza-sel-stock').innerText = `Stock en almacén: ${stock} PZ`;
-            document.getElementById('txt-pieza-sel-precio').innerText = `$${precio.toLocaleString()} MXN c/u`;
+            document.getElementById('txt-pieza-sel-precio').innerText = `${formatearMoneda(precio)} c/u`;
             document.getElementById('caja-pieza-seleccionada-surtir').classList.remove('hidden');
             document.getElementById('caja-pieza-seleccionada-surtir').classList.add('flex');
             document.getElementById('btn-confirmar-surtir-pieza').disabled = false;
@@ -9303,7 +9669,7 @@
 
             if (document.getElementById('resc-kpi-activos')) document.getElementById('resc-kpi-activos').innerText = activos;
             if (document.getElementById('resc-kpi-concluidos')) document.getElementById('resc-kpi-concluidos').innerText = concluidos;
-            if (document.getElementById('resc-kpi-costo')) document.getElementById('resc-kpi-costo').innerText = `$${inversion.toLocaleString()} MXN`;
+            if (document.getElementById('resc-kpi-costo')) document.getElementById('resc-kpi-costo').innerText = formatearMoneda(inversion);
 
             const navBadge = document.getElementById('badge-nav-rescates');
             if (navBadge) {
@@ -9373,7 +9739,7 @@
                                 </div>
                                 <div class="text-right">
                                     <span class="text-[10px] text-slate-400 block">Presupuesto Est.:</span>
-                                    <strong class="text-amber-400 font-mono font-bold">$${(Number(r.costo_estimado)||0).toLocaleString()} MXN</strong>
+                                    <strong class="text-amber-400 font-mono font-bold">${formatearMoneda(Number(r.costo_estimado) || 0)}</strong>
                                 </div>
                             </div>
 
@@ -9400,7 +9766,7 @@
                             <td class="p-3 text-slate-300">${r.operador || '--'}</td>
                             <td class="p-3 text-slate-300">${r.carretera} (${r.km})</td>
                             <td class="p-3 text-slate-400">${r.falla_reportada || '--'}</td>
-                            <td class="p-3 text-right font-mono text-emerald-400 font-bold">$${(Number(r.costo_real || r.costo_estimado)||0).toLocaleString()} MXN</td>
+                            <td class="p-3 text-right font-mono text-emerald-400 font-bold">${formatearMoneda(Number(r.costo_real || r.costo_estimado) || 0)}</td>
                             <td class="p-3 text-center">
                                 <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-800">Concluido</span>
                             </td>
@@ -9655,7 +10021,25 @@
                     else if (r.sistema && r.sistema.includes('Thermo')) icono = 'fa-snowflake';
                     else if (r.sistema && r.sistema.includes('Quinta')) icono = 'fa-link';
 
-                    const folioBadge = r.folio_almacen ? `<span class="bg-blue-950 text-blue-300 font-mono text-[9px] px-1.5 py-0.5 rounded border border-blue-800" title="Folio de Almacén"><i class="fa-solid fa-boxes-stacked mr-1"></i>#${r.folio_almacen}</span>` : '';
+                    const tieneFolioAlmacen = !!(r.folio_almacen && String(r.folio_almacen).trim());
+                    const folioBadge = tieneFolioAlmacen ? `<span class="bg-blue-950 text-blue-300 font-mono text-[9px] px-1.5 py-0.5 rounded border border-blue-800" title="Folio de Almacén"><i class="fa-solid fa-boxes-stacked mr-1"></i>#${r.folio_almacen}</span>` : '';
+                    const fechaDisplay = r.fechaIngreso || r.fecha || 'Hoy';
+                    const cantPiezas = Array.isArray(r.piezas) ? r.piezas.length : 0;
+                    const costoRefacc = Number(r.costo_refacciones || r.costo || 0);
+
+                    const stripAlmacenHtml = tieneFolioAlmacen ? `
+                        <div onclick="abrirDetalleFolioAlmacen(event, '${r.id}')" class="bg-blue-950/70 hover:bg-blue-900 border border-blue-700/60 rounded-lg p-2 cursor-pointer transition flex items-center justify-between group/strip" title="Clic para ver refacciones y costos en Almacén">
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <i class="fa-solid fa-boxes-stacked text-blue-400 text-xs"></i>
+                                <span class="font-mono font-bold text-[10px] text-blue-200">ALMACÉN FOLIO #${r.folio_almacen}</span>
+                                <span class="text-[9px] text-blue-300 bg-blue-900/80 px-1.5 py-0.5 rounded border border-blue-700 font-bold">${cantPiezas} refacciones</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <span class="font-mono font-black text-xs text-emerald-400 group-hover/strip:scale-105 transition">${formatearMoneda(costoRefacc)}</span>
+                                <i class="fa-solid fa-chevron-right text-[10px] text-blue-400"></i>
+                            </div>
+                        </div>
+                    ` : '';
 
                     card.innerHTML = `
                         <div class="flex justify-between items-start gap-2">
@@ -9683,6 +10067,9 @@
 
                         <div class="flex flex-wrap items-center gap-1.5">
                             <span class="bg-[#1E1E1E] text-slate-300 text-[10px] px-2 py-0.5 rounded border border-[#3A3D42] font-semibold flex items-center gap-1">
+                                <i class="fa-regular fa-calendar text-[#DFB743]"></i> ${fechaDisplay}
+                            </span>
+                            <span class="bg-[#1E1E1E] text-slate-300 text-[10px] px-2 py-0.5 rounded border border-[#3A3D42] font-semibold flex items-center gap-1">
                                 <i class="fa-solid ${icono} text-[#C59B27]"></i> ${r.sistema || 'General'}
                             </span>
                             ${r.placas ? `<span class="bg-[#1E1E1E] text-slate-400 font-mono text-[10px] px-1.5 py-0.5 rounded border border-[#3A3D42]">${r.placas}</span>` : ''}
@@ -9694,9 +10081,11 @@
                             ${r.reporte ? `<p class="mt-1.5 pt-1.5 border-t border-[#3A3D42]/50 text-[10px] text-slate-400 italic"><i class="fa-solid fa-wrench mr-1 text-[#C59B27]"></i>${r.reporte}</p>` : ''}
                         </div>
 
+                        ${stripAlmacenHtml}
+
                         <div class="flex items-center justify-between text-[10px] text-slate-400 pt-1 border-t border-[#3A3D42]/60">
                             <span><i class="fa-solid fa-user-gear text-slate-500 mr-1"></i>${r.mecanico || 'Sin asignar'}</span>
-                            <span class="font-bold text-white font-mono">${r.costo ? '$' + Number(r.costo).toLocaleString() + ' MXN' : '$0'}</span>
+                            <span class="font-bold text-white font-mono">${formatearMoneda(costoRefacc)}</span>
                         </div>
 
                         <!-- Botones táctiles de cambio de columna -->
@@ -9729,7 +10118,7 @@
             if (txtTotal) txtTotal.innerText = `${filtrados.length} registros`;
 
             if (filtrados.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="11" class="p-6 text-center text-slate-500 italic">No se encontraron cajas o remolques con los filtros seleccionados.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="12" class="p-6 text-center text-slate-500 italic">No se encontraron cajas o remolques con los filtros seleccionados.</td></tr>`;
                 return;
             }
 
@@ -9745,19 +10134,23 @@
                     badgeEstado = `<span class="bg-emerald-950 text-emerald-300 border border-emerald-800 text-[10px] px-2 py-0.5 rounded font-bold">Listo Patio</span>`;
                 }
 
-                const folio = r.folio_almacen ? `<span class="font-mono text-cyan-400 font-bold">#${r.folio_almacen}</span>` : '<span class="text-slate-600">-</span>';
+                const cantPiezas = Array.isArray(r.piezas) ? r.piezas.length : 0;
+                const costoTotal = Number(r.costo_refacciones || r.costo || 0);
+                const folioBtn = r.folio_almacen ? `<button onclick="abrirDetalleFolioAlmacen(event, '${r.id}')" class="bg-blue-950 hover:bg-blue-900 border border-blue-700/60 text-blue-300 font-mono font-bold text-xs px-2 py-0.5 rounded inline-flex items-center gap-1 transition shadow-sm" title="Ver refacciones y salidas en Almacén"><i class="fa-solid fa-boxes-stacked text-[10px] text-blue-400"></i> #${r.folio_almacen} ${cantPiezas > 0 ? `<span class="text-[9px] bg-blue-900 text-blue-200 px-1 rounded">(${cantPiezas})</span>` : ''}</button>` : '<span class="text-slate-600">-</span>';
+                const fechaDisplay = r.fechaIngreso || r.fecha || '-';
 
                 return `
                     <tr class="hover:bg-[#1E1E1E] transition">
                         <td class="p-3 font-mono font-black text-white text-xs">${r.id}</td>
+                        <td class="p-3 text-slate-300 font-mono text-[11px] whitespace-nowrap"><i class="fa-regular fa-calendar text-[#DFB743] mr-1"></i>${fechaDisplay}</td>
                         <td class="p-3 text-slate-300 font-bold">${r.tipo} <span class="text-[10px] text-slate-500 block font-normal">${r.marca || ''}</span></td>
                         <td class="p-3 font-mono text-slate-400 text-xs">${r.placas || '-'}${r.anio ? ` <span class="text-slate-500 block text-[10px]">${r.anio}</span>` : ''}</td>
                         <td class="p-3 text-slate-300 font-semibold">${r.sistema || 'General'}</td>
                         <td class="p-3 text-slate-200 max-w-xs truncate" title="${r.defecto || ''}">${r.defecto || '-'}</td>
                         <td class="p-3 text-slate-400 max-w-xs truncate text-[11px] italic" title="${r.reporte || ''}">${r.reporte || '-'}</td>
                         <td class="p-3 text-slate-300 text-xs">${r.mecanico || 'Sin asignar'}</td>
-                        <td class="p-3">${folio}</td>
-                        <td class="p-3 text-right font-mono font-bold text-white">${r.costo ? '$' + Number(r.costo).toLocaleString() : '$0'}</td>
+                        <td class="p-3">${folioBtn}</td>
+                        <td class="p-3 text-right font-mono font-bold text-white">${formatearMoneda(costoTotal)}</td>
                         <td class="p-3 text-center">${badgeEstado}</td>
                         <td class="p-3 text-center">
                             <div class="flex items-center justify-center gap-1">
@@ -9777,8 +10170,13 @@
         function abrirModalNuevoRemolque() {
             document.getElementById('modal-remolque-titulo').innerText = 'Registrar Caja / Remolque';
             document.getElementById('remolque-form-es-edicion').value = 'false';
-            document.getElementById('remolque-form-id').value = '';
-            document.getElementById('remolque-form-id').disabled = false;
+            const inputId = document.getElementById('remolque-form-id');
+            inputId.value = '';
+            inputId.disabled = false;
+
+            const fechaEl = document.getElementById('remolque-form-fecha');
+            if (fechaEl) fechaEl.value = new Date().toISOString().slice(0, 10);
+
             document.getElementById('remolque-form-tipo').value = "Caja Seca 53'";
             document.getElementById('remolque-form-marca').value = '';
             document.getElementById('remolque-form-anio').value = '';
@@ -9793,7 +10191,7 @@
             document.getElementById('remolque-form-sucursal').value = 'Apodaca';
 
             document.getElementById('modal-nuevo-remolque').classList.remove('hidden');
-            setTimeout(() => document.getElementById('remolque-form-id').focus(), 100);
+            setTimeout(() => inputId.focus(), 100);
         }
 
         function editarRemolque(id) {
@@ -9806,6 +10204,20 @@
             inputId.value = r.id;
             inputId.disabled = true;
 
+            const fechaEl = document.getElementById('remolque-form-fecha');
+            if (fechaEl) {
+                let fVal = r.fecha || '';
+                if (!fVal && r.fechaIngreso && r.fechaIngreso.includes('/')) {
+                    const partes = r.fechaIngreso.split('/');
+                    if (partes.length === 3) {
+                        let anio = partes[2];
+                        if (anio.length === 2) anio = '20' + anio;
+                        fVal = `${anio}-${partes[1].padStart(2, '0')}-${partes[0].padStart(2, '0')}`;
+                    }
+                }
+                fechaEl.value = fVal || new Date().toISOString().slice(0, 10);
+            }
+
             document.getElementById('remolque-form-tipo').value = r.tipo || "Caja Seca 53'";
             document.getElementById('remolque-form-marca').value = r.marca || '';
             document.getElementById('remolque-form-anio').value = r.anio || '';
@@ -9816,7 +10228,7 @@
             document.getElementById('remolque-form-reporte').value = r.reporte || '';
             document.getElementById('remolque-form-mecanico').value = r.mecanico || '';
             document.getElementById('remolque-form-folio').value = r.folio_almacen || '';
-            document.getElementById('remolque-form-costo').value = r.costo || '';
+            document.getElementById('remolque-form-costo').value = r.costo_refacciones || r.costo || '';
             document.getElementById('remolque-form-sucursal').value = r.sucursal || 'Apodaca';
 
             document.getElementById('modal-nuevo-remolque').classList.remove('hidden');
@@ -9831,6 +10243,15 @@
             const id = document.getElementById('remolque-form-id').value.trim().toUpperCase();
             if (!id) return;
 
+            const fechaInput = document.getElementById('remolque-form-fecha');
+            const fechaRaw = fechaInput ? fechaInput.value : '';
+            let fechaIngresoFormateada = '';
+            if (fechaRaw) {
+                const [y, m, d] = fechaRaw.split('-');
+                if (y && m && d) fechaIngresoFormateada = `${d}/${m}/${y}`;
+            }
+            if (!fechaIngresoFormateada) fechaIngresoFormateada = new Date().toLocaleDateString('es-MX');
+
             const data = {
                 id: id,
                 tipo: document.getElementById('remolque-form-tipo').value,
@@ -9844,7 +10265,9 @@
                 mecanico: document.getElementById('remolque-form-mecanico').value.trim(),
                 folio_almacen: document.getElementById('remolque-form-folio').value.trim(),
                 costo: Number(document.getElementById('remolque-form-costo').value) || 0,
-                sucursal: document.getElementById('remolque-form-sucursal').value
+                sucursal: document.getElementById('remolque-form-sucursal').value,
+                fecha: fechaRaw || new Date().toISOString().slice(0, 10),
+                fechaIngreso: fechaIngresoFormateada
             };
 
             try {
@@ -9856,7 +10279,7 @@
 
                 if (res.ok) {
                     cerrarModalNuevoRemolque();
-                    mostrarToast(`Caja ${id} guardada con éxito`);
+                    mostrarToast(`Caja ${id} guardada con éxito con folio ${data.folio_almacen ? '#' + data.folio_almacen : 'actualizado'}`);
                     await cargarModuloRemolques();
                 } else {
                     mostrarToast('Error al guardar remolque');
@@ -10025,14 +10448,12 @@
         let unidadVincularActiva = null;
         let datosFolioConsultado = null;
 
-        function abrirModalVincularAlmacen(event, id) {
+        async function abrirModalVincularAlmacen(event, id) {
             if (event && event.stopPropagation) event.stopPropagation();
-            let u = baseDatos.find(x => String(x.id).trim() === String(id).trim());
-            if (!u) u = (cacheUnidadesLiberadas || []).find(x => String(x.id).trim() === String(id).trim());
+            let u = baseDatos.find(x => String(x.id).trim() === String(id).trim()) || (cacheUnidadesLiberadas || []).find(x => String(x.id).trim() === String(id).trim());
             if (!u) return;
 
             unidadVincularActiva = u;
-            datosFolioConsultado = null;
             document.getElementById('vincular-modal-unidad-num').innerText = `${u.id} (${u.sucursal || 'Patio'})`;
             document.getElementById('input-folio-almacen').value = u.folio_almacen || '';
             document.getElementById('caja-resultado-folio').classList.add('hidden');
@@ -10040,6 +10461,9 @@
             document.getElementById('btn-confirmar-vincular').disabled = true;
 
             cambiarModoVincularFolio('existente');
+
+            // Cargar y mostrar folios sugeridos/disponibles desde Almacén
+            cargarFoliosDisponiblesAlmacen(u.id);
 
             // Pre-cargar valores para generación de nuevo folio
             let maxF = 4075;
@@ -10061,6 +10485,59 @@
             if (u.folio_almacen) {
                 consultarFolioAlmacenBoton();
             }
+        }
+
+        async function cargarFoliosDisponiblesAlmacen(unidadId) {
+            const cont = document.getElementById('lista-folios-sugeridos');
+            const badge = document.getElementById('badge-folios-sug-count');
+            if (!cont) return;
+            cont.innerHTML = '<p class="text-slate-400 p-2 text-center italic text-[11px]"><i class="fa-solid fa-spinner fa-spin mr-1 text-indigo-400"></i> Buscando folios de Almacén...</p>';
+
+            try {
+                const res = await fetch(`/api/almacen/folios-disponibles?unidad=${encodeURIComponent(unidadId)}&t=` + Date.now());
+                const json = await res.json();
+                if (res.ok && json.success && Array.isArray(json.folios) && json.folios.length > 0) {
+                    if (badge) badge.innerText = json.folios.length;
+                    cont.innerHTML = json.folios.map(f => {
+                        const esDeEstaUnidad = f.coincide_unidad;
+                        const cantPz = f.count || (f.items ? f.items.length : 0);
+                        const costoF = Number(f.costo_total !== undefined ? f.costo_total : (f.costoTotal || 0));
+                        const txtCosto = formatearMoneda(costoF);
+                        const bgClase = esDeEstaUnidad ? 'bg-indigo-950/80 hover:bg-indigo-900 border-indigo-600/80' : 'bg-[#141518] hover:bg-[#282A2E] border-[#3A3D42]';
+
+                        return `
+                            <div onclick="seleccionarFolioSugerido('${f.folio}')" class="${bgClase} border rounded-xl p-2.5 flex items-center justify-between cursor-pointer transition shadow-sm group">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-7 h-7 rounded-lg bg-indigo-900 text-indigo-200 flex items-center justify-center font-bold text-xs">
+                                        <i class="fa-solid fa-receipt"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-1.5">
+                                            <strong class="text-white font-mono text-xs">Folio #${f.folio}</strong>
+                                            ${esDeEstaUnidad ? `<span class="bg-emerald-950 text-emerald-300 border border-emerald-700 text-[9px] font-bold px-1.5 py-0.2 rounded">Unidad ${unidadId}</span>` : `<span class="text-[9px] text-slate-400 font-mono">${f.unidad ? 'U-' + f.unidad : ''}</span>`}
+                                        </div>
+                                        <span class="text-[10px] text-slate-400 block">${cantPz} refacciones ${f.fecha ? '• ' + f.fecha : ''}</span>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <strong class="text-xs font-black text-[#DFB743] font-mono block">${txtCosto}</strong>
+                                    <span class="text-[10px] text-indigo-300 font-bold group-hover:underline">Seleccionar ➔</span>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    if (badge) badge.innerText = '0';
+                    cont.innerHTML = '<p class="text-slate-400 p-2 text-center italic text-[11px]">No se encontraron salidas con número de folio para esta unidad.</p>';
+                }
+            } catch(e) {
+                cont.innerHTML = '<p class="text-slate-500 p-2 text-center text-[10px]">No fue posible consultar folios automáticos.</p>';
+            }
+        }
+
+        function seleccionarFolioSugerido(fol) {
+            document.getElementById('input-folio-almacen').value = fol;
+            consultarFolioAlmacenBoton();
         }
 
         function cerrarModalVincularAlmacen() {
@@ -10091,20 +10568,25 @@
                 const json = await res.json();
                 if (res.ok && json.success) {
                     datosFolioConsultado = json;
+                    const costoTot = Number(json.costo_total !== undefined ? json.costo_total : (json.costoTotal || 0));
                     txtSol.innerText = `Solicitado por: ${json.solicitante || 'Personal Taller'}`;
-                    txtCosto.innerText = `$${(json.costo_total || 0).toLocaleString()} MXN`;
+                    txtCosto.innerText = formatearMoneda(costoTot);
 
-                    lista.innerHTML = (json.items || []).map(item => `
-                        <div class="py-1.5 flex items-center justify-between text-xs">
-                            <div>
-                                <strong class="text-white block">${item.descripcion}</strong>
-                                <span class="text-[10px] text-slate-400 font-mono">Parte: ${item.numero_parte || '--'} • Cant: ${item.cantidad}</span>
+                    lista.innerHTML = (json.items || []).map(item => {
+                        const pu = Number(item.precio_unitario || 0);
+                        const tot = Number(item.costo_total !== undefined ? item.costo_total : (item.total_costo || (item.cantidad * pu))) || 0;
+                        return `
+                            <div class="py-1.5 flex items-center justify-between text-xs">
+                                <div>
+                                    <strong class="text-white block">${item.descripcion}</strong>
+                                    <span class="text-[10px] text-slate-400 font-mono">Parte: ${item.numero_parte || '--'} • Cant: ${item.cantidad} • ${formatearMoneda(pu)} c/u</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="font-bold text-[#DFB743] font-mono">${formatearMoneda(tot)}</span>
+                                </div>
                             </div>
-                            <div class="text-right">
-                                <span class="font-bold text-slate-200 font-mono">$${(Number(item.total_costo)||0).toLocaleString()} MXN</span>
-                            </div>
-                        </div>
-                    `).join('');
+                        `;
+                    }).join('');
 
                     btnVincular.disabled = false;
                 } else {
@@ -10125,13 +10607,14 @@
             if (!unidadVincularActiva || !datosFolioConsultado) return;
 
             const folio = datosFolioConsultado.folio;
+            const costoRef = Number(datosFolioConsultado.costo_total !== undefined ? datosFolioConsultado.costo_total : (datosFolioConsultado.costoTotal || 0));
             try {
                 const res = await fetch(`/api/unidad/${unidadVincularActiva.id}/vincular-folio`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         folio: folio,
-                        costo_refacciones: datosFolioConsultado.costo_total,
+                        costo_refacciones: costoRef,
                         piezas: datosFolioConsultado.items
                     })
                 });
@@ -10150,7 +10633,7 @@
                     guardarDatosLocales(false);
                     renderizarTablero();
                     renderizarListaUnidadesLiberadas();
-                    mostrarToast(`Folio #${folio} vinculado con éxito a Unidad ${unidadVincularActiva.id}`);
+                    mostrarToast(`Folio #${folio} vinculado con éxito a Unidad ${unidadVincularActiva.id} (${formatearMoneda(costoRef)})`);
                     cerrarModalVincularAlmacen();
                 } else {
                     mostrarToast('Error al vincular el folio');
@@ -10160,7 +10643,7 @@
             }
         }
 
-        function cambiarModoVincularFolio(modo) {
+                function cambiarModoVincularFolio(modo) {
             const pExistente = document.getElementById('panel-vincular-existente');
             const pNuevo = document.getElementById('panel-vincular-nuevo');
             const bExistente = document.getElementById('btn-tab-vincular-existente');
@@ -10259,6 +10742,9 @@
                 }
             };
 
+            // Listener deshabilitado: La fuente oficial de verdad es el servidor central /api/unidades
+            // para evitar que datos cacheados obsoletos de Firebase sobreescriban tarjetas o folios en tiempo real.
+            /*
             onSnapshot(doc(db, 'taller_pro_tablero', 'estado_actual'), (docSnap) => {
                 if (docSnap.exists()) {
                     const data = docSnap.data();
@@ -10283,6 +10769,7 @@
             }, (err) => {
                 console.info('Firebase tablero snapshot info:', err.message);
             });
+            */
 
             // Sincronización en vivo de preventivos por unidad
             onSnapshot(collection(db, 'preventivos'), (snapshot) => {
@@ -10346,6 +10833,56 @@
         // ========================================================
         let cacheUnidadesLiberadas = [];
 
+        async function verificarEstatusAlmacenParaLiberar(folio, unitId) {
+            const statusBox = document.getElementById('liberar-almacen-status');
+            if (!statusBox) return;
+            const folioLimpio = String(folio || '').trim();
+            if (!folioLimpio) {
+                statusBox.innerHTML = '';
+                return;
+            }
+
+            statusBox.innerHTML = `<div class="p-2 bg-[#141518] border border-cyan-800/60 rounded-lg text-[11px] text-cyan-300 flex items-center gap-1.5"><i class="fa-solid fa-spinner fa-spin text-cyan-400"></i> Verificando estatus en Almacén...</div>`;
+
+            try {
+                const res = await fetch(`/api/almacen/folio/${encodeURIComponent(folioLimpio)}/detalle?t=` + Date.now());
+                if (!res.ok) throw new Error('Error al consultar almacén');
+                const json = await res.json();
+
+                const items = json.items || [];
+                const costoTotal = Number(json.costo_total) || 0;
+
+                if (items.length > 0) {
+                    const descItems = items.slice(0, 3).map(it => `${it.cantidad}x ${it.descripcion}`).join(', ');
+                    const extra = items.length > 3 ? ` y ${items.length - 3} más` : '';
+                    statusBox.innerHTML = `
+                        <div class="p-2 bg-emerald-950/60 border border-emerald-500/70 rounded-lg text-[11px] text-emerald-200 animate-in fade-in">
+                            <div class="flex items-center justify-between font-bold text-emerald-300 mb-0.5">
+                                <span class="flex items-center gap-1"><i class="fa-solid fa-circle-check text-emerald-400"></i> Orden vinculada en Almacén</span>
+                                <span class="font-mono text-white">${formatearMoneda(costoTotal)}</span>
+                            </div>
+                            <p class="text-[10px] text-slate-300"><b>${items.length} refacciones/salidas:</b> ${descItems}${extra}</p>
+                        </div>
+                    `;
+                } else {
+                    statusBox.innerHTML = `
+                        <div class="p-2 bg-amber-950/40 border border-amber-600/60 rounded-lg text-[11px] text-amber-200 animate-in fade-in">
+                            <div class="flex items-center gap-1 font-bold text-amber-300">
+                                <i class="fa-solid fa-triangle-exclamation text-amber-400"></i> Orden #${folioLimpio} registrada en taller
+                            </div>
+                            <p class="text-[10px] text-slate-300 mt-0.5">Aún no tiene salidas cargadas en Almacén. Al dar salida, quedará vinculada con estado <b>LIBERADO</b> para agregar piezas o facturas en cualquier momento.</p>
+                        </div>
+                    `;
+                }
+            } catch(e) {
+                statusBox.innerHTML = `
+                    <div class="p-2 bg-[#141518] border border-slate-700 rounded-lg text-[10px] text-slate-400">
+                        <i class="fa-solid fa-receipt mr-1 text-slate-400"></i> Orden #${folioLimpio} lista para vincular y archivar.
+                    </div>
+                `;
+            }
+        }
+
         function abrirModalLiberarUnidad(event, id) {
             if (event && event.stopPropagation) {
                 event.stopPropagation();
@@ -10361,12 +10898,17 @@
             const folioEl = document.getElementById('liberar-unidad-folio');
             if (folioEl) folioEl.value = u.folio_almacen || '';
 
+            const checkAlm = document.getElementById('liberar-check-almacen');
+            if (checkAlm) checkAlm.checked = false;
+
             const motivoEl = document.getElementById('liberar-unidad-motivo');
             if (motivoEl) motivoEl.value = 'Asignada a viaje / Salió a ruta';
             const kmEl = document.getElementById('liberar-unidad-km');
             if (kmEl) kmEl.value = '';
             const notasEl = document.getElementById('liberar-unidad-notas');
             if (notasEl) notasEl.value = '';
+
+            verificarEstatusAlmacenParaLiberar(u.folio_almacen || '', u.id);
 
             const modal = document.getElementById('modal-liberar-unidad');
             if (modal) modal.classList.remove('hidden');
@@ -10385,12 +10927,20 @@
             const motivo = document.getElementById('liberar-unidad-motivo').value;
             const km_salida = document.getElementById('liberar-unidad-km').value.trim();
             const notas = document.getElementById('liberar-unidad-notas').value.trim();
+            const checkAlm = document.getElementById('liberar-check-almacen');
 
-            // CANDADO DE SEGURIDAD OBLIGATORIO
+            // CANDADO DE SEGURIDAD OBLIGATORIO: Orden de mantenimiento
             if (!folio) {
                 mostrarToast('🔒 CANDADO DE SEGURIDAD: Es obligatorio indicar la Orden de Mantenimiento / Folio.');
                 const folioEl = document.getElementById('liberar-unidad-folio');
                 if (folioEl) folioEl.focus();
+                return;
+            }
+
+            // CANDADO 2: Confirmación de salidas en Almacén
+            if (checkAlm && !checkAlm.checked) {
+                mostrarToast('🔒 CANDADO DE ALMACÉN: Debe marcar la casilla confirmando que las refacciones y salidas quedaron liberadas en Almacén.');
+                checkAlm.focus();
                 return;
             }
 
@@ -10511,7 +11061,7 @@
                     : `<button onclick="abrirModalVincularAlmacen(event, '${u.id}')" class="bg-amber-950 hover:bg-amber-900 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded border border-amber-700 flex items-center gap-1 shadow-sm" title="Vincular número de orden de mantenimiento"><i class="fa-solid fa-plus-circle text-amber-400"></i> Asignar Orden</button>`;
 
                 const txtCostoPiezas = tieneCostoOPiezas
-                    ? `<span class="text-xs font-black text-[#DFB743] font-mono">$${costoTotal.toLocaleString()} MXN</span> <span class="text-[10px] text-slate-400 font-mono">(${piezasCount} pz)</span>`
+                    ? `<span class="text-xs font-black text-[#DFB743] font-mono">${formatearMoneda(costoTotal)}</span> <span class="text-[10px] text-slate-400 font-mono">(${piezasCount} pz)</span>`
                     : `<span class="text-[11px] text-slate-500 italic">Sin refacciones anexadas</span>`;
 
                 return `
@@ -10574,7 +11124,7 @@
                     renderizarListaUnidadesLiberadas();
                     const cant = Array.isArray(data.unidad?.piezas) ? data.unidad.piezas.length : 0;
                     const costo = Number(data.unidad?.costo) || 0;
-                    mostrarToast(`✅ Almacén sincronizado: ${cant} refacciones ($${costo.toLocaleString()} MXN)`);
+                    mostrarToast(`✅ Almacén sincronizado: ${cant} refacciones (${formatearMoneda(costo)})`);
                 } else {
                     mostrarToast('Error al sincronizar con Almacén');
                 }
