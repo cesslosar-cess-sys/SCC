@@ -15,6 +15,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
         :root {
             --color-cess-gold: #C59B27;
@@ -425,8 +426,8 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-2 flex-wrap">
-                    <button onclick="cargarModuloPreventivos()" class="bg-[#282A2E] hover:bg-[#3A3D42] text-slate-200 border border-[#3A3D42] px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow">
-                        <i class="fa-solid fa-arrows-rotate text-cyan-400"></i> Sincronizar Ahora
+                    <button onclick="cargarModuloPreventivos(true)" class="bg-[#282A2E] hover:bg-[#3A3D42] text-cyan-300 border border-cyan-700/60 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow" title="Sincronizar kilometrajes y odómetros en vivo desde base de datos de combustible">
+                        <i class="fa-solid fa-arrows-rotate text-cyan-400"></i> <span>Sincronizar en Vivo</span>
                     </button>
                     <button id="btn-exportar-prev-activo" onclick="exportarSegunSubTabPreventivos()" class="bg-emerald-950 hover:bg-emerald-900 text-emerald-300 border border-emerald-700/80 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow">
                         <i class="fa-solid fa-file-excel"></i> Exportar
@@ -1098,6 +1099,9 @@
 
                 <!-- Botones Acción Ejecutiva -->
                 <div class="flex items-center gap-2 flex-wrap">
+                    <button onclick="descargarReporteEjecutivoExcel()" class="bg-[#107c41] hover:bg-[#0f6b38] text-white border border-[#107c41] px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow" title="Descargar reporte gerencial en Excel multi-hoja">
+                        <i class="fa-solid fa-file-excel text-sm"></i> <span>Descargar Excel</span>
+                    </button>
                     <button onclick="copiarResumenAnaliticaWA()" class="bg-[#282A2E] hover:bg-[#3A3D42] text-emerald-400 border border-[#3A3D42] px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition" title="Copiar informe ejecutivo con formato para WhatsApp">
                         <i class="fa-brands fa-whatsapp text-sm"></i> <span>Resumen WhatsApp</span>
                     </button>
@@ -1209,6 +1213,113 @@
                         <span class="text-[11px] text-slate-400 font-bold">piezas</span>
                     </div>
                     <span id="kpi-piezas-compras" class="text-[10px] text-[#C59B27] block mt-0.5 font-mono">0 en orden de compra</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- FILA 1.5: CLASIFICACIÓN GERENCIAL (PREVENTIVO VS CORRECTIVO VS RESCATE / EXTERNO) -->
+        <div class="bg-[#1E1E1E] border border-[#3A3D42] rounded-2xl p-4 sm:p-5 shadow flex flex-col gap-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#3A3D42]/60 pb-3">
+                <div>
+                    <h3 class="text-xs sm:text-sm font-black text-white flex items-center gap-2">
+                        <i class="fa-solid fa-layer-group text-[#C59B27]"></i> Clasificación Gerencial de Procedimientos & Trabajos
+                    </h3>
+                    <p class="text-[11px] text-slate-400">
+                        Desglose financiero auditado: Preventivos periódicos vs Correctivos en patio vs Rescates carreteros vs Proveedores externos.
+                    </p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-[10px] bg-emerald-950/80 text-emerald-300 border border-emerald-700/60 px-2.5 py-1 rounded-lg font-mono font-bold flex items-center gap-1.5">
+                        <i class="fa-solid fa-shield-halved"></i> Control Financiero Dirección
+                    </span>
+                </div>
+            </div>
+
+            <!-- 4 TARJETAS KPI ESPECÍFICAS DE PROCEDIMIENTO -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <!-- Preventivo -->
+                <div class="bg-[#141518] p-3 rounded-xl border border-emerald-500/30">
+                    <div class="flex justify-between items-start">
+                        <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1">
+                            <i class="fa-solid fa-shield-halved"></i> Preventivos
+                        </span>
+                        <span id="kpi-pct-preventivo" class="text-[10px] font-mono font-bold text-emerald-300 bg-emerald-950/60 px-1.5 py-0.5 rounded border border-emerald-600/40">0%</span>
+                    </div>
+                    <div class="mt-2">
+                        <span id="kpi-gasto-preventivo" class="text-base sm:text-lg font-black text-white font-mono">$0 MXN</span>
+                        <span id="kpi-cnt-preventivo" class="text-[10px] text-slate-400 block mt-0.5 font-mono">0 unidades con servicio</span>
+                    </div>
+                </div>
+
+                <!-- Correctivo -->
+                <div class="bg-[#141518] p-3 rounded-xl border border-blue-500/30">
+                    <div class="flex justify-between items-start">
+                        <span class="text-[10px] font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1">
+                            <i class="fa-solid fa-wrench"></i> Correctivos
+                        </span>
+                        <span id="kpi-pct-correctivo" class="text-[10px] font-mono font-bold text-blue-300 bg-blue-950/60 px-1.5 py-0.5 rounded border border-blue-600/40">0%</span>
+                    </div>
+                    <div class="mt-2">
+                        <span id="kpi-gasto-correctivo" class="text-base sm:text-lg font-black text-white font-mono">$0 MXN</span>
+                        <span id="kpi-cnt-correctivo" class="text-[10px] text-slate-400 block mt-0.5 font-mono">0 unidades con reparación</span>
+                    </div>
+                </div>
+
+                <!-- Rescates Carreteros -->
+                <div class="bg-[#141518] p-3 rounded-xl border border-amber-500/30">
+                    <div class="flex justify-between items-start">
+                        <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1">
+                            <i class="fa-solid fa-truck-medical"></i> Rescates Ruta
+                        </span>
+                        <span id="kpi-cnt-rescate" class="text-[10px] font-mono font-bold text-amber-300 bg-amber-950/60 px-1.5 py-0.5 rounded border border-amber-600/40">0 SOS</span>
+                    </div>
+                    <div class="mt-2">
+                        <span id="kpi-gasto-rescate" class="text-base sm:text-lg font-black text-white font-mono">$0 MXN</span>
+                        <span class="text-[10px] text-slate-400 block mt-0.5 font-mono">Auxilios carreteros</span>
+                    </div>
+                </div>
+
+                <!-- Talleres Externos -->
+                <div class="bg-[#141518] p-3 rounded-xl border border-purple-500/30">
+                    <div class="flex justify-between items-start">
+                        <span class="text-[10px] font-bold text-purple-400 uppercase tracking-wider flex items-center gap-1">
+                            <i class="fa-solid fa-building-circle-check"></i> Taller Externo
+                        </span>
+                        <span id="kpi-cnt-externo" class="text-[10px] font-mono font-bold text-purple-300 bg-purple-950/60 px-1.5 py-0.5 rounded border border-purple-600/40">0 ext</span>
+                    </div>
+                    <div class="mt-2">
+                        <span id="kpi-gasto-externo" class="text-base sm:text-lg font-black text-white font-mono">$0 MXN</span>
+                        <span class="text-[10px] text-slate-400 block mt-0.5 font-mono">Proveedores / foráneos</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2 GRÁFICAS DE PROCEDIMIENTO -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-1">
+                <!-- Gráfica A: Dona de Distribución de Procedimientos -->
+                <div class="bg-[#141518] p-3.5 rounded-xl border border-[#3A3D42] flex flex-col">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-xs font-bold text-white flex items-center gap-1.5">
+                            <i class="fa-solid fa-chart-pie text-emerald-400"></i> Distribución de Tipos de Trabajo
+                        </span>
+                        <span class="text-[10px] text-slate-400 font-mono">Volumen Unidades</span>
+                    </div>
+                    <div class="relative flex-1 flex items-center justify-center min-h-[200px]">
+                        <canvas id="chart-procedimientos-distribucion" class="max-h-[190px]"></canvas>
+                    </div>
+                </div>
+
+                <!-- Gráfica B: Barras de Inversión Financiera por Procedimiento -->
+                <div class="bg-[#141518] p-3.5 rounded-xl border border-[#3A3D42] flex flex-col">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-xs font-bold text-white flex items-center gap-1.5">
+                            <i class="fa-solid fa-chart-column text-[#C59B27]"></i> Inversión Financiera por Procedimiento ($ MXN)
+                        </span>
+                        <span class="text-[10px] text-slate-400 font-mono">Monto Ejercido</span>
+                    </div>
+                    <div class="relative flex-1 flex items-center justify-center min-h-[200px]">
+                        <canvas id="chart-procedimientos-inversion" class="max-h-[190px]"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1738,6 +1849,41 @@
                     </div>
                 </div>
 
+                <!-- Clasificación de Procedimiento Taller CESS -->
+                <div class="bg-[#141518] p-2.5 rounded-xl border border-[#3A3D42] flex flex-col gap-2">
+                    <div class="flex justify-between items-center">
+                        <label class="font-bold text-slate-300 uppercase text-[10px] tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-layer-group text-[#C59B27]"></i> Tipo de Procedimiento / Servicio:
+                        </label>
+                        <span id="badge-procedimiento-rapido" class="text-[9px] px-2 py-0.5 rounded font-mono font-bold bg-blue-950 text-blue-300 border border-blue-700/60">🔧 Correctivo</span>
+                    </div>
+                    <select id="edit-rapido-procedimiento" onchange="actualizarCamposProcedimientoRapido(this.value)" class="w-full bg-[#1E1E1E] border border-[#3A3D42] rounded-xl p-2 text-white font-bold text-xs focus:outline-none focus:border-[#C59B27]">
+                        <option value="correctivo">🔧 Mantenimiento Correctivo (Reparación en Patio)</option>
+                        <option value="preventivo">🛡️ Mantenimiento Preventivo (Servicio de Aceite / Filtros)</option>
+                        <option value="mixto">🔄 Mixto (Preventivo + Reparación Correctiva)</option>
+                        <option value="rescate">🚨 Rescate Carretero (Auxilio SOS en Ruta)</option>
+                        <option value="externo">🏢 Taller Externo (Proveedor Foráneo)</option>
+                    </select>
+
+                    <!-- Campos condicionales para Taller Externo / Proveedor -->
+                    <div id="contenedor-campos-externo" class="hidden flex flex-col gap-2 pt-2 border-t border-[#3A3D42]/60">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-[10px] text-slate-400 font-bold mb-0.5">Proveedor / Taller Externo</label>
+                                <input type="text" id="edit-rapido-proveedor" placeholder="Ej: Kenworth / Llantera" class="w-full bg-[#1E1E1E] border border-[#3A3D42] rounded-lg p-1.5 text-white text-xs focus:outline-none focus:border-[#C59B27]">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] text-slate-400 font-bold mb-0.5">N° Factura / Folio Externo</label>
+                                <input type="text" id="edit-rapido-factura" placeholder="Ej: F-98214" class="w-full bg-[#1E1E1E] border border-[#3A3D42] rounded-lg p-1.5 text-white text-xs focus:outline-none focus:border-[#C59B27]">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-400 font-bold mb-0.5">Costo Factura Externa ($ MXN)</label>
+                            <input type="number" id="edit-rapido-costo-externo" placeholder="0" class="w-full bg-[#1E1E1E] border border-[#3A3D42] rounded-lg p-1.5 text-white font-mono text-xs focus:outline-none focus:border-[#C59B27]">
+                        </div>
+                    </div>
+                </div>
+
                 <div class="mt-2 pt-2 border-t border-[#3A3D42]/60 flex items-center justify-between">
                     <span class="text-[10px] text-slate-500 font-mono hidden sm:inline">
                         <kbd class="bg-[#141518] px-1 py-0.5 rounded border border-[#3A3D42]">Ctrl</kbd> + <kbd class="bg-[#141518] px-1 py-0.5 rounded border border-[#3A3D42]">Enter</kbd> para guardar
@@ -2214,18 +2360,28 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-2">
+                <div class="grid grid-cols-3 gap-2">
                     <div>
                         <label class="block text-[11px] font-bold text-slate-400 mb-1">Estatus Actual *</label>
-                        <select id="form-estado" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2.5 text-white text-xs focus:border-[#C59B27] focus:outline-none">
+                        <select id="form-estado" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none">
                             <option value="mayor">Reparación Mayor ($$)</option>
                             <option value="proceso" selected>En Proceso</option>
                             <option value="listo">Listas para Entrega</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-400 mb-1">Categoría del Sistema</label>
-                        <select id="form-categoria" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2.5 text-white text-xs focus:border-[#C59B27] focus:outline-none">
+                        <label class="block text-[11px] font-bold text-slate-400 mb-1">Procedimiento *</label>
+                        <select id="form-procedimiento" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none">
+                            <option value="correctivo" selected>🔧 Correctivo</option>
+                            <option value="preventivo">🛡️ Preventivo</option>
+                            <option value="mixto">🔄 Mixto</option>
+                            <option value="rescate">🚨 Rescate</option>
+                            <option value="externo">🏢 Taller Ext.</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-400 mb-1">Categoría Sistema</label>
+                        <select id="form-categoria" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-[#C59B27] focus:outline-none">
                             <option value="Motor">Motor / Enfriamiento</option>
                             <option value="Frenos">Frenos / Cálipers</option>
                             <option value="Suspensión">Suspensión / Dirección</option>
@@ -2447,26 +2603,35 @@
                 <button onclick="cerrarModalDetalleFolio()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
             </div>
 
-            <!-- Resumen de Vale -->
-            <div class="grid grid-cols-3 gap-2 bg-[#141518] p-3 rounded-xl border border-[#3A3D42] text-xs mb-3">
+            <!-- Resumen de Vale y Clasificación Gerencial -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-[#141518] p-3 rounded-xl border border-[#3A3D42] text-xs mb-3">
                 <div>
                     <span class="text-[10px] text-slate-400 uppercase font-bold block">Unidad Asignada</span>
                     <strong id="det-folio-unidad" class="text-white font-mono text-sm">--</strong>
+                </div>
+                <div>
+                    <span class="text-[10px] text-slate-400 uppercase font-bold block">Procedimiento</span>
+                    <div id="det-folio-procedimiento-badge" class="mt-0.5">
+                        <span class="text-slate-300 font-bold">--</span>
+                    </div>
                 </div>
                 <div>
                     <span class="text-[10px] text-slate-400 uppercase font-bold block">Solicitado Por</span>
                     <strong id="det-folio-solicitante" class="text-slate-200">--</strong>
                 </div>
                 <div class="text-right">
-                    <span class="text-[10px] text-slate-400 uppercase font-bold block">Costo Total Refacciones</span>
+                    <span class="text-[10px] text-slate-400 uppercase font-bold block">Inversión Refacciones</span>
                     <strong id="det-folio-costo-total" class="text-[#DFB743] font-mono text-base font-black">$0 MXN</strong>
+                    <div id="det-folio-desglose-chips" class="text-[10px] text-slate-400 font-mono mt-0.5 flex items-center justify-end gap-1.5 flex-wrap">
+                        <!-- Chips preventivo vs correctivo -->
+                    </div>
                 </div>
             </div>
 
             <!-- Barra de Acciones Bidireccionales con Almacén -->
             <div class="flex items-center justify-between gap-2 mb-2.5 pb-2 border-b border-[#3A3D42]/60 flex-wrap">
                 <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
-                    <i class="fa-solid fa-boxes-stacked text-indigo-400"></i> Piezas Surtidas en este Folio:
+                    <i class="fa-solid fa-boxes-stacked text-indigo-400"></i> Refacciones Surtidas por Almacén:
                 </span>
                 <div class="flex items-center gap-2">
                     <button onclick="sincronizarFolioActivoManual()" class="bg-[#282A2E] hover:bg-[#3A3D42] text-slate-200 border border-[#3A3D42] px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm" title="Re-consultar movimientos en almacén">
@@ -2478,13 +2643,14 @@
                 </div>
             </div>
 
-            <!-- Tabla de Refacciones -->
+            <!-- Tabla de Refacciones con Clasificación Preventivo vs Correctivo -->
             <div class="border border-[#3A3D42] rounded-xl overflow-hidden mb-3">
                 <table class="w-full text-left text-xs">
                     <thead class="bg-[#141518] text-slate-400 font-bold border-b border-[#3A3D42] uppercase text-[10px]">
                         <tr>
                             <th class="p-2.5">No. Parte</th>
                             <th class="p-2.5">Descripción Refacción</th>
+                            <th class="p-2.5 text-center">Tipo Trabajo</th>
                             <th class="p-2.5 text-center">Cantidad</th>
                             <th class="p-2.5 text-right">P. Unitario</th>
                             <th class="p-2.5 text-right">Subtotal</th>
@@ -4223,6 +4389,36 @@
                 `;
             }
 
+            // Badge distintivo de tipo de procedimiento (Preventivo / Correctivo / Rescate / Externo / Mixto)
+            let badgeProcedimiento = '';
+            const cPrev = Number(unidad.costo_preventivo) || 0;
+            const cCorr = Number(unidad.costo_correctivo) || 0;
+            const tipoProc = unidad.tipo_procedimiento || (cPrev > 0 && cCorr > 0 ? 'mixto' : (cPrev > 0 ? 'preventivo' : (unidad.es_rescate ? 'rescate' : (unidad.proveedor_externo ? 'externo' : 'correctivo'))));
+            
+            if (tipoProc === 'preventivo') {
+                badgeProcedimiento = `<span class="bg-emerald-950/90 text-emerald-300 border border-emerald-600/80 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm" title="Mantenimiento Preventivo (Aceites, Filtros, Servicios)"><i class="fa-solid fa-shield-halved text-emerald-400 text-[9px]"></i> PREVENTIVO</span>`;
+            } else if (tipoProc === 'rescate' || unidad.es_rescate) {
+                badgeProcedimiento = `<span class="bg-amber-950/90 text-amber-300 border border-amber-500 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 animate-pulse shadow-sm" title="Atención de Rescate Carretero / Auxilio Vial"><i class="fa-solid fa-truck-medical text-amber-400 text-[9px]"></i> RESCATE SOS</span>`;
+            } else if (tipoProc === 'externo' || unidad.proveedor_externo) {
+                const provCorto = unidad.proveedor_externo ? unidad.proveedor_externo.slice(0, 12) : 'EXTERNO';
+                badgeProcedimiento = `<span class="bg-purple-950/90 text-purple-300 border border-purple-600 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm" title="Reparación en Taller / Proveedor Externo: ${unidad.proveedor_externo || 'Taller Externo'}"><i class="fa-solid fa-building-flag text-purple-400 text-[9px]"></i> ${provCorto}</span>`;
+            } else if (tipoProc === 'mixto') {
+                badgeProcedimiento = `<span class="bg-indigo-950/90 text-indigo-300 border border-indigo-600 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm" title="Servicio Mixto: Preventivo + Correctivo"><i class="fa-solid fa-arrows-split-up-and-left text-indigo-400 text-[9px]"></i> MIXTO</span>`;
+            } else {
+                badgeProcedimiento = `<span class="bg-blue-950/90 text-blue-300 border border-blue-600 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm" title="Mantenimiento Correctivo"><i class="fa-solid fa-wrench text-blue-400 text-[9px]"></i> CORRECTIVO</span>`;
+            }
+
+            // Desglose de inversión preventiva vs correctiva si aplica
+            let breakdownCostosHTML = '';
+            if (cPrev > 0 && cCorr > 0) {
+                breakdownCostosHTML = `
+                    <div class="flex items-center justify-between text-[10px] font-mono font-bold px-2 py-0.5 bg-[#141518] rounded-lg border border-[#3A3D42]/60 text-slate-300">
+                        <span class="text-emerald-400 flex items-center gap-1"><i class="fa-solid fa-shield-halved text-[9px]"></i> Prev: $${cPrev.toLocaleString()}</span>
+                        <span class="text-blue-400 flex items-center gap-1"><i class="fa-solid fa-wrench text-[9px]"></i> Corr: $${cCorr.toLocaleString()}</span>
+                    </div>
+                `;
+            }
+
             // Nombre dinámico de columnas
             const nomMayor = (nombresColumnas && nombresColumnas.mayor) || 'Mayor';
             const nomProceso = (nombresColumnas && nombresColumnas.proceso) || 'Taller';
@@ -4232,17 +4428,18 @@
                 <!-- Alerta de Preventivo Vencido o Próximo -->
                 ${bannerPreventivo}
 
-                <!-- Cabecera Limpia: Unidad, Sucursal y Acciones Rápidas -->
+                <!-- Cabecera Limpia: Unidad, Sucursal, Badge Procedimiento y Acciones -->
                 <div class="flex items-center justify-between gap-1">
-                    <div class="flex items-center gap-1.5">
+                    <div class="flex items-center gap-1.5 flex-wrap">
                         <span class="text-base font-black text-white font-mono flex items-center gap-1">
                             <i class="fa-solid fa-grip-vertical text-slate-500 text-xs"></i> Unidad ${unidad.id}
                         </span>
                         <span class="text-[10px] font-bold bg-[#141518] border border-[#3A3D42] px-2 py-0.5 rounded-full text-slate-300">
                             ${unidad.sucursal || 'Patio'}
                         </span>
+                        ${badgeProcedimiento}
                     </div>
-                    <div class="flex items-center gap-1">
+                    <div class="flex items-center gap-1 shrink-0">
                         <button onclick="abrirModalAvanceRapido(event, '${unidad.id}')" class="bg-[#C59B27]/10 hover:bg-[#C59B27] text-[#DFB743] hover:text-black border border-[#C59B27]/50 px-2 py-0.5 rounded-lg text-[11px] font-bold transition flex items-center gap-1 shadow-sm" title="Registrar nuevo avance o estatus">
                             <i class="fa-solid fa-plus text-[9px]"></i> <span>Avance</span>
                         </button>
@@ -4259,6 +4456,9 @@
                 <p onclick="abrirEdicionRapida(event, '${unidad.id}')" class="text-xs text-slate-200 line-clamp-2 leading-relaxed font-medium cursor-pointer hover:text-white transition select-text" title="Haz clic para editar texto">
                     ${unidad.reporte || unidad.defecto || '<span class="italic text-slate-500">Sin observaciones registradas...</span>'}
                 </p>
+
+                <!-- Desglose de Costos Preventivo vs Correctivo si es mixto -->
+                ${breakdownCostosHTML}
 
                 <!-- SECCIÓN DESTACADA: FOLIO Y REFACCIONES DE ALMACÉN -->
                 ${stripFolioAlmacen}
@@ -4469,6 +4669,19 @@
             document.getElementById('edit-rapido-costo').value = u.costo || '';
             document.getElementById('edit-rapido-fecha').value = u.fechaRefaccion || '';
 
+            // Procedimiento
+            const proc = u.tipo_procedimiento || ((u.costo_preventivo > 0 && u.costo_correctivo > 0) ? 'mixto' : (u.costo_preventivo > 0 ? 'preventivo' : 'correctivo'));
+            const selProc = document.getElementById('edit-rapido-procedimiento');
+            if (selProc) selProc.value = proc;
+            actualizarCamposProcedimientoRapido(proc);
+
+            const inpProv = document.getElementById('edit-rapido-proveedor');
+            if (inpProv) inpProv.value = u.proveedor_externo || '';
+            const inpFact = document.getElementById('edit-rapido-factura');
+            if (inpFact) inpFact.value = u.factura_externa || '';
+            const inpCostExt = document.getElementById('edit-rapido-costo-externo');
+            if (inpCostExt) inpCostExt.value = u.costo_externo || '';
+
             seleccionarEstadoRapido(u.estado || 'proceso');
             document.getElementById('modal-edicion-rapida').classList.remove('hidden');
 
@@ -4480,6 +4693,30 @@
                     txt.setSelectionRange(txt.value.length, txt.value.length);
                 }
             }, 60);
+        }
+
+        function actualizarCamposProcedimientoRapido(val) {
+            const cont = document.getElementById('contenedor-campos-externo');
+            const badge = document.getElementById('badge-procedimiento-rapido');
+            if (cont) {
+                if (val === 'externo' || val === 'rescate') {
+                    cont.classList.remove('hidden');
+                } else {
+                    cont.classList.add('hidden');
+                }
+            }
+            if (badge) {
+                const labels = {
+                    preventivo: { txt: '🛡️ Preventivo', cls: 'bg-emerald-950 text-emerald-300 border-emerald-700/60' },
+                    correctivo: { txt: '🔧 Correctivo', cls: 'bg-blue-950 text-blue-300 border-blue-700/60' },
+                    mixto: { txt: '🔄 Mixto', cls: 'bg-indigo-950 text-indigo-300 border-indigo-700/60' },
+                    rescate: { txt: '🚨 Rescate Carretero', cls: 'bg-amber-950 text-amber-300 border-amber-700/60' },
+                    externo: { txt: '🏢 Taller Externo', cls: 'bg-purple-950 text-purple-300 border-purple-700/60' }
+                };
+                const info = labels[val] || labels.correctivo;
+                badge.innerText = info.txt;
+                badge.className = `text-[9px] px-2 py-0.5 rounded font-mono font-bold border ${info.cls}`;
+            }
         }
 
         function cerrarEdicionRapida() {
@@ -4576,6 +4813,11 @@
             const costo = parseFloat(document.getElementById('edit-rapido-costo').value) || 0;
             const fechaRefaccion = document.getElementById('edit-rapido-fecha').value || '';
 
+            const tipoProcedimiento = document.getElementById('edit-rapido-procedimiento') ? document.getElementById('edit-rapido-procedimiento').value : 'correctivo';
+            const proveedorExterno = document.getElementById('edit-rapido-proveedor') ? document.getElementById('edit-rapido-proveedor').value.trim() : '';
+            const facturaExterna = document.getElementById('edit-rapido-factura') ? document.getElementById('edit-rapido-factura').value.trim() : '';
+            const costoExterno = parseFloat(document.getElementById('edit-rapido-costo-externo') ? document.getElementById('edit-rapido-costo-externo').value : 0) || 0;
+
             const u = baseDatos.find(x => String(x.id) === String(id));
             if (!u) return;
 
@@ -4585,9 +4827,13 @@
             u.defecto = reporte;
             u.costo = costo;
             u.fechaRefaccion = fechaRefaccion;
+            u.tipo_procedimiento = tipoProcedimiento;
+            u.proveedor_externo = proveedorExterno;
+            u.factura_externa = facturaExterna;
+            u.costo_externo = costoExterno;
             u.estadoModificadoManualmente = true;
 
-            const desc = `Edición rápida: ${estadoAnterior !== u.estado ? `Estado -> ${u.estado.toUpperCase()}. ` : ''}${reporte}`;
+            const desc = `Edición rápida: ${estadoAnterior !== u.estado ? `Estado -> ${u.estado.toUpperCase()}. ` : ''}${reporte} [Procedimiento: ${tipoProcedimiento.toUpperCase()}]`;
             agregarEventoHistorial(u.id, desc, 'edicion_rapida');
 
             guardarDatosLocales();
@@ -4603,9 +4849,15 @@
                         estado: u.estado,
                         reporte: u.reporte,
                         costo: u.costo,
-                        fechaRefaccion: u.fechaRefaccion
+                        fechaRefaccion: u.fechaRefaccion,
+                        tipo_procedimiento: u.tipo_procedimiento,
+                        proveedor_externo: u.proveedor_externo,
+                        factura_externa: u.factura_externa,
+                        costo_externo: u.costo_externo
                     })
                 });
+            } catch (e) {}
+        }
             } catch (e) {}
         }
 
@@ -5512,6 +5764,8 @@
         let chartEstatusPatio = null;
         let chartSistemasFalla = null;
         let chartGastoSucursales = null;
+        let chartProcedimientosDistribucion = null;
+        let chartProcedimientosInversion = null;
 
         function filtrarSucursalAnalitica(suc) {
             filtroSucursalAnalitica = suc;
@@ -5639,6 +5893,69 @@
             const domImpCompras = document.getElementById('ana-importe-compras');
             if (domImpCompras) domImpCompras.innerText = `$${totalImporteCompras.toLocaleString()} MXN`;
 
+            // --- CÁLCULO DE PROCEDIMIENTOS: PREVENTIVO VS CORRECTIVO VS RESCATE VS EXTERNO ---
+            let localGastoPrev = 0;
+            let localGastoCorr = 0;
+            let localGastoResc = 0;
+            let localGastoExt = 0;
+            const localConteoTipo = { preventivo: 0, correctivo: 0, rescate: 0, externo: 0, mixto: 0 };
+
+            unidades.forEach(u => {
+                const cp = Number(u.costo_preventivo) || 0;
+                const cc = Number(u.costo_correctivo) || 0;
+                const ce = Number(u.costo_externo) || 0;
+                const proc = u.tipo_procedimiento || ((cp > 0 && cc > 0) ? 'mixto' : (cp > 0 ? 'preventivo' : 'correctivo'));
+                
+                if (localConteoTipo[proc] !== undefined) localConteoTipo[proc]++;
+                localGastoPrev += cp;
+                localGastoCorr += cc;
+                localGastoExt += ce;
+                if (proc === 'rescate') localGastoResc += (Number(u.costo) || (cp + cc + ce));
+            });
+
+            let kpisGerenciales = null;
+            try {
+                const resG = await fetch('/api/reportes/gerencial?t=' + Date.now());
+                if (resG.ok) {
+                    const jsonG = await resG.json();
+                    kpisGerenciales = jsonG.kpis;
+                }
+            } catch (errG) {}
+
+            const gastoPrev = (filtroSucursalAnalitica === 'TODAS' && kpisGerenciales) ? (kpisGerenciales.gasto_preventivo_total || localGastoPrev) : localGastoPrev;
+            const gastoCorr = (filtroSucursalAnalitica === 'TODAS' && kpisGerenciales) ? (kpisGerenciales.gasto_correctivo_total || localGastoCorr) : localGastoCorr;
+            const gastoResc = (filtroSucursalAnalitica === 'TODAS' && kpisGerenciales) ? (kpisGerenciales.gasto_rescate_total || localGastoResc) : localGastoResc;
+            const gastoExt = (filtroSucursalAnalitica === 'TODAS' && kpisGerenciales) ? (kpisGerenciales.gasto_externo_total || localGastoExt) : localGastoExt;
+            const sumaProc = (gastoPrev + gastoCorr + gastoResc + gastoExt) || costoTotal || 1;
+            const pctPrev = Math.round((gastoPrev / sumaProc) * 100);
+            const pctCorr = Math.round((gastoCorr / sumaProc) * 100);
+            const conteosTipo = (filtroSucursalAnalitica === 'TODAS' && kpisGerenciales && kpisGerenciales.conteo_por_tipo) ? kpisGerenciales.conteo_por_tipo : localConteoTipo;
+
+            // Actualizar Tarjetas KPI de Procedimientos en DOM
+            const domGastoPrev = document.getElementById('kpi-gasto-preventivo');
+            if (domGastoPrev) domGastoPrev.innerText = `$${gastoPrev.toLocaleString()} MXN`;
+            const domPctPrev = document.getElementById('kpi-pct-preventivo');
+            if (domPctPrev) domPctPrev.innerText = `${pctPrev}%`;
+            const domCntPrev = document.getElementById('kpi-cnt-preventivo');
+            if (domCntPrev) domCntPrev.innerText = `${conteosTipo.preventivo || 0} unidades preventivo`;
+
+            const domGastoCorr = document.getElementById('kpi-gasto-correctivo');
+            if (domGastoCorr) domGastoCorr.innerText = `$${gastoCorr.toLocaleString()} MXN`;
+            const domPctCorr = document.getElementById('kpi-pct-correctivo');
+            if (domPctCorr) domPctCorr.innerText = `${pctCorr}%`;
+            const domCntCorr = document.getElementById('kpi-cnt-correctivo');
+            if (domCntCorr) domCntCorr.innerText = `${conteosTipo.correctivo || 0} unidades correctivo`;
+
+            const domGastoResc = document.getElementById('kpi-gasto-rescate');
+            if (domGastoResc) domGastoResc.innerText = `$${gastoResc.toLocaleString()} MXN`;
+            const domCntResc = document.getElementById('kpi-cnt-rescate');
+            if (domCntResc) domCntResc.innerText = `${conteosTipo.rescate || 0} SOS en ruta`;
+
+            const domGastoExt = document.getElementById('kpi-gasto-externo');
+            if (domGastoExt) domGastoExt.innerText = `$${gastoExt.toLocaleString()} MXN`;
+            const domCntExt = document.getElementById('kpi-cnt-externo');
+            if (domCntExt) domCntExt.innerText = `${conteosTipo.externo || 0} talleres ext.`;
+
             // 2. Renderizar Tabla Top 5 Unidades Más Costosas
             const tablaTop = document.getElementById('tabla-top-unidades-analitica');
             if (tablaTop) {
@@ -5655,6 +5972,15 @@
                         if (u.estado === 'mayor') badgeEst = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">Mayor ($$)</span>';
                         else if (u.estado === 'listo') badgeEst = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">Lista</span>';
 
+                        const cPrevU = Number(u.costo_preventivo) || 0;
+                        const cCorrU = Number(u.costo_correctivo) || 0;
+                        const procU = u.tipo_procedimiento || ((cPrevU > 0 && cCorrU > 0) ? 'mixto' : (cPrevU > 0 ? 'preventivo' : 'correctivo'));
+                        let badgeProcU = '<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-blue-950 text-blue-300 border border-blue-700/60">🔧 Correctivo</span>';
+                        if (procU === 'preventivo') badgeProcU = '<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-700/60">🛡️ Preventivo</span>';
+                        else if (procU === 'rescate') badgeProcU = '<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-950 text-amber-300 border border-amber-700/60">🚨 Rescate</span>';
+                        else if (procU === 'externo') badgeProcU = '<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-purple-950 text-purple-300 border border-purple-700/60">🏢 Externo</span>';
+                        else if (procU === 'mixto') badgeProcU = '<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-indigo-950 text-indigo-300 border border-indigo-700/60">🔄 Mixto</span>';
+
                         const cantPiezas = Array.isArray(u.piezas) ? u.piezas.length : 0;
 
                         tr.innerHTML = `
@@ -5663,11 +5989,13 @@
                                     <span class="w-5 h-5 rounded-full bg-[#C59B27]/20 text-[#C59B27] flex items-center justify-center text-[10px] font-black">${i + 1}</span>
                                     Unidad ${u.id}
                                 </span>
+                                <div class="mt-1">${badgeProcU}</div>
                             </td>
                             <td class="py-2.5 px-3 text-slate-300">${u.sucursal}</td>
                             <td class="py-2.5 px-3">
                                 <span class="font-bold text-white block text-[11px]">${u.categoriaFalla || 'General'}</span>
                                 <span class="text-slate-400 text-[10px] truncate max-w-xs block">${u.reporte || u.defecto || 'Sin detalle'}</span>
+                                ${(cPrevU > 0 || cCorrU > 0) ? `<span class="text-[9px] font-mono text-slate-400 block mt-0.5"><span class="text-emerald-400 font-bold">Prev: $${cPrevU.toLocaleString()}</span> • <span class="text-blue-400 font-bold">Corr: $${cCorrU.toLocaleString()}</span></span>` : ''}
                             </td>
                             <td class="py-2.5 px-3 text-center">
                                 <span class="font-mono text-slate-300 font-bold bg-[#141518] px-2 py-0.5 rounded border border-[#3A3D42]">${cantPiezas} PZ</span>
@@ -5796,16 +6124,18 @@
             }
 
             // 4. Renderizar Gráficas con Chart.js
-            renderizarGraficasAnalitica(conteoMayor, conteoProceso, conteoListo, sistemasFallaMap, gastoSucursales);
+            renderizarGraficasAnalitica(conteoMayor, conteoProceso, conteoListo, sistemasFallaMap, gastoSucursales, conteosTipo, gastoPrev, gastoCorr, gastoResc, gastoExt);
         }
 
-        function renderizarGraficasAnalitica(conteoMayor, conteoProceso, conteoListo, sistemasFallaMap, gastoSucursales) {
+        function renderizarGraficasAnalitica(conteoMayor, conteoProceso, conteoListo, sistemasFallaMap, gastoSucursales, conteosTipo = {}, gastoPrev = 0, gastoCorr = 0, gastoResc = 0, gastoExt = 0) {
             if (typeof Chart === 'undefined') return;
 
             // Destruir instancias previas
             if (chartEstatusPatio) { chartEstatusPatio.destroy(); chartEstatusPatio = null; }
             if (chartSistemasFalla) { chartSistemasFalla.destroy(); chartSistemasFalla = null; }
             if (chartGastoSucursales) { chartGastoSucursales.destroy(); chartGastoSucursales = null; }
+            if (chartProcedimientosDistribucion) { chartProcedimientosDistribucion.destroy(); chartProcedimientosDistribucion = null; }
+            if (chartProcedimientosInversion) { chartProcedimientosInversion.destroy(); chartProcedimientosInversion = null; }
 
             // Chart 1: Dona Estatus de Patio
             const ctx1 = document.getElementById('chart-estatus-patio');
@@ -5931,6 +6261,97 @@
                     }
                 });
             }
+
+            // Chart 4: Dona de Distribución de Procedimientos de Taller
+            const ctx4 = document.getElementById('chart-procedimientos-distribucion');
+            if (ctx4) {
+                const pPrev = conteosTipo.preventivo || 0;
+                const pCorr = conteosTipo.correctivo || 0;
+                const pResc = conteosTipo.rescate || 0;
+                const pExt = conteosTipo.externo || 0;
+                const pMix = conteosTipo.mixto || 0;
+
+                chartProcedimientosDistribucion = new Chart(ctx4.getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Preventivo (🛡️)', 'Correctivo (🔧)', 'Rescate Carretero (🚨)', 'Taller Externo (🏢)', 'Mixto (🔄)'],
+                        datasets: [{
+                            data: [pPrev, pCorr, pResc, pExt, pMix],
+                            backgroundColor: ['#10B981', '#3B82F6', '#F59E0B', '#A855F7', '#6366F1'],
+                            borderColor: '#141518',
+                            borderWidth: 3,
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '65%',
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'bottom',
+                                labels: { color: '#CBD5E1', boxWidth: 10, font: { size: 10 } }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(c) {
+                                        const val = c.raw || 0;
+                                        const tot = c.dataset.data.reduce((a, b) => a + b, 0);
+                                        const pct = tot > 0 ? Math.round((val / tot) * 100) : 0;
+                                        return ` ${c.label}: ${val} camiones (${pct}%)`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Chart 5: Barras Inversión Financiera por Procedimiento ($ MXN)
+            const ctx5 = document.getElementById('chart-procedimientos-inversion');
+            if (ctx5) {
+                chartProcedimientosInversion = new Chart(ctx5.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Preventivo', 'Correctivo', 'Rescates SOS', 'Taller Externo'],
+                        datasets: [{
+                            label: 'Inversión Real ($ MXN)',
+                            data: [gastoPrev, gastoCorr, gastoResc, gastoExt],
+                            backgroundColor: ['#10B981', '#3B82F6', '#F59E0B', '#A855F7'],
+                            borderRadius: 6,
+                            borderSkipped: false
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(c) {
+                                        return ` Inversión: $${(c.raw || 0).toLocaleString()} MXN`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { display: false },
+                                ticks: { color: '#E2E8F0', font: { weight: 'bold' } }
+                            },
+                            y: {
+                                grid: { color: '#282A2E' },
+                                ticks: {
+                                    color: '#94A3B8',
+                                    callback: function(v) { return '$' + (v >= 1000 ? (v / 1000) + 'k' : v); }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
         }
 
         function copiarResumenAnaliticaWA() {
@@ -5991,6 +6412,120 @@
                 });
             } else {
                 window.prompt("Copia el texto ejecutivo:", msg);
+            }
+        }
+
+        async function descargarReporteEjecutivoExcel() {
+            if (typeof XLSX === 'undefined') {
+                mostrarToast('El módulo de Excel (SheetJS) se está cargando. Intenta de nuevo en un segundo.');
+                return;
+            }
+
+            mostrarToast('Generando reporte ejecutivo en Excel multi-hoja...');
+
+            try {
+                const res = await fetch('/api/reportes/gerencial?t=' + Date.now());
+                if (!res.ok) throw new Error('Error al consultar datos gerenciales');
+                const json = await res.json();
+                const kpis = json.kpis || {};
+                const unidades = json.unidades || [];
+
+                const wb = XLSX.utils.book_new();
+
+                // HOJA 1: RESUMEN DE UNIDADES Y TRABAJOS
+                const rowsHoja1 = unidades.map(u => ({
+                    'Unidad': `Unidad ${u.id}`,
+                    'Terminal': u.sucursal,
+                    'Estatus Taller': u.estado_label,
+                    'Tipo de Procedimiento': (u.tipo_procedimiento || 'correctivo').toUpperCase(),
+                    'Folio Almacén': u.folio_almacen,
+                    'Trabajo / Falla Reportada': u.defecto,
+                    'Costo Preventivo ($ MXN)': u.costo_preventivo || 0,
+                    'Costo Correctivo ($ MXN)': u.costo_correctivo || 0,
+                    'Costo Externo ($ MXN)': u.costo_externo || 0,
+                    'Inversión Total ($ MXN)': u.costo_total || 0,
+                    'Cant. Refacciones': u.total_piezas || 0,
+                    'Proveedor Externo': u.proveedor_externo || '--',
+                    'Factura Externa': u.factura_externa || '--',
+                    'Fecha Ingreso': u.fecha_ingreso || '--',
+                    'Fecha Liberación': u.fecha_liberacion || '--'
+                }));
+                const ws1 = XLSX.utils.json_to_sheet(rowsHoja1);
+                XLSX.utils.book_append_sheet(wb, ws1, 'Resumen Trabajos');
+
+                // HOJA 2: DESGLOSE DE REFACCIONES AUDITADAS
+                const rowsHoja2 = [];
+                unidades.forEach(u => {
+                    if (Array.isArray(u.piezas) && u.piezas.length > 0) {
+                        u.piezas.forEach(p => {
+                            rowsHoja2.push({
+                                'Unidad': `Unidad ${u.id}`,
+                                'Folio Almacén': u.folio_almacen,
+                                'N° Parte': p.numero_parte,
+                                'Descripción de Refacción': p.descripcion,
+                                'Cantidad': p.cantidad,
+                                'Precio Unitario ($ MXN)': p.precio_unitario,
+                                'Importe Total ($ MXN)': p.costo_total,
+                                'Clasificación': (p.tipo_trabajo || 'correctivo').toUpperCase(),
+                                'Procedimiento Unidad': (u.tipo_procedimiento || 'correctivo').toUpperCase()
+                            });
+                        });
+                    }
+                });
+                if (rowsHoja2.length === 0) {
+                    rowsHoja2.push({ 'Información': 'No hay refacciones registradas en este período' });
+                }
+                const ws2 = XLSX.utils.json_to_sheet(rowsHoja2);
+                XLSX.utils.book_append_sheet(wb, ws2, 'Desglose Refacciones');
+
+                // HOJA 3: RESCATES Y TALLERES EXTERNOS
+                const rowsHoja3 = unidades
+                    .filter(u => u.tipo_procedimiento === 'rescate' || u.tipo_procedimiento === 'externo' || (u.costo_externo > 0))
+                    .map(u => ({
+                        'Unidad': `Unidad ${u.id}`,
+                        'Terminal': u.sucursal,
+                        'Tipo': u.tipo_procedimiento === 'rescate' ? 'RESCATE CARRETERO (SOS)' : 'TALLER EXTERNO',
+                        'Proveedor / Auxilio': u.proveedor_externo || '--',
+                        'Factura / Folio': u.factura_externa || u.folio_almacen || '--',
+                        'Trabajo Realizado': u.defecto,
+                        'Costo Factura / Gasto ($ MXN)': u.costo_externo || u.costo_total || 0,
+                        'Fecha': u.fecha_ingreso || '--'
+                    }));
+                if (rowsHoja3.length === 0) {
+                    rowsHoja3.push({ 'Información': 'No hay rescates ni talleres externos registrados' });
+                }
+                const ws3 = XLSX.utils.json_to_sheet(rowsHoja3);
+                XLSX.utils.book_append_sheet(wb, ws3, 'Rescates y Externos');
+
+                // HOJA 4: AUDITORÍA E INDICADORES GERENCIALES
+                const rowsHoja4 = [
+                    { 'Indicador Gerencial': 'Fecha de Generación del Informe', 'Valor': new Date().toLocaleString('es-MX') },
+                    { 'Indicador Gerencial': 'Total de Unidades Auditadas', 'Valor': kpis.total_unidades || unidades.length },
+                    { 'Indicador Gerencial': 'Unidades Activas en Patio', 'Valor': kpis.unidades_activas || 0 },
+                    { 'Indicador Gerencial': 'Unidades Liberadas / En Operación', 'Valor': kpis.unidades_liberadas || 0 },
+                    { 'Indicador Gerencial': 'Inversión Total Acumulada ($ MXN)', 'Valor': kpis.gasto_total || 0 },
+                    { 'Indicador Gerencial': 'Gasto Mantenimiento Preventivo ($ MXN)', 'Valor': kpis.gasto_preventivo_total || 0 },
+                    { 'Indicador Gerencial': '% Inversión Preventiva', 'Valor': `${kpis.porcentaje_preventivo || 0}%` },
+                    { 'Indicador Gerencial': 'Gasto Mantenimiento Correctivo ($ MXN)', 'Valor': kpis.gasto_correctivo_total || 0 },
+                    { 'Indicador Gerencial': '% Inversión Correctiva', 'Valor': `${kpis.porcentaje_correctivo || 0}%` },
+                    { 'Indicador Gerencial': 'Gasto en Rescates Carreteros ($ MXN)', 'Valor': kpis.gasto_rescate_total || 0 },
+                    { 'Indicador Gerencial': 'Gasto en Talleres Externos ($ MXN)', 'Valor': kpis.gasto_externo_total || 0 },
+                    { 'Indicador Gerencial': 'Unidades Clasificadas: Preventivo', 'Valor': (kpis.conteo_por_tipo && kpis.conteo_por_tipo.preventivo) || 0 },
+                    { 'Indicador Gerencial': 'Unidades Clasificadas: Correctivo', 'Valor': (kpis.conteo_por_tipo && kpis.conteo_por_tipo.correctivo) || 0 },
+                    { 'Indicador Gerencial': 'Unidades Clasificadas: Rescate Carretero', 'Valor': (kpis.conteo_por_tipo && kpis.conteo_por_tipo.rescate) || 0 },
+                    { 'Indicador Gerencial': 'Unidades Clasificadas: Taller Externo', 'Valor': (kpis.conteo_por_tipo && kpis.conteo_por_tipo.externo) || 0 },
+                    { 'Indicador Gerencial': 'Unidades Clasificadas: Mixto (Prev + Corr)', 'Valor': (kpis.conteo_por_tipo && kpis.conteo_por_tipo.mixto) || 0 }
+                ];
+                const ws4 = XLSX.utils.json_to_sheet(rowsHoja4);
+                XLSX.utils.book_append_sheet(wb, ws4, 'Auditoría Gerencia');
+
+                // Descargar archivo Excel
+                const nombreArchivo = `Reporte_Gerencial_Taller_CESS_${new Date().toISOString().slice(0, 10)}.xlsx`;
+                XLSX.writeFile(wb, nombreArchivo);
+                mostrarToast(`✅ Archivo Excel descargado: ${nombreArchivo}`);
+            } catch (err) {
+                console.error('Error generando Excel:', err);
+                mostrarToast('Error al generar archivo Excel: ' + err.message);
             }
         }
 
@@ -6261,6 +6796,7 @@
             const costo = parseFloat(document.getElementById('form-costo').value) || 0;
             const fechaRefaccion = document.getElementById('form-fecha').value || '';
             const categoriaFalla = document.getElementById('form-categoria').value;
+            const tipo_procedimiento = document.getElementById('form-procedimiento') ? document.getElementById('form-procedimiento').value : 'correctivo';
 
             const reporte = defecto && notas ? `${defecto} • ${notas}` : (defecto || notas);
             const nombres = { mayor: 'Reparación Mayor ($$)', proceso: 'En Proceso (Taller)', listo: 'Listas para Entrega' };
@@ -6276,6 +6812,7 @@
                 unidadExistente.sucursal = sucursal;
                 unidadExistente.estado = estado;
                 unidadExistente.estadoModificadoManualmente = true;
+                unidadExistente.tipo_procedimiento = tipo_procedimiento;
                 if (defecto) unidadExistente.defecto = defecto;
                 if (notas) unidadExistente.notas = notas;
                 unidadExistente.reporte = reporte || unidadExistente.reporte;
@@ -6307,6 +6844,7 @@
                     id,
                     sucursal,
                     estado,
+                    tipo_procedimiento,
                     defecto,
                     notas,
                     reporte,
@@ -7518,7 +8056,7 @@
                         `*Artículos:*\n${itemsTxt}\n` +
                         `*Importe Estimado:* $${(Number(ord.total_importe) || 0).toLocaleString()} MXN\n` +
                         (ord.notas ? `*Notas:* ${ord.notas}\n` : '') +
-                        `_Generado automáticamente desde Taller Pro & Almacén CESS_`;
+                        `_Generado automáticamente desde Taller Pro & Almacén_`;
 
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(msg).then(() => {
@@ -7928,6 +8466,37 @@
             recognition.start();
         }
 
+        function clasificarTextoPieza(desc = '', numParte = '') {
+            const txt = `${desc || ''} ${numParte || ''}`.toUpperCase();
+            const palabrasPreventivo = ['FILTRO', 'ACEITE', 'LUBRICANTE', 'ANTICONGELANTE', 'GRASA', 'CARTUCHO', 'FLUIDO', 'PREVENTIVO', 'SERVICIO', 'AFINACION', 'UREA', 'VALVULINA', 'REFRIGERANTE', 'COOLANT', 'PURIFICADOR'];
+            for (const p of palabrasPreventivo) {
+                if (txt.includes(p)) return 'preventivo';
+            }
+            return 'correctivo';
+        }
+
+        async function alternarTipoTrabajoPieza(unidadId, piezaId, tipoActual) {
+            const nuevoTipo = tipoActual === 'preventivo' ? 'correctivo' : 'preventivo';
+            try {
+                const res = await fetch(`/api/unidad/${encodeURIComponent(unidadId)}/clasificar-pieza`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ pieza_id: piezaId, tipo_trabajo: nuevoTipo })
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    const existIdx = baseDatos.findIndex(x => String(x.id).trim() === String(unidadId).trim());
+                    if (existIdx >= 0 && data.unidad) baseDatos[existIdx] = data.unidad;
+                    guardarDatosLocales(false);
+                    renderizarTablero();
+                    await abrirDetalleFolioAlmacen(null, unidadId);
+                    mostrarToast(`Refacción reclasificada a ${nuevoTipo.toUpperCase()}`);
+                }
+            } catch(e) {
+                mostrarToast('Error al reclasificar refacción');
+            }
+        }
+
         // --- CONTROLADORES DE MODAL: DETALLE DE FOLIO DE ALMACÉN ---
         async function abrirDetalleFolioAlmacen(event, id) {
             if (event && event.stopPropagation) event.stopPropagation();
@@ -7941,8 +8510,15 @@
             document.getElementById('det-folio-solicitante').innerText = 'Consultando Almacén...';
             document.getElementById('det-folio-costo-total').innerText = '$0 MXN';
 
+            const procBadgeEl = document.getElementById('det-folio-procedimiento-badge');
+            const chipsEl = document.getElementById('det-folio-desglose-chips');
+            if (procBadgeEl) {
+                const tipoProc = u.tipo_procedimiento || ((u.costo_preventivo > 0 && u.costo_correctivo > 0) ? 'mixto' : (u.costo_preventivo > 0 ? 'preventivo' : 'correctivo'));
+                procBadgeEl.innerHTML = `<span class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${tipoProc === 'preventivo' ? 'bg-emerald-950 text-emerald-300 border border-emerald-700' : (tipoProc === 'rescate' ? 'bg-amber-950 text-amber-300 border border-amber-600 animate-pulse' : (tipoProc === 'externo' ? 'bg-purple-950 text-purple-300 border border-purple-600' : (tipoProc === 'mixto' ? 'bg-indigo-950 text-indigo-300 border border-indigo-600' : 'bg-blue-950 text-blue-300 border border-blue-600')))}">${tipoProc}</span>`;
+            }
+
             const tbody = document.getElementById('det-folio-tabla-body');
-            tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-1 text-indigo-400"></i> Cargando desglose oficial de refacciones...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" class="p-4 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-1 text-indigo-400"></i> Cargando desglose oficial de refacciones...</td></tr>';
 
             document.getElementById('modal-detalle-folio-almacen').classList.remove('hidden');
 
@@ -7952,6 +8528,23 @@
                 if (res.ok && json.success) {
                     document.getElementById('det-folio-solicitante').innerText = json.solicitante || 'Personal Taller';
                     document.getElementById('det-folio-costo-total').innerText = `$${(json.costo_total || 0).toLocaleString()} MXN`;
+
+                    // Calcular subtotales preventivo vs correctivo
+                    let cPrev = 0, cCorr = 0;
+                    (json.items || []).forEach(it => {
+                        const tot = Number(it.total_costo || (it.cantidad * (it.precio_unitario || 0))) || 0;
+                        const pzMatch = (u.piezas || []).find(p => String(p.id) === String(it.id_item) || String(p.numero_parte) === String(it.numero_parte));
+                        it.tipo_trabajo = (pzMatch && pzMatch.tipo_trabajo) || clasificarTextoPieza(it.descripcion, it.numero_parte);
+                        if (it.tipo_trabajo === 'preventivo') cPrev += tot;
+                        else cCorr += tot;
+                    });
+
+                    if (chipsEl) {
+                        chipsEl.innerHTML = `
+                            ${cPrev > 0 ? `<span class="bg-emerald-950/80 text-emerald-300 border border-emerald-800 px-2 py-0.5 rounded font-mono font-bold">🛡️ Prev: $${cPrev.toLocaleString()}</span>` : ''}
+                            ${cCorr > 0 ? `<span class="bg-blue-950/80 text-blue-300 border border-blue-800 px-2 py-0.5 rounded font-mono font-bold">🔧 Corr: $${cCorr.toLocaleString()}</span>` : ''}
+                        `;
+                    }
 
                     tbody.innerHTML = (json.items || []).map(it => {
                         const safeDesc = (it.descripcion || '').replace(/'/g, "\\'");
@@ -7970,6 +8563,11 @@
                             <tr class="hover:bg-[#141518]/60 transition text-xs">
                                 <td class="p-2.5 font-mono text-indigo-300 font-bold">${it.numero_parte || '--'}</td>
                                 <td class="p-2.5 text-white font-medium">${it.descripcion}</td>
+                                <td class="p-2.5 text-center">
+                                    <button onclick="alternarTipoTrabajoPieza('${u.id}', '${it.id_item || it.id}', '${it.tipo_trabajo || 'correctivo'}')" class="${it.tipo_trabajo === 'preventivo' ? 'bg-emerald-950 text-emerald-300 border-emerald-700' : 'bg-blue-950 text-blue-300 border-blue-700'} border px-2 py-0.5 rounded text-[10px] font-bold shadow transition hover:scale-105" title="Haz clic para cambiar entre Preventivo y Correctivo">
+                                        ${it.tipo_trabajo === 'preventivo' ? '🛡️ Preventivo' : '🔧 Correctivo'}
+                                    </button>
+                                </td>
                                 <td class="p-2.5 text-center font-bold text-slate-200 font-mono">${it.cantidad}</td>
                                 <td class="p-2.5 text-right font-mono text-slate-300">${precioHtml}</td>
                                 <td class="p-2.5 text-right font-mono text-[#DFB743] font-bold">${totHtml}</td>
@@ -7987,18 +8585,31 @@
                     document.getElementById('det-folio-solicitante').innerText = 'Almacén Central';
                     document.getElementById('det-folio-costo-total').innerText = `$${costo.toLocaleString()} MXN`;
 
+                    if (chipsEl) {
+                        chipsEl.innerHTML = `
+                            ${u.costo_preventivo > 0 ? `<span class="bg-emerald-950/80 text-emerald-300 border border-emerald-800 px-2 py-0.5 rounded font-mono font-bold">🛡️ Prev: $${Number(u.costo_preventivo).toLocaleString()}</span>` : ''}
+                            ${u.costo_correctivo > 0 ? `<span class="bg-blue-950/80 text-blue-300 border border-blue-800 px-2 py-0.5 rounded font-mono font-bold">🔧 Corr: $${Number(u.costo_correctivo).toLocaleString()}</span>` : ''}
+                        `;
+                    }
+
                     if (piezas.length === 0) {
-                        tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-amber-300/80 italic bg-amber-950/20 rounded-xl"><i class="fa-solid fa-clock mr-1.5"></i> Folio #${u.folio_almacen} registrado y vinculado. En espera de surtido de refacciones desde Almacén.</td></tr>`;
+                        tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-amber-300/80 italic bg-amber-950/20 rounded-xl"><i class="fa-solid fa-clock mr-1.5"></i> Folio #${u.folio_almacen} registrado y vinculado. En espera de surtido de refacciones desde Almacén.</td></tr>`;
                     } else {
                         tbody.innerHTML = piezas.map(it => {
                             const safeDesc = (it.descripcion || '').replace(/'/g, "\\'");
+                            const pTipo = it.tipo_trabajo || clasificarTextoPieza(it.descripcion, it.numero_parte);
                             return `
                                 <tr class="hover:bg-[#141518]/60 transition text-xs">
                                     <td class="p-2.5 font-mono text-indigo-300 font-bold">${it.numero_parte || '--'}</td>
                                     <td class="p-2.5 text-white font-medium">${it.descripcion}</td>
+                                    <td class="p-2.5 text-center">
+                                        <button onclick="alternarTipoTrabajoPieza('${u.id}', '${it.id}', '${pTipo}')" class="${pTipo === 'preventivo' ? 'bg-emerald-950 text-emerald-300 border-emerald-700' : 'bg-blue-950 text-blue-300 border-blue-700'} border px-2 py-0.5 rounded text-[10px] font-bold shadow transition hover:scale-105" title="Haz clic para cambiar entre Preventivo y Correctivo">
+                                            ${pTipo === 'preventivo' ? '🛡️ Preventivo' : '🔧 Correctivo'}
+                                        </button>
+                                    </td>
                                     <td class="p-2.5 text-center font-bold text-slate-200 font-mono">${it.cantidad || 1}</td>
                                     <td class="p-2.5 text-right font-mono text-slate-400">$${Number(it.precio_unitario||0).toLocaleString()}</td>
-                                    <td class="p-2.5 text-right font-mono text-[#DFB743] font-bold">$${Number(it.total_costo||it.precio_unitario||0).toLocaleString()}</td>
+                                    <td class="p-2.5 text-right font-mono text-[#DFB743] font-bold">$${Number(it.costo_total||it.total_costo||it.precio_unitario||0).toLocaleString()}</td>
                                     <td class="p-2.5 text-center">
                                         <button onclick="abrirModalEditarPiezaFolio('${it.id}', ${it.cantidad || 1}, ${Number(it.precio_unitario||0)}, '${safeDesc}')" class="bg-amber-950/70 hover:bg-amber-900 text-amber-300 border border-amber-700/60 px-2 py-0.5 rounded text-[11px] font-bold transition flex items-center gap-1 mx-auto" title="Modificar pieza">
                                             <i class="fa-solid fa-pencil text-[10px]"></i> Ajustar
@@ -8010,7 +8621,7 @@
                     }
                 }
             } catch(e) {
-                tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-red-400">Error al consultar desglose de almacén.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" class="p-4 text-center text-red-400">Error al consultar desglose de almacén.</td></tr>';
             }
         }
 
@@ -8248,7 +8859,7 @@
             }
         }
 
-        async function cargarModuloPreventivos() {
+        async function cargarModuloPreventivos(forzar = false) {
             const tbodyUni = document.getElementById('tabla-preventivos-body');
             const tbodyBit = document.getElementById('tabla-bitacora-prev-body');
             
@@ -8257,21 +8868,25 @@
                     <tr>
                         <td colspan="9" class="p-8 text-center text-slate-500">
                             <i class="fa-solid fa-spinner fa-spin text-xl text-[#C59B27] mb-2"></i>
-                            <span class="block">Cargando unidades y mantenimientos preventivos...</span>
+                            <span class="block">${forzar ? 'Sincronizando odómetros y servicios en vivo desde la base de datos...' : 'Cargando unidades y mantenimientos preventivos...'}</span>
                         </td>
                     </tr>
                 `;
             }
 
             try {
-                // 1. Cargar estado de preventivos por unidad
-                const res = await fetch('/api/preventivos?t=' + Date.now(), { cache: 'no-store' });
+                // 1. Cargar estado de preventivos por unidad (con opción sync en vivo)
+                const url = forzar ? ('/api/preventivos?sync=true&t=' + Date.now()) : ('/api/preventivos?t=' + Date.now());
+                const res = await fetch(url, { cache: 'no-store' });
                 if (res.ok) {
                     const json = await res.json();
                     cachePreventivos = json.data || json.preventivos || [];
                     const resumen = json.resumen || json.stats || {};
                     actualizarMetricasPreventivos(resumen);
                     renderizarTablaPreventivos();
+                    if (forzar) {
+                        mostrarToast(`✅ Odómetros y preventivos actualizados en vivo (${cachePreventivos.length} unidades de la flota).`);
+                    }
                 }
 
                 // 2. Cargar bitácora histórica
@@ -9497,7 +10112,7 @@
                 } else {
                     lista.innerHTML = `
                         <p class="text-red-400 p-3 text-center font-bold">
-                            <i class="fa-solid fa-circle-exclamation mr-1"></i> Folio #${folio} no encontrado en Almacén CESS.
+                            <i class="fa-solid fa-circle-exclamation mr-1"></i> Folio #${folio} no encontrado en Almacén.
                         </p>
                     `;
                     btnVincular.disabled = true;

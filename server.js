@@ -49,9 +49,20 @@ const DB_FILE = path.join(__dirname, 'taller_db.json');
 const BITACORAS_FILE = path.join(__dirname, 'taller_bitacoras_historico.json');
 const JORNADA_FILE = path.join(__dirname, 'taller_jornada_actual.json');
 const EXCEL_FILE = path.join(__dirname, 'Taller Flotilla-v2.xlsx');
-const ALMACEN_DB_FILE = fs.existsSync(path.join(__dirname, 'almacen_datos.json'))
-    ? path.join(__dirname, 'almacen_datos.json')
-    : path.join(__dirname, 'almacen-app', 'almacen_datos.json');
+function getAlmacenDbPath() {
+    const localAlm = path.join(__dirname, 'almacen-app', 'almacen_datos.json');
+    const rootAlm = path.join(__dirname, 'almacen_datos.json');
+    if (fs.existsSync(localAlm) && fs.existsSync(rootAlm)) {
+        try {
+            const statLocal = fs.statSync(localAlm);
+            const statRoot = fs.statSync(rootAlm);
+            return (statLocal.mtimeMs >= statRoot.mtimeMs || statLocal.size > statRoot.size) ? localAlm : rootAlm;
+        } catch(e) {}
+    }
+    if (fs.existsSync(localAlm)) return localAlm;
+    return rootAlm;
+}
+const ALMACEN_DB_FILE = getAlmacenDbPath();
 const PREVENTIVOS_FILE = path.join(__dirname, 'taller_preventivos.json');
 const RESCATES_FILE = path.join(__dirname, 'taller_rescates.json');
 const TITULOS_COLUMNAS_FILE = path.join(__dirname, 'taller_config_columnas.json');
@@ -121,13 +132,178 @@ function saveTitulosColumnas(titulos) {
     }
 }
 
+// =========================================================================
+// SINCRONIZADOR EN TIEMPO REAL CON FIRESTORE (SISTEMA DE DIÉSEL CESS)
+// =========================================================================
+let ultimoSyncFirestore = 0;
+let cachePreventivosFirestore = null;
+
+async function sincronizarPreventivosConFirestore(forzar = false) {
+    const ahora = Date.now();
+    // Cache de 3 minutos para evitar saturación a menos que se fuerce
+    if (!forzar && cachePreventivosFirestore && (ahora - ultimoSyncFirestore < 180000)) {
+        return cachePreventivosFirestore;
+    }
+
+    const FIRESTORE_PREVENTIVOS_URL = 'https://firestore.googleapis.com/v1/projects/diesel-cess-40bbf/databases/(default)/documents/preventivos?pageSize=300&key=AIzaSyDg9Q5n2A3UghhmGoI21uNQP5MKFbXJpgs';
+    const FIRESTORE_HISTORIAL_URL = 'https://firestore.googleapis.com/v1/projects/diesel-cess-40bbf/databases/(default)/documents/preventivos_historial?pageSize=150&key=AIzaSyDg9Q5n2A3UghhmGoI21uNQP5MKFbXJpgs';
+
+    try {
+        const parseVal = (v) => {
+            if (!v) return null;
+            if (v.stringValue !== undefined) return v.stringValue;
+            if (v.doubleValue !== undefined) return Number(v.doubleValue);
+            if (v.integerValue !== undefined) return Number(v.integerValue);
+            if (v.booleanValue !== undefined) return v.booleanValue;
+            if (v.timestampValue !== undefined) return v.timestampValue;
+            return null;
+        };
+
+        const [resPrev, resHist] = await Promise.all([
+            fetch(FIRESTORE_PREVENTIVOS_URL).catch(() => null),
+            fetch(FIRESTORE_HISTORIAL_URL).catch(() => null)
+        ]);
+
+        let list = [];
+        let bitacora = [];
+
+        if (resPrev && resPrev.ok) {
+            const dataPrev = await resPrev.json();
+            const docs = dataPrev.documents || [];
+            list = docs.map(d => {
+                const f = d.fields || {};
+                const u = parseVal(f.unidad) || d.name.split('/').pop();
+                const kmAct = Number(parseVal(f.km_actual)) || 0;
+                const kmAnt = Number(parseVal(f.km_mtto_anterior)) || 0;
+                const proxKm = Number(parseVal(f.proximo_mtto_km)) || (kmAnt > 0 ? kmAnt + 35000 : 0);
+                const kmRest = parseVal(f.km_restantes) !== null ? Number(parseVal(f.km_restantes)) : (proxKm - kmAct);
+
+                let estatus = (parseVal(f.estatus) || '').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                if (!estatus) {
+                    if (kmRest < 0) estatus = 'VENCIDO';
+                    else if (kmRest <= 5000) estatus = 'PROXIMO';
+                    else estatus = 'VIGENTE';
+                }
+
+                return {
+                    unidad: String(u).trim(),
+                    tipo_tracto: parseVal(f.tipo_tracto) || 'Cascadia',
+                    marca: parseVal(f.marca) || 'Freightliner',
+                    division: parseVal(f.division) || 'RL',
+                    ubicacion: parseVal(f.ubicacion) || 'PATIO APODACA',
+                    km_actual: kmAct,
+                    km_mtto_anterior: kmAnt,
+                    proximo_mtto_km: proxKm,
+                    km_restantes: kmRest,
+                    estatus: estatus,
+                    estatusLabel: estatus === 'VENCIDO' ? 'Vencido' : (estatus.includes('PROX') ? 'Próximo' : 'Vigente'),
+                    fecha_realizado: parseVal(f.fecha_realizado) || '',
+                    ultima_actualizacion: parseVal(f.ultima_actualizacion) || d.updateTime
+                };
+            });
+
+            // Ordenamiento gerencial: Vencidos primero, luego Próximos, luego Vigentes
+            list.sort((a, b) => {
+                const peso = { 'VENCIDO': 1, 'PROXIMO': 2, 'PRÓXIMO': 2, 'VIGENTE': 3 };
+                const pA = peso[a.estatus] || 4;
+                const pB = peso[b.estatus] || 4;
+                if (pA !== pB) return pA - pB;
+                return (a.km_restantes || 0) - (b.km_restantes || 0);
+            });
+        }
+
+        if (resHist && resHist.ok) {
+            const dataHist = await resHist.json();
+            const docsHist = dataHist.documents || [];
+            bitacora = docsHist.map(d => {
+                const f = d.fields || {};
+                return {
+                    id: parseVal(f.id) || d.name.split('/').pop(),
+                    unidad: parseVal(f.unidad) || '',
+                    fecha: parseVal(f.fecha) || '',
+                    km_actual: Number(parseVal(f.km_actual)) || 0,
+                    tipo_tracto: parseVal(f.tipo_tracto) || 'Cascadia',
+                    observaciones: parseVal(f.observaciones) || 'Servicio Preventivo',
+                    costo_total: Number(parseVal(f.costo_total)) || 0,
+                    costo_sin_iva: Number(parseVal(f.costo_sin_iva)) || 0,
+                    litros_aceite: parseVal(f.litros_aceite) || '',
+                    intervalo: Number(parseVal(f.intervalo)) || 35000,
+                    timestamp: parseVal(f.timestamp) || d.createTime
+                };
+            });
+        }
+
+        if (list.length > 0) {
+            const vencidos = list.filter(p => p.estatus === 'VENCIDO').length;
+            const proximos = list.filter(p => p.estatus === 'PROXIMO' || p.estatus === 'PRÓXIMO').length;
+            const vigentes = list.filter(p => p.estatus === 'VIGENTE').length;
+
+            const cacheData = {
+                preventivos: list,
+                preventivos_historial: bitacora,
+                bitacora: bitacora,
+                stats: {
+                    total: list.length,
+                    vencidos,
+                    proximos,
+                    vigentes
+                },
+                source: 'Firestore (diesel-cess-40bbf) Realtime Sync',
+                timestamp: new Date().toISOString()
+            };
+
+            ultimoSyncFirestore = ahora;
+            cachePreventivosFirestore = cacheData;
+
+            // Persistir en copias locales y de despliegue
+            const paths = [
+                path.join(__dirname, 'combustible_preventivos_cache.json'),
+                path.join(__dirname, 'taller_preventivos.json'),
+                path.join(__dirname, 'taller-cloud-deploy', 'combustible_preventivos_cache.json'),
+                path.join(__dirname, 'taller-cloud-deploy', 'taller_preventivos.json')
+            ];
+            const strJson = JSON.stringify(cacheData, null, 2);
+            paths.forEach(p => {
+                try {
+                    if (fs.existsSync(path.dirname(p))) fs.writeFileSync(p, strJson, 'utf8');
+                } catch(e) {}
+            });
+
+            console.log(`>>> [Firestore Sync] ${list.length} preventivos sincronizados con Diésel en vivo (${vencidos} vencidos, ${proximos} próximos).`);
+            return cacheData;
+        }
+    } catch(err) {
+        console.warn('[Firestore Sync Preventivos Warning]:', err.message);
+    }
+
+    return null;
+}
+
 function getPreventivosData() {
+    if (cachePreventivosFirestore && cachePreventivosFirestore.preventivos && cachePreventivosFirestore.preventivos.length > 0) {
+        // Si tiene más de 3 minutos, refrescar en segundo plano sin bloquear
+        if (Date.now() - ultimoSyncFirestore > 180000) {
+            sincronizarPreventivosConFirestore(false).catch(() => {});
+        }
+        return cachePreventivosFirestore;
+    }
+
     const freshCachePath = path.join(__dirname, 'combustible_preventivos_cache.json');
     if (fs.existsSync(freshCachePath)) {
         try {
-            return JSON.parse(fs.readFileSync(freshCachePath, 'utf8'));
+            const parsed = JSON.parse(fs.readFileSync(freshCachePath, 'utf8'));
+            if (parsed && Array.isArray(parsed.preventivos) && parsed.preventivos.length > 0) {
+                cachePreventivosFirestore = parsed;
+                // Refrescar en segundo plano
+                sincronizarPreventivosConFirestore(false).catch(() => {});
+                return parsed;
+            }
         } catch(e) {}
     }
+
+    // Disparar sincronización inmediata
+    sincronizarPreventivosConFirestore(true).catch(() => {});
+
     const webCachePath = path.join(__dirname, 'web', 'src', 'data', 'initial_cache.json');
     if (fs.existsSync(webCachePath)) {
         try {
@@ -269,9 +445,10 @@ function normalizarPieza(p, idx = 0) {
 }
 
 function getAlmacenData() {
-    if (!fs.existsSync(ALMACEN_DB_FILE)) return { catalog: {}, movimientos: [], ordenes_compra: [] };
+    const p = getAlmacenDbPath();
+    if (!fs.existsSync(p)) return { catalog: {}, movimientos: [], ordenes_compra: [] };
     try {
-        return JSON.parse(fs.readFileSync(ALMACEN_DB_FILE, 'utf8'));
+        return JSON.parse(fs.readFileSync(p, 'utf8'));
     } catch (e) {
         console.error('Error leyendo almacen_datos.json:', e);
         return { catalog: {}, movimientos: [], ordenes_compra: [] };
@@ -280,7 +457,19 @@ function getAlmacenData() {
 
 function saveAlmacenData(data) {
     try {
-        fs.writeFileSync(ALMACEN_DB_FILE, JSON.stringify(data, null, 2), 'utf8');
+        const jsonStr = JSON.stringify(data, null, 2);
+        const paths = [
+            path.join(__dirname, 'almacen_datos.json'),
+            path.join(__dirname, 'almacen-app', 'almacen_datos.json'),
+            path.join(__dirname, 'taller-cloud-deploy', 'almacen_datos.json')
+        ];
+        paths.forEach(p => {
+            try {
+                if (fs.existsSync(path.dirname(p))) {
+                    fs.writeFileSync(p, jsonStr, 'utf8');
+                }
+            } catch(e) {}
+        });
         return true;
     } catch (e) {
         console.error('Error guardando almacen_datos.json:', e);
@@ -337,6 +526,15 @@ function getPiezaPrecioUnitario(m, catalog) {
     return 0;
 }
 
+function clasificarPiezaPreventivoOCorrectivo(desc = '', numParte = '') {
+    const txt = `${desc || ''} ${numParte || ''}`.toUpperCase();
+    const palabrasPreventivo = ['FILTRO', 'ACEITE', 'LUBRICANTE', 'ANTICONGELANTE', 'GRASA', 'CARTUCHO', 'FLUIDO', 'PREVENTIVO', 'SERVICIO', 'AFINACION', 'UREA', 'VALVULINA', 'REFRIGERANTE', 'COOLANT', 'PURIFICADOR'];
+    for (const p of palabrasPreventivo) {
+        if (txt.includes(p)) return 'preventivo';
+    }
+    return 'correctivo';
+}
+
 function sincronizarFoliosConAlmacen(origen = 'Watcher Almacén') {
     const almacenData = getAlmacenData();
     const movimientos = almacenData.movimientos || [];
@@ -346,19 +544,42 @@ function sincronizarFoliosConAlmacen(origen = 'Watcher Almacén') {
     let huboCambios = false;
     let huboCambiosArchivadas = false;
 
-    // Helper para procesar piezas y costos de un folio
-    const procesarPiezasDeFolio = (folioBuscado) => {
-        const movsFolio = movimientos.filter(m => 
-            String(m.folio || '').trim() === folioBuscado && (m.tipo === 'S' || !m.tipo)
-        );
+    // Helper para procesar piezas y costos de una unidad
+    const procesarPiezasParaUnidad = (unidad, folioBuscado) => {
+        const uIdClean = String(unidad.id || '').trim().toUpperCase();
+        const uNumClean = uIdClean.replace(/^0+/, '');
+
+        // Buscar movimientos por folio Y por unidad_camion
+        const movs = movimientos.filter(m => {
+            if (m.anulado || (m.tipo && m.tipo !== 'S' && m.tipo !== 'E/S')) return false;
+            const mFolio = String(m.folio || '').trim();
+            const mUnidad = String(m.unidad_camion || '').trim().toUpperCase();
+            const mUnidadClean = mUnidad.replace(/^0+/, '');
+
+            const matchFolio = folioBuscado && mFolio && mFolio === folioBuscado;
+            const matchUnidad = uIdClean && mUnidad && (mUnidad === uIdClean || (uNumClean && mUnidadClean === uNumClean));
+            return matchFolio || matchUnidad;
+        });
+
+        const movsMap = {};
+        movs.forEach(m => { if (m.id) movsMap[m.id] = m; });
+        const movsUnicos = Object.values(movsMap);
 
         let nuevoCostoRefacciones = 0;
-        const piezasActualizadas = movsFolio.map((m, idx) => {
+        let nuevoCostoPreventivo = 0;
+        let nuevoCostoCorrectivo = 0;
+
+        const piezasActualizadas = movsUnicos.map((m, idx) => {
             const itemCat = catalog[m.id_pieza] || Object.values(catalog).find(c => c.numero_parte && c.numero_parte === m.numero_parte) || {};
             const pu = getPiezaPrecioUnitario(m, catalog);
             const cant = Number(m.cantidad) || 1;
             const total = pu * cant;
             nuevoCostoRefacciones += total;
+
+            const tipoTrabajo = m.tipo_trabajo || clasificarPiezaPreventivoOCorrectivo(m.descripcion, m.numero_parte);
+            if (tipoTrabajo === 'preventivo') nuevoCostoPreventivo += total;
+            else nuevoCostoCorrectivo += total;
+
             return {
                 id: m.id || `pz_alm_${Date.now()}_${idx}`,
                 id_pieza: m.id_pieza,
@@ -369,76 +590,86 @@ function sincronizarFoliosConAlmacen(origen = 'Watcher Almacén') {
                 unidad_medida: m.unidad || itemCat.unidad || 'PZ',
                 precio_unitario: pu,
                 costo_total: total,
-                folio_almacen: folioBuscado,
+                folio_almacen: m.folio || folioBuscado || unidad.folio_almacen || '',
                 solicitante: m.solicitante || 'Almacén',
                 estado: 'RECIBIDA_TALLER',
+                tipo_trabajo: tipoTrabajo,
                 fecha_recepcion: m.fecha || new Date().toISOString().slice(0, 10),
                 hora_recepcion: m.hora || ''
             };
         });
-        return { piezasActualizadas, nuevoCostoRefacciones };
+
+        return { piezasActualizadas, nuevoCostoRefacciones, nuevoCostoPreventivo, nuevoCostoCorrectivo };
     };
 
-    // 1. Sincronizar unidades activas en el tablero
-    unidades.forEach(unidad => {
-        if (!unidad.folio_almacen) return;
-        const folioBuscado = String(unidad.folio_almacen).trim();
-        const { piezasActualizadas, nuevoCostoRefacciones } = procesarPiezasDeFolio(folioBuscado);
+    const sincronizarLista = (lista, esArchivada = false) => {
+        let cambios = false;
+        lista.forEach(unidad => {
+            const uIdClean = String(unidad.id || '').trim().toUpperCase();
+            const uNumClean = uIdClean.replace(/^0+/, '');
 
-        const costoPrevio = Number(unidad.costo_refacciones) || 0;
-        const cantPrevias = Array.isArray(unidad.piezas) ? unidad.piezas.filter(p => String(p.folio_almacen).trim() === folioBuscado).length : 0;
+            // Si no tiene folio asignado, autodetectar si en almacén se despacharon refacciones con folio a esta unidad
+            if (!unidad.folio_almacen) {
+                const movConFolio = movimientos.find(m => {
+                    if (m.anulado || (m.tipo && m.tipo !== 'S')) return false;
+                    const mU = String(m.unidad_camion || '').trim().toUpperCase();
+                    const mUClean = mU.replace(/^0+/, '');
+                    return (mU === uIdClean || (uNumClean && mUClean === uNumClean)) && m.folio && String(m.folio).trim();
+                });
+                if (movConFolio) {
+                    unidad.folio_almacen = String(movConFolio.folio).trim();
+                    cambios = true;
+                }
+            }
 
-        if (Math.abs(costoPrevio - nuevoCostoRefacciones) > 0.01 || cantPrevias !== piezasActualizadas.length) {
-            huboCambios = true;
-            unidad.costo_refacciones = nuevoCostoRefacciones;
-            
-            // Conservar piezas de otros folios o manuales
-            const piezasOtras = (unidad.piezas || []).filter(p => String(p.folio_almacen).trim() !== folioBuscado);
-            unidad.piezas = [...piezasOtras, ...piezasActualizadas];
-            
-            // Recalcular costo total de la unidad
-            unidad.costo = (Number(unidad.costo_mano_obra) || 0) + nuevoCostoRefacciones;
-            
-            if (!Array.isArray(unidad.historial)) unidad.historial = [];
-            unidad.historial.unshift({
-                fecha: new Date().toLocaleDateString('es-MX') + ' ' + new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
-                evento: `Almacén sincronizó Folio #${folioBuscado}: ${piezasActualizadas.length} piezas surtidas (${nuevoCostoRefacciones.toLocaleString()} MXN)`,
-                tipo: 'almacen_sync',
-                autor: origen
-            });
+            const folioBuscado = String(unidad.folio_almacen || '').trim();
+            if (!folioBuscado && !uIdClean) return;
 
-            console.log(`>>> [Sincronización Bidireccional Activas] Unidad ${unidad.id} vinculada a Folio #${folioBuscado} actualizada: ${piezasActualizadas.length} refacciones (${nuevoCostoRefacciones} MXN)`);
-        }
-    });
+            const { piezasActualizadas, nuevoCostoRefacciones, nuevoCostoPreventivo, nuevoCostoCorrectivo } = procesarPiezasParaUnidad(unidad, folioBuscado);
+            if (piezasActualizadas.length === 0 && !folioBuscado) return;
 
-    // 2. Sincronizar unidades archivadas / liberadas (post-salida o retiradas del tablero)
-    archivadas.forEach(unidad => {
-        if (!unidad.folio_almacen) return;
-        const folioBuscado = String(unidad.folio_almacen).trim();
-        const { piezasActualizadas, nuevoCostoRefacciones } = procesarPiezasDeFolio(folioBuscado);
+            const costoPrevio = Number(unidad.costo_refacciones) || 0;
+            const cantPrevias = Array.isArray(unidad.piezas) ? unidad.piezas.length : 0;
 
-        const costoPrevio = Number(unidad.costo_refacciones) || 0;
-        const cantPrevias = Array.isArray(unidad.piezas) ? unidad.piezas.filter(p => String(p.folio_almacen).trim() === folioBuscado).length : 0;
+            if (Math.abs(costoPrevio - nuevoCostoRefacciones) > 0.01 || cantPrevias !== piezasActualizadas.length || !unidad.tipo_procedimiento) {
+                cambios = true;
+                unidad.costo_refacciones = nuevoCostoRefacciones;
+                unidad.costo_preventivo = nuevoCostoPreventivo;
+                unidad.costo_correctivo = nuevoCostoCorrectivo;
+                unidad.piezas = piezasActualizadas;
+                unidad.costo = (Number(unidad.costo_mano_obra) || 0) + (Number(unidad.costo_externo) || 0) + nuevoCostoRefacciones;
 
-        if (Math.abs(costoPrevio - nuevoCostoRefacciones) > 0.01 || cantPrevias !== piezasActualizadas.length) {
-            huboCambiosArchivadas = true;
-            unidad.costo_refacciones = nuevoCostoRefacciones;
-            
-            const piezasOtras = (unidad.piezas || []).filter(p => String(p.folio_almacen).trim() !== folioBuscado);
-            unidad.piezas = [...piezasOtras, ...piezasActualizadas];
-            unidad.costo = (Number(unidad.costo_mano_obra) || 0) + nuevoCostoRefacciones;
-            
-            if (!Array.isArray(unidad.historial)) unidad.historial = [];
-            unidad.historial.unshift({
-                fecha: new Date().toLocaleDateString('es-MX') + ' ' + new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
-                evento: `Almacén vinculó Folio #${folioBuscado} (Unidad Liberada/Archivada): ${piezasActualizadas.length} piezas surtidas (${nuevoCostoRefacciones.toLocaleString()} MXN)`,
-                tipo: 'almacen_sync',
-                autor: origen
-            });
+                // Clasificar procedimiento de la unidad si no fue fijado manualmente
+                if (!unidad.tipo_procedimiento || unidad.tipo_procedimiento === 'general') {
+                    if (unidad.es_rescate || (unidad.defecto || '').toLowerCase().includes('rescate')) {
+                        unidad.tipo_procedimiento = 'rescate';
+                    } else if (unidad.proveedor_externo || unidad.taller_externo) {
+                        unidad.tipo_procedimiento = 'externo';
+                    } else if (nuevoCostoPreventivo > 0 && nuevoCostoCorrectivo > 0) {
+                        unidad.tipo_procedimiento = 'mixto';
+                    } else if (nuevoCostoPreventivo > 0 || (unidad.defecto || '').toLowerCase().includes('preventivo')) {
+                        unidad.tipo_procedimiento = 'preventivo';
+                    } else {
+                        unidad.tipo_procedimiento = 'correctivo';
+                    }
+                }
 
-            console.log(`>>> [Sincronización Bidireccional Archivadas] Unidad Liberada ${unidad.id} vinculada a Folio #${folioBuscado} actualizada: ${piezasActualizadas.length} refacciones (${nuevoCostoRefacciones} MXN)`);
-        }
-    });
+                if (!Array.isArray(unidad.historial)) unidad.historial = [];
+                unidad.historial.unshift({
+                    fecha: new Date().toLocaleDateString('es-MX') + ' ' + new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
+                    evento: `Sincronización Almacén: ${piezasActualizadas.length} piezas (${nuevoCostoRefacciones.toLocaleString()} MXN) [Prev: $${nuevoCostoPreventivo.toLocaleString()} | Corr: $${nuevoCostoCorrectivo.toLocaleString()}]`,
+                    tipo: 'almacen_sync',
+                    autor: origen
+                });
+
+                console.log(`>>> [Sync ${esArchivada ? 'Archivada' : 'Activa'}] Unidad ${unidad.id} (Folio #${unidad.folio_almacen || 'S/F'}) actualizada: ${piezasActualizadas.length} refacciones (${nuevoCostoRefacciones} MXN, Procedimiento: ${unidad.tipo_procedimiento})`);
+            }
+        });
+        return cambios;
+    };
+
+    huboCambios = sincronizarLista(unidades, false);
+    huboCambiosArchivadas = sincronizarLista(archivadas, true);
 
     if (huboCambios) {
         saveUnidades(unidades, origen);
@@ -458,19 +689,22 @@ function sincronizarFoliosConAlmacen(origen = 'Watcher Almacén') {
 }
 
 // Observador continuo de cambios físicos en almacen_datos.json
-try {
-    if (fs.existsSync(ALMACEN_DB_FILE)) {
-        fs.watchFile(ALMACEN_DB_FILE, { interval: 1000 }, (curr, prev) => {
-            if (curr.mtimeMs !== prev.mtimeMs) {
-                console.log('[Almacén Watcher] Cambio detectado en base de datos de almacén. Sincronizando con Taller Pro...');
-                sincronizarFoliosConAlmacen('Almacén CESS en tiempo real');
-            }
-        });
-        console.log('[Almacén Watcher] Monitoreo bidireccional activo sobre:', ALMACEN_DB_FILE);
-    }
-} catch(e) {
-    console.warn('[Almacén Watcher] No se pudo inicializar watchFile:', e.message);
-}
+[
+    path.join(__dirname, 'almacen_datos.json'),
+    path.join(__dirname, 'almacen-app', 'almacen_datos.json')
+].forEach(targetFile => {
+    try {
+        if (fs.existsSync(targetFile)) {
+            fs.watchFile(targetFile, { interval: 1000 }, (curr, prev) => {
+                if (curr.mtimeMs !== prev.mtimeMs) {
+                    console.log(`[Almacén Watcher] Cambio detectado en ${targetFile}. Sincronizando con Taller Pro...`);
+                    sincronizarFoliosConAlmacen('Almacén CESS en tiempo real');
+                }
+            });
+            console.log('[Almacén Watcher] Monitoreo bidireccional activo sobre:', targetFile);
+        }
+    } catch(e) {}
+});
 
 function getUnidades() {
     if (!fs.existsSync(DB_FILE)) {
@@ -1200,6 +1434,27 @@ app.post('/api/preventivo/:unidad/actualizar-servicio', (req, res) => {
             console.error(`Error actualizando preventivo en ${relPath}:`, e.message);
         }
     });
+
+    // Actualizar en Firestore en la nube (diesel-cess-40bbf)
+    try {
+        if (unidadActualizada) {
+            const patchUrl = `https://firestore.googleapis.com/v1/projects/diesel-cess-40bbf/databases/(default)/documents/preventivos/${encodeURIComponent(unidadId)}?updateMask.fieldPaths=km_actual&updateMask.fieldPaths=km_mtto_anterior&updateMask.fieldPaths=proximo_mtto_km&updateMask.fieldPaths=km_restantes&updateMask.fieldPaths=estatus&updateMask.fieldPaths=fecha_realizado&key=AIzaSyDg9Q5n2A3UghhmGoI21uNQP5MKFbXJpgs`;
+            fetch(patchUrl, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    fields: {
+                        km_actual: { doubleValue: unidadActualizada.km_actual },
+                        km_mtto_anterior: { doubleValue: unidadActualizada.km_mtto_anterior },
+                        proximo_mtto_km: { doubleValue: unidadActualizada.proximo_mtto_km },
+                        km_restantes: { doubleValue: unidadActualizada.km_restantes },
+                        estatus: { stringValue: unidadActualizada.estatus },
+                        fecha_realizado: { stringValue: unidadActualizada.fecha_realizado }
+                    }
+                })
+            }).catch(err => console.warn('[Firestore Patch Error]:', err.message));
+        }
+    } catch(e) {}
 
     broadcastSSE('preventivos_updated', { unidad: unidadActualizada });
     res.json({ success: true, mensaje: `Servicio preventivo de Unidad ${unidadId} actualizado con éxito`, preventivo: unidadActualizada });
@@ -3338,8 +3593,13 @@ app.post('/api/almacen/folio/:folio/modificar-pieza', (req, res) => {
     });
 });
 
-// --- 23. MÓDULO DE MANTENIMIENTOS PREVENTIVOS (VINCULADO A SISTEMA DE CONTROL CESS COMBUSTIBLE) ---
-app.get('/api/preventivos', (req, res) => {
+// --- 23. MÓDULO DE MANTENIMIENTOS PREVENTIVOS (VINCULADO A SISTEMA DE CONTROL CESS COMBUSTIBLE EN VIVO) ---
+app.get('/api/preventivos', async (req, res) => {
+    if (req.query.sync === 'true') {
+        try {
+            await sincronizarPreventivosConFirestore(true);
+        } catch(e) {}
+    }
     const cacheData = getPreventivosData();
     const list = cacheData.preventivos || [];
     const stats = cacheData.stats || {
@@ -3357,12 +3617,200 @@ app.get('/api/preventivos', (req, res) => {
 
     res.json({
         success: true,
-        source: 'Control Oficial de Flota CESS',
+        source: 'Control Oficial de Flota CESS • Sincronización en Tiempo Real',
         data: list,
         preventivos: list,
         stats,
         resumen: stats,
-        count: list.length
+        count: list.length,
+        timestamp: cacheData.timestamp || new Date().toISOString()
+    });
+});
+
+app.post('/api/preventivos/sincronizar-firestore', async (req, res) => {
+    try {
+        const data = await sincronizarPreventivosConFirestore(true);
+        if (data) {
+            broadcastSSE('preventivos_updated', {
+                count: data.preventivos.length,
+                stats: data.stats,
+                timestamp: data.timestamp
+            });
+            return res.json({ success: true, message: 'Preventivos sincronizados exitosamente con Diésel Firestore en tiempo real', data });
+        } else {
+            return res.status(500).json({ success: false, error: 'No se pudo sincronizar con Firestore' });
+        }
+    } catch(e) {
+        return res.status(500).json({ success: false, error: e.message });
+    }
+});
+
+// --- CLASIFICACIÓN DE PROCEDIMIENTO Y TALLER EXTERNO ---
+app.post('/api/unidad/:id/clasificar-procedimiento', (req, res) => {
+    const id = String(req.params.id).trim();
+    const { tipo_procedimiento, proveedor_externo, factura_externa, costo_externo, es_rescate } = req.body || {};
+    let unidades = getUnidades();
+    let archivadas = getUnidadesArchivadas();
+    let u = unidades.find(x => String(x.id).trim() === id);
+    let esArchivada = false;
+    if (!u) {
+        u = archivadas.find(x => String(x.id).trim() === id);
+        esArchivada = true;
+    }
+    if (!u) return res.status(404).json({ error: 'Unidad no encontrada' });
+
+    if (tipo_procedimiento) u.tipo_procedimiento = tipo_procedimiento;
+    if (proveedor_externo !== undefined) u.proveedor_externo = String(proveedor_externo || '').trim();
+    if (factura_externa !== undefined) u.factura_externa = String(factura_externa || '').trim();
+    if (costo_externo !== undefined) u.costo_externo = Number(costo_externo) || 0;
+    if (es_rescate !== undefined) u.es_rescate = Boolean(es_rescate);
+
+    u.costo = (Number(u.costo_mano_obra) || 0) + (Number(u.costo_externo) || 0) + (Number(u.costo_refacciones) || 0);
+
+    if (!Array.isArray(u.historial)) u.historial = [];
+    u.historial.unshift({
+        fecha: new Date().toLocaleDateString('es-MX') + ' ' + new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
+        evento: `Procedimiento actualizado a: ${(u.tipo_procedimiento || 'General').toUpperCase()}${u.proveedor_externo ? ` (Proveedor: ${u.proveedor_externo})` : ''}`,
+        tipo: 'clasificacion_procedimiento',
+        autor: 'Gerencia'
+    });
+
+    if (esArchivada) saveUnidadesArchivadas(archivadas);
+    else saveUnidades(unidades, 'Clasificación Procedimiento');
+
+    broadcastSSE('unidad_updated', { unidad: u });
+    res.json({ success: true, unidad: u });
+});
+
+// --- CLASIFICACIÓN DE PIEZA INDIVIDUAL (PREVENTIVO VS CORRECTIVO) ---
+app.post('/api/unidad/:id/clasificar-pieza', (req, res) => {
+    const id = String(req.params.id).trim();
+    const { pieza_id, tipo_trabajo } = req.body || {};
+    if (!tipo_trabajo || (tipo_trabajo !== 'preventivo' && tipo_trabajo !== 'correctivo')) {
+        return res.status(400).json({ error: 'tipo_trabajo debe ser "preventivo" o "correctivo"' });
+    }
+
+    let unidades = getUnidades();
+    let archivadas = getUnidadesArchivadas();
+    let u = unidades.find(x => String(x.id).trim() === id);
+    let esArchivada = false;
+    if (!u) {
+        u = archivadas.find(x => String(x.id).trim() === id);
+        esArchivada = true;
+    }
+    if (!u) return res.status(404).json({ error: 'Unidad no encontrada' });
+
+    const pz = (u.piezas || []).find(p => String(p.id).trim() === String(pieza_id).trim() || String(p.id_item).trim() === String(pieza_id).trim());
+    if (!pz) return res.status(404).json({ error: 'Pieza no encontrada en la unidad' });
+
+    pz.tipo_trabajo = tipo_trabajo;
+
+    let cPrev = 0, cCorr = 0;
+    (u.piezas || []).forEach(p => {
+        const cost = Number(p.costo_total) || (Number(p.cantidad || 1) * Number(p.precio_unitario || 0));
+        if (p.tipo_trabajo === 'preventivo') cPrev += cost;
+        else cCorr += cost;
+    });
+    u.costo_preventivo = cPrev;
+    u.costo_correctivo = cCorr;
+    u.costo_refacciones = cPrev + cCorr;
+    u.costo = (Number(u.costo_mano_obra) || 0) + (Number(u.costo_externo) || 0) + u.costo_refacciones;
+
+    if (!Array.isArray(u.historial)) u.historial = [];
+    u.historial.unshift({
+        fecha: new Date().toLocaleDateString('es-MX') + ' ' + new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
+        evento: `Refacción "${pz.descripcion}" reclasificada como ${tipo_trabajo.toUpperCase()}`,
+        tipo: 'clasificacion_pieza',
+        autor: 'Gerencia'
+    });
+
+    if (esArchivada) saveUnidadesArchivadas(archivadas);
+    else saveUnidades(unidades, 'Clasificación Pieza');
+
+    broadcastSSE('unidad_updated', { unidad: u });
+    res.json({ success: true, unidad: u, pieza: pz });
+});
+
+// --- REPORTE EJECUTIVO GERENCIAL CONSOLIDADO (PREVENTIVOS VS CORRECTIVOS VS RESCATE VS EXTERNO) ---
+app.get('/api/reportes/gerencial', (req, res) => {
+    const unidades = getUnidades();
+    const archivadas = getUnidadesArchivadas();
+    const todas = [...unidades, ...archivadas];
+
+    let gastoPreventivoTotal = 0;
+    let gastoCorrectivoTotal = 0;
+    let gastoRescateTotal = 0;
+    let gastoExternoTotal = 0;
+    let gastoTotal = 0;
+
+    const conteo = {
+        preventivo: 0,
+        correctivo: 0,
+        rescate: 0,
+        externo: 0,
+        mixto: 0
+    };
+
+    const unidadesReporte = todas.map(u => {
+        const cPrev = Number(u.costo_preventivo) || 0;
+        const cCorr = Number(u.costo_correctivo) || 0;
+        const cExt = Number(u.costo_externo) || 0;
+        const cTotal = Number(u.costo) || (cPrev + cCorr + cExt);
+
+        const proc = u.tipo_procedimiento || (cPrev > 0 && cCorr > 0 ? 'mixto' : (cPrev > 0 ? 'preventivo' : 'correctivo'));
+        if (conteo[proc] !== undefined) conteo[proc]++;
+
+        gastoPreventivoTotal += cPrev;
+        gastoCorrectivoTotal += cCorr;
+        gastoExternoTotal += cExt;
+        if (proc === 'rescate') gastoRescateTotal += cTotal;
+        gastoTotal += cTotal;
+
+        return {
+            id: u.id,
+            sucursal: u.sucursal || 'Apodaca',
+            estado: u.estado || 'proceso',
+            estado_label: u.archivada ? 'Liberada / Viaje' : (u.estado === 'listo' ? 'Lista' : (u.estado === 'mayor' ? 'Mtto. Mayor' : 'En Taller')),
+            tipo_procedimiento: proc,
+            folio_almacen: u.folio_almacen || '--',
+            defecto: u.defecto || u.reporte || 'Mantenimiento',
+            proveedor_externo: u.proveedor_externo || '',
+            factura_externa: u.factura_externa || '',
+            costo_preventivo: cPrev,
+            costo_correctivo: cCorr,
+            costo_externo: cExt,
+            costo_total: cTotal,
+            total_piezas: Array.isArray(u.piezas) ? u.piezas.length : 0,
+            piezas: (u.piezas || []).map(p => ({
+                numero_parte: p.numero_parte || '--',
+                descripcion: p.descripcion || 'Refacción',
+                cantidad: p.cantidad || 1,
+                precio_unitario: p.precio_unitario || 0,
+                costo_total: p.costo_total || ((p.cantidad || 1) * (p.precio_unitario || 0)),
+                tipo_trabajo: p.tipo_trabajo || 'correctivo'
+            })),
+            fecha_ingreso: u.fechaRefaccion || (u.historial && u.historial.length ? u.historial[u.historial.length - 1].fecha : '--'),
+            fecha_liberacion: u.fecha_liberacion || (u.archivada ? u.fecha_archivo : '--')
+        };
+    });
+
+    res.json({
+        success: true,
+        fecha_generacion: new Date().toISOString(),
+        kpis: {
+            gasto_total: gastoTotal,
+            gasto_preventivo_total: gastoPreventivoTotal,
+            gasto_correctivo_total: gastoCorrectivoTotal,
+            gasto_rescate_total: gastoRescateTotal,
+            gasto_externo_total: gastoExternoTotal,
+            porcentaje_preventivo: gastoTotal > 0 ? Math.round((gastoPreventivoTotal / gastoTotal) * 100) : 0,
+            porcentaje_correctivo: gastoTotal > 0 ? Math.round((gastoCorrectivoTotal / gastoTotal) * 100) : 0,
+            total_unidades: todas.length,
+            unidades_activas: unidades.length,
+            unidades_liberadas: archivadas.length,
+            conteo_por_tipo: conteo
+        },
+        unidades: unidadesReporte
     });
 });
 
@@ -3772,4 +4220,15 @@ app.listen(PORT, '0.0.0.0', () => {
     console.log(`- En tu celular / patio: http://${localIp}:${PORT}`);
     console.log('================================================================');
     iniciarTunelAutomatico();
+
+    // Sincronizaciones automáticas iniciales
+    setTimeout(() => {
+        try { sincronizarFoliosConAlmacen('Inicio Servidor'); } catch(e) {}
+        try { sincronizarPreventivosConFirestore(true); } catch(e) {}
+    }, 1500);
+
+    // Intervalo de actualización en segundo plano con Diésel Firestore cada 5 minutos
+    setInterval(() => {
+        try { sincronizarPreventivosConFirestore(false); } catch(e) {}
+    }, 300000);
 });
