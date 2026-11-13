@@ -1,0 +1,18 @@
+{
+  "short_name": "SCC Almacén",
+  "name": "Sistema de Control CESS - Almacén",
+  "description": "Plataforma Empresarial de Almacén, Inventario & Mantenimiento",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192 512x512 any",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#0F172A",
+  "theme_color": "#0F172A",
+  "display": "standalone",
+  "orientation": "any"
+}

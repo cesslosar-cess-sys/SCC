@@ -45,6 +45,24 @@ if (!fs.existsSync(UPLOADS_DIR)) {
 }
 app.use('/uploads', express.static(UPLOADS_DIR));
 
+// =========================================================
+// INTEGRACIÓN UNIFICADA: ALMACÉN CENTRAL CESS
+// =========================================================
+try {
+    let almacenAppModule;
+    if (fs.existsSync(path.join(__dirname, 'almacen_backend.js'))) {
+        almacenAppModule = require('./almacen_backend');
+    } else if (fs.existsSync(path.join(__dirname, 'almacen-app', 'server.js'))) {
+        almacenAppModule = require('./almacen-app/server');
+    }
+    if (almacenAppModule) {
+        app.use(almacenAppModule);
+        console.log('✅ [Unified Suite] Almacén Central montado exitosamente en /almacen y /api/*');
+    }
+} catch (errAlm) {
+    console.error('⚠️ [Unified Suite] Error montando Almacén Central:', errAlm.message);
+}
+
 const DB_FILE = path.join(__dirname, 'taller_db.json');
 const BITACORAS_FILE = path.join(__dirname, 'taller_bitacoras_historico.json');
 const JORNADA_FILE = path.join(__dirname, 'taller_jornada_actual.json');
@@ -626,7 +644,13 @@ function sincronizarFoliosConAlmacen(origen = 'Watcher Almacén') {
             if (!folioBuscado && !uIdClean) return;
 
             let { piezasActualizadas, nuevoCostoRefacciones, nuevoCostoPreventivo, nuevoCostoCorrectivo } = procesarPiezasParaUnidad(unidad, folioBuscado);
-            if (piezasActualizadas.length === 0 && !folioBuscado) return;
+            if (piezasActualizadas.length === 0) {
+                if (cantPrevias > 0) {
+                    // Mantener las piezas ya registradas si almacén no devolvió movimientos para este folio
+                    return;
+                }
+                if (!folioBuscado) return;
+            }
 
             const costoPrevio = Number(unidad.costo_refacciones) || 0;
             const cantPrevias = Array.isArray(unidad.piezas) ? unidad.piezas.length : 0;
@@ -4525,8 +4549,11 @@ app.use(express.static(__dirname, {
     }
 }));
 
-// Fallback para SPA HTML5
-app.use((req, res) => {
+// Fallback para SPA HTML5 (Taller Diésel Pro)
+app.use((req, res, next) => {
+    if (req.path.startsWith('/almacen') || req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
+        return next();
+    }
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
     res.setHeader('Pragma', 'no-cache');
     res.setHeader('Expires', '0');
