@@ -1,4 +1,4 @@
-const CACHE_NAME = 'taller-cess-gold-v31';
+const CACHE_NAME = 'taller-cess-gold-v32';
 const STATIC_ASSETS = [
     './icon.svg',
     './manifest.json'
@@ -9,7 +9,7 @@ self.addEventListener('install', (event) => {
     self.skipWaiting();
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            console.log('[SW v31] Instalando versión CESS Gold...');
+            console.log('[SW v32] Instalando versión CESS Gold...');
             return cache.addAll(STATIC_ASSETS);
         })
     );

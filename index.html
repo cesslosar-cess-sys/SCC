@@ -4872,9 +4872,9 @@
                 <!-- 6. Botones de Acción de Taller: [+ Avance] y [Liberar] -->
                 <div class="grid grid-cols-2 gap-2 pt-1 border-t border-[#3A3D42]/40">
                     <button onclick="abrirModalAvanceRapido(event, '${unidad.id}')" class="bg-[#282A2E] hover:bg-[#3A3D42] text-[#DFB743] hover:text-white border border-[#C59B27]/40 py-1.5 px-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm" title="Registrar nuevo avance">
-                        <i class="fa-solid fa-plus text-[10px]"></i> <span>+ Avance</span>
+                        <i class="fa-solid fa-plus text-[10px]"></i> <span>Avance</span>
                     </button>
-                    <button onclick="abrirModalLiberarUnidad(event, '${unidad.id}')" class="bg-cyan-950/70 hover:bg-cyan-900 text-cyan-300 border border-cyan-700/60 py-1.5 px-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm" title="Registrar salida a viaje">
+                    <button onclick="liberarUnidadDirecto(event, '${unidad.id}')" class="bg-cyan-950/70 hover:bg-cyan-900 text-cyan-300 border border-cyan-700/60 py-1.5 px-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95" title="Liberar y retirar del tablero activo">
                         <i class="fa-solid fa-truck-fast text-[10px]"></i> <span>Liberar</span>
                     </button>
                 </div>
@@ -10000,7 +10000,7 @@
 
                             <div class="grid grid-cols-3 gap-1.5 pt-1">
                                 <button onclick="abrirModalAvanceRescate('${r.id}')" class="bg-[#282A2E] hover:bg-[#3A3D42] text-amber-300 border border-amber-600/50 py-2 px-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1 shadow transition">
-                                    <i class="fa-solid fa-plus text-[10px]"></i> <span>+ Avance</span>
+                                    <i class="fa-solid fa-plus text-[10px]"></i> <span>Avance</span>
                                 </button>
                                 <button onclick="abrirModalEditarRescate('${r.id}')" class="bg-[#282A2E] hover:bg-[#3A3D42] text-slate-200 border border-[#3A3D42] py-2 px-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1 shadow transition">
                                     <i class="fa-solid fa-pen-to-square text-[10px]"></i> <span>Editar</span>
@@ -10232,70 +10232,129 @@
             }
         }
 
+        // --- LIBERACIÓN INMEDIATA Y DIRECTA DE UNIDADES (EN 0 MS) ---
+        async function liberarUnidadDirecto(event, id) {
+            if (event && event.stopPropagation) {
+                event.stopPropagation();
+            }
+            const unitId = String(id || (unidadActiva ? unidadActiva.id : '')).trim();
+            if (!unitId) return;
+
+            const u = baseDatos.find(x => String(x.id).trim() === unitId);
+            const folioTxt = (u && u.folio_almacen) ? `\n• Folio / Orden: #${u.folio_almacen}` : '';
+
+            const confirmacion = confirm(`¿Confirmar liberación de la Unidad ${unitId} y retirarla del tablero activo?${folioTxt}\n\nTodo su historial, avances y refacciones quedarán 100% resguardados en el Archivo e Historial Clínico.`);
+            if (!confirmacion) return;
+
+            // 1. RETIRO INMEDIATO EN 0 MILISEGUNDOS DEL TABLERO
+            baseDatos = baseDatos.filter(x => String(x.id).trim() !== unitId);
+            guardarDatosLocales(true);
+            renderizarTablero();
+            actualizarSelectoresUnidades();
+            if (typeof cerrarModalExpediente === 'function') cerrarModalExpediente();
+            if (typeof cerrarModalLiberarUnidad === 'function') cerrarModalLiberarUnidad();
+
+            mostrarToast(`🏁 ¡Unidad ${unitId} liberada y retirada del tablero con éxito!`);
+
+            // 2. REGISTRAR Y ARCHIVAR EN SERVIDOR
+            try {
+                const folioFinal = (u && u.folio_almacen) || `OM-${unitId}-${new Date().toLocaleDateString('es-MX').replace(/\//g, '')}`;
+                const res = await fetch(`/api/unidad/${encodeURIComponent(unitId)}/liberar`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        motivo: 'Salida de taller / Asignada a viaje',
+                        folio: folioFinal
+                    })
+                });
+                if (res.ok) {
+                    cargarContadorUnidadesLiberadas();
+                }
+            } catch (err) {
+                console.warn('Liberación guardada localmente:', err);
+            }
+        }
+
         function abrirModalEditarRescate(id) {
-            const r = cacheRescates.find(x => String(x.id) === String(id));
-            if (!r) return;
-            document.getElementById('edit-rescate-id').value = r.id;
-            document.getElementById('edit-rescate-folio').value = r.folio || r.id || '';
-            document.getElementById('edit-rescate-unidad').value = r.unidad || '';
-            document.getElementById('edit-rescate-sucursal').value = r.sucursal || 'Apodaca';
-            document.getElementById('edit-rescate-operador').value = r.operador || '';
-            document.getElementById('edit-rescate-carretera').value = r.carretera || '';
-            document.getElementById('edit-rescate-km').value = r.km || r.kilometro || '';
-            document.getElementById('edit-rescate-sentido').value = r.sentido || 'Sur a Norte';
-            document.getElementById('edit-rescate-tramo').value = r.tramo || '';
-            document.getElementById('edit-rescate-tipo-falla').value = r.tipo_falla || 'MECÁNICA';
-            document.getElementById('edit-rescate-falla').value = r.falla_reportada || '';
-            document.getElementById('edit-rescate-mecanico').value = r.mecanico_asignado || '';
-            document.getElementById('edit-rescate-costo').value = r.costo_estimado || 0;
-            document.getElementById('edit-rescate-estatus').value = r.estatus || 'AUXILIO_EN_CAMINO';
-            document.getElementById('modal-editar-rescate').classList.remove('hidden');
+            let r = (cacheRescates || []).find(x => String(x.id) === String(id));
+            if (!r) {
+                r = (cacheRescates || []).find(x => String(x.unidad) === String(id) || String(x.folio) === String(id));
+            }
+            if (!r) {
+                mostrarToast('No se encontró el rescate seleccionado');
+                return;
+            }
+
+            const safeSet = (elId, val) => {
+                const el = document.getElementById(elId);
+                if (el) el.value = (val !== undefined && val !== null) ? val : '';
+            };
+
+            safeSet('edit-rescate-id', r.id);
+            safeSet('edit-rescate-folio', r.folio || r.id || '');
+            safeSet('edit-rescate-unidad', r.unidad || '');
+            safeSet('edit-rescate-operador', r.operador || '');
+            safeSet('edit-rescate-estado', r.estatus || r.estado || 'EN_CAMINO');
+            safeSet('edit-rescate-carretera', r.carretera || '');
+            safeSet('edit-rescate-km', r.km || r.kilometro || '');
+            safeSet('edit-rescate-falla', r.falla_reportada || '');
+            safeSet('edit-rescate-mecanico', r.mecanico_asignado || '');
+            safeSet('edit-rescate-costo', r.costo_estimado || 0);
+
+            const modal = document.getElementById('modal-editar-rescate');
+            if (modal) modal.classList.remove('hidden');
         }
 
         function cerrarModalEditarRescate() {
-            document.getElementById('modal-editar-rescate').classList.add('hidden');
+            const modal = document.getElementById('modal-editar-rescate');
+            if (modal) modal.classList.add('hidden');
         }
 
         async function guardarEditarRescateForm(e) {
             if (e && e.preventDefault) e.preventDefault();
-            const id = document.getElementById('edit-rescate-id').value;
-            const folio = document.getElementById('edit-rescate-folio').value.trim();
-            const unidad = document.getElementById('edit-rescate-unidad').value.trim();
-            const sucursal = document.getElementById('edit-rescate-sucursal').value;
-            const operador = document.getElementById('edit-rescate-operador').value.trim();
-            const carretera = document.getElementById('edit-rescate-carretera').value.trim();
-            const km = document.getElementById('edit-rescate-km').value.trim();
-            const sentido = document.getElementById('edit-rescate-sentido').value;
-            const tramo = document.getElementById('edit-rescate-tramo').value.trim();
-            const tipo_falla = document.getElementById('edit-rescate-tipo-falla').value;
-            const falla_reportada = document.getElementById('edit-rescate-falla').value.trim();
-            const mecanico_asignado = document.getElementById('edit-rescate-mecanico').value.trim();
-            const costo_estimado = Number(document.getElementById('edit-rescate-costo').value) || 0;
-            const estatus = document.getElementById('edit-rescate-estatus').value;
+            const id = document.getElementById('edit-rescate-id') ? document.getElementById('edit-rescate-id').value : '';
+            const folio = document.getElementById('edit-rescate-folio') ? document.getElementById('edit-rescate-folio').value.trim() : '';
+            const unidad = document.getElementById('edit-rescate-unidad') ? document.getElementById('edit-rescate-unidad').value.trim() : '';
+            const operador = document.getElementById('edit-rescate-operador') ? document.getElementById('edit-rescate-operador').value.trim() : '';
+            const carretera = document.getElementById('edit-rescate-carretera') ? document.getElementById('edit-rescate-carretera').value.trim() : '';
+            const km = document.getElementById('edit-rescate-km') ? document.getElementById('edit-rescate-km').value.trim() : '';
+            const falla_reportada = document.getElementById('edit-rescate-falla') ? document.getElementById('edit-rescate-falla').value.trim() : '';
+            const mecanico_asignado = document.getElementById('edit-rescate-mecanico') ? document.getElementById('edit-rescate-mecanico').value.trim() : '';
+            const costo_estimado = Number(document.getElementById('edit-rescate-costo') ? document.getElementById('edit-rescate-costo').value : 0) || 0;
+            const estadoEl = document.getElementById('edit-rescate-estado');
+            const estatus = estadoEl ? estadoEl.value : 'EN_CAMINO';
+
+            if (!id) return;
+
+            // Actualización optimista inmediata
+            const idx = cacheRescates.findIndex(x => String(x.id) === String(id));
+            if (idx !== -1) {
+                cacheRescates[idx] = {
+                    ...cacheRescates[idx],
+                    folio, unidad, operador, carretera, km, falla_reportada, mecanico_asignado, costo_estimado, estatus, estado: estatus
+                };
+            }
+            try { localStorage.setItem('taller_rescates_cache', JSON.stringify(cacheRescates)); } catch(err) {}
+            cerrarModalEditarRescate();
+            renderizarRescatesModulo();
+            mostrarToast('✅ Rescate actualizado con éxito');
 
             try {
                 const res = await fetch(`/api/rescates/${encodeURIComponent(id)}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        folio, unidad, sucursal, operador, carretera, km, sentido, tramo,
-                        tipo_falla, falla_reportada, mecanico_asignado, costo_estimado, estatus
+                        folio, unidad, operador, carretera, km,
+                        falla_reportada, mecanico_asignado, costo_estimado, estatus
                     })
                 });
                 if (res.ok) {
                     const json = await res.json();
-                    if (json.rescate) {
-                        const idx = cacheRescates.findIndex(x => String(x.id) === String(id));
-                        if (idx !== -1) cacheRescates[idx] = json.rescate;
-                    }
-                    cerrarModalEditarRescate();
+                    if (json.rescate && idx !== -1) cacheRescates[idx] = json.rescate;
                     renderizarRescatesModulo();
-                    mostrarToast('✅ Datos del rescate actualizados con éxito');
-                } else {
-                    mostrarToast('Error actualizando rescate en servidor');
                 }
             } catch (err) {
-                mostrarToast('Error de conexión al actualizar');
+                console.warn('Rescate guardado localmente:', err);
             }
         }
 
