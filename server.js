@@ -582,20 +582,17 @@ function sincronizarFoliosConAlmacen(origen = 'Watcher Almacén') {
         const uIdClean = String(unidad.id || '').trim().toUpperCase();
         const uNumClean = uIdClean.replace(/^0+/, '');
 
-        // Buscar movimientos por folio (si tiene folio asignado) O por unidad (si aún no tiene folio)
+        // Buscar movimientos por folio (si tiene folio asignado) O por unidad (reflejando todo lo surtido en Almacén)
         const movs = movimientos.filter(m => {
             if (m.anulado || (m.tipo && m.tipo !== 'S' && m.tipo !== 'E/S')) return false;
             const mFolio = String(m.folio || '').trim();
-            const mUnidad = String(m.unidad_camion || '').trim().toUpperCase();
+            const mUnidad = String(m.unidad_camion || m.unidad || '').trim().toUpperCase();
             const mUnidadClean = mUnidad.replace(/^0+/, '');
 
-            if (folioBuscado) {
-                // Si la unidad tiene folio asignado, SOLO vincular movimientos de ESE folio específico
-                return mFolio && mFolio === folioBuscado;
-            } else {
-                // Si no tiene folio, buscar por unidad
-                return uIdClean && mUnidad && (mUnidad === uIdClean || (uNumClean && mUnidadClean === uNumClean));
-            }
+            const matchFolio = folioBuscado && mFolio && (mFolio === folioBuscado);
+            const matchUnidad = uIdClean && mUnidad && (mUnidad === uIdClean || (uNumClean && mUnidadClean === uNumClean));
+
+            return matchFolio || matchUnidad;
         });
 
         const movsMap = {};
@@ -792,12 +789,10 @@ function sincronizarRemolquesConAlmacen(origen = 'Sistema') {
         const movs = movimientos.filter(m => {
             if (m.anulado || (m.tipo && m.tipo !== 'S' && m.tipo !== 'E/S')) return false;
             const mFolio = String(m.folio || '').trim();
-            const mUnidad = String(m.unidad_camion || '').trim().toUpperCase();
-            if (folioBuscado) {
-                return mFolio && mFolio === folioBuscado;
-            } else {
-                return rIdClean && mUnidad && mUnidad === rIdClean;
-            }
+            const mUnidad = String(m.unidad_camion || m.unidad || '').trim().toUpperCase();
+            const matchFolio = folioBuscado && mFolio && (mFolio === folioBuscado);
+            const matchRemolque = rIdClean && mUnidad && (mUnidad === rIdClean || mUnidad.includes(rIdClean) || rIdClean.includes(mUnidad));
+            return matchFolio || matchRemolque;
         });
 
         const movsMap = {};
@@ -4236,17 +4231,38 @@ app.post('/api/unidad/deteccion', (req, res) => {
 
 // --- CONSULTA DETALLADA DE FOLIO DE ALMACÉN ---
 app.get('/api/almacen/folio/:folio/detalle', (req, res) => {
-    const folio = String(req.params.folio).trim();
+    const folio = String(req.params.folio || '').trim();
+    const unidadParam = req.query.unidad ? String(req.query.unidad).trim() : '';
     const data = getAlmacenData();
     const movimientos = data.movimientos || data.salidas || [];
     const catalog = data.catalog || {};
 
-    const matches = movimientos.filter(m => String(m.folio).trim() === folio && (m.tipo === 'S' || !m.tipo));
+    // Buscar si hay unidad vinculada a este folio
+    const unidades = getUnidades();
+    const archivadas = getUnidadesArchivadas();
+    const remolques = getRemolques();
+    const uMatch = (unidadParam ? (unidades.find(u => String(u.id).trim() === unidadParam) || archivadas.find(u => String(u.id).trim() === unidadParam) || remolques.find(r => String(r.id).trim().toUpperCase() === unidadParam.toUpperCase())) : null)
+        || unidades.find(u => String(u.folio_almacen).trim() === folio)
+        || archivadas.find(u => String(u.folio_almacen).trim() === folio)
+        || remolques.find(r => String(r.folio_almacen).trim() === folio);
+
+    const targetUnitId = uMatch ? String(uMatch.id).trim().toUpperCase() : (unidadParam ? unidadParam.toUpperCase() : '');
+    const targetUnitClean = targetUnitId.replace(/^0+/, '');
+
+    const matches = movimientos.filter(m => {
+        if (m.anulado) return false;
+        if (m.tipo && m.tipo !== 'S' && m.tipo !== 'E/S') return false;
+        const mFolio = String(m.folio || '').trim();
+        const mU = String(m.unidad_camion || m.unidad || '').trim().toUpperCase();
+        const mUClean = mU.replace(/^0+/, '');
+
+        const matchFolio = folio && mFolio && (mFolio === folio);
+        const matchUnit = targetUnitId && mU && (mU === targetUnitId || (targetUnitClean && mUClean === targetUnitClean));
+
+        return matchFolio || matchUnit;
+    });
+
     if (matches.length === 0) {
-        // Fallback: buscar en unidades de taller si tienen este folio vinculado
-        const unidades = getUnidades();
-        const archivadas = getUnidadesArchivadas();
-        const uMatch = unidades.find(u => String(u.folio_almacen).trim() === folio) || archivadas.find(u => String(u.folio_almacen).trim() === folio);
         if (uMatch && Array.isArray(uMatch.piezas) && uMatch.piezas.length > 0) {
             const items = uMatch.piezas.map((pz, idx) => {
                 const pu = Number(pz.precio_unitario) || 0;
@@ -4492,6 +4508,140 @@ app.post('/api/rescates/:id/concluir', (req, res) => {
     }
 
     res.json({ success: true, rescate });
+});
+
+// --- ACTUALIZAR / EDITAR RESCATE CARRETERO ---
+app.put('/api/rescates/:id', (req, res) => {
+    const { id } = req.params;
+    const data = req.body || {};
+    const list = getRescates();
+    const idx = list.findIndex(r => r.id === id);
+    if (idx === -1) return res.status(404).json({ error: 'Rescate no encontrado' });
+
+    list[idx] = {
+        ...list[idx],
+        ...data,
+        id: list[idx].id
+    };
+    if (data.folio) list[idx].folio = String(data.folio).trim();
+    if (data.costo_estimado !== undefined) list[idx].costo_estimado = Number(data.costo_estimado) || 0;
+    if (data.costo_real !== undefined) list[idx].costo_real = Number(data.costo_real) || 0;
+
+    saveRescates(list);
+    broadcastSSE('rescates_update', { accion: 'editar', id, rescate: list[idx] });
+    res.json({ success: true, rescate: list[idx] });
+});
+
+// --- REGISTRAR AVANCE EN RESCATE CARRETERO ---
+app.post('/api/rescates/:id/avance', (req, res) => {
+    const { id } = req.params;
+    const { texto, porcentaje, mecanico } = req.body || {};
+    const list = getRescates();
+    const rescate = list.find(r => r.id === id);
+    if (!rescate) return res.status(404).json({ error: 'Rescate no encontrado' });
+
+    const nuevoAvance = {
+        fecha: new Date().toLocaleDateString('es-MX'),
+        hora: new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
+        texto: (texto || 'Actualización en ruta').trim(),
+        porcentaje: Number(porcentaje) || 50,
+        mecanico: (mecanico || rescate.mecanico_asignado || 'Auxilio Móvil').trim()
+    };
+
+    if (!Array.isArray(rescate.avances)) rescate.avances = [];
+    rescate.avances.unshift(nuevoAvance);
+
+    if (nuevoAvance.porcentaje >= 100) {
+        rescate.estado = 'EN_REPARACION_RUTA';
+        rescate.estatus = 'EN_REPARACION_RUTA';
+    }
+
+    saveRescates(list);
+    broadcastSSE('rescates_update', { accion: 'avance', id, rescate });
+    res.json({ success: true, rescate, avance: nuevoAvance });
+});
+
+// --- ELIMINAR / QUITAR RESCATE CARRETERO ---
+app.delete('/api/rescates/:id', (req, res) => {
+    const { id } = req.params;
+    let list = getRescates();
+    const idx = list.findIndex(r => r.id === id);
+    if (idx === -1) return res.status(404).json({ error: 'Rescate no encontrado' });
+
+    const eliminado = list.splice(idx, 1)[0];
+    saveRescates(list);
+    broadcastSSE('rescates_update', { accion: 'eliminar', id });
+    res.json({ success: true, mensaje: `Rescate #${eliminado.folio || id} eliminado`, rescate: eliminado });
+});
+
+// --- LIBERAR CAJA O REMOLQUE ---
+app.post('/api/remolques/:id/liberar', (req, res) => {
+    const remId = String(req.params.id).trim();
+    const { motivo, notas } = req.body || {};
+    let remolques = getRemolques();
+    const idx = remolques.findIndex(r => String(r.id).trim().toUpperCase() === remId.toUpperCase());
+    if (idx === -1) {
+        return res.status(404).json({ error: `Remolque ${remId} no encontrado` });
+    }
+    const r = remolques[idx];
+    const fechaSalida = new Date().toLocaleDateString('es-MX');
+    const horaSalida = new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+
+    r.archivado = true;
+    r.fecha_liberacion = fechaSalida;
+    r.hora_liberacion = horaSalida;
+    r.motivo_salida = motivo || 'Liberado para patio / viaje';
+    r.notas_salida = notas || '';
+
+    const ARCH_REM_FILE = path.join(__dirname, 'taller_remolques_archivados.json');
+    let archList = [];
+    if (fs.existsSync(ARCH_REM_FILE)) {
+        try { archList = JSON.parse(fs.readFileSync(ARCH_REM_FILE, 'utf8')); } catch(e) {}
+    }
+    archList.unshift(r);
+    fs.writeFileSync(ARCH_REM_FILE, JSON.stringify(archList, null, 2), 'utf8');
+
+    remolques.splice(idx, 1);
+    saveRemolques(remolques);
+
+    broadcastSSE('remolques_update', { accion: 'liberacion', id: remId });
+    res.json({ success: true, message: `Remolque ${remId} liberado con éxito`, remolque: r });
+});
+
+// --- GUARDAR TODO EN SERVIDOR (PERSISTENCIA INMEDIATA TOTAL) ---
+app.post('/api/guardar-todo', (req, res) => {
+    const { unidades, rescates, remolques, archivadas } = req.body || {};
+    try {
+        let countU = 0, countR = 0, countRem = 0, countArch = 0;
+        if (Array.isArray(unidades) && unidades.length > 0) {
+            saveUnidades(unidades, 'Guardar Todo Usuario');
+            countU = unidades.length;
+        }
+        if (Array.isArray(rescates)) {
+            saveRescates(rescates);
+            countR = rescates.length;
+        }
+        if (Array.isArray(remolques)) {
+            saveRemolques(remolques);
+            countRem = remolques.length;
+        }
+        if (Array.isArray(archivadas)) {
+            saveUnidadesArchivadas(archivadas);
+            countArch = archivadas.length;
+        }
+
+        try { sincronizarFoliosConAlmacen('Guardar Todo'); } catch(e) {}
+        try { sincronizarRemolquesConAlmacen('Guardar Todo'); } catch(e) {}
+
+        res.json({
+            success: true,
+            mensaje: `Datos guardados exitosamente: ${countU} unidades, ${countR} rescates, ${countRem} remolques, ${countArch} archivadas.`,
+            timestamp: new Date().toISOString()
+        });
+    } catch (err) {
+        console.error('Error en /api/guardar-todo:', err);
+        res.status(500).json({ success: false, error: err.message });
+    }
 });
 
 // --- 25. MÓDULO DE CAJAS Y REMOLQUES CESS ---

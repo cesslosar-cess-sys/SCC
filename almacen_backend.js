@@ -6926,12 +6926,20 @@ app.post('/api/compras/convertir-factura-credito', (req, res) => {
 });
 
 // Rutas de compatibilidad directa para Suite CESS: /almacen y /combustible
-app.get(['/almacen', '/Almacen', '/almacen.com', '/Almacen.com'], (req, res) => {
-  const DIST_DIR = path.join(__dirname, 'frontend', 'dist');
-  if (fs.existsSync(path.join(DIST_DIR, 'index.html'))) {
-    return res.sendFile(path.join(DIST_DIR, 'index.html'));
+app.get(['/almacen', '/Almacen', '/almacen.com', '/Almacen.com'], (req, res, next) => {
+  const candidateDirs = [
+    path.join(__dirname, 'almacen_dist'),
+    path.join(__dirname, 'frontend', 'dist'),
+    path.join(__dirname, 'almacen-app', 'frontend', 'dist')
+  ];
+  const foundDir = candidateDirs.find(d => fs.existsSync(path.join(d, 'index.html')));
+  if (foundDir) {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    return res.sendFile(path.join(foundDir, 'index.html'));
   }
-  res.redirect('/');
+  next();
 });
 
 app.get(['/combustible', '/Combustible', '/combustible.com', '/Combustible.com'], (req, res) => {

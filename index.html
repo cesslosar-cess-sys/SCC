@@ -230,6 +230,12 @@
 
             <!-- Botones de Acción Global (Optimizados para Móvil y Desktop) -->
             <div class="flex items-center gap-1.5 sm:gap-2">
+                <!-- BOTÓN GENERAL: GUARDAR CAMBIOS (PERSISTENCIA INMEDIATA A SERVIDOR) -->
+                <button onclick="guardarTodoEnServidorManual()" id="btn-guardar-cambios-global" class="bg-emerald-700 hover:bg-emerald-600 text-white border border-emerald-500/80 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-black shadow-lg shadow-emerald-900/40 flex items-center gap-1.5 transition active:scale-95" title="Guardar todos los cambios en el servidor permanentemente">
+                    <i class="fa-solid fa-floppy-disk text-white" id="icono-guardar-global"></i>
+                    <span id="texto-guardar-global" class="font-bold">Guardar</span>
+                </button>
+
                 <!-- BOTÓN DE SINCRONIZACIÓN EN VIVO (1 TOQUE EN CELULAR Y PC) -->
                 <button onclick="forzarSincronizacionManual()" id="btn-sincronizar-vivo" class="bg-[#282A2E] hover:bg-[#3A3D42] active:bg-[#141518] text-slate-200 border border-[#3A3D42] hover:border-[#C59B27] px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold shadow flex items-center gap-1.5 transition active:scale-95" title="Actualizar y sincronizar cambios en vivo ahora mismo">
                     <i class="fa-solid fa-arrows-rotate text-[#C59B27]" id="icono-sync-rotar"></i>
@@ -2759,7 +2765,7 @@
             </div>
 
             <!-- Tabla de Refacciones con Clasificación Preventivo vs Correctivo -->
-            <div class="border border-[#3A3D42] rounded-xl overflow-hidden mb-3">
+            <div class="border border-[#3A3D42] rounded-xl overflow-x-auto overflow-y-auto max-h-[360px] custom-scroll mb-3">
                 <table class="w-full text-left text-xs">
                     <thead class="bg-[#141518] text-slate-400 font-bold border-b border-[#3A3D42] uppercase text-[10px]">
                         <tr>
@@ -3247,6 +3253,157 @@
                     <button type="button" onclick="cerrarModalConcluirRescate()" class="px-3 py-1.5 rounded-xl border border-[#3A3D42] text-slate-300 hover:bg-[#282A2E] font-bold">Cancelar</button>
                     <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-1.5 rounded-xl flex items-center gap-1.5 shadow">
                         <i class="fa-solid fa-check"></i> Marcar Concluido
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: REGISTRAR AVANCE EN RESCATE CARRETERO -->
+    <div id="modal-avance-rescate" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
+        <div class="bg-[#1E1E1E] border border-amber-600/70 rounded-2xl w-full max-w-md p-5 flex flex-col shadow-2xl animate-in fade-in duration-150">
+            <div class="flex justify-between items-center mb-3 pb-2 border-b border-[#3A3D42]">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-clock-rotate-left text-amber-400"></i> Registrar Avance en Rescate
+                </h3>
+                <button onclick="cerrarModalAvanceRescate()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
+            </div>
+            <form onsubmit="guardarAvanceRescateForm(event)" class="flex flex-col gap-3 text-xs">
+                <input type="hidden" id="avance-rescate-id" value="">
+                <div>
+                    <label class="block font-bold text-slate-400 mb-1">Unidad / Folio</label>
+                    <input type="text" id="avance-rescate-info" readonly class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-amber-300 font-mono font-bold text-xs focus:outline-none">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-400 mb-1">Porcentaje de Avance (%)</label>
+                    <div class="flex items-center gap-3">
+                        <input type="range" id="avance-rescate-range" min="10" max="100" step="10" value="50" oninput="document.getElementById('avance-rescate-pct-txt').innerText = this.value + '%'" class="flex-1 accent-amber-500">
+                        <span id="avance-rescate-pct-txt" class="font-mono font-black text-amber-400 text-sm w-12 text-right">50%</span>
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-400 mb-1">Detalle del Avance / Situación en Ruta *</label>
+                    <textarea id="avance-rescate-texto" required rows="3" placeholder="Ej: Mecánico llegó al punto, ya desmontó la manguera y está colocando la nueva refacción..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2.5 text-white text-xs focus:border-amber-500 focus:outline-none"></textarea>
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-400 mb-1">Mecánico o Proveedor que atiende</label>
+                    <input type="text" id="avance-rescate-mecanico" placeholder="Ej: Auxilio Móvil CESS o Taller Local" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
+                </div>
+                <div class="pt-2 border-t border-[#3A3D42] flex justify-end gap-2 mt-1">
+                    <button type="button" onclick="cerrarModalAvanceRescate()" class="px-3 py-1.5 rounded-xl border border-[#3A3D42] text-slate-300 hover:bg-[#282A2E] font-bold">Cancelar</button>
+                    <button type="submit" class="bg-amber-600 hover:bg-amber-500 text-black font-black px-4 py-1.5 rounded-xl flex items-center gap-1.5 shadow">
+                        <i class="fa-solid fa-save"></i> Guardar Avance
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: EDITAR RESCATE CARRETERO (FOLIO, DATOS, FALLA) -->
+    <div id="modal-editar-rescate" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
+        <div class="bg-[#1E1E1E] border border-amber-600/70 rounded-2xl w-full max-w-lg p-5 flex flex-col shadow-2xl animate-in fade-in duration-150 overflow-y-auto max-h-[92vh] custom-scroll">
+            <div class="flex justify-between items-center mb-3 pb-2 border-b border-[#3A3D42]">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-pen-to-square text-amber-400"></i> Editar Rescate Carretero
+                </h3>
+                <button onclick="cerrarModalEditarRescate()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
+            </div>
+            <form onsubmit="guardarEditarRescateForm(event)" class="flex flex-col gap-3 text-xs">
+                <input type="hidden" id="edit-rescate-id" value="">
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-bold text-amber-300 mb-1">Folio del Rescate *</label>
+                        <input type="text" id="edit-rescate-folio" required placeholder="Ej: RC-1107" class="w-full bg-[#141518] border border-amber-600/70 rounded-xl p-2 text-white font-mono font-bold text-xs focus:border-amber-400 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Unidad *</label>
+                        <input type="text" id="edit-rescate-unidad" required class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white font-bold text-xs focus:border-amber-500 focus:outline-none">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Operador</label>
+                        <input type="text" id="edit-rescate-operador" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Estatus del Rescate</label>
+                        <select id="edit-rescate-estado" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
+                            <option value="EN_CAMINO">En Camino al Punto</option>
+                            <option value="EN_REPARACION_RUTA">En Reparación en Ruta</option>
+                            <option value="CONCLUIDO">Concluido / Unidad Liberada</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                    <div class="col-span-2">
+                        <label class="block font-bold text-slate-400 mb-1">Carretera / Autopista</label>
+                        <input type="text" id="edit-rescate-carretera" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Kilómetro</label>
+                        <input type="text" id="edit-rescate-km" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-400 mb-1">Diagnóstico / Falla Reportada *</label>
+                    <textarea id="edit-rescate-falla" rows="3" required class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2.5 text-white text-xs focus:border-amber-500 focus:outline-none leading-relaxed"></textarea>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Auxilio Asignado</label>
+                        <input type="text" id="edit-rescate-mecanico" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Presupuesto Estimado ($ MXN)</label>
+                        <input type="number" id="edit-rescate-costo" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
+                    </div>
+                </div>
+                <div class="pt-2 border-t border-[#3A3D42] flex justify-between items-center mt-1">
+                    <button type="button" onclick="eliminarRescateDirecto(document.getElementById('edit-rescate-id').value)" class="text-red-400 hover:text-red-300 font-bold flex items-center gap-1 hover:underline">
+                        <i class="fa-solid fa-trash-can"></i> Quitar del Tablero
+                    </button>
+                    <div class="flex gap-2">
+                        <button type="button" onclick="cerrarModalEditarRescate()" class="px-3 py-1.5 rounded-xl border border-[#3A3D42] text-slate-300 hover:bg-[#282A2E] font-bold">Cancelar</button>
+                        <button type="submit" class="bg-amber-600 hover:bg-amber-500 text-black font-black px-4 py-1.5 rounded-xl flex items-center gap-1.5 shadow">
+                            <i class="fa-solid fa-save"></i> Guardar Cambios
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: LIBERAR CAJA O REMOLQUE -->
+    <div id="modal-liberar-remolque" class="fixed inset-0 bg-black/85 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
+        <div class="bg-[#1E1E1E] border border-cyan-600/70 rounded-2xl w-full max-w-md p-5 flex flex-col shadow-2xl animate-in fade-in duration-150">
+            <div class="flex justify-between items-center mb-3 pb-2 border-b border-[#3A3D42]">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-truck-fast text-cyan-400"></i> Liberar Caja / Remolque
+                </h3>
+                <button onclick="cerrarModalLiberarRemolque()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
+            </div>
+            <form onsubmit="confirmarLiberarRemolqueForm(event)" class="flex flex-col gap-3 text-xs">
+                <input type="hidden" id="liberar-remolque-id" value="">
+                <div>
+                    <label class="block font-bold text-slate-400 mb-1">Remolque a Liberar</label>
+                    <input type="text" id="liberar-remolque-info" readonly class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-cyan-300 font-mono font-bold text-xs focus:outline-none">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-400 mb-1">Motivo de Salida</label>
+                    <select id="liberar-remolque-motivo" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-cyan-500 focus:outline-none">
+                        <option value="Lista para viaje / Asignada a tractocamión">Lista para viaje / Asignada a tractocamión</option>
+                        <option value="Servicio terminado / En patio disponible">Servicio terminado / En patio disponible</option>
+                        <option value="Traslado a otra base">Traslado a otra base</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-400 mb-1">Notas de Cierre (Opcional)</label>
+                    <textarea id="liberar-remolque-notas" rows="2" placeholder="Observaciones de entrega, llantas o calibración de frenos..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-cyan-500 focus:outline-none"></textarea>
+                </div>
+                <div class="pt-2 border-t border-[#3A3D42] flex justify-end gap-2 mt-1">
+                    <button type="button" onclick="cerrarModalLiberarRemolque()" class="px-3 py-1.5 rounded-xl border border-[#3A3D42] text-slate-300 hover:bg-[#282A2E] font-bold">Cancelar</button>
+                    <button type="submit" class="bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-cyan-500 hover:to-emerald-500 text-white font-black px-4 py-1.5 rounded-xl flex items-center gap-1.5 shadow">
+                        <i class="fa-solid fa-flag-checkered"></i> Confirmar y Quitar del Tablero
                     </button>
                 </div>
             </form>
@@ -4631,7 +4788,7 @@
                     costoRef = unidad.piezas.reduce((acc, p) => acc + (Number(p.costo_total) || (Number(p.cantidad || 1) * Number(p.precio_unitario || 0))), 0);
                 }
                 const costoTotalCard = Math.max(Number(unidad.costo) || 0, (Number(unidad.costo_mano_obra) || 0) + (Number(unidad.costo_externo) || 0) + costoRef);
-                const cantPiezas = Array.isArray(unidad.piezas) ? unidad.piezas.length : 0;
+                const cantPiezas = Array.isArray(unidad.piezas) ? unidad.piezas.reduce((acc, p) => acc + (Number(p.cantidad) || 1), 0) : 0;
                 const txtCostoCard = costoTotalCard > 0 
                     ? formatearMoneda(costoTotalCard)
                     : (cantPiezas > 0 ? '$0.00 MXN (Por cotizar)' : 'Por surtir');
@@ -4644,7 +4801,7 @@
                             </div>
                             <div>
                                 <span class="text-[9px] text-indigo-400 font-black uppercase tracking-wider block">ALMACÉN FOLIO #${unidad.folio_almacen}</span>
-                                <span class="text-[11px] text-slate-300 font-medium">${cantPiezas} ${cantPiezas === 1 ? 'refacción' : 'refacciones'}</span>
+                                <span class="text-[11px] text-slate-300 font-medium">${cantPiezas} ${cantPiezas === 1 ? 'pieza surtida' : 'piezas surtidas'}</span>
                             </div>
                         </div>
                         <div class="text-right">
@@ -4721,15 +4878,6 @@
                         <i class="fa-solid fa-truck-fast text-[10px]"></i> <span>Liberar</span>
                     </button>
                 </div>
-
-                <!-- Botón Destacado de Liberación / Salida para Unidades Listas -->
-                ${unidad.estado === 'listo' ? `
-                    <div class="pt-1">
-                        <button onclick="abrirModalLiberarUnidad(event, '${unidad.id}')" class="w-full bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-black font-black py-2 px-3 rounded-xl flex items-center justify-center gap-2 shadow-lg transition active:scale-95 text-xs">
-                            <i class="fa-solid fa-flag-checkered text-sm"></i> <span>🏁 DAR SALIDA A RUTA / LIBERAR</span>
-                        </button>
-                    </div>
-                ` : ''}
 
                 <!-- 7. Segmentador de Estado (Mayor, Proceso, Listo) -->
                 <div class="grid grid-cols-3 gap-1 bg-[#141518] p-1 rounded-xl border border-[#3A3D42]">
@@ -8958,7 +9106,7 @@
             document.getElementById('modal-detalle-folio-almacen').classList.remove('hidden');
 
             try {
-                const res = await fetch(`/api/almacen/folio/${u.folio_almacen}/detalle?t=` + Date.now());
+                const res = await fetch(`/api/almacen/folio/${encodeURIComponent(u.folio_almacen)}/detalle?unidad=${encodeURIComponent(u.id)}&t=` + Date.now());
                 const json = await res.json();
                 if (res.ok && json.success) {
                     document.getElementById('det-folio-solicitante').innerText = json.solicitante || 'Personal Taller';
@@ -9066,10 +9214,13 @@
 
         async function sincronizarFolioActivoManual() {
             if (!unidadVincularActiva) return;
-            mostrarToast('Sincronizando folio en vivo con Almacén...');
+            mostrarToast('Sincronizando folio y refacciones en vivo con Almacén...');
+            try {
+                await fetch(`/api/unidad/${encodeURIComponent(unidadVincularActiva.id)}/sincronizar-almacen`, { method: 'POST' });
+            } catch(e) {}
             await descargarDatosDelServidor();
             await abrirDetalleFolioAlmacen(null, unidadVincularActiva.id);
-            mostrarToast('¡Folio sincronizado al 100%!');
+            mostrarToast('¡Folio sincronizado al 100% con Almacén!');
         }
 
         function cerrarModalDetalleFolio() {
@@ -9785,19 +9936,29 @@
                                 <span class="w-1.5 h-1.5 rounded-full bg-black animate-ping"></span> ${(r.estatus === 'EN_REPARACION_RUTA' || r.estado === 'EN_REPARACION_RUTA') ? 'Reparando en Ruta' : 'Auxilio en Camino'}
                             </div>
 
-                            <div class="flex items-center gap-2.5">
-                                <div class="w-11 h-11 rounded-xl bg-amber-950 border border-amber-600 text-amber-400 flex items-center justify-center text-xl font-bold">
-                                    <i class="fa-solid fa-truck-medical"></i>
-                                </div>
-                                <div>
-                                    <div class="flex items-center gap-2 flex-wrap">
-                                        <h3 class="text-base font-black text-white">Unidad ${r.unidad}</h3>
-                                        <span class="text-[10px] bg-[#141518] px-2 py-0.5 rounded border border-[#3A3D42] text-slate-300 font-bold">${r.sucursal || 'Apodaca'}</span>
-                                        <span class="text-[10px] font-mono text-amber-300 font-bold bg-amber-950/80 px-2 py-0.5 rounded border border-amber-600/60 flex items-center gap-1">
-                                            <i class="fa-solid fa-receipt text-amber-400"></i> Folio #${r.folio || r.id}
-                                        </span>
+                            <div class="flex items-center justify-between gap-2.5">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-11 h-11 rounded-xl bg-amber-950 border border-amber-600 text-amber-400 flex items-center justify-center text-xl font-bold">
+                                        <i class="fa-solid fa-truck-medical"></i>
                                     </div>
-                                    <p class="text-xs text-slate-400">Operador: <span class="text-slate-200 font-bold">${r.operador || 'No asignado'}</span></p>
+                                    <div>
+                                        <div class="flex items-center gap-2 flex-wrap">
+                                            <h3 class="text-base font-black text-white">Unidad ${r.unidad}</h3>
+                                            <span class="text-[10px] bg-[#141518] px-2 py-0.5 rounded border border-[#3A3D42] text-slate-300 font-bold">${r.sucursal || 'Apodaca'}</span>
+                                            <span class="text-[10px] font-mono text-amber-300 font-bold bg-amber-950/80 px-2 py-0.5 rounded border border-amber-600/60 flex items-center gap-1">
+                                                <i class="fa-solid fa-receipt text-amber-400"></i> Folio #${r.folio || r.id}
+                                            </span>
+                                        </div>
+                                        <p class="text-xs text-slate-400">Operador: <span class="text-slate-200 font-bold">${r.operador || 'No asignado'}</span></p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <button onclick="abrirModalEditarRescate('${r.id}')" class="text-slate-400 hover:text-white p-1 rounded hover:bg-[#282A2E] transition" title="Editar auxilio carretero">
+                                        <i class="fa-solid fa-pen-to-square text-xs"></i>
+                                    </button>
+                                    <button onclick="eliminarRescateDirecto('${r.id}')" class="text-slate-500 hover:text-red-400 p-1 rounded hover:bg-red-950/40 transition" title="Quitar auxilio carretero">
+                                        <i class="fa-solid fa-trash-can text-xs"></i>
+                                    </button>
                                 </div>
                             </div>
 
@@ -9819,6 +9980,13 @@
                                 <p class="text-slate-200 bg-[#141518]/50 p-2 rounded-lg border border-[#3A3D42]/60">${r.falla_reportada}</p>
                             </div>
 
+                            ${(Array.isArray(r.avances) && r.avances.length > 0) ? `
+                                <div class="bg-amber-950/30 border border-amber-700/50 p-2 rounded-xl text-[11px] text-amber-200 flex items-center justify-between">
+                                    <span class="truncate mr-2"><strong class="text-amber-400 font-bold">Avance (${r.avances[0].hora || ''}):</strong> ${r.avances[0].texto || ''}</span>
+                                    ${r.avances[0].porcentaje ? `<span class="bg-amber-900 text-amber-200 font-mono text-[9px] font-bold px-1.5 py-0.2 rounded border border-amber-600">${r.avances[0].porcentaje}%</span>` : ''}
+                                </div>
+                            ` : ''}
+
                             <div class="flex items-center justify-between pt-2 border-t border-[#3A3D42]/60 text-xs">
                                 <div>
                                     <span class="text-[10px] text-slate-400 block">Auxilio Asignado:</span>
@@ -9830,9 +9998,15 @@
                                 </div>
                             </div>
 
-                            <div class="flex gap-2 pt-1">
-                                <button onclick="abrirModalConcluirRescate('${r.id}')" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow transition">
-                                    <i class="fa-solid fa-flag-checkered"></i> Concluir y Liberar Unidad
+                            <div class="grid grid-cols-3 gap-1.5 pt-1">
+                                <button onclick="abrirModalAvanceRescate('${r.id}')" class="bg-[#282A2E] hover:bg-[#3A3D42] text-amber-300 border border-amber-600/50 py-2 px-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1 shadow transition">
+                                    <i class="fa-solid fa-plus text-[10px]"></i> <span>+ Avance</span>
+                                </button>
+                                <button onclick="abrirModalEditarRescate('${r.id}')" class="bg-[#282A2E] hover:bg-[#3A3D42] text-slate-200 border border-[#3A3D42] py-2 px-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1 shadow transition">
+                                    <i class="fa-solid fa-pen-to-square text-[10px]"></i> <span>Editar</span>
+                                </button>
+                                <button onclick="abrirModalConcluirRescate('${r.id}')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-2 rounded-xl text-xs flex items-center justify-center gap-1 shadow transition">
+                                    <i class="fa-solid fa-flag-checkered text-[10px]"></i> <span>Concluir</span>
                                 </button>
                             </div>
                         </div>
@@ -10003,6 +10177,242 @@
                 }
             } catch (err) {
                 mostrarToast('Error concluyendo rescate');
+            }
+        }
+
+        // --- CONTROLADORES DE AVANCES, EDICIÓN Y ELIMINACIÓN DE RESCATES CARRETEROS ---
+        function abrirModalAvanceRescate(id) {
+            const r = cacheRescates.find(x => String(x.id) === String(id));
+            if (!r) return;
+            document.getElementById('avance-rescate-id').value = r.id;
+            document.getElementById('avance-rescate-info').value = `Unidad ${r.unidad} (Folio #${r.folio || r.id})`;
+            document.getElementById('avance-rescate-range').value = '50';
+            document.getElementById('avance-rescate-pct-txt').innerText = '50%';
+            document.getElementById('avance-rescate-texto').value = '';
+            document.getElementById('avance-rescate-mecanico').value = r.mecanico_asignado || '';
+            document.getElementById('modal-avance-rescate').classList.remove('hidden');
+        }
+
+        function cerrarModalAvanceRescate() {
+            document.getElementById('modal-avance-rescate').classList.add('hidden');
+        }
+
+        async function guardarAvanceRescateForm(e) {
+            if (e && e.preventDefault) e.preventDefault();
+            const id = document.getElementById('avance-rescate-id').value;
+            const porcentaje = Number(document.getElementById('avance-rescate-range').value) || 50;
+            const texto = document.getElementById('avance-rescate-texto').value.trim();
+            const mecanico = document.getElementById('avance-rescate-mecanico').value.trim();
+
+            if (!texto) {
+                mostrarToast('Ingresa el detalle del avance');
+                return;
+            }
+
+            try {
+                const res = await fetch(`/api/rescates/${encodeURIComponent(id)}/avance`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ porcentaje, texto, mecanico })
+                });
+                if (res.ok) {
+                    const json = await res.json();
+                    if (json.rescate) {
+                        const idx = cacheRescates.findIndex(x => String(x.id) === String(id));
+                        if (idx !== -1) cacheRescates[idx] = json.rescate;
+                    }
+                    cerrarModalAvanceRescate();
+                    renderizarRescatesModulo();
+                    mostrarToast('✅ Avance de rescate registrado con éxito');
+                } else {
+                    mostrarToast('Error registrando avance en el servidor');
+                }
+            } catch (err) {
+                mostrarToast('Error de conexión al registrar avance');
+            }
+        }
+
+        function abrirModalEditarRescate(id) {
+            const r = cacheRescates.find(x => String(x.id) === String(id));
+            if (!r) return;
+            document.getElementById('edit-rescate-id').value = r.id;
+            document.getElementById('edit-rescate-folio').value = r.folio || r.id || '';
+            document.getElementById('edit-rescate-unidad').value = r.unidad || '';
+            document.getElementById('edit-rescate-sucursal').value = r.sucursal || 'Apodaca';
+            document.getElementById('edit-rescate-operador').value = r.operador || '';
+            document.getElementById('edit-rescate-carretera').value = r.carretera || '';
+            document.getElementById('edit-rescate-km').value = r.km || r.kilometro || '';
+            document.getElementById('edit-rescate-sentido').value = r.sentido || 'Sur a Norte';
+            document.getElementById('edit-rescate-tramo').value = r.tramo || '';
+            document.getElementById('edit-rescate-tipo-falla').value = r.tipo_falla || 'MECÁNICA';
+            document.getElementById('edit-rescate-falla').value = r.falla_reportada || '';
+            document.getElementById('edit-rescate-mecanico').value = r.mecanico_asignado || '';
+            document.getElementById('edit-rescate-costo').value = r.costo_estimado || 0;
+            document.getElementById('edit-rescate-estatus').value = r.estatus || 'AUXILIO_EN_CAMINO';
+            document.getElementById('modal-editar-rescate').classList.remove('hidden');
+        }
+
+        function cerrarModalEditarRescate() {
+            document.getElementById('modal-editar-rescate').classList.add('hidden');
+        }
+
+        async function guardarEditarRescateForm(e) {
+            if (e && e.preventDefault) e.preventDefault();
+            const id = document.getElementById('edit-rescate-id').value;
+            const folio = document.getElementById('edit-rescate-folio').value.trim();
+            const unidad = document.getElementById('edit-rescate-unidad').value.trim();
+            const sucursal = document.getElementById('edit-rescate-sucursal').value;
+            const operador = document.getElementById('edit-rescate-operador').value.trim();
+            const carretera = document.getElementById('edit-rescate-carretera').value.trim();
+            const km = document.getElementById('edit-rescate-km').value.trim();
+            const sentido = document.getElementById('edit-rescate-sentido').value;
+            const tramo = document.getElementById('edit-rescate-tramo').value.trim();
+            const tipo_falla = document.getElementById('edit-rescate-tipo-falla').value;
+            const falla_reportada = document.getElementById('edit-rescate-falla').value.trim();
+            const mecanico_asignado = document.getElementById('edit-rescate-mecanico').value.trim();
+            const costo_estimado = Number(document.getElementById('edit-rescate-costo').value) || 0;
+            const estatus = document.getElementById('edit-rescate-estatus').value;
+
+            try {
+                const res = await fetch(`/api/rescates/${encodeURIComponent(id)}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        folio, unidad, sucursal, operador, carretera, km, sentido, tramo,
+                        tipo_falla, falla_reportada, mecanico_asignado, costo_estimado, estatus
+                    })
+                });
+                if (res.ok) {
+                    const json = await res.json();
+                    if (json.rescate) {
+                        const idx = cacheRescates.findIndex(x => String(x.id) === String(id));
+                        if (idx !== -1) cacheRescates[idx] = json.rescate;
+                    }
+                    cerrarModalEditarRescate();
+                    renderizarRescatesModulo();
+                    mostrarToast('✅ Datos del rescate actualizados con éxito');
+                } else {
+                    mostrarToast('Error actualizando rescate en servidor');
+                }
+            } catch (err) {
+                mostrarToast('Error de conexión al actualizar');
+            }
+        }
+
+        async function eliminarRescateDirecto(id) {
+            const r = cacheRescates.find(x => String(x.id) === String(id));
+            const etiqueta = r ? `Unidad ${r.unidad} (Folio #${r.folio || r.id})` : `Rescate ${id}`;
+            if (!confirm(`¿Estás seguro de que deseas retirar / cancelar el auxilio carretero de ${etiqueta}?\n\nEsta acción quitará el registro del tablero.`)) {
+                return;
+            }
+
+            try {
+                const res = await fetch(`/api/rescates/${encodeURIComponent(id)}`, {
+                    method: 'DELETE'
+                });
+                if (res.ok) {
+                    cacheRescates = cacheRescates.filter(x => String(x.id) !== String(id));
+                    renderizarRescatesModulo();
+                    mostrarToast(`🗑️ Auxilio carretero ${etiqueta} retirado.`);
+                } else {
+                    mostrarToast('Error retirando auxilio carretero');
+                }
+            } catch (err) {
+                mostrarToast('Error de conexión');
+            }
+        }
+
+        // --- CONTROLADORES DE LIBERACIÓN DE CAJAS Y REMOLQUES ---
+        function abrirModalLiberarRemolque(id) {
+            const r = (cacheRemolques || []).find(x => String(x.id).trim().toUpperCase() === String(id).trim().toUpperCase());
+            if (!r) return;
+            document.getElementById('liberar-remolque-id').value = r.id;
+            document.getElementById('liberar-remolque-info').value = `${r.id} - ${r.tipo || 'Caja Seca'} ${r.marca ? '(' + r.marca + ')' : ''}`;
+            document.getElementById('liberar-remolque-motivo').value = 'Lista para viaje / Asignada a tractocamión';
+            document.getElementById('liberar-remolque-notas').value = '';
+            document.getElementById('modal-liberar-remolque').classList.remove('hidden');
+        }
+
+        function cerrarModalLiberarRemolque() {
+            document.getElementById('modal-liberar-remolque').classList.add('hidden');
+        }
+
+        async function confirmarLiberarRemolqueForm(e) {
+            if (e && e.preventDefault) e.preventDefault();
+            const id = document.getElementById('liberar-remolque-id').value;
+            const motivo = document.getElementById('liberar-remolque-motivo').value;
+            const notas = document.getElementById('liberar-remolque-notas').value.trim();
+
+            try {
+                const res = await fetch(`/api/remolques/${encodeURIComponent(id)}/liberar`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ motivo, notas })
+                });
+                if (res.ok) {
+                    cacheRemolques = cacheRemolques.filter(x => String(x.id).trim().toUpperCase() !== String(id).trim().toUpperCase());
+                    localStorage.setItem('taller_remolques_cache', JSON.stringify(cacheRemolques));
+                    cerrarModalLiberarRemolque();
+                    renderizarModuloRemolques();
+                    mostrarToast(`🏁 Caja/Remolque ${id} liberada y retirada del tablero con éxito.`);
+                } else {
+                    mostrarToast('Error liberando remolque en servidor');
+                }
+            } catch (err) {
+                mostrarToast('Error de red al liberar remolque');
+            }
+        }
+
+        // --- BOTÓN GENERAL: GUARDAR TODO EN SERVIDOR (PERSISTENCIA INMEDIATA) ---
+        async function guardarTodoEnServidorManual() {
+            const btn = document.getElementById('btn-guardar-cambios-global');
+            const icono = document.getElementById('icono-guardar-global');
+            const texto = document.getElementById('texto-guardar-global');
+            if (btn) btn.disabled = true;
+            if (icono) icono.className = 'fa-solid fa-spinner fa-spin text-white';
+            if (texto) texto.innerText = 'Guardando...';
+
+            sanitizarBaseDatos();
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(baseDatos));
+                if (typeof cacheRescates !== 'undefined') localStorage.setItem('taller_rescates_cache', JSON.stringify(cacheRescates));
+                if (typeof cacheRemolques !== 'undefined') localStorage.setItem('taller_remolques_cache', JSON.stringify(cacheRemolques));
+            } catch(e) {}
+
+            try {
+                const payload = {
+                    unidades: baseDatos,
+                    rescates: typeof cacheRescates !== 'undefined' ? cacheRescates : undefined,
+                    remolques: typeof cacheRemolques !== 'undefined' ? cacheRemolques : undefined
+                };
+
+                const res = await fetch('/api/guardar-todo', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.ok) {
+                    const json = await res.json();
+                    mostrarToast(`💾 ¡Guardado general exitoso! ${baseDatos.length} unidades, rescates y remolques protegidos.`);
+                    actualizarTimestampSincronizacion();
+                    actualizarBadgeRealtime(true);
+                } else {
+                    await fetch('/api/unidades', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(baseDatos)
+                    });
+                    mostrarToast('💾 Cambios de unidades guardados en el servidor.');
+                }
+            } catch (e) {
+                mostrarToast('⚠️ Aviso: Cambios guardados localmente en este navegador.');
+            } finally {
+                setTimeout(() => {
+                    if (btn) btn.disabled = false;
+                    if (icono) icono.className = 'fa-solid fa-floppy-disk text-white';
+                    if (texto) texto.innerText = 'Guardar';
+                }, 600);
             }
         }
 
@@ -10245,6 +10655,13 @@
                             </button>
                             <button onclick="cambiarEstadoRemolque('${r.id}', 'listo')" title="Mover a Listo para Patio" class="flex-1 py-1 px-1 rounded text-[9px] font-bold text-center transition ${colId === 'listo' ? 'bg-emerald-500 text-black' : 'bg-[#1E1E1E] text-emerald-400 hover:bg-emerald-950/40 border border-[#3A3D42]'}">
                                 Listo
+                            </button>
+                        </div>
+
+                        <!-- Botón Liberar Caja / Salida -->
+                        <div class="pt-1">
+                            <button onclick="abrirModalLiberarRemolque('${r.id}')" class="w-full bg-cyan-950/80 hover:bg-cyan-900 text-cyan-300 border border-cyan-700/60 py-1.5 px-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm" title="Liberar caja y retirar del tablero activo">
+                                <i class="fa-solid fa-truck-fast text-[10px]"></i> <span>Liberar Caja / Salida a Patio</span>
                             </button>
                         </div>
                     `;

@@ -1,0 +1,66 @@
+[
+  {
+    "id_licencia": "CESS-DDX69O-FTO9",
+    "licenciatario": "TALLER SAN JOSE S.A.",
+    "plan": "MENSUAL",
+    "emision": "2026-10-19",
+    "expiracion": "2026-11-18",
+    "license_key": "CESS-B934-E108-3717-9143-5CB0-1411",
+    "notas": "",
+    "licencia_completa": {
+      "license_key": "CESS-B934-E108-3717-9143-5CB0-1411",
+      "signature": "B934E108371791435CB01411",
+      "payload": {
+        "producto": "Sistema de Control CESS - Almacén & Mantenimiento",
+        "version": "2.0.0",
+        "autor": "Desarrollador / Propietario CESS",
+        "licenciatario": "TALLER SAN JOSE S.A.",
+        "rfc": "N/A",
+        "plan": "MENSUAL",
+        "emision": "2026-10-19",
+        "expiracion": "2026-11-18",
+        "modulos": [
+          "almacen",
+          "entradas",
+          "salidas"
+        ],
+        "id_licencia": "CESS-DDX69O-FTO9"
+      }
+    },
+    "creado_el": "2026-10-19T23:50:39.546Z"
+  },
+  {
+    "id_licencia": "CESS-MVFV48G4-KTED",
+    "licenciatario": "LARMONT INTERNACIONAL",
+    "plan": "VITALICIO",
+    "emision": "2026-10-19",
+    "expiracion": "PERPETUA / SIN VENCIMIENTO",
+    "license_key": "CESS-1AE8-1F06-66B5-2622-A062-D58C",
+    "notas": "Actualizado directamente desde Centro de Control Maestro CESS",
+    "creado_el": "2026-10-19T17:00:00.000Z",
+    "licencia_completa": {
+      "license_key": "CESS-1AE8-1F06-66B5-2622-A062-D58C",
+      "signature": "1AE81F0666B52622A062D58C",
+      "payload": {
+        "producto": "Sistema de Control CESS - Almacén & Mantenimiento",
+        "version": "2.0.0",
+        "autor": "Desarrollador / Propietario CESS",
+        "licenciatario": "LARMONT INTERNACIONAL",
+        "rfc": "LDI-2026-MX",
+        "plan": "VITALICIO",
+        "emision": "2026-10-19",
+        "expiracion": null,
+        "modulos": [
+          "almacen",
+          "entradas",
+          "salidas",
+          "bitacora",
+          "reportes",
+          "ocr_ia"
+        ],
+        "id_licencia": "CESS-MVFV48G4-KTED"
+      }
+    },
+    "actualizado_el": "2026-10-22T22:32:08.708Z"
+  }
+]

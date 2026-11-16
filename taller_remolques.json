@@ -10,10 +10,29 @@
     "defecto": "Fuga de aire en línea principal y reemplazo de 2 cámaras de frenado eje trasero",
     "reporte": "Desarmado de eje trasero, cámaras solicitadas a almacén para montaje.",
     "mecanico": "Pedro Ramírez",
-    "costo": 3800,
+    "costo": 80,
     "sucursal": "Apodaca",
     "folio_almacen": "4051",
-    "fechaIngreso": "08/11/2026"
+    "fechaIngreso": "08/11/2026",
+    "costo_refacciones": 80,
+    "piezas": [
+      {
+        "id": "mov_1793147021288_0_5929",
+        "id_pieza": "0",
+        "numero_parte": "0",
+        "descripcion": "LIMPIAPARABRISAS 22\"",
+        "marca": "PWR PRO",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 80,
+        "costo_total": 80,
+        "folio_almacen": "4051",
+        "solicitante": "MARTIN ALVARADO",
+        "estado": "RECIBIDA_TALLER",
+        "fecha_recepcion": "2026-10-27",
+        "hora_recepcion": "06:23:41 p.m."
+      }
+    ]
   },
   {
     "id": "R-5312",
@@ -72,9 +91,108 @@
     "defecto": "Cambio de plafones LED y cableado de luces de gálibo",
     "reporte": "Trabajo terminado y probado al 100%. Lista para patio y asignación de viaje.",
     "mecanico": "Juan Pérez",
-    "costo": 950,
+    "costo": 5951.25,
     "sucursal": "Apodaca",
-    "fechaIngreso": "07/11/2026"
+    "fechaIngreso": "07/11/2026",
+    "costo_refacciones": 5951.25,
+    "piezas": [
+      {
+        "id": "mov_1794355422329_446",
+        "id_pieza": "part_1794355379465_0_2549",
+        "numero_parte": "S/N",
+        "descripcion": "LODERA PARA TRACTOCAMION",
+        "marca": "GENERICA",
+        "cantidad": 1,
+        "unidad_medida": "PZA",
+        "precio_unitario": 170,
+        "costo_total": 170,
+        "folio_almacen": "4083",
+        "solicitante": "Almacén",
+        "estado": "RECIBIDA_TALLER",
+        "fecha_recepcion": "2026-11-09",
+        "hora_recepcion": "06:03:42 p.m."
+      },
+      {
+        "id": "mov_1792532198646_422",
+        "id_pieza": "5751073",
+        "numero_parte": "5751073",
+        "descripcion": "DEPOSITO REFRIGERANTE",
+        "marca": "AUTOMANNN",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 932.32,
+        "costo_total": 932.32,
+        "folio_almacen": "4035",
+        "solicitante": "MARTIN ALVARADO",
+        "estado": "RECIBIDA_TALLER",
+        "fecha_recepcion": "2026-10-20",
+        "hora_recepcion": "03:36:38 p.m."
+      },
+      {
+        "id": "mov_1792532113151_3_8830",
+        "id_pieza": "FS1000",
+        "numero_parte": "FS1000",
+        "descripcion": "FILTRO PARA COMBUSTIBLE",
+        "marca": "FLEETGUARD",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 1008.17,
+        "costo_total": 1008.17,
+        "folio_almacen": "4035",
+        "solicitante": "MARTIN ALVARADO",
+        "estado": "RECIBIDA_TALLER",
+        "fecha_recepcion": "2026-10-20",
+        "hora_recepcion": "03:35:12 p.m."
+      },
+      {
+        "id": "mov_1792532113151_2_1610",
+        "id_pieza": "P637454",
+        "numero_parte": "P637454",
+        "descripcion": "FILTRO DE AIRE KENWORTH",
+        "marca": "DONALDSON",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 2666.76,
+        "costo_total": 2666.76,
+        "folio_almacen": "4035",
+        "solicitante": "MARTIN ALVARADO",
+        "estado": "RECIBIDA_TALLER",
+        "fecha_recepcion": "2026-10-20",
+        "hora_recepcion": "03:35:12 p.m."
+      },
+      {
+        "id": "mov_1792532113151_1_5651",
+        "id_pieza": "LF14000NN",
+        "numero_parte": "LF14000NN",
+        "descripcion": "FILTRO DE ACEITE",
+        "marca": "FLEETGUARD",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 850,
+        "costo_total": 850,
+        "folio_almacen": "4035",
+        "solicitante": "MARTIN ALVARADO",
+        "estado": "RECIBIDA_TALLER",
+        "fecha_recepcion": "2026-10-20",
+        "hora_recepcion": "03:35:12 p.m."
+      },
+      {
+        "id": "mov_1792532113150_0_1973",
+        "id_pieza": "AF55839",
+        "numero_parte": "AF55839",
+        "descripcion": "FILTRO DE AIRE",
+        "marca": "FLEETGUARD",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 324,
+        "costo_total": 324,
+        "folio_almacen": "4035",
+        "solicitante": "MARTIN ALVARADO",
+        "estado": "RECIBIDA_TALLER",
+        "fecha_recepcion": "2026-10-20",
+        "hora_recepcion": "03:35:12 p.m."
+      }
+    ]
   },
   {
     "id": "D-101",
@@ -87,8 +205,27 @@
     "defecto": "Engrase, ajuste de muela de quinta rueda y cambio de cadenas de seguridad",
     "reporte": "En proceso de armado y lubricación general.",
     "mecanico": "Pedro Ramírez",
-    "costo": 1800,
+    "costo": 941.19,
     "sucursal": "Apodaca",
-    "fechaIngreso": "09/11/2026"
+    "fechaIngreso": "09/11/2026",
+    "costo_refacciones": 941.19,
+    "piezas": [
+      {
+        "id": "mov_1793740967855_0_9597",
+        "id_pieza": "711W619000051_5",
+        "numero_parte": "711W619000051/5",
+        "descripcion": "FILTRO DE AIRE PARA CABINA",
+        "marca": "SITRAK",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 941.19,
+        "costo_total": 941.19,
+        "folio_almacen": "4066",
+        "solicitante": "MARTIN ALVARADO",
+        "estado": "RECIBIDA_TALLER",
+        "fecha_recepcion": "2026-11-03",
+        "hora_recepcion": "03:22:47 p.m."
+      }
+    ]
   }
 ]
