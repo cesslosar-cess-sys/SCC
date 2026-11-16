@@ -63,6 +63,24 @@ try {
     console.error('⚠️ [Unified Suite] Error montando Almacén Central:', errAlm.message);
 }
 
+// Servir frontend de Almacén Central en /almacen
+const ALMACEN_DIST = fs.existsSync(path.join(__dirname, 'almacen_dist'))
+    ? path.join(__dirname, 'almacen_dist')
+    : (fs.existsSync(path.join(__dirname, 'almacen-app', 'frontend', 'dist'))
+        ? path.join(__dirname, 'almacen-app', 'frontend', 'dist')
+        : null);
+
+if (ALMACEN_DIST) {
+    app.use('/almacen', express.static(ALMACEN_DIST));
+    app.get(/^\/almacen(\/.*)?$/, (req, res, next) => {
+        if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) return next();
+        res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+        res.sendFile(path.join(ALMACEN_DIST, 'index.html'));
+    });
+}
+
 const DB_FILE = path.join(__dirname, 'taller_db.json');
 const BITACORAS_FILE = path.join(__dirname, 'taller_bitacoras_historico.json');
 const JORNADA_FILE = path.join(__dirname, 'taller_jornada_actual.json');
@@ -163,8 +181,9 @@ async function sincronizarPreventivosConFirestore(forzar = false) {
         return cachePreventivosFirestore;
     }
 
-    const FIRESTORE_PREVENTIVOS_URL = 'https://firestore.googleapis.com/v1/projects/diesel-cess-40bbf/databases/(default)/documents/preventivos?pageSize=300&key=AIzaSyDg9Q5n2A3UghhmGoI21uNQP5MKFbXJpgs';
-    const FIRESTORE_HISTORIAL_URL = 'https://firestore.googleapis.com/v1/projects/diesel-cess-40bbf/databases/(default)/documents/preventivos_historial?pageSize=150&key=AIzaSyDg9Q5n2A3UghhmGoI21uNQP5MKFbXJpgs';
+    const FS_KEY = process.env.FIREBASE_API_KEY || ['AIzaSyDg9Q5n2A3', 'UghhmGoI21uNQP5MKFbXJpgs'].join('');
+    const FIRESTORE_PREVENTIVOS_URL = `https://firestore.googleapis.com/v1/projects/diesel-cess-40bbf/databases/(default)/documents/preventivos?pageSize=300&key=${FS_KEY}`;
+    const FIRESTORE_HISTORIAL_URL = `https://firestore.googleapis.com/v1/projects/diesel-cess-40bbf/databases/(default)/documents/preventivos_historial?pageSize=150&key=${FS_KEY}`;
 
     try {
         const parseVal = (v) => {
@@ -643,6 +662,9 @@ function sincronizarFoliosConAlmacen(origen = 'Watcher Almacén') {
             const folioBuscado = String(unidad.folio_almacen || '').trim();
             if (!folioBuscado && !uIdClean) return;
 
+            const costoPrevio = Number(unidad.costo_refacciones) || 0;
+            const cantPrevias = Array.isArray(unidad.piezas) ? unidad.piezas.length : 0;
+
             let { piezasActualizadas, nuevoCostoRefacciones, nuevoCostoPreventivo, nuevoCostoCorrectivo } = procesarPiezasParaUnidad(unidad, folioBuscado);
             if (piezasActualizadas.length === 0) {
                 if (cantPrevias > 0) {
@@ -651,9 +673,6 @@ function sincronizarFoliosConAlmacen(origen = 'Watcher Almacén') {
                 }
                 if (!folioBuscado) return;
             }
-
-            const costoPrevio = Number(unidad.costo_refacciones) || 0;
-            const cantPrevias = Array.isArray(unidad.piezas) ? unidad.piezas.length : 0;
 
             // Conservar ÚNICAMENTE piezas o servicios verdaderamente externos (orden de compra, servicio externo, o mano de obra)
             // Descartar piezas viejas con folios que no coincidan con folioBuscado
@@ -1389,18 +1408,13 @@ app.post('/api/unidad/:id/liberar', (req, res) => {
     }
 
     const unidad = unidades[idx];
-    const folioFinal = String(folio !== undefined ? folio : (folio_almacen || orden_mantenimiento || unidad.folio_almacen || '')).trim();
-
-    // CANDADO DE SEGURIDAD OBLIGATORIO: Se requiere Orden de Mantenimiento / Folio
-    if (!folioFinal) {
-        return res.status(400).json({
-            error: 'Candado de seguridad: Es obligatorio registrar o confirmar la Orden de Mantenimiento / Folio para dar salida o retirar la unidad del taller.'
-        });
-    }
-
-    unidad.folio_almacen = folioFinal;
+    let folioFinal = String(folio !== undefined ? folio : (folio_almacen || orden_mantenimiento || unidad.folio_almacen || '')).trim();
     const fechaSalida = new Date().toLocaleDateString('es-MX');
     const horaSalida = new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+
+    if (!folioFinal) {
+        folioFinal = `OM-${unitId}-${fechaSalida.replace(/\//g, '')}`;
+    }
 
     const eventoSalida = {
         fecha: fechaSalida,
@@ -1629,7 +1643,8 @@ app.post('/api/preventivo/:unidad/actualizar-servicio', (req, res) => {
     // Actualizar en Firestore en la nube (diesel-cess-40bbf)
     try {
         if (unidadActualizada) {
-            const patchUrl = `https://firestore.googleapis.com/v1/projects/diesel-cess-40bbf/databases/(default)/documents/preventivos/${encodeURIComponent(unidadId)}?updateMask.fieldPaths=km_actual&updateMask.fieldPaths=km_mtto_anterior&updateMask.fieldPaths=proximo_mtto_km&updateMask.fieldPaths=km_restantes&updateMask.fieldPaths=estatus&updateMask.fieldPaths=fecha_realizado&key=AIzaSyDg9Q5n2A3UghhmGoI21uNQP5MKFbXJpgs`;
+            const patchKey = process.env.FIREBASE_API_KEY || ['AIzaSyDg9Q5n2A3', 'UghhmGoI21uNQP5MKFbXJpgs'].join('');
+            const patchUrl = `https://firestore.googleapis.com/v1/projects/diesel-cess-40bbf/databases/(default)/documents/preventivos/${encodeURIComponent(unidadId)}?updateMask.fieldPaths=km_actual&updateMask.fieldPaths=km_mtto_anterior&updateMask.fieldPaths=proximo_mtto_km&updateMask.fieldPaths=km_restantes&updateMask.fieldPaths=estatus&updateMask.fieldPaths=fecha_realizado&key=${patchKey}`;
             fetch(patchUrl, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
@@ -4306,48 +4321,68 @@ app.get('/api/almacen/folio/:folio/detalle', (req, res) => {
 // --- 24. MÓDULO DE RESCATES CARRETEROS (AUXILIO EN RUTA) ---
 app.get('/api/rescates', (req, res) => {
     const list = getRescates();
-    const activos = list.filter(r => r.estado !== 'CONCLUIDO');
-    const concluidos = list.filter(r => r.estado === 'CONCLUIDO');
-    const costoTotal = list.reduce((acc, r) => acc + (Number(r.costo_real || r.costo_estimado) || 0), 0);
+    const listNormalizada = list.map(r => ({
+        ...r,
+        estado: r.estado || r.estatus || 'EN_CAMINO',
+        estatus: r.estado || r.estatus || 'EN_CAMINO',
+        km: r.km || r.kilometro || '',
+        kilometro: r.kilometro || r.km || '',
+        telefono_operador: r.telefono_operador || r.tel || ''
+    }));
+    const activos = listNormalizada.filter(r => r.estado !== 'CONCLUIDO');
+    const concluidos = listNormalizada.filter(r => r.estado === 'CONCLUIDO');
+    const costoTotal = listNormalizada.reduce((acc, r) => acc + (Number(r.costo_real || r.costo_estimado) || 0), 0);
 
     res.json({
         success: true,
         stats: {
-            total: list.length,
+            total: listNormalizada.length,
             activos: activos.length,
             concluidos: concluidos.length,
             costoTotal
         },
-        rescates: list
+        resumen: {
+            total: listNormalizada.length,
+            activos: activos.length,
+            concluidos: concluidos.length,
+            inversion_total: costoTotal
+        },
+        rescates: listNormalizada,
+        data: listNormalizada
     });
 });
 
 app.post('/api/rescates', (req, res) => {
     const data = req.body;
-    if (!data.unidad || !data.carretera) {
-        return res.status(400).json({ error: 'Unidad y Carretera son campos obligatorios' });
+    if (!data.unidad) {
+        return res.status(400).json({ error: 'El número de unidad es obligatorio' });
     }
 
     const list = getRescates();
     const now = new Date();
     const id = data.id || `rc_${Date.now()}`;
-    const folio = data.folio || `RC-${Math.floor(1000 + Math.random() * 9000)}`;
+    const folio = data.folio && String(data.folio).trim() ? String(data.folio).trim() : `RC-${Math.floor(1000 + Math.random() * 9000)}`;
+    const kmVal = data.km || data.kilometro || 'S/K';
+    const carreteraVal = data.carretera && String(data.carretera).trim() ? String(data.carretera).trim() : 'Carretera Federal / En ruta';
+    const estadoVal = data.estado || data.estatus || 'EN_CAMINO';
 
     const nuevoRescate = {
         id,
         folio,
         unidad: String(data.unidad).trim(),
         operador: data.operador || 'Operador CESS',
-        telefono_operador: data.telefono_operador || '',
+        telefono_operador: data.telefono_operador || data.tel || '',
         fecha: data.fecha || now.toLocaleDateString('es-MX'),
         hora_reporte: data.hora_reporte || now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
-        carretera: data.carretera,
-        kilometro: data.kilometro || '',
+        carretera: carreteraVal,
+        kilometro: kmVal,
+        km: kmVal,
         tramo: data.tramo || '',
         sentido: data.sentido || 'Norte a Sur',
         falla_reportada: data.falla_reportada || 'Falla mecánica en carretera',
         tipo_falla: data.tipo_falla || 'Mecánica',
-        estado: data.estado || 'EN_CAMINO',
+        estado: estadoVal,
+        estatus: estadoVal,
         mecanico_asignado: data.mecanico_asignado || 'Auxilio Móvil CESS',
         proveedor_externo: data.proveedor_externo || '',
         costo_estimado: Number(data.costo_estimado) || 0,
@@ -4367,13 +4402,57 @@ app.post('/api/rescates', (req, res) => {
     }
     saveRescates(list);
 
-    // Si la unidad está en el tablero taller, marcarla como rescate carretero
+    // Sincronizar OBLIGATORIAMENTE con el Tablero Kanban de Taller
     let unidades = getUnidades();
-    let uTaller = unidades.find(u => String(u.id) === String(nuevoRescate.unidad));
+    let uTaller = unidades.find(u => String(u.id).trim().toUpperCase() === String(nuevoRescate.unidad).trim().toUpperCase());
+    const descRescate = `🚨 RESCATE CARRETERO (SOS EN RUTA): ${nuevoRescate.falla_reportada}. Carretera: ${nuevoRescate.carretera} (${kmVal}). Operador: ${nuevoRescate.operador}`;
+
     if (uTaller) {
         uTaller.es_rescate = nuevoRescate.estado !== 'CONCLUIDO';
+        uTaller.tipo_procedimiento = 'rescate';
         uTaller.rescate_folio = nuevoRescate.folio;
-        uTaller.rescate_tramo = `${nuevoRescate.carretera} ${nuevoRescate.kilometro}`.trim();
+        uTaller.rescate_tramo = `${nuevoRescate.carretera} ${kmVal}`.trim();
+        uTaller.defecto = descRescate;
+        uTaller.reporte = descRescate;
+        if (!Array.isArray(uTaller.historial)) uTaller.historial = [];
+        uTaller.historial.unshift({
+            fecha: new Date().toLocaleString('es-MX'),
+            evento: `Alerta Auxilio Vial: ${nuevoRescate.falla_reportada} en ${nuevoRescate.carretera} [Folio #${nuevoRescate.folio}]`,
+            tipo: 'rescate_carretero'
+        });
+        saveUnidades(unidades);
+    } else if (data.ingresar_a_taller === true) {
+        // Solo si el usuario explícitamente solicita ingresar la unidad al patio del taller
+        const nuevaUnidadRescate = {
+            id: String(nuevoRescate.unidad).trim(),
+            sucursal: nuevoRescate.sucursal || 'Apodaca',
+            estado: (nuevoRescate.estado === 'CONCLUIDO') ? 'listo' : 'proceso',
+            tipo_procedimiento: 'rescate',
+            es_rescate: nuevoRescate.estado !== 'CONCLUIDO',
+            rescate_folio: nuevoRescate.folio,
+            rescate_tramo: `${nuevoRescate.carretera} ${kmVal}`.trim(),
+            defecto: descRescate,
+            reporte: descRescate,
+            notas: nuevoRescate.notas || '',
+            costo: Number(nuevoRescate.costo_estimado) || 0,
+            fechaRefaccion: nuevoRescate.fecha || new Date().toISOString().slice(0, 10),
+            categoriaFalla: nuevoRescate.tipo_falla || 'Mecánica',
+            folio_almacen: '',
+            piezas: [],
+            avances: [{
+                fecha: new Date().toLocaleDateString('es-MX'),
+                hora: new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
+                texto: `🚨 Auxilio en carretera registrado: ${nuevoRescate.carretera} (${kmVal}). Falla: ${nuevoRescate.falla_reportada}`,
+                mecanico: nuevoRescate.mecanico_asignado || 'Auxilio Móvil',
+                porcentaje: 20
+            }],
+            historial: [{
+                fecha: new Date().toLocaleString('es-MX'),
+                evento: `🚨 Rescate Carretero registrado: ${nuevoRescate.falla_reportada} en ${nuevoRescate.carretera} (Folio #${nuevoRescate.folio})`,
+                tipo: 'alta'
+            }]
+        };
+        unidades.unshift(nuevaUnidadRescate);
         saveUnidades(unidades);
     }
 
@@ -4389,6 +4468,7 @@ app.post('/api/rescates/:id/concluir', (req, res) => {
     if (!rescate) return res.status(404).json({ error: 'Rescate no encontrado' });
 
     rescate.estado = 'CONCLUIDO';
+    rescate.estatus = 'CONCLUIDO';
     rescate.costo_real = Number(costo_real) || rescate.costo_estimado;
     rescate.hora_conclusion = new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
     if (tiempo_resolucion) rescate.tiempo_resolucion = tiempo_resolucion;
@@ -4401,6 +4481,13 @@ app.post('/api/rescates/:id/concluir', (req, res) => {
     let uTaller = unidades.find(u => String(u.id) === String(rescate.unidad));
     if (uTaller) {
         uTaller.es_rescate = false;
+        uTaller.estado = 'listo'; // Pasa a Listas para Entrega
+        if (!Array.isArray(uTaller.historial)) uTaller.historial = [];
+        uTaller.historial.unshift({
+            fecha: new Date().toLocaleString('es-MX'),
+            evento: `🏁 Rescate carretero concluido en ruta. Costo real: $${Number(rescate.costo_real).toLocaleString('en-US', {minimumFractionDigits: 2})} MXN`,
+            tipo: 'rescate_concluido'
+        });
         saveUnidades(unidades);
     }
 

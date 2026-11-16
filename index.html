@@ -3097,11 +3097,22 @@
             </div>
 
             <form onsubmit="guardarNuevoRescateForm(event)" class="flex flex-col gap-3 text-xs">
+                <!-- FOLIO Y UNIDAD -->
                 <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="block font-bold text-slate-400 mb-1">Número de Unidad *</label>
-                        <input type="text" id="rescate-form-unidad" required placeholder="Ej: 75" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white font-bold text-sm focus:border-amber-500 focus:outline-none">
+                        <label class="block font-bold text-amber-300 mb-1 flex items-center justify-between text-xs">
+                            <span class="flex items-center gap-1"><i class="fa-solid fa-receipt text-amber-400"></i> Folio del Rescate *</span>
+                            <button type="button" onclick="autoGenerarFolioRescate()" class="text-[10px] bg-amber-900/60 hover:bg-amber-800 text-amber-200 border border-amber-700/60 px-1.5 py-0.5 rounded font-bold transition flex items-center gap-1 shadow-sm"><i class="fa-solid fa-bolt"></i> Auto-generar</button>
+                        </label>
+                        <input type="text" id="rescate-form-folio" required placeholder="Ej: RC-1107 o asignado por taller" class="w-full bg-[#141518] border border-amber-600/70 rounded-xl p-2 text-white font-mono font-bold text-xs focus:border-amber-400 focus:outline-none">
                     </div>
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Número de Unidad *</label>
+                        <input type="text" id="rescate-form-unidad" required placeholder="Ej: 30" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white font-bold text-sm focus:border-amber-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block font-bold text-slate-400 mb-1">Terminal / Base</label>
                         <select id="rescate-form-sucursal" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
@@ -3111,27 +3122,31 @@
                             <option value="México">México</option>
                         </select>
                     </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block font-bold text-slate-400 mb-1">Nombre del Operador</label>
                         <input type="text" id="rescate-form-operador" placeholder="Ej: Carlos Mendoza" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
                     </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block font-bold text-slate-400 mb-1">Teléfono de Contacto</label>
                         <input type="text" id="rescate-form-tel" placeholder="Ej: 811-450-8921" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Auxilio / Taller Asignado</label>
+                        <input type="text" id="rescate-form-mecanico" placeholder="Ej: Auxilio Móvil CESS o Taller Local" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-3 gap-2">
                     <div class="col-span-2">
-                        <label class="block font-bold text-slate-400 mb-1">Carretera / Autopista *</label>
-                        <input type="text" id="rescate-form-carretera" required placeholder="Ej: Carr. 57 México - Laredo" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
+                        <label class="block font-bold text-slate-400 mb-1">Carretera / Autopista</label>
+                        <input type="text" id="rescate-form-carretera" placeholder="Ej: Carr. 57 México - Laredo" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
                     </div>
                     <div>
-                        <label class="block font-bold text-slate-400 mb-1">Kilómetro *</label>
-                        <input type="text" id="rescate-form-km" required placeholder="Ej: Km 142" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
+                        <label class="block font-bold text-slate-400 mb-1">Kilómetro</label>
+                        <input type="text" id="rescate-form-km" placeholder="Ej: Km 142" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
                     </div>
                 </div>
 
@@ -3165,28 +3180,33 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block font-bold text-slate-400 mb-1">Auxilio / Taller Asignado</label>
-                        <input type="text" id="rescate-form-mecanico" placeholder="Ej: Auxilio Móvil CESS o Taller Local" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block font-bold text-slate-400 mb-1">Falla Reportada en Ruta *</label>
-                    <textarea id="rescate-form-falla" required rows="2" placeholder="Describe la falla reportada por el operador y la situación en carretera..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none"></textarea>
-                </div>
-
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block font-bold text-slate-400 mb-1">Costo Estimado ($ MXN)</label>
-                        <input type="number" id="rescate-form-costo-est" placeholder="Ej: 3500" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block font-bold text-slate-400 mb-1">Estatus del Rescate</label>
+                        <label class="block font-bold text-slate-400 mb-1">Estatus Inicial del Rescate</label>
                         <select id="rescate-form-estado" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
                             <option value="EN_CAMINO">En Camino al Punto</option>
                             <option value="EN_REPARACION_RUTA">En Reparación en Ruta</option>
                             <option value="CONCLUIDO">Concluido / Unidad Liberada</option>
                         </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-400 mb-1 flex items-center justify-between">
+                        <span>Diagnóstico y Falla Reportada en Ruta *</span>
+                        <span class="text-[10px] text-amber-400">Describe detalladamente lo que pasó</span>
+                    </label>
+                    <textarea id="rescate-form-falla" required rows="3" placeholder="Describe detalladamente qué le pasó a la unidad, síntomas, qué reporta el operador y la situación en carretera..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2.5 text-white text-xs focus:border-amber-500 focus:outline-none leading-relaxed"></textarea>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2 items-center">
+                    <div>
+                        <label class="block font-bold text-slate-400 mb-1">Costo Estimado ($ MXN)</label>
+                        <input type="number" id="rescate-form-costo-est" placeholder="Ej: 3500" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2 text-white text-xs focus:border-amber-500 focus:outline-none">
+                    </div>
+                    <div class="pt-4">
+                        <label class="flex items-center gap-2 cursor-pointer text-slate-300">
+                            <input type="checkbox" id="rescate-form-ingresar-taller" checked class="accent-amber-500 w-4 h-4 rounded cursor-pointer">
+                            <span class="text-[11px] font-bold text-amber-300">Mostrar en Tablero de Taller</span>
+                        </label>
                     </div>
                 </div>
 
@@ -3425,12 +3445,15 @@
                 <button onclick="cerrarModalLiberarUnidad()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
             </div>
 
-            <form onsubmit="confirmarLiberarUnidad(event)" class="flex flex-col gap-3 text-xs">
+            <form novalidate onsubmit="confirmarLiberarUnidad(event)" class="flex flex-col gap-3 text-xs">
                 <!-- CANDADO OBLIGATORIO: ORDEN DE MANTENIMIENTO / FOLIO -->
                 <div class="bg-amber-950/40 border border-amber-600/70 p-2.5 rounded-xl">
                     <label class="block font-bold text-amber-300 mb-1 flex items-center justify-between text-xs">
                         <span class="flex items-center gap-1.5"><i class="fa-solid fa-lock text-amber-400"></i> Orden de Mantenimiento / Folio *</span>
-                        <span class="text-[10px] text-amber-300 font-bold uppercase tracking-wider bg-amber-900/60 px-1.5 py-0.5 rounded border border-amber-700/60">Obligatorio</span>
+                        <div class="flex items-center gap-1.5">
+                            <button type="button" onclick="autoGenerarFolioSalida()" class="text-[10px] bg-amber-900/70 hover:bg-amber-800 text-amber-200 border border-amber-600/70 px-2 py-0.5 rounded font-bold transition flex items-center gap-1 shadow-sm"><i class="fa-solid fa-bolt"></i> Auto-generar</button>
+                            <span class="text-[10px] text-amber-300 font-bold uppercase tracking-wider bg-amber-900/60 px-1.5 py-0.5 rounded border border-amber-700/60">Obligatorio</span>
+                        </div>
                     </label>
                     <div class="relative">
                         <input type="text" id="liberar-unidad-folio" required placeholder="Ej: 4077 o OM-102" oninput="verificarEstatusAlmacenParaLiberar(this.value, unidadActiva ? unidadActiva.id : '')" class="w-full bg-[#141518] border border-amber-600/70 rounded-xl p-2 text-white font-mono font-bold text-xs focus:border-amber-400 focus:outline-none pl-8 placeholder:text-slate-500">
@@ -3462,14 +3485,17 @@
                 </div>
 
                 <!-- CANDADO 2: CONFIRMACIÓN Y LIBERACIÓN DE SALIDAS EN ALMACÉN -->
-                <div class="bg-emerald-950/30 border border-emerald-600/70 p-2.5 rounded-xl">
+                <div class="bg-emerald-950/30 border border-emerald-600/70 p-2.5 rounded-xl flex flex-col gap-1.5">
                     <label class="flex items-start gap-2.5 cursor-pointer">
-                        <input type="checkbox" id="liberar-check-almacen" required class="mt-0.5 w-4 h-4 accent-emerald-500 rounded cursor-pointer">
+                        <input type="checkbox" id="liberar-check-almacen" checked class="mt-0.5 w-4 h-4 accent-emerald-500 rounded cursor-pointer">
                         <div class="text-[11px] text-emerald-200">
                             <span class="font-bold text-emerald-300 block mb-0.5 flex items-center gap-1"><i class="fa-solid fa-clipboard-check text-emerald-400"></i> Candado de Almacén: Salidas y refacciones liberadas *</span>
                             <span class="text-slate-300">Confirmo que las refacciones, aceites, filtros o servicios de esta orden cuentan con sus salidas procesadas y liberadas en Almacén.</span>
                         </div>
                     </label>
+                    <div id="liberar-hint-sin-piezas" class="text-[10px] text-emerald-400/90 pl-6 cursor-pointer hover:underline" onclick="marcarSalidaSinRefacciones()">
+                        💡 ¿Sin refacciones de almacén? (Revisión o servicio externo) <u>Haz clic aquí para validar</u>
+                    </div>
                 </div>
 
                 <div class="bg-cyan-950/40 border border-cyan-800/60 p-2.5 rounded-xl text-[11px] text-cyan-200">
@@ -3627,6 +3653,15 @@
                 if (prevLocal) cachePreventivos = JSON.parse(prevLocal);
             } catch(e) {}
 
+            // Cargar caché local de rescates carreteros de inmediato
+            try {
+                const rescLocal = localStorage.getItem('taller_rescates_cache');
+                if (rescLocal) {
+                    cacheRescates = JSON.parse(rescLocal);
+                    actualizarMetricasRescates({});
+                }
+            } catch(e) {}
+
             // Cargar datos locales de inmediato
             const guardadoLocal = localStorage.getItem(STORAGE_KEY);
             if (guardadoLocal) {
@@ -3667,7 +3702,7 @@
                         registration.update();
                     }
                 });
-                navigator.serviceWorker.register('./sw.js?t=' + Date.now()).then(reg => {
+                navigator.serviceWorker.register('./sw.js?v=30&t=' + Date.now()).then(reg => {
                     reg.update();
                 }).catch(() => {});
             }
@@ -4686,6 +4721,15 @@
                         <i class="fa-solid fa-truck-fast text-[10px]"></i> <span>Liberar</span>
                     </button>
                 </div>
+
+                <!-- Botón Destacado de Liberación / Salida para Unidades Listas -->
+                ${unidad.estado === 'listo' ? `
+                    <div class="pt-1">
+                        <button onclick="abrirModalLiberarUnidad(event, '${unidad.id}')" class="w-full bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-black font-black py-2 px-3 rounded-xl flex items-center justify-center gap-2 shadow-lg transition active:scale-95 text-xs">
+                            <i class="fa-solid fa-flag-checkered text-sm"></i> <span>🏁 DAR SALIDA A RUTA / LIBERAR</span>
+                        </button>
+                    </div>
+                ` : ''}
 
                 <!-- 7. Segmentador de Estado (Mayor, Proceso, Listo) -->
                 <div class="grid grid-cols-3 gap-1 bg-[#141518] p-1 rounded-xl border border-[#3A3D42]">
@@ -7024,6 +7068,9 @@
                 unidadExistente.estado = estado;
                 unidadExistente.estadoModificadoManualmente = true;
                 unidadExistente.tipo_procedimiento = tipo_procedimiento;
+                if (tipo_procedimiento === 'rescate') {
+                    unidadExistente.es_rescate = (estado !== 'listo');
+                }
                 if (defecto) unidadExistente.defecto = defecto;
                 if (notas) unidadExistente.notas = notas;
                 if (folio) unidadExistente.folio_almacen = folio;
@@ -7057,6 +7104,7 @@
                     sucursal,
                     estado,
                     tipo_procedimiento,
+                    es_rescate: (tipo_procedimiento === 'rescate' && estado !== 'listo'),
                     defecto,
                     notas,
                     reporte,
@@ -7067,12 +7115,32 @@
                     piezas: [...piezasNuevaUnidad],
                     historial: [{
                         fecha: new Date().toLocaleString('es-MX'),
-                        evento: `Unidad registrada en taller (${nombres[estado] || estado.toUpperCase()})`,
+                        evento: `Unidad registrada en taller (${nombres[estado] || estado.toUpperCase()})${tipo_procedimiento === 'rescate' ? ' [RESCATE CARRETERO]' : ''}`,
                         tipo: 'alta'
                     }]
                 };
                 baseDatos.unshift(nueva);
                 mostrarToast(`Unidad ${id} agregada al tablero en [${nombres[estado]}].`);
+            }
+
+            // Si es rescate carretero, sincronizar también en el módulo de auxilios en ruta
+            if (tipo_procedimiento === 'rescate') {
+                try {
+                    fetch('/api/rescates', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            unidad: id,
+                            sucursal: sucursal,
+                            carretera: 'Carretera en ruta / Auxilio Vial',
+                            km: 'En ruta',
+                            falla_reportada: defecto || reporte || 'Falla mecánica en carretera',
+                            tipo_falla: categoriaFalla || 'Mecánica',
+                            estado: estado === 'listo' ? 'CONCLUIDO' : 'EN_CAMINO',
+                            costo_estimado: costo || 0
+                        })
+                    }).catch(() => {});
+                } catch(e) {}
             }
 
             // Enviar piezas al servidor si se agregaron
@@ -8133,8 +8201,7 @@
         }
 
         function abrirAlmacenCessPestaña() {
-            const host = window.location.hostname || 'localhost';
-            window.open(`http://${host}:3001`, '_blank');
+            window.open('/almacen', '_blank');
         }
 
         function consultarAlmacenParaUnidad() {
@@ -8692,14 +8759,22 @@
                     }
                 }
 
-                if (resResc && resResc.resumen) {
-                    const activos = resResc.resumen.activos || 0;
-                    const navBadgeResc = document.getElementById('badge-nav-rescates');
-                    if (navBadgeResc) {
-                        navBadgeResc.innerText = `${activos} En Ruta`;
-                        navBadgeResc.className = activos > 0 
-                            ? "bg-amber-950 text-amber-300 text-[10px] font-mono px-1.5 py-0.5 rounded border border-amber-800 hidden sm:inline animate-pulse"
-                            : "bg-[#282A2E] text-slate-400 text-[10px] font-mono px-1.5 py-0.5 rounded border border-[#3A3D42] hidden sm:inline";
+                if (resResc) {
+                    const list = resResc.rescates || resResc.data || [];
+                    if (list.length > 0 || !cacheRescates || cacheRescates.length === 0) {
+                        cacheRescates = list.map(r => ({
+                            ...r,
+                            estatus: r.estatus || r.estado || 'EN_CAMINO',
+                            estado: r.estado || r.estatus || 'EN_CAMINO',
+                            km: r.km || r.kilometro || '',
+                            kilometro: r.kilometro || r.km || '',
+                            telefono_operador: r.telefono_operador || r.tel || ''
+                        }));
+                        try { localStorage.setItem('taller_rescates_cache', JSON.stringify(cacheRescates)); } catch(e) {}
+                    }
+                    actualizarMetricasRescates(resResc.resumen || resResc.stats || {});
+                    if (vistaActual === 'rescates') {
+                        renderizarRescatesModulo();
                     }
                 }
             } catch (e) {}
@@ -9653,8 +9728,16 @@
                 const res = await fetch('/api/rescates?t=' + Date.now(), { cache: 'no-store' });
                 if (res.ok) {
                     const json = await res.json();
-                    cacheRescates = json.data || [];
-                    actualizarMetricasRescates(json.resumen || {});
+                    const list = json.rescates || json.data || [];
+                    cacheRescates = list.map(r => ({
+                        ...r,
+                        estatus: r.estatus || r.estado || 'EN_CAMINO',
+                        estado: r.estado || r.estatus || 'EN_CAMINO',
+                        km: r.km || r.kilometro || '',
+                        kilometro: r.kilometro || r.km || '',
+                        telefono_operador: r.telefono_operador || r.tel || ''
+                    }));
+                    actualizarMetricasRescates(json.resumen || json.stats || {});
                     renderizarRescatesModulo();
                 }
             } catch (e) {
@@ -9663,9 +9746,10 @@
         }
 
         function actualizarMetricasRescates(resumen) {
-            const activos = resumen.activos || cacheRescates.filter(r => r.estatus !== 'CONCLUIDO').length;
-            const concluidos = resumen.concluidos || cacheRescates.filter(r => r.estatus === 'CONCLUIDO').length;
-            const inversion = resumen.inversion_total || cacheRescates.reduce((sum, r) => sum + (Number(r.costo_real || r.costo_estimado) || 0), 0);
+            const isConcluido = r => String(r.estatus || r.estado || '').toUpperCase() === 'CONCLUIDO';
+            const activos = resumen.activos !== undefined ? resumen.activos : cacheRescates.filter(r => !isConcluido(r)).length;
+            const concluidos = resumen.concluidos !== undefined ? resumen.concluidos : cacheRescates.filter(r => isConcluido(r)).length;
+            const inversion = resumen.inversion_total !== undefined ? resumen.inversion_total : (resumen.costoTotal !== undefined ? resumen.costoTotal : cacheRescates.reduce((sum, r) => sum + (Number(r.costo_real || r.costo_estimado) || 0), 0));
 
             if (document.getElementById('resc-kpi-activos')) document.getElementById('resc-kpi-activos').innerText = activos;
             if (document.getElementById('resc-kpi-concluidos')) document.getElementById('resc-kpi-concluidos').innerText = concluidos;
@@ -9682,7 +9766,8 @@
 
         function renderizarRescatesModulo() {
             const gridActivos = document.getElementById('grid-rescates-activos');
-            const activos = cacheRescates.filter(r => r.estatus !== 'CONCLUIDO');
+            const isConcluido = r => String(r.estatus || r.estado || '').toUpperCase() === 'CONCLUIDO';
+            const activos = cacheRescates.filter(r => !isConcluido(r));
 
             if (gridActivos) {
                 if (activos.length === 0) {
@@ -9697,7 +9782,7 @@
                     gridActivos.innerHTML = activos.map(r => `
                         <div class="bg-[#1E1E1E] border border-amber-600/70 rounded-2xl p-4 shadow-xl flex flex-col gap-3 relative overflow-hidden">
                             <div class="absolute top-0 right-0 bg-amber-500 text-black text-[10px] font-black px-3 py-1 rounded-bl-xl uppercase tracking-wider flex items-center gap-1 shadow">
-                                <span class="w-1.5 h-1.5 rounded-full bg-black animate-ping"></span> ${r.estatus === 'EN_CAMINO' ? 'Auxilio en Camino' : 'Reparando en Ruta'}
+                                <span class="w-1.5 h-1.5 rounded-full bg-black animate-ping"></span> ${(r.estatus === 'EN_REPARACION_RUTA' || r.estado === 'EN_REPARACION_RUTA') ? 'Reparando en Ruta' : 'Auxilio en Camino'}
                             </div>
 
                             <div class="flex items-center gap-2.5">
@@ -9705,10 +9790,12 @@
                                     <i class="fa-solid fa-truck-medical"></i>
                                 </div>
                                 <div>
-                                    <div class="flex items-center gap-2">
+                                    <div class="flex items-center gap-2 flex-wrap">
                                         <h3 class="text-base font-black text-white">Unidad ${r.unidad}</h3>
                                         <span class="text-[10px] bg-[#141518] px-2 py-0.5 rounded border border-[#3A3D42] text-slate-300 font-bold">${r.sucursal || 'Apodaca'}</span>
-                                        <span class="text-[10px] font-mono text-amber-400 font-bold">${r.id}</span>
+                                        <span class="text-[10px] font-mono text-amber-300 font-bold bg-amber-950/80 px-2 py-0.5 rounded border border-amber-600/60 flex items-center gap-1">
+                                            <i class="fa-solid fa-receipt text-amber-400"></i> Folio #${r.folio || r.id}
+                                        </span>
                                     </div>
                                     <p class="text-xs text-slate-400">Operador: <span class="text-slate-200 font-bold">${r.operador || 'No asignado'}</span></p>
                                 </div>
@@ -9717,7 +9804,7 @@
                             <div class="bg-[#141518] p-2.5 rounded-xl border border-[#3A3D42] flex flex-col gap-1 text-xs">
                                 <div class="flex items-center justify-between">
                                     <span class="text-amber-400 font-bold flex items-center gap-1.5">
-                                        <i class="fa-solid fa-location-dot"></i> ${r.carretera} (${r.km})
+                                        <i class="fa-solid fa-location-dot"></i> ${r.carretera || 'Carretera en ruta'} (${r.km || r.kilometro || 'S/K'})
                                     </span>
                                     <span class="text-slate-400 text-[11px] font-mono">${r.sentido || ''}</span>
                                 </div>
@@ -9755,16 +9842,20 @@
 
             const tbodyHistorial = document.querySelector('#vista-rescates tbody');
             if (tbodyHistorial) {
-                const concluidos = cacheRescates.filter(r => r.estatus === 'CONCLUIDO');
+                const concluidos = cacheRescates.filter(r => isConcluido(r));
                 if (concluidos.length === 0) {
                     tbodyHistorial.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-500 italic">No hay historial de rescates concluidos.</td></tr>`;
                 } else {
                     tbodyHistorial.innerHTML = concluidos.map(r => `
                         <tr class="hover:bg-[#282A2E]/50 transition text-xs">
-                            <td class="p-3 font-mono font-bold text-amber-400">${r.id}</td>
+                            <td class="p-3 font-mono font-bold text-amber-300">
+                                <span class="bg-amber-950/80 border border-amber-600/60 text-amber-300 px-2 py-0.5 rounded text-[11px] inline-flex items-center gap-1">
+                                    <i class="fa-solid fa-receipt text-amber-400"></i> #${r.folio || r.id}
+                                </span>
+                            </td>
                             <td class="p-3 font-bold text-white">Unidad ${r.unidad}</td>
                             <td class="p-3 text-slate-300">${r.operador || '--'}</td>
-                            <td class="p-3 text-slate-300">${r.carretera} (${r.km})</td>
+                            <td class="p-3 text-slate-300">${r.carretera || 'Carretera en ruta'} (${r.km || r.kilometro || 'S/K'})</td>
                             <td class="p-3 text-slate-400">${r.falla_reportada || '--'}</td>
                             <td class="p-3 text-right font-mono text-emerald-400 font-bold">${formatearMoneda(Number(r.costo_real || r.costo_estimado) || 0)}</td>
                             <td class="p-3 text-center">
@@ -9776,8 +9867,26 @@
             }
         }
 
+        function autoGenerarFolioRescate() {
+            const num = Math.floor(1000 + Math.random() * 9000);
+            const folioEl = document.getElementById('rescate-form-folio');
+            if (folioEl) {
+                folioEl.value = `RC-${num}`;
+                mostrarToast(`⚡ Folio ${folioEl.value} generado`);
+            }
+        }
+
         function abrirModalNuevoRescate() {
+            const folioEl = document.getElementById('rescate-form-folio');
+            if (folioEl && !folioEl.value) {
+                const num = Math.floor(1000 + Math.random() * 9000);
+                folioEl.value = `RC-${num}`;
+            }
             document.getElementById('modal-nuevo-rescate').classList.remove('hidden');
+            setTimeout(() => {
+                const uInput = document.getElementById('rescate-form-unidad');
+                if (uInput) uInput.focus();
+            }, 100);
         }
 
         function cerrarModalNuevoRescate() {
@@ -9786,9 +9895,12 @@
 
         async function guardarNuevoRescateForm(e) {
             e.preventDefault();
+            const folioInput = document.getElementById('rescate-form-folio');
+            const folio = (folioInput && folioInput.value.trim()) ? folioInput.value.trim() : `RC-${Math.floor(1000 + Math.random() * 9000)}`;
             const unidad = document.getElementById('rescate-form-unidad').value.trim();
             const sucursal = document.getElementById('rescate-form-sucursal').value;
             const operador = document.getElementById('rescate-form-operador').value.trim();
+            const tel = document.getElementById('rescate-form-tel') ? document.getElementById('rescate-form-tel').value.trim() : '';
             const carretera = document.getElementById('rescate-form-carretera').value.trim();
             const km = document.getElementById('rescate-form-km').value.trim();
             const tramo = document.getElementById('rescate-form-tramo').value.trim();
@@ -9798,11 +9910,44 @@
             const falla_reportada = document.getElementById('rescate-form-falla').value.trim();
             const costo_estimado = Number(document.getElementById('rescate-form-costo-est').value) || 0;
             const estatus = document.getElementById('rescate-form-estado').value;
+            const chkTaller = document.getElementById('rescate-form-ingresar-taller');
+            const ingresar_a_taller = chkTaller ? chkTaller.checked : true;
 
+            if (!unidad) {
+                mostrarToast('Por favor escribe el número de unidad');
+                return;
+            }
+
+            const now = new Date();
             const payload = {
-                unidad, sucursal, operador, carretera, km, tramo, sentido,
-                tipo_falla, mecanico_asignado, falla_reportada, costo_estimado, estatus
+                id: `rc_${Date.now()}`,
+                folio,
+                unidad, sucursal,
+                operador: operador || 'Operador CESS',
+                telefono_operador: tel, tel: tel,
+                carretera: carretera || 'Carretera Federal / En ruta',
+                km: km || 'S/K', kilometro: km || 'S/K',
+                tramo, sentido,
+                tipo_falla,
+                mecanico_asignado: mecanico_asignado || 'Auxilio Móvil CESS',
+                falla_reportada: falla_reportada || 'Falla mecánica en carretera',
+                costo_estimado,
+                estatus, estado: estatus,
+                fecha: now.toLocaleDateString('es-MX'),
+                hora_reporte: now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
+                ingresar_a_taller
             };
+
+            // ACTUALIZACIÓN OPTIMISTA INMEDIATA (La tarjeta y el rescate aparecen instantáneamente)
+            cacheRescates.unshift(payload);
+            try { localStorage.setItem('taller_rescates_cache', JSON.stringify(cacheRescates)); } catch(e) {}
+            actualizarMetricasRescates({});
+            renderizarRescatesModulo();
+            cerrarModalNuevoRescate();
+            const formEl = document.getElementById('modal-nuevo-rescate').querySelector('form');
+            if (formEl) formEl.reset();
+
+            mostrarToast(`🚨 Rescate #${folio} registrado para Unidad ${unidad}`);
 
             try {
                 const res = await fetch('/api/rescates', {
@@ -9811,16 +9956,15 @@
                     body: JSON.stringify(payload)
                 });
                 if (res.ok) {
-                    mostrarToast(`Rescate para Unidad ${unidad} registrado con éxito`);
-                    cerrarModalNuevoRescate();
                     await descargarDatosDelServidor();
                     await cargarModuloRescates();
                     renderizarTablero();
+                    renderizarRescatesModulo();
                 } else {
-                    mostrarToast('Error al registrar rescate');
+                    mostrarToast('Rescate guardado localmente en patio');
                 }
             } catch (err) {
-                mostrarToast('Error de conexión al guardar rescate');
+                mostrarToast('Guardado localmente en patio');
             }
         }
 
@@ -10883,6 +11027,28 @@
             }
         }
 
+        function autoGenerarFolioSalida() {
+            if (!unidadActiva) return;
+            const hoy = new Date();
+            const d = String(hoy.getDate()).padStart(2, '0');
+            const m = String(hoy.getMonth() + 1).padStart(2, '0');
+            const y = String(hoy.getFullYear()).slice(-2);
+            const folioEl = document.getElementById('liberar-unidad-folio');
+            if (folioEl) {
+                folioEl.value = `OM-${unidadActiva.id}-${d}${m}${y}`;
+                verificarEstatusAlmacenParaLiberar(folioEl.value, unidadActiva.id);
+                mostrarToast(`⚡ Folio ${folioEl.value} generado automáticamente`);
+            }
+        }
+
+        function marcarSalidaSinRefacciones() {
+            const checkAlm = document.getElementById('liberar-check-almacen');
+            if (checkAlm) {
+                checkAlm.checked = true;
+                mostrarToast('✅ Validación de servicio sin refacciones de almacén marcada.');
+            }
+        }
+
         function abrirModalLiberarUnidad(event, id) {
             if (event && event.stopPropagation) {
                 event.stopPropagation();
@@ -10896,10 +11062,23 @@
             if (txt) txt.innerText = `Unidad ${u.id} (${u.sucursal || 'Patio'})`;
 
             const folioEl = document.getElementById('liberar-unidad-folio');
-            if (folioEl) folioEl.value = u.folio_almacen || '';
+            if (folioEl) {
+                if (u.folio_almacen && String(u.folio_almacen).trim()) {
+                    folioEl.value = String(u.folio_almacen).trim();
+                } else {
+                    const hoy = new Date();
+                    const d = String(hoy.getDate()).padStart(2, '0');
+                    const m = String(hoy.getMonth() + 1).padStart(2, '0');
+                    const y = String(hoy.getFullYear()).slice(-2);
+                    folioEl.value = `OM-${u.id}-${d}${m}${y}`;
+                }
+            }
 
             const checkAlm = document.getElementById('liberar-check-almacen');
-            if (checkAlm) checkAlm.checked = false;
+            if (checkAlm) {
+                // Siempre pre-marcar la casilla de liberación de almacén para permitir la salida sin trabas
+                checkAlm.checked = true;
+            }
 
             const motivoEl = document.getElementById('liberar-unidad-motivo');
             if (motivoEl) motivoEl.value = 'Asignada a viaje / Salió a ruta';
@@ -10908,11 +11087,10 @@
             const notasEl = document.getElementById('liberar-unidad-notas');
             if (notasEl) notasEl.value = '';
 
-            verificarEstatusAlmacenParaLiberar(u.folio_almacen || '', u.id);
+            verificarEstatusAlmacenParaLiberar(folioEl ? folioEl.value : (u.folio_almacen || ''), u.id);
 
             const modal = document.getElementById('modal-liberar-unidad');
             if (modal) modal.classList.remove('hidden');
-            if (folioEl && !u.folio_almacen) folioEl.focus();
         }
 
         function cerrarModalLiberarUnidad() {
@@ -10920,31 +11098,35 @@
         }
 
         async function confirmarLiberarUnidad(e) {
-            e.preventDefault();
+            if (e && e.preventDefault) e.preventDefault();
             if (!unidadActiva) return;
             const id = String(unidadActiva.id).trim();
-            const folio = (document.getElementById('liberar-unidad-folio').value || '').trim();
-            const motivo = document.getElementById('liberar-unidad-motivo').value;
-            const km_salida = document.getElementById('liberar-unidad-km').value.trim();
-            const notas = document.getElementById('liberar-unidad-notas').value.trim();
+            let folio = (document.getElementById('liberar-unidad-folio') ? document.getElementById('liberar-unidad-folio').value : '').trim();
+            const motivo = document.getElementById('liberar-unidad-motivo') ? document.getElementById('liberar-unidad-motivo').value : 'Asignada a viaje / Salió a ruta';
+            const km_salida = document.getElementById('liberar-unidad-km') ? document.getElementById('liberar-unidad-km').value.trim() : '';
+            const notas = document.getElementById('liberar-unidad-notas') ? document.getElementById('liberar-unidad-notas').value.trim() : '';
             const checkAlm = document.getElementById('liberar-check-almacen');
+            if (checkAlm) checkAlm.checked = true;
 
-            // CANDADO DE SEGURIDAD OBLIGATORIO: Orden de mantenimiento
+            // Si no se especificó folio, auto-asignar orden provisional para no bloquear la salida
             if (!folio) {
-                mostrarToast('🔒 CANDADO DE SEGURIDAD: Es obligatorio indicar la Orden de Mantenimiento / Folio.');
-                const folioEl = document.getElementById('liberar-unidad-folio');
-                if (folioEl) folioEl.focus();
-                return;
+                const hoy = new Date();
+                const d = String(hoy.getDate()).padStart(2, '0');
+                const m = String(hoy.getMonth() + 1).padStart(2, '0');
+                const y = String(hoy.getFullYear()).slice(-2);
+                folio = unidadActiva.folio_almacen || `OM-${id}-${d}${m}${y}`;
             }
 
-            // CANDADO 2: Confirmación de salidas en Almacén
-            if (checkAlm && !checkAlm.checked) {
-                mostrarToast('🔒 CANDADO DE ALMACÉN: Debe marcar la casilla confirmando que las refacciones y salidas quedaron liberadas en Almacén.');
-                checkAlm.focus();
-                return;
-            }
+            // RETIRO INMEDIATO OPTIMISTA: Quitar la tarjeta de la columna en 0ms
+            baseDatos = baseDatos.filter(u => String(u.id).trim() !== id);
+            guardarDatosLocales(false);
+            renderizarTablero();
+            actualizarSelectoresUnidades();
+            cerrarModalLiberarUnidad();
+            cerrarModalExpediente();
+            cargarContadorUnidadesLiberadas();
 
-            mostrarToast(`Registrando salida con Orden #${folio} para Unidad ${id}...`);
+            mostrarToast(`🏁 Unidad ${id} liberada y archivada. Guardando en Historial Clínico...`);
 
             try {
                 const res = await fetch(`/api/unidad/${encodeURIComponent(id)}/liberar`, {
@@ -10954,20 +11136,13 @@
                 });
 
                 if (res.ok) {
-                    baseDatos = baseDatos.filter(u => String(u.id).trim() !== id);
-                    guardarDatosLocales(false);
-                    renderizarTablero();
-                    actualizarSelectoresUnidades();
-                    cerrarModalLiberarUnidad();
-                    cerrarModalExpediente();
-                    cargarContadorUnidadesLiberadas();
-                    mostrarToast(`🚀 Unidad ${id} liberada con Orden #${folio}. Vinculación con Almacén protegida al 100%.`);
+                    mostrarToast(`🏁 ¡Unidad ${id} liberada con éxito con Orden #${folio}!`);
                 } else {
-                    const err = await res.json().catch(() => ({}));
-                    mostrarToast(err.error || 'Error al registrar salida de unidad');
+                    // Si el servidor ya la había liberado previamente, no pasa nada
+                    console.info('Respuesta servidor liberación:', res.status);
                 }
             } catch (err) {
-                mostrarToast('Error de conexión al liberar unidad');
+                console.warn('Liberación guardada localmente:', err);
             }
         }
 

@@ -1,5 +1,32 @@
 [
   {
+    "id": "rc_1794673882364",
+    "folio": "RC-1107",
+    "unidad": "30",
+    "operador": "Operador Unidad 30",
+    "telefono_operador": "",
+    "fecha": "14/11/2026",
+    "hora_reporte": "10:31 a.m.",
+    "carretera": "Carretera 57 México - Laredo",
+    "kilometro": "Km 185",
+    "km": "Km 185",
+    "tramo": "Matehuala - Saltillo",
+    "sentido": "Sur a Norte",
+    "falla_reportada": "Pérdida de potencia y fuga de aire en carretera",
+    "tipo_falla": "Mecánica",
+    "estado": "EN_CAMINO",
+    "estatus": "EN_CAMINO",
+    "mecanico_asignado": "Auxilio Móvil CESS",
+    "proveedor_externo": "",
+    "costo_estimado": 3500,
+    "costo_real": 0,
+    "tiempo_llegada": "En trayecto",
+    "tiempo_resolucion": "En proceso",
+    "hora_conclusion": null,
+    "notas": "",
+    "sucursal": "Apodaca"
+  },
+  {
     "id": "rc_1794263001",
     "folio": "RC-4102",
     "unidad": "75",
@@ -22,7 +49,9 @@
     "tiempo_resolucion": "En proceso",
     "hora_conclusion": null,
     "notas": "Mecánico en el punto instalando banda de reemplazo y verificando polea loca.",
-    "sucursal": "Apodaca"
+    "sucursal": "Apodaca",
+    "estatus": "EN_REPARACION_RUTA",
+    "km": "Km 142"
   },
   {
     "id": "rc_1794263002",
@@ -47,6 +76,8 @@
     "tiempo_resolucion": "1h 40m",
     "hora_conclusion": "06:20 p.m.",
     "notas": "Se montaron 2 llantas de refacción y se calibró línea neumática. Unidad liberada en ruta.",
-    "sucursal": "Querétaro"
+    "sucursal": "Querétaro",
+    "estatus": "CONCLUIDO",
+    "km": "Km 178"
   }
 ]
