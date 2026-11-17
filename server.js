@@ -46,6 +46,43 @@ if (!fs.existsSync(UPLOADS_DIR)) {
 app.use('/uploads', express.static(UPLOADS_DIR));
 
 // =========================================================
+// AUTO-CORRECCIÓN INTELIGENTE DE ARCHIVOS DESPLAZADOS EN GITHUB
+// =========================================================
+try {
+    const mainIndex = path.join(__dirname, 'index.html');
+    const index1 = path.join(__dirname, 'index (1).html');
+    if (fs.existsSync(index1)) {
+        const statMain = fs.existsSync(mainIndex) ? fs.statSync(mainIndex) : null;
+        if (!statMain || statMain.size < 10000) {
+            console.log('🔄 [Auto-Fix] Restaurando Taller Pro: index (1).html -> index.html');
+            fs.copyFileSync(index1, mainIndex);
+        }
+    }
+
+    const targetAssetsDir = path.join(__dirname, 'almacen_dist', 'assets');
+    if (!fs.existsSync(targetAssetsDir)) {
+        fs.mkdirSync(targetAssetsDir, { recursive: true });
+    }
+    const rootFiles = fs.readdirSync(__dirname);
+    rootFiles.forEach(f => {
+        if (f.startsWith('index-') && (f.endsWith('.js') || f.endsWith('.css'))) {
+            try {
+                fs.copyFileSync(path.join(__dirname, f), path.join(targetAssetsDir, f));
+                console.log(`🔄 [Auto-Fix] Asset copiado a almacen_dist/assets/${f}`);
+            } catch(e) {}
+        }
+    });
+} catch(e) {
+    console.error('Error en auto-corrección de archivos:', e);
+}
+
+// Servir assets de Almacén desde almacen_dist/assets y raíz como respaldo
+app.use('/almacen/assets', express.static(path.join(__dirname, 'almacen_dist', 'assets')));
+app.use('/almacen/assets', express.static(__dirname));
+app.use('/assets', express.static(path.join(__dirname, 'almacen_dist', 'assets')));
+app.use('/assets', express.static(__dirname));
+
+// =========================================================
 // INTEGRACIÓN UNIFICADA: ALMACÉN CENTRAL CESS
 // =========================================================
 try {
@@ -904,8 +941,29 @@ function broadcastSSE(type, payload = {}) {
 
 function saveUnidades(unidades, autor = 'Sistema') {
     if (Array.isArray(unidades)) {
-        // PROTECCIÓN ESTRICTA: Filtrar cualquier unidad previamente archivada/liberada para evitar resurrecciones
-        const archivadas = getUnidadesArchivadas();
+        // Gestión inteligente de unidades archivadas:
+        // Si una unidad en la lista activa tiene estatus operativo ('proceso', 'mayor', 'listo')
+        // o reincorporación explícita, se remueve de archivadas para permitir su ingreso activo a taller.
+        let archivadas = getUnidadesArchivadas();
+        let archivadasModificadas = false;
+
+        unidades.forEach(u => {
+            if (!u || !u.id) return;
+            const k = String(u.id).trim().toUpperCase();
+            const archIdx = archivadas.findIndex(a => String(a.id).trim().toUpperCase() === k);
+            if (archIdx !== -1) {
+                if (u.reincorporada || (!u.archivada && ['proceso', 'mayor', 'listo'].includes(u.estado))) {
+                    archivadas.splice(archIdx, 1);
+                    archivadasModificadas = true;
+                    console.log(`[CESS Taller] Unidad ${k} reincorporada de archivadas al tablero activo.`);
+                }
+            }
+        });
+
+        if (archivadasModificadas) {
+            saveUnidadesArchivadas(archivadas);
+        }
+
         const archivadasSet = new Set(archivadas.map(a => String(a.id).trim().toUpperCase()));
         unidades = unidades.filter(u => {
             if (!u || !u.id) return false;
@@ -1254,9 +1312,30 @@ app.post('/api/unidad/:id', (req, res) => {
         let archivadas = getUnidadesArchivadas();
         let archIdx = archivadas.findIndex(u => String(u.id).trim() === unitId);
         if (archIdx !== -1) {
-            archivadas[archIdx] = { ...archivadas[archIdx], ...updates };
-            saveUnidadesArchivadas(archivadas);
-            return res.json({ success: true, action: 'updated_archived', data: archivadas[archIdx] });
+            // Si se está guardando como ACTIVA en taller, reincorporar automáticamente
+            if (!updates.archivada && updates.estado !== 'archivada' && updates.estado !== 'liberada') {
+                const unidadArch = archivadas.splice(archIdx, 1)[0];
+                saveUnidadesArchivadas(archivadas);
+                const reincorporada = {
+                    ...unidadArch,
+                    ...updates,
+                    archivada: false,
+                    estado: updates.estado || 'proceso'
+                };
+                delete reincorporada.fecha_salida;
+                delete reincorporada.hora_salida;
+                delete reincorporada.motivo_salida;
+                delete reincorporada.notas_salida;
+                unidades.unshift(reincorporada);
+                saveUnidades(unidades, 'Reincorporación / Alta');
+                registrarMovimientoJornada(unitId, 'alta', `Unidad ${unitId} reingresó a taller (${reincorporada.estado.toUpperCase()})`);
+                broadcastSSE('unit_updated', { unit: reincorporada, action: 'reincorporada' });
+                return res.json({ success: true, action: 'reincorporated', data: reincorporada });
+            } else {
+                archivadas[archIdx] = { ...archivadas[archIdx], ...updates };
+                saveUnidadesArchivadas(archivadas);
+                return res.json({ success: true, action: 'updated_archived', data: archivadas[archIdx] });
+            }
         }
 
         const nueva = {
@@ -1540,10 +1619,9 @@ app.post('/api/unidad/:id/reincorporar', (req, res) => {
     } else {
         unidades.unshift(unidad);
     }
-    saveUnidades(unidades);
-
     archivadas.splice(idx, 1);
     saveUnidadesArchivadas(archivadas);
+    saveUnidades(unidades);
 
     res.json({ success: true, mensaje: `Unidad ${unitId} reincorporada al tablero`, unidad });
 });
@@ -4794,7 +4872,13 @@ app.use((req, res, next) => {
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
     res.setHeader('Pragma', 'no-cache');
     res.setHeader('Expires', '0');
-    res.sendFile(path.join(__dirname, 'index.html'));
+
+    const index1 = path.join(__dirname, 'index (1).html');
+    const mainIndex = path.join(__dirname, 'index.html');
+    if (fs.existsSync(index1) && fs.existsSync(mainIndex) && fs.statSync(mainIndex).size < 10000) {
+        return res.sendFile(index1);
+    }
+    res.sendFile(mainIndex);
 });
 
 // Obtener IP local de la máquina

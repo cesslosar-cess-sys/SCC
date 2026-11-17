@@ -4039,6 +4039,17 @@
                     const key = String(lu.id).trim();
 
                     if (!mapa.has(key)) {
+                        // Si la unidad fue recién agregada o reincorporada localmente, conservarla y forzar envío al servidor
+                        if (lu.reincorporada) {
+                            mapa.set(key, lu);
+                            fetch(`/api/unidad/${encodeURIComponent(lu.id)}`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(lu),
+                                keepalive: true
+                            }).catch(() => {});
+                            return;
+                        }
                         // Si la unidad fue retirada o liberada en el servidor, no resucitarla
                         return;
                     } else {
@@ -4390,7 +4401,8 @@
                 fetch('/api/unidades', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(baseDatos)
+                    body: JSON.stringify(baseDatos),
+                    keepalive: true
                 }).catch(() => {});
 
                 if (typeof window.guardarTableroEnFirebase === 'function') {
@@ -7249,6 +7261,12 @@
                 }
 
                 mostrarToast(`Unidad ${id} actualizada: se movió a [${nombres[estado]}]`);
+                fetch(`/api/unidad/${encodeURIComponent(unidadExistente.id)}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(unidadExistente),
+                    keepalive: true
+                }).catch(() => {});
             } else {
                 const nueva = {
                     id,
@@ -7264,14 +7282,30 @@
                     categoriaFalla,
                     folio_almacen: folio || '',
                     piezas: [...piezasNuevaUnidad],
+                    reincorporada: true,
+                    archivada: false,
                     historial: [{
                         fecha: new Date().toLocaleString('es-MX'),
                         evento: `Unidad registrada en taller (${nombres[estado] || estado.toUpperCase()})${tipo_procedimiento === 'rescate' ? ' [RESCATE CARRETERO]' : ''}`,
                         tipo: 'alta'
                     }]
                 };
+
+                // Si la unidad estaba en caché de liberadas/archivadas, limpiarla para evitar conflictos
+                if (Array.isArray(cacheUnidadesLiberadas)) {
+                    cacheUnidadesLiberadas = cacheUnidadesLiberadas.filter(u => String(u.id).trim().toUpperCase() !== String(id).trim().toUpperCase());
+                }
+                baseDatos = baseDatos.filter(u => String(u.id).trim().toUpperCase() !== String(id).trim().toUpperCase());
                 baseDatos.unshift(nueva);
                 mostrarToast(`Unidad ${id} agregada al tablero en [${nombres[estado]}].`);
+
+                // Enviar inmediatamente al servidor para garantizar persistencia y reincorporación en backend
+                fetch(`/api/unidad/${encodeURIComponent(id)}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(nueva),
+                    keepalive: true
+                }).catch(() => {});
             }
 
             // Si es rescate carretero, sincronizar también en el módulo de auxilios en ruta
