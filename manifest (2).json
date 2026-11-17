@@ -1,0 +1,19 @@
+{
+  "name": "Taller Pro • Control CESS",
+  "short_name": "Taller CESS",
+  "description": "Sistema Móvil de Gestión de Taller, Reparaciones y Bitácora Diaria para Flotillas CESS",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#141518",
+  "theme_color": "#1E1E1E",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

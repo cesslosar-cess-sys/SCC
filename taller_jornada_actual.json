@@ -1,17 +1,17 @@
 {
-  "fecha": "2026-11-16",
+  "fecha": "2026-11-17",
   "hora_inicio": "00:00:00",
-  "titulo": "Jornada Activa - lunes, 16 de noviembre de 2026",
+  "titulo": "Jornada Activa - martes, 17 de noviembre de 2026",
   "estado": "ACTIVA",
-  "jornada_iniciada_con": "Cierre del día anterior (2026-11-14)",
+  "jornada_iniciada_con": "Cierre del día anterior (2026-11-16)",
   "proximo_corte_automatico": "Medianoche (00:00:00)",
   "movimientos": [
     {
-      "id": "mov_init_1794855392119",
+      "id": "mov_init_1794895531987",
       "hora": "00:00:00",
       "unidad_id": "TODAS",
       "tipo": "apertura",
-      "descripcion": "Apertura de jornada diaria. Se arranca con el estatus del cierre de ayer (2026-11-14).",
+      "descripcion": "Apertura de jornada diaria. Se arranca con el estatus del cierre de ayer (2026-11-16).",
       "autor": "Sistema Taller Pro"
     }
   ]

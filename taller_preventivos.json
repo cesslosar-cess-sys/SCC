@@ -36,14 +36,14 @@
       "marca": "Freightliner",
       "division": "RL",
       "ubicacion": "Boulevard Periferico Ecologico, San Francisco Ocotlan, 72680 Coronango, PUE, Mexico - [1 km]",
-      "km_actual": 188081,
+      "km_actual": 190076,
       "km_mtto_anterior": 140375,
       "proximo_mtto_km": 170375,
-      "km_restantes": -17706,
+      "km_restantes": -19701,
       "estatus": "VENCIDO",
       "estatusLabel": "Vencido",
       "fecha_realizado": "26/02/2025",
-      "ultima_actualizacion": "2026-11-13T15:37:52.885Z"
+      "ultima_actualizacion": "2026-11-17T04:04:38.421Z"
     },
     {
       "unidad": "76",
@@ -301,6 +301,21 @@
       "ultima_actualizacion": "2026-11-14T09:10:27.261Z"
     },
     {
+      "unidad": "94",
+      "tipo_tracto": "Cascadia DD6",
+      "marca": "Freightliner",
+      "division": "RC",
+      "ubicacion": "PATIO APODACA",
+      "km_actual": 1443075,
+      "km_mtto_anterior": 1411931,
+      "proximo_mtto_km": 1446931,
+      "km_restantes": 3856,
+      "estatus": "PROXIMO",
+      "estatusLabel": "Próximo",
+      "fecha_realizado": "17/06/2026",
+      "ultima_actualizacion": "2026-11-17T15:10:25.552Z"
+    },
+    {
       "unidad": "85",
       "tipo_tracto": "Cascadia",
       "marca": "Freightliner",
@@ -389,21 +404,6 @@
       "estatusLabel": "Vigente",
       "fecha_realizado": "-",
       "ultima_actualizacion": "2026-10-22T18:13:17.703Z"
-    },
-    {
-      "unidad": "94",
-      "tipo_tracto": "Cascadia DD6",
-      "marca": "Freightliner",
-      "division": "RC",
-      "ubicacion": "PATIO APODACA",
-      "km_actual": 1440898,
-      "km_mtto_anterior": 1411931,
-      "proximo_mtto_km": 1446931,
-      "km_restantes": 6033,
-      "estatus": "VIGENTE",
-      "estatusLabel": "Vigente",
-      "fecha_realizado": "17/06/2026",
-      "ultima_actualizacion": "2026-11-14T15:05:48.289Z"
     },
     {
       "unidad": "2505",
@@ -811,6 +811,21 @@
       "ultima_actualizacion": "2026-11-13T15:42:47.909Z"
     },
     {
+      "unidad": "44",
+      "tipo_tracto": "Cascadia",
+      "marca": "Freightliner",
+      "division": "RL",
+      "ubicacion": "PATIO APODACA",
+      "km_actual": 1289993,
+      "km_mtto_anterior": 1280389,
+      "proximo_mtto_km": 1315389,
+      "km_restantes": 25396,
+      "estatus": "VIGENTE",
+      "estatusLabel": "Vigente",
+      "fecha_realizado": "12/10/2026",
+      "ultima_actualizacion": "2026-11-17T04:51:42.814Z"
+    },
+    {
       "unidad": "1",
       "tipo_tracto": "Cascadia",
       "marca": "Freightliner",
@@ -884,21 +899,6 @@
       "estatusLabel": "Vigente",
       "fecha_realizado": "04/11/2026",
       "ultima_actualizacion": "2026-11-13T04:20:29.372Z"
-    },
-    {
-      "unidad": "44",
-      "tipo_tracto": "Cascadia",
-      "marca": "Freightliner",
-      "division": "RL",
-      "ubicacion": "PATIO APODACA",
-      "km_actual": 1287664,
-      "km_mtto_anterior": 1280389,
-      "proximo_mtto_km": 1315389,
-      "km_restantes": 27725,
-      "estatus": "VIGENTE",
-      "estatusLabel": "Vigente",
-      "fecha_realizado": "12/10/2026",
-      "ultima_actualizacion": "2026-11-11T01:10:19.403Z"
     },
     {
       "unidad": "59",
@@ -5033,9 +5033,9 @@
   "stats": {
     "total": 75,
     "vencidos": 12,
-    "proximos": 8,
-    "vigentes": 55
+    "proximos": 9,
+    "vigentes": 54
   },
   "source": "Firestore (diesel-cess-40bbf) Realtime Sync",
-  "timestamp": "2026-11-16T21:03:09.796Z"
+  "timestamp": "2026-11-17T15:54:22.078Z"
 }

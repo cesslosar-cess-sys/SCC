@@ -595,110 +595,6 @@
     "categoriaFalla": "Motor",
     "piezas": [
       {
-        "id": "mov_1793804044448_856",
-        "id_pieza": "ABP_42A_9294_D2061",
-        "descripcion": "PASTILLAS DE FRENO",
-        "numero_parte": "ABP 42A 9294 D2061",
-        "marca": "ALLIANCE",
-        "cantidad": 2,
-        "unidad_medida": "PZ",
-        "precio_unitario": 1850,
-        "costo_total": 3700,
-        "rack": "",
-        "nivel": "",
-        "stock_disponible": 0,
-        "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-13T22:41:55.991Z",
-        "folio_oc": "",
-        "proveedor_oc": "",
-        "fecha_estimada_arribo": "",
-        "autorizado_por": "",
-        "fecha_autorizacion": "",
-        "recibido_por": "",
-        "fecha_recepcion": "2026-11-03",
-        "instalado_por": "",
-        "fecha_instalacion": "",
-        "notas": ""
-      },
-      {
-        "id": "mov_1793749437418_503",
-        "id_pieza": "3102392",
-        "descripcion": "EMPAQUE DE LAMINA",
-        "numero_parte": "3102392",
-        "marca": "CUMMINS",
-        "cantidad": 3,
-        "unidad_medida": "PZ",
-        "precio_unitario": 0,
-        "costo_total": 0,
-        "rack": "",
-        "nivel": "",
-        "stock_disponible": 0,
-        "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-13T22:41:55.991Z",
-        "folio_oc": "",
-        "proveedor_oc": "",
-        "fecha_estimada_arribo": "",
-        "autorizado_por": "",
-        "fecha_autorizacion": "",
-        "recibido_por": "",
-        "fecha_recepcion": "2026-11-03",
-        "instalado_por": "",
-        "fecha_instalacion": "",
-        "notas": ""
-      },
-      {
-        "id": "mov_1793741502696_168",
-        "id_pieza": "ABP_42A_9294_D2061",
-        "descripcion": "PASTILLAS DE FRENO",
-        "numero_parte": "ABP 42A 9294 D2061",
-        "marca": "ALLIANCE",
-        "cantidad": 2,
-        "unidad_medida": "PZ",
-        "precio_unitario": 1850,
-        "costo_total": 3700,
-        "rack": "",
-        "nivel": "",
-        "stock_disponible": 0,
-        "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-13T22:41:55.991Z",
-        "folio_oc": "",
-        "proveedor_oc": "",
-        "fecha_estimada_arribo": "",
-        "autorizado_por": "",
-        "fecha_autorizacion": "",
-        "recibido_por": "",
-        "fecha_recepcion": "2026-11-03",
-        "instalado_por": "",
-        "fecha_instalacion": "",
-        "notas": ""
-      },
-      {
-        "id": "mov_1793665371470_64",
-        "id_pieza": "3102392",
-        "descripcion": "EMPAQUE DE LAMINA",
-        "numero_parte": "3102392",
-        "marca": "CUMMINS",
-        "cantidad": 1,
-        "unidad_medida": "PZ",
-        "precio_unitario": 0,
-        "costo_total": 0,
-        "rack": "",
-        "nivel": "",
-        "stock_disponible": 0,
-        "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-13T22:41:55.991Z",
-        "folio_oc": "",
-        "proveedor_oc": "",
-        "fecha_estimada_arribo": "",
-        "autorizado_por": "",
-        "fecha_autorizacion": "",
-        "recibido_por": "",
-        "fecha_recepcion": "2026-11-02",
-        "instalado_por": "",
-        "fecha_instalacion": "",
-        "notas": ""
-      },
-      {
         "id": "mov_1794429609342_184",
         "id_pieza": "3157NA",
         "descripcion": "FOCO AMBAR P/DIRECCIONAL 12V",
@@ -712,7 +608,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.715Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.887Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -738,7 +634,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.715Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.887Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -746,6 +642,110 @@
         "fecha_autorizacion": "",
         "recibido_por": "",
         "fecha_recepcion": "2026-11-10",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "mov_1793804044448_856",
+        "id_pieza": "ABP_42A_9294_D2061",
+        "descripcion": "PASTILLAS DE FRENO",
+        "numero_parte": "ABP 42A 9294 D2061",
+        "marca": "ALLIANCE",
+        "cantidad": 2,
+        "unidad_medida": "PZ",
+        "precio_unitario": 1850,
+        "costo_total": 3700,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "RECIBIDA_TALLER",
+        "fecha_solicitud": "2026-11-17T15:54:32.887Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "2026-11-03",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "mov_1793749437418_503",
+        "id_pieza": "3102392",
+        "descripcion": "EMPAQUE DE LAMINA",
+        "numero_parte": "3102392",
+        "marca": "CUMMINS",
+        "cantidad": 3,
+        "unidad_medida": "PZ",
+        "precio_unitario": 0,
+        "costo_total": 0,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "RECIBIDA_TALLER",
+        "fecha_solicitud": "2026-11-17T15:54:32.887Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "2026-11-03",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "mov_1793741502696_168",
+        "id_pieza": "ABP_42A_9294_D2061",
+        "descripcion": "PASTILLAS DE FRENO",
+        "numero_parte": "ABP 42A 9294 D2061",
+        "marca": "ALLIANCE",
+        "cantidad": 2,
+        "unidad_medida": "PZ",
+        "precio_unitario": 1850,
+        "costo_total": 3700,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "RECIBIDA_TALLER",
+        "fecha_solicitud": "2026-11-17T15:54:32.887Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "2026-11-03",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "mov_1793665371470_64",
+        "id_pieza": "3102392",
+        "descripcion": "EMPAQUE DE LAMINA",
+        "numero_parte": "3102392",
+        "marca": "CUMMINS",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 0,
+        "costo_total": 0,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "RECIBIDA_TALLER",
+        "fecha_solicitud": "2026-11-17T15:54:32.887Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "2026-11-02",
         "instalado_por": "",
         "fecha_instalacion": "",
         "notas": ""
@@ -764,7 +764,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.715Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.887Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -790,7 +790,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.715Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.887Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -804,6 +804,90 @@
       }
     ],
     "historial": [
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 8 piezas (9,794.2 MXN) [Prev: $0 | Corr: $9,794.2]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 4 piezas (7,400 MXN) [Prev: $0 | Corr: $7,400]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 8 piezas (9,794.2 MXN) [Prev: $0 | Corr: $9,794.2]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "17/11/2026 09:28 a.m.",
+        "evento": "Sincronización Almacén: 4 piezas (7,400 MXN) [Prev: $0 | Corr: $7,400]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:28 a.m.",
+        "evento": "Sincronización Almacén: 8 piezas (9,794.2 MXN) [Prev: $0 | Corr: $9,794.2]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 4 piezas (7,400 MXN) [Prev: $0 | Corr: $7,400]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 8 piezas (9,794.2 MXN) [Prev: $0 | Corr: $9,794.2]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 4 piezas (7,400 MXN) [Prev: $0 | Corr: $7,400]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:37 p.m.",
+        "evento": "Sincronización Almacén: 8 piezas (9,794.2 MXN) [Prev: $0 | Corr: $9,794.2]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:37 p.m.",
+        "evento": "Sincronización Almacén: 4 piezas (7,400 MXN) [Prev: $0 | Corr: $7,400]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:52 p.m.",
+        "evento": "Sincronización Almacén: 8 piezas (9,794.2 MXN) [Prev: $0 | Corr: $9,794.2]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:52 p.m.",
+        "evento": "Sincronización Almacén: 4 piezas (7,400 MXN) [Prev: $0 | Corr: $7,400]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:23 p.m.",
+        "evento": "Sincronización Almacén: 8 piezas (9,794.2 MXN) [Prev: $0 | Corr: $9,794.2]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "16/11/2026 04:08 p.m.",
+        "evento": "Sincronización Almacén: 4 piezas (7,400 MXN) [Prev: $0 | Corr: $7,400]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
       {
         "fecha": "13/11/2026 04:41 p.m.",
         "evento": "Sincronización Almacén: 4 piezas (7,400 MXN) [Prev: $0 | Corr: $7,400]",
@@ -1088,7 +1172,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.953Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.887Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -1114,7 +1198,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.953Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.887Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -1140,7 +1224,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.953Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.887Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -1166,7 +1250,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.953Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.887Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -1192,7 +1276,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.953Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.887Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -1218,7 +1302,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.953Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.887Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -1244,7 +1328,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.953Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.887Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -1270,7 +1354,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.953Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.887Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -1296,7 +1380,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.953Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.887Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -1322,7 +1406,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.953Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.887Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -1348,7 +1432,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.953Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.887Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -1374,7 +1458,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.953Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -1388,6 +1472,90 @@
       }
     ],
     "historial": [
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 12 piezas (20,361.55 MXN) [Prev: $5,389.77 | Corr: $14,971.78]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 9 piezas (6,270.48 MXN) [Prev: $5,389.77 | Corr: $880.71]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 12 piezas (20,361.55 MXN) [Prev: $5,389.77 | Corr: $14,971.78]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "17/11/2026 09:28 a.m.",
+        "evento": "Sincronización Almacén: 9 piezas (6,270.48 MXN) [Prev: $5,389.77 | Corr: $880.71]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:28 a.m.",
+        "evento": "Sincronización Almacén: 12 piezas (20,361.55 MXN) [Prev: $5,389.77 | Corr: $14,971.78]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (6,270.48 MXN) [Prev: $5,389.77 | Corr: $880.71]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 12 piezas (20,361.55 MXN) [Prev: $5,389.77 | Corr: $14,971.78]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (6,270.48 MXN) [Prev: $5,389.77 | Corr: $880.71]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:37 p.m.",
+        "evento": "Sincronización Almacén: 12 piezas (20,361.55 MXN) [Prev: $5,389.77 | Corr: $14,971.78]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:37 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (6,270.48 MXN) [Prev: $5,389.77 | Corr: $880.71]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:52 p.m.",
+        "evento": "Sincronización Almacén: 12 piezas (20,361.55 MXN) [Prev: $5,389.77 | Corr: $14,971.78]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:52 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (6,270.48 MXN) [Prev: $5,389.77 | Corr: $880.71]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:23 p.m.",
+        "evento": "Sincronización Almacén: 12 piezas (20,361.55 MXN) [Prev: $5,389.77 | Corr: $14,971.78]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "16/11/2026 04:08 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (6,270.48 MXN) [Prev: $5,389.77 | Corr: $880.71]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
       {
         "fecha": "16/11/2026 03:30 p.m.",
         "evento": "Sincronización Almacén: 12 piezas (20,361.55 MXN) [Prev: $5,389.77 | Corr: $14,971.78]",
@@ -1677,110 +1845,6 @@
     "categoriaFalla": "Motor",
     "piezas": [
       {
-        "id": "mov_1792802216576_344",
-        "id_pieza": "A4600700987",
-        "descripcion": "Empaque / Sello tobera de inyector",
-        "numero_parte": "A4600700987",
-        "marca": "Detroit Diesel (OEM)",
-        "cantidad": 6,
-        "unidad_medida": "PZ",
-        "precio_unitario": 53.33,
-        "costo_total": 319.98,
-        "rack": "",
-        "nivel": "",
-        "stock_disponible": 0,
-        "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-13T22:41:55.991Z",
-        "folio_oc": "",
-        "proveedor_oc": "",
-        "fecha_estimada_arribo": "",
-        "autorizado_por": "",
-        "fecha_autorizacion": "",
-        "recibido_por": "",
-        "fecha_recepcion": "2026-10-23",
-        "instalado_por": "",
-        "fecha_instalacion": "",
-        "notas": ""
-      },
-      {
-        "id": "mov_1792792579455_0",
-        "id_pieza": "part_1792792579455_0_4501",
-        "descripcion": "EMPAQUE",
-        "numero_parte": "N000835012041",
-        "marca": "DAIMLER",
-        "cantidad": 1,
-        "unidad_medida": "PZA",
-        "precio_unitario": 0,
-        "costo_total": 0,
-        "rack": "",
-        "nivel": "",
-        "stock_disponible": 0,
-        "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-13T22:41:55.991Z",
-        "folio_oc": "",
-        "proveedor_oc": "",
-        "fecha_estimada_arribo": "",
-        "autorizado_por": "",
-        "fecha_autorizacion": "",
-        "recibido_por": "",
-        "fecha_recepcion": "2026-10-23",
-        "instalado_por": "",
-        "fecha_instalacion": "",
-        "notas": ""
-      },
-      {
-        "id": "mov_1792792576383_0",
-        "id_pieza": "part_1792792576383_0_8097",
-        "descripcion": "TORNILLO",
-        "numero_parte": "A0029905014",
-        "marca": "DAIMLER",
-        "cantidad": 1,
-        "unidad_medida": "PZA",
-        "precio_unitario": 178,
-        "costo_total": 178,
-        "rack": "",
-        "nivel": "",
-        "stock_disponible": 0,
-        "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-13T22:41:55.991Z",
-        "folio_oc": "",
-        "proveedor_oc": "",
-        "fecha_estimada_arribo": "",
-        "autorizado_por": "",
-        "fecha_autorizacion": "",
-        "recibido_por": "",
-        "fecha_recepcion": "2026-10-23",
-        "instalado_por": "",
-        "fecha_instalacion": "",
-        "notas": ""
-      },
-      {
-        "id": "mov_1792792573614_0",
-        "id_pieza": "part_1792792573614_0_6557",
-        "descripcion": "TORNILLO",
-        "numero_parte": "N910112012002",
-        "marca": "DAIMLER",
-        "cantidad": 1,
-        "unidad_medida": "PZA",
-        "precio_unitario": 0,
-        "costo_total": 0,
-        "rack": "",
-        "nivel": "",
-        "stock_disponible": 0,
-        "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-13T22:41:55.991Z",
-        "folio_oc": "",
-        "proveedor_oc": "",
-        "fecha_estimada_arribo": "",
-        "autorizado_por": "",
-        "fecha_autorizacion": "",
-        "recibido_por": "",
-        "fecha_recepcion": "2026-10-23",
-        "instalado_por": "",
-        "fecha_instalacion": "",
-        "notas": ""
-      },
-      {
         "id": "mov_1794433107612_422",
         "id_pieza": "aceite_hidraulico_INT-0001",
         "descripcion": "ACEITE HIDRAULICO",
@@ -1794,7 +1858,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.715Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -1820,7 +1884,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.715Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -1840,13 +1904,13 @@
         "marca": "",
         "cantidad": 1,
         "unidad_medida": "PZ",
-        "precio_unitario": 300.44,
+        "precio_unitario": 272,
         "costo_total": 272,
         "rack": "",
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.715Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -1872,7 +1936,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.715Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -1898,7 +1962,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.715Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -1924,7 +1988,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.715Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -1950,7 +2014,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.715Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -1976,7 +2040,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.715Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -2002,7 +2066,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.715Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -2010,6 +2074,110 @@
         "fecha_autorizacion": "",
         "recibido_por": "",
         "fecha_recepcion": "2026-11-09",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "mov_1792802216576_344",
+        "id_pieza": "A4600700987",
+        "descripcion": "Empaque / Sello tobera de inyector",
+        "numero_parte": "A4600700987",
+        "marca": "Detroit Diesel (OEM)",
+        "cantidad": 6,
+        "unidad_medida": "PZ",
+        "precio_unitario": 53.33,
+        "costo_total": 319.98,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "RECIBIDA_TALLER",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "2026-10-23",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "mov_1792792579455_0",
+        "id_pieza": "part_1792792579455_0_4501",
+        "descripcion": "EMPAQUE",
+        "numero_parte": "N000835012041",
+        "marca": "DAIMLER",
+        "cantidad": 1,
+        "unidad_medida": "PZA",
+        "precio_unitario": 0,
+        "costo_total": 0,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "RECIBIDA_TALLER",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "2026-10-23",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "mov_1792792576383_0",
+        "id_pieza": "part_1792792576383_0_8097",
+        "descripcion": "TORNILLO",
+        "numero_parte": "A0029905014",
+        "marca": "DAIMLER",
+        "cantidad": 1,
+        "unidad_medida": "PZA",
+        "precio_unitario": 178,
+        "costo_total": 178,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "RECIBIDA_TALLER",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "2026-10-23",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "mov_1792792573614_0",
+        "id_pieza": "part_1792792573614_0_6557",
+        "descripcion": "TORNILLO",
+        "numero_parte": "N910112012002",
+        "marca": "DAIMLER",
+        "cantidad": 1,
+        "unidad_medida": "PZA",
+        "precio_unitario": 0,
+        "costo_total": 0,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "RECIBIDA_TALLER",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "2026-10-23",
         "instalado_por": "",
         "fecha_instalacion": "",
         "notas": ""
@@ -2028,7 +2196,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.715Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -2054,7 +2222,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.715Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -2080,7 +2248,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.715Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -2094,6 +2262,90 @@
       }
     ],
     "historial": [
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 16 piezas (13,505.56 MXN) [Prev: $531.6 | Corr: $12,973.96]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 4 piezas (497.98 MXN) [Prev: $0 | Corr: $497.98]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 16 piezas (13,505.56 MXN) [Prev: $531.6 | Corr: $12,973.96]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "17/11/2026 09:28 a.m.",
+        "evento": "Sincronización Almacén: 4 piezas (497.98 MXN) [Prev: $0 | Corr: $497.98]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:28 a.m.",
+        "evento": "Sincronización Almacén: 16 piezas (13,505.56 MXN) [Prev: $531.6 | Corr: $12,973.96]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 4 piezas (497.98 MXN) [Prev: $0 | Corr: $497.98]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 16 piezas (13,505.56 MXN) [Prev: $531.6 | Corr: $12,973.96]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 4 piezas (497.98 MXN) [Prev: $0 | Corr: $497.98]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:37 p.m.",
+        "evento": "Sincronización Almacén: 16 piezas (13,505.56 MXN) [Prev: $531.6 | Corr: $12,973.96]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:37 p.m.",
+        "evento": "Sincronización Almacén: 4 piezas (497.98 MXN) [Prev: $0 | Corr: $497.98]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:52 p.m.",
+        "evento": "Sincronización Almacén: 16 piezas (13,505.56 MXN) [Prev: $531.6 | Corr: $12,973.96]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:52 p.m.",
+        "evento": "Sincronización Almacén: 4 piezas (497.98 MXN) [Prev: $0 | Corr: $497.98]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:23 p.m.",
+        "evento": "Sincronización Almacén: 16 piezas (13,505.56 MXN) [Prev: $531.6 | Corr: $12,973.96]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "16/11/2026 04:08 p.m.",
+        "evento": "Sincronización Almacén: 4 piezas (497.98 MXN) [Prev: $0 | Corr: $497.98]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
       {
         "fecha": "13/11/2026 04:41 p.m.",
         "evento": "Sincronización Almacén: 4 piezas (497.98 MXN) [Prev: $0 | Corr: $497.98]",
@@ -2993,32 +3245,6 @@
     "fechaRefaccion": "2026-11-09",
     "piezas": [
       {
-        "id": "mov_1794431777908_635",
-        "id_pieza": "81001",
-        "descripcion": "MANGUERA DE AIRE DE 15\" AZUL/ROJO",
-        "numero_parte": "81001",
-        "marca": "GROTE",
-        "cantidad": 1,
-        "unidad_medida": "PZ",
-        "precio_unitario": 1676,
-        "costo_total": 1676,
-        "rack": "",
-        "nivel": "",
-        "stock_disponible": 0,
-        "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-13T22:41:55.991Z",
-        "folio_oc": "",
-        "proveedor_oc": "",
-        "fecha_estimada_arribo": "",
-        "autorizado_por": "",
-        "fecha_autorizacion": "",
-        "recibido_por": "",
-        "fecha_recepcion": "2026-11-09",
-        "instalado_por": "",
-        "fecha_instalacion": "",
-        "notas": ""
-      },
-      {
         "id": "mov_1794433408186_821",
         "id_pieza": "A4731400575",
         "descripcion": "BOTE DE GASES EGR CASCADIA",
@@ -3032,7 +3258,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.716Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -3043,9 +3269,119 @@
         "instalado_por": "",
         "fecha_instalacion": "",
         "notas": ""
+      },
+      {
+        "id": "mov_1794431777908_635",
+        "id_pieza": "81001",
+        "descripcion": "MANGUERA DE AIRE DE 15\" AZUL/ROJO",
+        "numero_parte": "81001",
+        "marca": "GROTE",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 1676,
+        "costo_total": 1676,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "RECIBIDA_TALLER",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "2026-11-09",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
       }
     ],
     "historial": [
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 2 piezas (11,176 MXN) [Prev: $0 | Corr: $11,176]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 2 piezas (11,176 MXN) [Prev: $0 | Corr: $11,176]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "17/11/2026 09:28 a.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:28 a.m.",
+        "evento": "Sincronización Almacén: 2 piezas (11,176 MXN) [Prev: $0 | Corr: $11,176]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 2 piezas (11,176 MXN) [Prev: $0 | Corr: $11,176]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:37 p.m.",
+        "evento": "Sincronización Almacén: 2 piezas (11,176 MXN) [Prev: $0 | Corr: $11,176]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:37 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:52 p.m.",
+        "evento": "Sincronización Almacén: 2 piezas (11,176 MXN) [Prev: $0 | Corr: $11,176]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:52 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:23 p.m.",
+        "evento": "Sincronización Almacén: 2 piezas (11,176 MXN) [Prev: $0 | Corr: $11,176]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "16/11/2026 04:08 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
       {
         "fecha": "13/11/2026 04:41 p.m.",
         "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
@@ -3470,7 +3806,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-13T22:41:55.991Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -3496,7 +3832,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-13T22:41:55.991Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -3522,7 +3858,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-13T22:41:55.991Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -3530,32 +3866,6 @@
         "fecha_autorizacion": "",
         "recibido_por": "",
         "fecha_recepcion": "2026-11-02",
-        "instalado_por": "",
-        "fecha_instalacion": "",
-        "notas": ""
-      },
-      {
-        "id": "mov_1793225107933_0_3617",
-        "id_pieza": "part_1793137266069_0_9991",
-        "descripcion": "VALVULA CONTROL P/COMBUSTIBLE DETROIT SERIE 60 DD15 DOSIFICADORA CAUDAL",
-        "numero_parte": "680348",
-        "marca": "DETROIT",
-        "cantidad": 1,
-        "unidad_medida": "PZA",
-        "precio_unitario": 7250,
-        "costo_total": 7250,
-        "rack": "",
-        "nivel": "",
-        "stock_disponible": 0,
-        "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-13T22:41:55.991Z",
-        "folio_oc": "",
-        "proveedor_oc": "",
-        "fecha_estimada_arribo": "",
-        "autorizado_por": "",
-        "fecha_autorizacion": "",
-        "recibido_por": "",
-        "fecha_recepcion": "2026-10-28",
         "instalado_por": "",
         "fecha_instalacion": "",
         "notas": ""
@@ -3574,7 +3884,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.716Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -3600,7 +3910,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.716Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -3608,6 +3918,32 @@
         "fecha_autorizacion": "",
         "recibido_por": "",
         "fecha_recepcion": "2026-10-29",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "mov_1793225107933_0_3617",
+        "id_pieza": "part_1793137266069_0_9991",
+        "descripcion": "VALVULA CONTROL P/COMBUSTIBLE DETROIT SERIE 60 DD15 DOSIFICADORA CAUDAL",
+        "numero_parte": "680348",
+        "marca": "DETROIT",
+        "cantidad": 1,
+        "unidad_medida": "PZA",
+        "precio_unitario": 7250,
+        "costo_total": 7250,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "RECIBIDA_TALLER",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "2026-10-28",
         "instalado_por": "",
         "fecha_instalacion": "",
         "notas": ""
@@ -3626,7 +3962,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.716Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -3640,6 +3976,90 @@
       }
     ],
     "historial": [
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 7 piezas (8,531.22 MXN) [Prev: $0 | Corr: $8,531.22]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 4 piezas (7,366.85 MXN) [Prev: $0 | Corr: $7,366.85]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 7 piezas (8,531.22 MXN) [Prev: $0 | Corr: $8,531.22]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "17/11/2026 09:28 a.m.",
+        "evento": "Sincronización Almacén: 4 piezas (7,366.85 MXN) [Prev: $0 | Corr: $7,366.85]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:28 a.m.",
+        "evento": "Sincronización Almacén: 7 piezas (8,531.22 MXN) [Prev: $0 | Corr: $8,531.22]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 4 piezas (7,366.85 MXN) [Prev: $0 | Corr: $7,366.85]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 7 piezas (8,531.22 MXN) [Prev: $0 | Corr: $8,531.22]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 4 piezas (7,366.85 MXN) [Prev: $0 | Corr: $7,366.85]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:37 p.m.",
+        "evento": "Sincronización Almacén: 7 piezas (8,531.22 MXN) [Prev: $0 | Corr: $8,531.22]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:37 p.m.",
+        "evento": "Sincronización Almacén: 4 piezas (7,366.85 MXN) [Prev: $0 | Corr: $7,366.85]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:52 p.m.",
+        "evento": "Sincronización Almacén: 7 piezas (8,531.22 MXN) [Prev: $0 | Corr: $8,531.22]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:52 p.m.",
+        "evento": "Sincronización Almacén: 4 piezas (7,366.85 MXN) [Prev: $0 | Corr: $7,366.85]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:23 p.m.",
+        "evento": "Sincronización Almacén: 7 piezas (8,531.22 MXN) [Prev: $0 | Corr: $8,531.22]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "16/11/2026 04:08 p.m.",
+        "evento": "Sincronización Almacén: 4 piezas (7,366.85 MXN) [Prev: $0 | Corr: $7,366.85]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
       {
         "fecha": "13/11/2026 04:41 p.m.",
         "evento": "Sincronización Almacén: 4 piezas (7,366.85 MXN) [Prev: $0 | Corr: $7,366.85]",
@@ -3938,7 +4358,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.953Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -3964,7 +4384,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.953Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -3990,7 +4410,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.953Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -4016,7 +4436,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.953Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -4042,7 +4462,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.953Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -4068,7 +4488,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.953Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -4094,7 +4514,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.953Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -4120,7 +4540,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.953Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -4146,7 +4566,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.953Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -4172,7 +4592,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.953Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -4186,6 +4606,90 @@
       }
     ],
     "historial": [
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 10 piezas (33,892.24 MXN) [Prev: $1,450 | Corr: $32,442.24]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 2 piezas (3,850 MXN) [Prev: $0 | Corr: $5,300]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 10 piezas (33,892.24 MXN) [Prev: $1,450 | Corr: $32,442.24]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "17/11/2026 09:28 a.m.",
+        "evento": "Sincronización Almacén: 2 piezas (3,850 MXN) [Prev: $0 | Corr: $5,300]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:28 a.m.",
+        "evento": "Sincronización Almacén: 10 piezas (33,892.24 MXN) [Prev: $1,450 | Corr: $32,442.24]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 2 piezas (3,850 MXN) [Prev: $0 | Corr: $5,300]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 10 piezas (33,892.24 MXN) [Prev: $1,450 | Corr: $32,442.24]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 2 piezas (3,850 MXN) [Prev: $0 | Corr: $5,300]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:37 p.m.",
+        "evento": "Sincronización Almacén: 10 piezas (33,892.24 MXN) [Prev: $1,450 | Corr: $32,442.24]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:37 p.m.",
+        "evento": "Sincronización Almacén: 2 piezas (3,850 MXN) [Prev: $0 | Corr: $5,300]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:52 p.m.",
+        "evento": "Sincronización Almacén: 10 piezas (33,892.24 MXN) [Prev: $1,450 | Corr: $32,442.24]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:52 p.m.",
+        "evento": "Sincronización Almacén: 2 piezas (3,850 MXN) [Prev: $0 | Corr: $5,300]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:23 p.m.",
+        "evento": "Sincronización Almacén: 10 piezas (33,892.24 MXN) [Prev: $1,450 | Corr: $32,442.24]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "16/11/2026 04:08 p.m.",
+        "evento": "Sincronización Almacén: 2 piezas (3,850 MXN) [Prev: $0 | Corr: $5,300]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
       {
         "fecha": "16/11/2026 03:30 p.m.",
         "evento": "Sincronización Almacén: 10 piezas (33,892.24 MXN) [Prev: $1,450 | Corr: $32,442.24]",
@@ -4886,7 +5390,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-13T22:41:55.991Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -4912,7 +5416,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-13T22:41:55.991Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -4938,7 +5442,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-13T22:41:55.991Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -4958,13 +5462,13 @@
         "marca": "DONALDSON",
         "cantidad": 1,
         "unidad_medida": "PZ",
-        "precio_unitario": 593.8,
+        "precio_unitario": 1781,
         "costo_total": 1781,
         "rack": "",
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.717Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -4990,7 +5494,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.717Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -5010,13 +5514,13 @@
         "marca": "DONALDSON",
         "cantidad": 1,
         "unidad_medida": "PZA",
-        "precio_unitario": 479.76,
+        "precio_unitario": 479.78,
         "costo_total": 479.78,
         "rack": "",
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.717Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -5042,7 +5546,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.717Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -5068,7 +5572,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.717Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -5082,6 +5586,90 @@
       }
     ],
     "historial": [
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 8 piezas (6,342.37 MXN) [Prev: $5,451.77 | Corr: $890.6]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 3 piezas (890.6 MXN) [Prev: $0 | Corr: $890.6]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 8 piezas (6,342.37 MXN) [Prev: $5,451.77 | Corr: $890.6]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "17/11/2026 09:28 a.m.",
+        "evento": "Sincronización Almacén: 3 piezas (890.6 MXN) [Prev: $0 | Corr: $890.6]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:28 a.m.",
+        "evento": "Sincronización Almacén: 8 piezas (6,342.37 MXN) [Prev: $5,451.77 | Corr: $890.6]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (890.6 MXN) [Prev: $0 | Corr: $890.6]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 8 piezas (6,342.37 MXN) [Prev: $5,451.77 | Corr: $890.6]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (890.6 MXN) [Prev: $0 | Corr: $890.6]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:37 p.m.",
+        "evento": "Sincronización Almacén: 8 piezas (6,342.37 MXN) [Prev: $5,451.77 | Corr: $890.6]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:37 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (890.6 MXN) [Prev: $0 | Corr: $890.6]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:52 p.m.",
+        "evento": "Sincronización Almacén: 8 piezas (6,342.37 MXN) [Prev: $5,451.77 | Corr: $890.6]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:52 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (890.6 MXN) [Prev: $0 | Corr: $890.6]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:23 p.m.",
+        "evento": "Sincronización Almacén: 8 piezas (6,342.37 MXN) [Prev: $5,451.77 | Corr: $890.6]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "16/11/2026 04:08 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (890.6 MXN) [Prev: $0 | Corr: $890.6]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
       {
         "fecha": "13/11/2026 04:41 p.m.",
         "evento": "Sincronización Almacén: 3 piezas (890.6 MXN) [Prev: $0 | Corr: $890.6]",
@@ -5375,7 +5963,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.954Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -5401,7 +5989,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.954Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -5427,7 +6015,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.954Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -5453,7 +6041,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.954Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -5479,7 +6067,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.954Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -5505,7 +6093,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.954Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -5531,7 +6119,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.954Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -5557,7 +6145,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.954Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -5583,7 +6171,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.954Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -5609,7 +6197,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.954Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -5635,7 +6223,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.954Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -5649,6 +6237,90 @@
       }
     ],
     "historial": [
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 11 piezas (16,124.72 MXN) [Prev: $5,451.77 | Corr: $10,672.95]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 6 piezas (10,672.95 MXN) [Prev: $0 | Corr: $10,672.95]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 11 piezas (16,124.72 MXN) [Prev: $5,451.77 | Corr: $10,672.95]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "17/11/2026 09:28 a.m.",
+        "evento": "Sincronización Almacén: 6 piezas (10,672.95 MXN) [Prev: $0 | Corr: $10,672.95]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:28 a.m.",
+        "evento": "Sincronización Almacén: 11 piezas (16,124.72 MXN) [Prev: $5,451.77 | Corr: $10,672.95]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 6 piezas (10,672.95 MXN) [Prev: $0 | Corr: $10,672.95]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 11 piezas (16,124.72 MXN) [Prev: $5,451.77 | Corr: $10,672.95]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 6 piezas (10,672.95 MXN) [Prev: $0 | Corr: $10,672.95]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:37 p.m.",
+        "evento": "Sincronización Almacén: 11 piezas (16,124.72 MXN) [Prev: $5,451.77 | Corr: $10,672.95]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:37 p.m.",
+        "evento": "Sincronización Almacén: 6 piezas (10,672.95 MXN) [Prev: $0 | Corr: $10,672.95]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:52 p.m.",
+        "evento": "Sincronización Almacén: 11 piezas (16,124.72 MXN) [Prev: $5,451.77 | Corr: $10,672.95]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:52 p.m.",
+        "evento": "Sincronización Almacén: 6 piezas (10,672.95 MXN) [Prev: $0 | Corr: $10,672.95]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:23 p.m.",
+        "evento": "Sincronización Almacén: 11 piezas (16,124.72 MXN) [Prev: $5,451.77 | Corr: $10,672.95]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "16/11/2026 04:08 p.m.",
+        "evento": "Sincronización Almacén: 6 piezas (10,672.95 MXN) [Prev: $0 | Corr: $10,672.95]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
       {
         "fecha": "16/11/2026 03:30 p.m.",
         "evento": "Sincronización Almacén: 11 piezas (16,124.72 MXN) [Prev: $5,451.77 | Corr: $10,672.95]",
@@ -5954,7 +6626,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.954Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -5980,7 +6652,7 @@
         "nivel": "",
         "stock_disponible": 0,
         "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.954Z",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
         "folio_oc": "",
         "proveedor_oc": "",
         "fecha_estimada_arribo": "",
@@ -5994,6 +6666,90 @@
       }
     ],
     "historial": [
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 2 piezas (3,321.16 MXN) [Prev: $588.16 | Corr: $2,733]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 1 piezas (588.16 MXN) [Prev: $588.16 | Corr: $0]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 2 piezas (3,321.16 MXN) [Prev: $588.16 | Corr: $2,733]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "17/11/2026 09:28 a.m.",
+        "evento": "Sincronización Almacén: 1 piezas (588.16 MXN) [Prev: $588.16 | Corr: $0]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:28 a.m.",
+        "evento": "Sincronización Almacén: 2 piezas (3,321.16 MXN) [Prev: $588.16 | Corr: $2,733]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (588.16 MXN) [Prev: $588.16 | Corr: $0]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 2 piezas (3,321.16 MXN) [Prev: $588.16 | Corr: $2,733]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (588.16 MXN) [Prev: $588.16 | Corr: $0]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:37 p.m.",
+        "evento": "Sincronización Almacén: 2 piezas (3,321.16 MXN) [Prev: $588.16 | Corr: $2,733]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:37 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (588.16 MXN) [Prev: $588.16 | Corr: $0]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:52 p.m.",
+        "evento": "Sincronización Almacén: 2 piezas (3,321.16 MXN) [Prev: $588.16 | Corr: $2,733]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:52 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (588.16 MXN) [Prev: $588.16 | Corr: $0]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:23 p.m.",
+        "evento": "Sincronización Almacén: 2 piezas (3,321.16 MXN) [Prev: $588.16 | Corr: $2,733]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "16/11/2026 04:08 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (588.16 MXN) [Prev: $588.16 | Corr: $0]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
       {
         "fecha": "16/11/2026 03:30 p.m.",
         "evento": "Sincronización Almacén: 2 piezas (3,321.16 MXN) [Prev: $588.16 | Corr: $2,733]",
@@ -6044,378 +6800,6 @@
     "costo_refacciones": 3321.16,
     "costo_preventivo": 588.16,
     "costo_correctivo": 2733
-  },
-  {
-    "id": "46",
-    "sucursal": "Apodaca",
-    "estado": "listo",
-    "tipo_procedimiento": "correctivo",
-    "defecto": "Bolsa de aire trasera dañada y Motor de Wipers",
-    "notas": "",
-    "reporte": "Bolsa de aire trasera dañada y Motor de Wipers",
-    "costo": 14258.68,
-    "fechaRefaccion": "2026-11-12",
-    "categoriaFalla": "General",
-    "piezas": [
-      {
-        "id": "mov_1794517265228_946",
-        "id_pieza": "1R11268",
-        "descripcion": "BOLSA DE AIRE",
-        "numero_parte": "1R11268",
-        "marca": "GOODYEAR",
-        "cantidad": 1,
-        "unidad_medida": "PZ",
-        "precio_unitario": 2301.68,
-        "costo_total": 2301.68,
-        "rack": "",
-        "nivel": "",
-        "stock_disponible": 0,
-        "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-13T22:41:55.991Z",
-        "folio_oc": "",
-        "proveedor_oc": "",
-        "fecha_estimada_arribo": "",
-        "autorizado_por": "",
-        "fecha_autorizacion": "",
-        "recibido_por": "",
-        "fecha_recepcion": "2026-11-12",
-        "instalado_por": "",
-        "fecha_instalacion": "",
-        "notas": ""
-      },
-      {
-        "id": "mov_1793138307116_29",
-        "id_pieza": "part_1793137315943_0_4446",
-        "descripcion": "SENSOR PRESION DE ACEITE P/CUMMINS ISX EGR",
-        "numero_parte": "4921517",
-        "marca": "CUMMINS",
-        "cantidad": 1,
-        "unidad_medida": "PZA",
-        "precio_unitario": 1300,
-        "costo_total": 1300,
-        "rack": "",
-        "nivel": "",
-        "stock_disponible": 0,
-        "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.717Z",
-        "folio_oc": "",
-        "proveedor_oc": "",
-        "fecha_estimada_arribo": "",
-        "autorizado_por": "",
-        "fecha_autorizacion": "",
-        "recibido_por": "",
-        "fecha_recepcion": "2026-10-27",
-        "instalado_por": "",
-        "fecha_instalacion": "",
-        "notas": ""
-      },
-      {
-        "id": "mov_1792712908324_648",
-        "id_pieza": "part_1792712818641_0_7111",
-        "descripcion": "AMORTIGUADOR",
-        "numero_parte": "65523",
-        "marca": "MONROE",
-        "cantidad": 4,
-        "unidad_medida": "PZA",
-        "precio_unitario": 1250,
-        "costo_total": 5000,
-        "rack": "",
-        "nivel": "",
-        "stock_disponible": 0,
-        "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.717Z",
-        "folio_oc": "",
-        "proveedor_oc": "",
-        "fecha_estimada_arribo": "",
-        "autorizado_por": "",
-        "fecha_autorizacion": "",
-        "recibido_por": "",
-        "fecha_recepcion": "2026-10-22",
-        "instalado_por": "",
-        "fecha_instalacion": "",
-        "notas": ""
-      },
-      {
-        "id": "mov_1792692789407_982",
-        "id_pieza": "1859922",
-        "descripcion": "SOPORTE  / BUJE DE CABINA",
-        "numero_parte": "1859922",
-        "marca": "OUTSAID",
-        "cantidad": 1,
-        "unidad_medida": "PZ",
-        "precio_unitario": 1657,
-        "costo_total": 1657,
-        "rack": "",
-        "nivel": "",
-        "stock_disponible": 0,
-        "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.717Z",
-        "folio_oc": "",
-        "proveedor_oc": "",
-        "fecha_estimada_arribo": "",
-        "autorizado_por": "",
-        "fecha_autorizacion": "",
-        "recibido_por": "",
-        "fecha_recepcion": "2026-10-22",
-        "instalado_por": "",
-        "fecha_instalacion": "",
-        "notas": ""
-      },
-      {
-        "id": "mov_1792692729038_271",
-        "id_pieza": "2B12440",
-        "descripcion": "BOLSA DE AIRE TIPO HAMBURGUESA",
-        "numero_parte": "2B12440",
-        "marca": "GOODYEAR",
-        "cantidad": 4,
-        "unidad_medida": "PZ",
-        "precio_unitario": 1000,
-        "costo_total": 4000,
-        "rack": "",
-        "nivel": "",
-        "stock_disponible": 0,
-        "estado": "RECIBIDA_TALLER",
-        "fecha_solicitud": "2026-11-16T21:30:32.717Z",
-        "folio_oc": "",
-        "proveedor_oc": "",
-        "fecha_estimada_arribo": "",
-        "autorizado_por": "",
-        "fecha_autorizacion": "",
-        "recibido_por": "",
-        "fecha_recepcion": "2026-10-22",
-        "instalado_por": "",
-        "fecha_instalacion": "",
-        "notas": ""
-      }
-    ],
-    "historial": [
-      {
-        "fecha": "13/11/2026 04:41 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Inicio Servidor"
-      },
-      {
-        "fecha": "13/11/2026 04:40 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Inicio Servidor"
-      },
-      {
-        "fecha": "13/11/2026 04:21 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Sync manual Unidad 2509"
-      },
-      {
-        "fecha": "13/11/2026 03:47 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Consulta API /api/unidades"
-      },
-      {
-        "fecha": "13/11/2026 03:25 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Consulta API /api/unidades"
-      },
-      {
-        "fecha": "13/11/2026 03:23 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Almacén CESS en tiempo real"
-      },
-      {
-        "fecha": "13/11/2026 03:22 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Consulta API /api/unidades"
-      },
-      {
-        "fecha": "13/11/2026 03:17 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Almacén CESS en tiempo real"
-      },
-      {
-        "fecha": "13/11/2026 03:16 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Almacén CESS en tiempo real"
-      },
-      {
-        "fecha": "13/11/2026 03:16 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Almacén CESS en tiempo real"
-      },
-      {
-        "fecha": "13/11/2026 03:13 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Almacén CESS en tiempo real"
-      },
-      {
-        "fecha": "13/11/2026 03:12 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Almacén CESS en tiempo real"
-      },
-      {
-        "fecha": "13/11/2026 03:12 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Almacén CESS en tiempo real"
-      },
-      {
-        "fecha": "13/11/2026 03:12 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Almacén CESS en tiempo real"
-      },
-      {
-        "fecha": "13/11/2026 03:11 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Almacén CESS en tiempo real"
-      },
-      {
-        "fecha": "13/11/2026 03:10 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Almacén CESS en tiempo real"
-      },
-      {
-        "fecha": "13/11/2026 03:08 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Almacén CESS en tiempo real"
-      },
-      {
-        "fecha": "13/11/2026 03:07 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Consulta API /api/unidades"
-      },
-      {
-        "fecha": "13/11/2026 03:06 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Consulta API /api/unidades"
-      },
-      {
-        "fecha": "13/11/2026 03:06 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Inicio Servidor"
-      },
-      {
-        "fecha": "13/11/2026 03:06 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Almacén CESS en tiempo real"
-      },
-      {
-        "fecha": "13/11/2026 03:05 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Almacén CESS en tiempo real"
-      },
-      {
-        "fecha": "13/11/2026 03:02 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Consulta API /api/unidades"
-      },
-      {
-        "fecha": "13/11/2026 03:00 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Almacén CESS en tiempo real"
-      },
-      {
-        "fecha": "13/11/2026 01:52 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Inicio Servidor"
-      },
-      {
-        "fecha": "13/11/2026 01:26 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Consulta API /api/unidades"
-      },
-      {
-        "fecha": "13/11/2026 01:25 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Almacén CESS en tiempo real"
-      },
-      {
-        "fecha": "13/11/2026 01:02 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Consulta API /api/unidades"
-      },
-      {
-        "fecha": "13/11/2026 01:00 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Almacén CESS en tiempo real"
-      },
-      {
-        "fecha": "13/11/2026 12:59 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Inicio Servidor"
-      },
-      {
-        "fecha": "13/11/2026 12:59 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Consulta API /api/unidades"
-      },
-      {
-        "fecha": "13/11/2026 12:42 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Consulta API /api/unidades"
-      },
-      {
-        "fecha": "13/11/2026 12:42 p.m.",
-        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
-        "tipo": "almacen_sync",
-        "autor": "Consulta API /api/unidades"
-      },
-      {
-        "fecha": "13/11/2026 06:30 p.m.",
-        "evento": "Sincronización Almacén: 4 piezas (11,957 MXN) [Prev: $1,300 | Corr: $10,657]",
-        "tipo": "almacen_sync",
-        "autor": "Almacén CESS en tiempo real"
-      },
-      {
-        "fecha": "13/11/2026, 12:24:23 p.m.",
-        "evento": "Cambio de estatus: De 'En Proceso (Taller)' a 'Listas para Entrega'",
-        "tipo": "cambio_estatus",
-        "foto": null
-      },
-      {
-        "fecha": "13/11/2026 06:24 p.m.",
-        "evento": "Generado Folio de Almacén #4094: Bolsa de aire trasera dañada y Motor de Wipers. Refacciones solicitadas: Por surtir en almacén",
-        "tipo": "generacion_folio_almacen",
-        "autor": "Encargado de Taller"
-      },
-      {
-        "fecha": "13/11/2026, 12:23:53 p.m.",
-        "evento": "Unidad registrada en taller (En Proceso (Taller))",
-        "tipo": "alta"
-      }
-    ],
-    "folio_almacen": "4094",
-    "estadoModificadoManualmente": true,
-    "costo_refacciones": 14258.68,
-    "costo_preventivo": 1300,
-    "costo_correctivo": 12958.68
   },
   {
     "id": "2509",

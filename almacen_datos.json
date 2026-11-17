@@ -257,7 +257,7 @@
       "unidad": "PZ",
       "precio_unitario": 350,
       "stock_inicial": 0,
-      "stock_actual": 1
+      "stock_actual": 3
     },
     "2006": {
       "id": "2006",
@@ -1548,7 +1548,7 @@
       "unidad": "PZ",
       "precio_unitario": 0,
       "stock_inicial": 0,
-      "stock_actual": 0
+      "stock_actual": 4
     },
     "65530": {
       "id": "65530",
@@ -1977,6 +1977,24 @@
       "precio_unitario": 252,
       "stock_inicial": 1,
       "stock_actual": 1
+    },
+    "121396": {
+      "id": "121396",
+      "almacen": "Almacén de Refacciones",
+      "almacen_id": "refacciones",
+      "rack": "Rack 1",
+      "nivel": "Nivel 1",
+      "descripcion": "LIGA AZUL TUBO AGUA EGR P/CUMMINS ISX(3682826)",
+      "marca": "CUMMINS",
+      "numero_parte": "121396",
+      "foto_referencia": "",
+      "equivalencias": [],
+      "alias": [],
+      "es_a_granel": false,
+      "unidad": "PZ",
+      "precio_unitario": 50,
+      "stock_inicial": 0,
+      "stock_actual": 6
     },
     "131496": {
       "id": "131496",
@@ -16678,6 +16696,78 @@
   },
   "movimientos": [
     {
+      "id": "mov_recup_1",
+      "tipo": "E",
+      "fecha": "2026-11-16",
+      "hora": "11:26:47 p.m.",
+      "id_pieza": "121396",
+      "numero_parte": "121396",
+      "descripcion": "LIGA AZUL TUBO AGUA EGR P/CUMMINS ISX(3682826)",
+      "marca": "CUMMINS",
+      "cantidad": 6,
+      "costo_unitario": 50,
+      "factura": "MTY 32765",
+      "proveedor": "PROVEEDOR FACTURA",
+      "almacen": "Almacén de Refacciones",
+      "almacen_id": "refacciones",
+      "ubicacion": "Rack 1 Nivel 1",
+      "timestamp": "2026-11-16T23:26:47.000Z"
+    },
+    {
+      "id": "mov_recup_2",
+      "tipo": "E",
+      "fecha": "2026-11-16",
+      "hora": "11:18:21 p.m.",
+      "id_pieza": "65485",
+      "numero_parte": "65485",
+      "descripcion": "AMORTIGUADOR TRASERO INTERNACIONAL",
+      "marca": "MONROE",
+      "cantidad": 2,
+      "costo_unitario": 1250,
+      "factura": "MTY 32765",
+      "proveedor": "PROVEEDOR FACTURA",
+      "almacen": "Almacén de Refacciones",
+      "almacen_id": "refacciones",
+      "ubicacion": "Rack 3 Nivel 3",
+      "timestamp": "2026-11-16T23:18:21.000Z"
+    },
+    {
+      "id": "mov_recup_3",
+      "tipo": "E",
+      "fecha": "2026-11-16",
+      "hora": "11:18:21 p.m.",
+      "id_pieza": "1612",
+      "numero_parte": "1612",
+      "descripcion": "TAPA PARA RUEDA DELANTERA",
+      "marca": "SKF",
+      "cantidad": 2,
+      "costo_unitario": 350,
+      "factura": "MTY 32765",
+      "proveedor": "PROVEEDOR FACTURA",
+      "almacen": "Almacén de Refacciones",
+      "almacen_id": "refacciones",
+      "ubicacion": "Rack 7 Nivel 3",
+      "timestamp": "2026-11-16T23:18:21.000Z"
+    },
+    {
+      "id": "mov_recup_4",
+      "tipo": "E",
+      "fecha": "2026-11-16",
+      "hora": "11:18:21 p.m.",
+      "id_pieza": "65485",
+      "numero_parte": "65485",
+      "descripcion": "AMORTIGUADOR TRASERO INTERNACIONAL",
+      "marca": "MONROE",
+      "cantidad": 2,
+      "costo_unitario": 1250,
+      "factura": "MTY 32765",
+      "proveedor": "PROVEEDOR FACTURA",
+      "almacen": "Almacén de Refacciones",
+      "almacen_id": "refacciones",
+      "ubicacion": "Rack 3 Nivel 3",
+      "timestamp": "2026-11-16T23:18:21.000Z"
+    },
+    {
       "id": "mov_1794615066552_0_5436",
       "tipo": "S",
       "tipo_movimiento": "SALIDA",
@@ -30267,6 +30357,37 @@
   ],
   "facturas_procesadas": [
     {
+      "id": "fac_1794872469088_bmkfx",
+      "factura": "TEST-99999",
+      "factura_normalizada": "TEST99999",
+      "orden_compra": "",
+      "proveedor": "PROVEEDOR TEST",
+      "proveedor_normalizado": "PROVEEDORTEST",
+      "fecha_factura": "2026-11-16",
+      "fecha_ingreso": "2026-11-16",
+      "hora_ingreso": "05:41:08 p.m.",
+      "total_monto": 50,
+      "total_piezas": 1,
+      "total_items": 1,
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "fecha_vencimiento": "2026-11-16",
+      "estado_pago": "PAGADO",
+      "fecha_pago": "2026-11-16",
+      "referencia_pago": "",
+      "notas_pago": "",
+      "image_sha256": null,
+      "entregado_por": "",
+      "piezas_resumen": [
+        {
+          "numero_parte": "121393_TEST",
+          "cantidad": 1,
+          "descripcion": "LIGA AZUL TUBO AGUA EGR P/CL TEST",
+          "costo_unitario": 50
+        }
+      ]
+    },
+    {
       "id": "fac_1794614284932_eceq5",
       "factura": "51237",
       "factura_normalizada": "51237",
@@ -33008,5 +33129,14 @@
   "config": {
     "gemini_api_key": ""
   },
-  "facturas_registradas": []
+  "facturas_registradas": [
+    {
+      "factura": "MTY 32765",
+      "proveedor": "PROVEEDOR FACTURA",
+      "fecha_ingreso": "2026-11-16",
+      "total_piezas": 12,
+      "total_monto": 5800,
+      "timestamp": "2026-11-16T23:26:47.000Z"
+    }
+  ]
 }

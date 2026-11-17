@@ -1,5 +1,270 @@
 [
   {
+    "id": "snap_20261116_2359",
+    "fecha": "2026-11-16",
+    "hora": "23:59:59",
+    "titulo": "Cierre Oficial de Bitácora - lunes, 16 de noviembre de 2026",
+    "responsable": "Cierre Automático de Medianoche (00:00 hrs)",
+    "resumen": {
+      "total": 23,
+      "mayor": 5,
+      "proceso": 11,
+      "listo": 7,
+      "costo_acumulado": 116202.71
+    },
+    "notas_cierre": "Corte automático de medianoche (12:00 AM). Las unidades continúan su ciclo de trabajo hacia el nuevo día.",
+    "movimientos": [
+      {
+        "id": "mov_lib_1794866937197",
+        "hora": "04:08 p.m.",
+        "unidad_id": "46",
+        "tipo": "liberacion",
+        "descripcion": "Unidad 46 liberada de taller: Asignada a viaje",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "id": "mov_init_1794855392119",
+        "hora": "00:00:00",
+        "unidad_id": "TODAS",
+        "tipo": "apertura",
+        "descripcion": "Apertura de jornada diaria. Se arranca con el estatus del cierre de ayer (2026-11-14).",
+        "autor": "Sistema Taller Pro"
+      }
+    ],
+    "unidades": [
+      {
+        "id": "008",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "MTTO a agencia SITRAK",
+        "notas": "",
+        "reporte": "MTTO a agencia SITRAK",
+        "costo": 2744,
+        "fechaRefaccion": "2026-11-09"
+      },
+      {
+        "id": "42",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Daño en defensa  y tuba burros por golpe ocacionado por el operador  Revicion de potenciometo y parametos y reparacion de clima",
+        "notas": "",
+        "reporte": "Daño en defensa  y tuba burros por golpe ocacionado por el operador  Revicion de potenciometo y parametos y reparacion de clima",
+        "costo": 3940,
+        "fechaRefaccion": "2026-05-12"
+      },
+      {
+        "id": "003",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "unidad lista recien salida de agencia Sitrak",
+        "notas": "",
+        "reporte": "unidad lista recien salida de agencia Sitrak",
+        "costo": 78.5,
+        "fechaRefaccion": "2026-11-09"
+      },
+      {
+        "id": "004",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Unidad lista y limpia por dntro\nOJO pendiente entrar a MTTO SITRAK",
+        "notas": "",
+        "reporte": "Unidad lista y limpia por dntro\nOJO pendiente entrar a MTTO SITRAK",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-09"
+      },
+      {
+        "id": "68",
+        "sucursal": "Apodaca",
+        "estado": "mayor",
+        "defecto": "Unidad lista y limpia por dntro",
+        "notas": "",
+        "reporte": "Unidad lista y limpia por dntro",
+        "costo": 7400,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "92",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Unidad lista y limpia por dntro",
+        "notas": "",
+        "reporte": "Unidad lista y limpia por dntro",
+        "costo": 6270.48,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "85",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Unidad lista y limpia por dntro",
+        "notas": "",
+        "reporte": "Unidad lista y limpia por dntro",
+        "costo": 497.98,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "96",
+        "sucursal": "Querétaro",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Pendiente por compra de motor",
+        "reporte": "Falla de motor • Pendiente por compra de motor",
+        "costo": 1290,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "90",
+        "sucursal": "Apodaca",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Pendiente por compra de motor",
+        "reporte": "Falla de motor • Pendiente por compra de motor",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "91",
+        "sucursal": "Querétaro",
+        "estado": "mayor",
+        "defecto": "Falla de motor",
+        "notas": "Refacciones (mangas, empaques, ligas e inyectores) asciende a $60,984 MXN (compras al 16/11/26)",
+        "reporte": "Falla de motor • Refacciones (mangas, empaques, ligas e inyectores) asciende a $60,984 MXN (compras al 16/11/26)",
+        "costo": 60984,
+        "fechaRefaccion": "2026-11-16"
+      },
+      {
+        "id": "97",
+        "sucursal": "Apodaca",
+        "estado": "mayor",
+        "defecto": "Bomba de aceite y cálipers",
+        "notas": "Motor montado; pendiente bomba de aceite, cálipers delanteros y revisión traseros (compras 23/11/26)",
+        "reporte": "Bomba de aceite y cálipers • Motor montado; pendiente bomba de aceite, cálipers delanteros y revisión traseros (compras 23/11/26)",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-23"
+      },
+      {
+        "id": "11",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Calentamiento de motor",
+        "notas": "Pendiente ingresar a agencia Sitrak. Falla al accionar el retardador",
+        "reporte": "Calentamiento de motor • Pendiente ingresar a agencia Sitrak. Falla al accionar el retardador",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "74",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Cálipers traseros",
+        "notas": "Compra programada para el 09/11/26",
+        "reporte": "Cálipers traseros • Compra programada para el 09/11/26",
+        "costo": 0,
+        "fechaRefaccion": "2026-11-09"
+      },
+      {
+        "id": "94",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "Filtro de gases del EGR • Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer\n\nUnidad en preuba ya que ya se remplazo el bote del EGR",
+        "notas": "Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer",
+        "reporte": "Filtro de gases del EGR • Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer\n\nUnidad en preuba ya que ya se remplazo el bote del EGR",
+        "costo": 1676,
+        "fechaRefaccion": "2026-11-09"
+      },
+      {
+        "id": "81",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Enllantado pendiente • Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+        "notas": "Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+        "reporte": "Enllantado pendiente • Finalizado cambio de ligas de cárter. Enllantado pendiente de compra",
+        "costo": 655.42,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "41",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "unidad lista para entrega y limpia por dentro",
+        "notas": "En proceso de compra. Fecha estimada de entrega: 29/10/26",
+        "reporte": "unidad lista para entrega y limpia por dentro",
+        "costo": 7366.85,
+        "fechaRefaccion": "2026-05-11"
+      },
+      {
+        "id": "63",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Revision de cabeza de motor por paso de combustible al aceite",
+        "notas": "En proceso de cambio de válvula niveladora suspensión, amortiguadores delanteros y enllantado",
+        "reporte": "Revision de cabeza de motor por paso de combustible al aceite",
+        "costo": 5300,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "18",
+        "sucursal": "Apodaca",
+        "estado": "listo",
+        "defecto": "unidad disponible para entrega para pato ya que ya trae daño en anillos (COMPRECION VOLTEADA)",
+        "notas": "",
+        "reporte": "unidad disponible para entrega para pato ya que ya trae daño en anillos (COMPRECION VOLTEADA)",
+        "costo": 0,
+        "fechaRefaccion": ""
+      },
+      {
+        "id": "2502",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Se amarra en las curbas\nReverseros no prenden\nSistema elecrico al prender luces se activan los parabrisas\nAmortiguadores trasereos",
+        "notas": "",
+        "reporte": "Se amarra en las curbas\nReverseros no prenden\nSistema elecrico al prender luces se activan los parabrisas\nAmortiguadores trasereos",
+        "costo": 1106.6,
+        "fechaRefaccion": "2026-11-10"
+      },
+      {
+        "id": "76",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "No enciende se vatalla para orender\nUnidades principales amarillas",
+        "notas": "",
+        "reporte": "No enciende se vatalla para orender\nUnidades principales amarillas",
+        "costo": 890.6,
+        "fechaRefaccion": "2026-11-13"
+      },
+      {
+        "id": "80",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Respiradera de diferencial dañada\nDireccion mui dura\nFuga de aire en suspencion\nAmortiguadores\n5t con juego\nPerdida de potencia",
+        "notas": "",
+        "reporte": "Respiradera de diferencial dañada\nDireccion mui dura\nFuga de aire en suspencion\nAmortiguadores\n5t con juego\nPerdida de potencia",
+        "costo": 10672.95,
+        "fechaRefaccion": "2026-11-13"
+      },
+      {
+        "id": "48",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Perdida de potencia\nSensor de nivel de refrigerante\nParabrisas se le mete el agua\nInyectores dañados\nCHecar espejos retrovisor no se muebe el mecanismo",
+        "notas": "",
+        "reporte": "Perdida de potencia\nSensor de nivel de refrigerante\nParabrisas se le mete el agua\nInyectores dañados\nCHecar espejos retrovisor no se muebe el mecanismo",
+        "costo": 588.16,
+        "fechaRefaccion": "2026-11-12"
+      },
+      {
+        "id": "2509",
+        "sucursal": "Apodaca",
+        "estado": "proceso",
+        "defecto": "Mantenimiento con refacciones surtidas de almacén (Folio #4095)",
+        "notas": "Creada automáticamente por sincronización inteligente Almacén-Taller. Solicitante: Martin Alvarado",
+        "reporte": "Mantenimiento con refacciones surtidas de almacén (Folio #4095)",
+        "costo": 4741.17,
+        "fechaRefaccion": "2026-11-13"
+      }
+    ]
+  },
+  {
     "id": "snap_20261114_2359",
     "fecha": "2026-11-14",
     "hora": "23:59:59",

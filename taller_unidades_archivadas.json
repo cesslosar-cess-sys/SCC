@@ -1,5 +1,430 @@
 [
   {
+    "id": "46",
+    "sucursal": "Apodaca",
+    "estado": "listo",
+    "tipo_procedimiento": "correctivo",
+    "defecto": "Bolsa de aire trasera dañada y Motor de Wipers",
+    "notas": "",
+    "reporte": "Bolsa de aire trasera dañada y Motor de Wipers",
+    "costo": 14258.68,
+    "fechaRefaccion": "2026-11-12",
+    "categoriaFalla": "General",
+    "piezas": [
+      {
+        "id": "mov_1794517265228_946",
+        "id_pieza": "1R11268",
+        "numero_parte": "1R11268",
+        "descripcion": "BOLSA DE AIRE",
+        "marca": "GOODYEAR",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 2301.68,
+        "costo_total": 2301.68,
+        "folio_almacen": "4094",
+        "solicitante": "MARTIN ALVARADO",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "correctivo",
+        "fecha_recepcion": "2026-11-12",
+        "hora_recepcion": "03:01:05 p.m."
+      },
+      {
+        "id": "mov_1793138307116_29",
+        "id_pieza": "part_1793137315943_0_4446",
+        "numero_parte": "4921517",
+        "descripcion": "SENSOR PRESION DE ACEITE P/CUMMINS ISX EGR",
+        "marca": "CUMMINS",
+        "cantidad": 1,
+        "unidad_medida": "PZA",
+        "precio_unitario": 1300,
+        "costo_total": 1300,
+        "folio_almacen": "4052",
+        "solicitante": "Martin Alvarado",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "preventivo",
+        "fecha_recepcion": "2026-10-27",
+        "hora_recepcion": "03:58:27 p.m."
+      },
+      {
+        "id": "mov_1792712908324_648",
+        "id_pieza": "part_1792712818641_0_7111",
+        "numero_parte": "65523",
+        "descripcion": "AMORTIGUADOR",
+        "marca": "MONROE",
+        "cantidad": 4,
+        "unidad_medida": "PZA",
+        "precio_unitario": 1250,
+        "costo_total": 5000,
+        "folio_almacen": "3990",
+        "solicitante": "Martin Alvarado",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "correctivo",
+        "fecha_recepcion": "2026-10-22",
+        "hora_recepcion": "05:48:28 p.m."
+      },
+      {
+        "id": "mov_1792692789407_982",
+        "id_pieza": "1859922",
+        "numero_parte": "1859922",
+        "descripcion": "SOPORTE  / BUJE DE CABINA",
+        "marca": "OUTSAID",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 1657,
+        "costo_total": 1657,
+        "folio_almacen": "3990",
+        "solicitante": "MARTIN ALVARADO",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "correctivo",
+        "fecha_recepcion": "2026-10-22",
+        "hora_recepcion": "12:13:09 p.m."
+      },
+      {
+        "id": "mov_1792692729038_271",
+        "id_pieza": "2B12440",
+        "numero_parte": "2B12440",
+        "descripcion": "BOLSA DE AIRE TIPO HAMBURGUESA",
+        "marca": "GOODYEAR",
+        "cantidad": 4,
+        "unidad_medida": "PZ",
+        "precio_unitario": 1000,
+        "costo_total": 4000,
+        "folio_almacen": "3990",
+        "solicitante": "MARTIN ALVARADO",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "correctivo",
+        "fecha_recepcion": "2026-10-22",
+        "hora_recepcion": "12:12:09 p.m."
+      }
+    ],
+    "historial": [
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 5 piezas (14,258.68 MXN) [Prev: $1,300 | Corr: $12,958.68]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 5 piezas (14,258.68 MXN) [Prev: $1,300 | Corr: $12,958.68]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "17/11/2026 09:28 a.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:28 a.m.",
+        "evento": "Sincronización Almacén: 5 piezas (14,258.68 MXN) [Prev: $1,300 | Corr: $12,958.68]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 5 piezas (14,258.68 MXN) [Prev: $1,300 | Corr: $12,958.68]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:37 p.m.",
+        "evento": "Sincronización Almacén: 5 piezas (14,258.68 MXN) [Prev: $1,300 | Corr: $12,958.68]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:37 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:52 p.m.",
+        "evento": "Sincronización Almacén: 5 piezas (14,258.68 MXN) [Prev: $1,300 | Corr: $12,958.68]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:52 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:23 p.m.",
+        "evento": "Sincronización Almacén: 5 piezas (14,258.68 MXN) [Prev: $1,300 | Corr: $12,958.68]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "16/11/2026 04:08 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 04:41 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "13/11/2026 04:40 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "13/11/2026 04:21 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Sync manual Unidad 2509"
+      },
+      {
+        "fecha": "13/11/2026 03:47 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 03:25 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 03:23 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:22 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 03:17 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:16 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:16 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:13 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:12 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:12 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:12 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:11 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:10 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:08 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:07 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 03:06 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 03:06 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "13/11/2026 03:06 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:05 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:02 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 03:00 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 01:52 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "13/11/2026 01:26 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 01:25 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 01:02 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 01:00 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 12:59 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "13/11/2026 12:59 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 12:42 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 12:42 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (2,301.68 MXN) [Prev: $0 | Corr: $2,301.68]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 06:30 p.m.",
+        "evento": "Sincronización Almacén: 4 piezas (11,957 MXN) [Prev: $1,300 | Corr: $10,657]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026, 12:24:23 p.m.",
+        "evento": "Cambio de estatus: De 'En Proceso (Taller)' a 'Listas para Entrega'",
+        "tipo": "cambio_estatus",
+        "foto": null
+      },
+      {
+        "fecha": "13/11/2026 06:24 p.m.",
+        "evento": "Generado Folio de Almacén #4094: Bolsa de aire trasera dañada y Motor de Wipers. Refacciones solicitadas: Por surtir en almacén",
+        "tipo": "generacion_folio_almacen",
+        "autor": "Encargado de Taller"
+      },
+      {
+        "fecha": "13/11/2026, 12:23:53 p.m.",
+        "evento": "Unidad registrada en taller (En Proceso (Taller))",
+        "tipo": "alta"
+      }
+    ],
+    "folio_almacen": "4094",
+    "estadoModificadoManualmente": true,
+    "costo_refacciones": 14258.68,
+    "costo_preventivo": 1300,
+    "costo_correctivo": 12958.68,
+    "avances": [
+      {
+        "fecha": "16/11/2026",
+        "hora": "04:08 p.m.",
+        "texto": "🏁 Unidad liberada de taller con Orden #4094: Asignada a viaje.",
+        "mecanico": "Jefe de Taller",
+        "porcentaje": 100
+      }
+    ],
+    "archivada": true,
+    "fecha_salida": "16/11/2026",
+    "hora_salida": "04:08 p.m.",
+    "motivo_salida": "Retirada del tablero activo / Salida a viaje",
+    "notas_salida": ""
+  },
+  {
     "id": "83",
     "sucursal": "Apodaca",
     "estado": "proceso",
@@ -233,6 +658,90 @@
       }
     ],
     "historial": [
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 13 piezas (10,174.27 MXN) [Prev: $1,500 | Corr: $8,674.27]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 13 piezas (10,174.27 MXN) [Prev: $1,500 | Corr: $8,674.27]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "17/11/2026 09:28 a.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:28 a.m.",
+        "evento": "Sincronización Almacén: 13 piezas (10,174.27 MXN) [Prev: $1,500 | Corr: $8,674.27]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 13 piezas (10,174.27 MXN) [Prev: $1,500 | Corr: $8,674.27]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:37 p.m.",
+        "evento": "Sincronización Almacén: 13 piezas (10,174.27 MXN) [Prev: $1,500 | Corr: $8,674.27]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:37 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:52 p.m.",
+        "evento": "Sincronización Almacén: 13 piezas (10,174.27 MXN) [Prev: $1,500 | Corr: $8,674.27]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:52 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:23 p.m.",
+        "evento": "Sincronización Almacén: 13 piezas (10,174.27 MXN) [Prev: $1,500 | Corr: $8,674.27]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "16/11/2026 04:08 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
       {
         "fecha": "16/11/2026 03:30 p.m.",
         "evento": "Sincronización Almacén: 13 piezas (10,174.27 MXN) [Prev: $1,500 | Corr: $8,674.27]",

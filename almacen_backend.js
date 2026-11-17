@@ -4231,6 +4231,74 @@ app.post('/api/bitacora/:id/devolucion', (req, res) => {
   });
 });
 
+// Guardar todo y forzar persistencia en disco de Almacén
+app.post('/api/almacen/guardar-todo', (req, res) => {
+  try {
+    saveStore();
+    const movsCount = (store.movimientos || []).length;
+    const catCount = Object.keys(store.catalog || {}).length;
+    res.json({
+      success: true,
+      message: `Base de datos de Almacén guardada exitosamente (${movsCount} movimientos, ${catCount} piezas).`,
+      movimientos: movsCount,
+      catalog: catCount,
+      timestamp: new Date().toISOString()
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Descargar respaldo completo de Almacén en JSON
+app.get('/api/almacen/descargar-respaldo', (req, res) => {
+  try {
+    const jsonStr = JSON.stringify(store, null, 2);
+    const fecha = new Date().toISOString().slice(0, 10);
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Content-Disposition', `attachment; filename="Respaldo_Almacen_CESS_${fecha}.json"`);
+    res.send(jsonStr);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Restaurar respaldo completo de Almacén desde JSON
+app.post('/api/almacen/restaurar-respaldo', (req, res) => {
+  try {
+    const backupData = req.body;
+    if (!backupData || (!backupData.catalog && !backupData.movimientos)) {
+      return res.status(400).json({ success: false, error: 'Archivo de respaldo inválido o sin datos.' });
+    }
+    if (backupData.catalog && typeof backupData.catalog === 'object') {
+      store.catalog = backupData.catalog;
+    }
+    if (Array.isArray(backupData.movimientos)) {
+      store.movimientos = backupData.movimientos;
+    }
+    if (Array.isArray(backupData.facturas_registradas)) {
+      store.facturas_registradas = backupData.facturas_registradas;
+    }
+    if (Array.isArray(backupData.almacenes)) {
+      store.almacenes = backupData.almacenes;
+    }
+    if (Array.isArray(backupData.memoria_ia)) {
+      store.memoria_ia = backupData.memoria_ia;
+    }
+    if (backupData.config) {
+      store.config = { ...store.config, ...backupData.config };
+    }
+    saveStore();
+    res.json({
+      success: true,
+      message: `Respaldo restaurado con éxito: ${store.movimientos.length} movimientos y ${Object.keys(store.catalog).length} refacciones activas.`,
+      movimientos: store.movimientos.length,
+      catalog: Object.keys(store.catalog).length
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // 9. Subida de Foto (desde cámara móvil o archivo)
 app.post('/api/upload', upload.single('foto'), (req, res) => {
   if (!req.file) {
