@@ -4013,8 +4013,8 @@
                 }
             });
 
-            // 4. Chequeo de nuevas versiones del código cada 15 segundos
-            setInterval(checarActualizacionesSistema, 15000);
+            // 4. Chequeo de nuevas versiones del código cada 3.5 segundos
+            setInterval(checarActualizacionesSistema, 3500);
         }
 
         
@@ -4057,6 +4057,12 @@
                     } else {
                         // Unidad existe en ambos: FUSIONAR sin perder avances, folios ni datos
                         const su = mapa.get(key);
+
+                        // Si localmente cambiamos de estado recientemente y aún no se refleja en el servidor, respetar el estado local
+                        if (lu.estadoTimestamp && (!su.estadoTimestamp || lu.estadoTimestamp > su.estadoTimestamp)) {
+                            su.estado = lu.estado;
+                            su.estadoTimestamp = lu.estadoTimestamp;
+                        }
 
                         // A) AVANCES TÉCNICOS: Combinar sin duplicados
                         const avancesMap = new Map();
@@ -4186,12 +4192,19 @@
                             id: u.id,
                             est: u.estado,
                             rep: u.reporte,
+                            def: u.defecto,
+                            not: u.notas,
                             cos: u.costo,
                             fec: u.fechaRefaccion,
+                            fol: u.folio_almacen,
                             pz: (u.piezas || []).length,
+                            av: (u.avances || []).length,
+                            ultAv: u.ultimo_avance ? (u.ultimo_avance.id || u.ultimo_avance.texto || '') : '',
                             hist: (u.historial || []).length
                         })));
-                        if (ultimaFirmaDatos !== firmaNueva) {
+                        const hayCambioTimestamp = json.dataTimestamp && json.dataTimestamp > ultimoDataTimestamp;
+                        if (ultimaFirmaDatos !== firmaNueva || hayCambioTimestamp) {
+                            if (json.dataTimestamp) ultimoDataTimestamp = json.dataTimestamp;
                             fusionarUnidadesInteligente(json.data);
                             sanitizarBaseDatos();
                             guardarDatosLocales(false);
@@ -4973,6 +4986,7 @@
             const anterior = unidad.estado;
             unidad.estado = nuevoEstado;
             unidad.estadoModificadoManualmente = true;
+            unidad.estadoTimestamp = Date.now();
 
             const nombres = {
                 considerar: 'A Considerar / Detecciones',
@@ -5012,6 +5026,7 @@
                 const anterior = unidad.estado;
                 unidad.estado = orden[nuevoIdx];
                 unidad.estadoModificadoManualmente = true;
+                unidad.estadoTimestamp = Date.now();
 
                 const nombres = {
                     considerar: 'A Considerar',
@@ -5047,6 +5062,7 @@
             const anterior = u.estado;
             u.estado = nuevoEstado;
             u.estadoModificadoManualmente = true;
+            u.estadoTimestamp = Date.now();
             const nombres = {
                 considerar: 'A Considerar / Detecciones',
                 mayor: 'Reparación Mayor ($$)',
@@ -10506,15 +10522,34 @@
 
                 if (res.ok) {
                     const json = await res.json();
-                    mostrarToast(`💾 ¡Guardado general exitoso! ${baseDatos.length} unidades, rescates y remolques protegidos.`);
+                    if (json.data && Array.isArray(json.data)) {
+                        if (json.dataTimestamp) ultimoDataTimestamp = json.dataTimestamp;
+                        fusionarUnidadesInteligente(json.data);
+                        sanitizarBaseDatos();
+                        guardarDatosLocales(false);
+                    } else {
+                        await forzarSincronizacionSilenciosa();
+                    }
+                    if (vistaActual === 'tablero') renderizarTablero();
+                    actualizarSelectoresUnidades();
                     actualizarTimestampSincronizacion();
                     actualizarBadgeRealtime(true);
+                    mostrarToast(`💾 ¡Guardado exitoso! Tablero actualizado con ${baseDatos.length} unidades protegidas.`);
                 } else {
-                    await fetch('/api/unidades', {
+                    const resFb = await fetch('/api/unidades', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(baseDatos)
                     });
+                    if (resFb.ok) {
+                        const jsonFb = await resFb.json();
+                        if (jsonFb.data && Array.isArray(jsonFb.data)) {
+                            fusionarUnidadesInteligente(jsonFb.data);
+                            sanitizarBaseDatos();
+                            guardarDatosLocales(false);
+                            if (vistaActual === 'tablero') renderizarTablero();
+                        }
+                    }
                     mostrarToast('💾 Cambios de unidades guardados en el servidor.');
                 }
             } catch (e) {

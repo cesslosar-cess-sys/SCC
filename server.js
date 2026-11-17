@@ -939,105 +939,130 @@ function broadcastSSE(type, payload = {}) {
     }
 }
 
-function saveUnidades(unidades, autor = 'Sistema') {
-    if (Array.isArray(unidades)) {
-        // Gestión inteligente de unidades archivadas:
-        // Si una unidad en la lista activa tiene estatus operativo ('proceso', 'mayor', 'listo')
-        // o reincorporación explícita, se remueve de archivadas para permitir su ingreso activo a taller.
-        let archivadas = getUnidadesArchivadas();
-        let archivadasModificadas = false;
+function saveUnidades(incomingUnidades, autor = 'Sistema') {
+    if (!Array.isArray(incomingUnidades)) return [];
 
-        unidades.forEach(u => {
-            if (!u || !u.id) return;
-            const k = String(u.id).trim().toUpperCase();
-            const archIdx = archivadas.findIndex(a => String(a.id).trim().toUpperCase() === k);
-            if (archIdx !== -1) {
-                if (u.reincorporada || (!u.archivada && ['proceso', 'mayor', 'listo'].includes(u.estado))) {
-                    archivadas.splice(archIdx, 1);
-                    archivadasModificadas = true;
-                    console.log(`[CESS Taller] Unidad ${k} reincorporada de archivadas al tablero activo.`);
-                }
-            }
-        });
-
-        if (archivadasModificadas) {
-            saveUnidadesArchivadas(archivadas);
-        }
-
-        const archivadasSet = new Set(archivadas.map(a => String(a.id).trim().toUpperCase()));
-        unidades = unidades.filter(u => {
-            if (!u || !u.id) return false;
-            const k = String(u.id).trim().toUpperCase();
-            return !archivadasSet.has(k) && !u.archivada;
-        });
-
-        // Garantizar unicidad estricta por ID (evitar duplicados entre columnas)
-        const mapa = new Map();
-        unidades.forEach(u => {
-            if (u && u.id) {
-                const key = String(u.id).trim();
-                if (!mapa.has(key)) {
-                    mapa.set(key, u);
-                } else {
-                    const exist = mapa.get(key);
-                    // Si una unidad duplicada tiene un estado más avanzado, adoptarlo
-                    if (u.estado === 'listo' || (u.estado === 'proceso' && exist.estado === 'mayor')) {
-                        exist.estado = u.estado;
-                    }
-                    if (u.reporte && !exist.reporte) exist.reporte = u.reporte;
-                    if (Array.isArray(u.piezas) && u.piezas.length > 0) {
-                        exist.piezas = [...(exist.piezas || []), ...u.piezas];
-                    }
-                    if (Array.isArray(u.historial) && u.historial.length > 0) {
-                        exist.historial = [...(exist.historial || []), ...u.historial];
-                    }
-                }
-            }
-        });
-        unidades = Array.from(mapa.values());
-
-        unidades.forEach(u => {
-            if (u.costo !== undefined) u.costo = Math.round((Number(u.costo) || 0) * 100) / 100;
-            if (u.costo_refacciones !== undefined) u.costo_refacciones = Math.round((Number(u.costo_refacciones) || 0) * 100) / 100;
-            if (u.costo_preventivo !== undefined) u.costo_preventivo = Math.round((Number(u.costo_preventivo) || 0) * 100) / 100;
-            if (u.costo_correctivo !== undefined) u.costo_correctivo = Math.round((Number(u.costo_correctivo) || 0) * 100) / 100;
-            if (u.costo_mano_obra !== undefined) u.costo_mano_obra = Math.round((Number(u.costo_mano_obra) || 0) * 100) / 100;
-            if (u.costo_externo !== undefined) u.costo_externo = Math.round((Number(u.costo_externo) || 0) * 100) / 100;
-            if (Array.isArray(u.piezas) && u.piezas.length > 0) {
-                u.piezas = u.piezas.map((p, idx) => normalizarPieza(p, idx)).filter(Boolean);
-            }
-        });
-    }
-
-    // PROTECCIÓN DE DATOS HISTÓRICOS: Si una unidad ya no está en el tablero activo, archivarla sin perder avances
+    let actualesEnDisco = [];
     if (fs.existsSync(DB_FILE)) {
         try {
-            const previas = JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
-            if (Array.isArray(previas)) {
-                let archivadas = getUnidadesArchivadas();
-                let cambioArchivadas = false;
-                previas.forEach(p => {
-                    const sigueEnTablero = unidades.some(u => String(u.id).trim() === String(p.id).trim());
-                    if (!sigueEnTablero) {
-                        const idxArch = archivadas.findIndex(a => String(a.id).trim() === String(p.id).trim());
-                        const copia = { ...p, archivada: true, fecha_salida: p.fecha_salida || new Date().toLocaleDateString('es-MX'), motivo_salida: p.motivo_salida || 'Retirada del tablero activo / Salida a viaje' };
-                        if (idxArch >= 0) {
-                            archivadas[idxArch] = { ...archivadas[idxArch], ...copia };
-                        } else {
-                            archivadas.unshift(copia);
-                        }
-                        cambioArchivadas = true;
-                    }
-                });
-                if (cambioArchivadas) {
-                    saveUnidadesArchivadas(archivadas);
-                }
-            }
-        } catch(e) {}
+            actualesEnDisco = JSON.parse(fs.readFileSync(DB_FILE, 'utf8')) || [];
+        } catch(e) { actualesEnDisco = []; }
     }
 
-    fs.writeFileSync(DB_FILE, JSON.stringify(unidades, null, 2), 'utf8');
-    broadcastSSE('units_updated', { units: unidades, autor, count: unidades.length });
+    // Gestionar archivadas / reincorporaciones
+    let archivadas = getUnidadesArchivadas();
+    let archivadasModificadas = false;
+
+    incomingUnidades.forEach(u => {
+        if (!u || !u.id) return;
+        const k = String(u.id).trim().toUpperCase();
+        const archIdx = archivadas.findIndex(a => String(a.id).trim().toUpperCase() === k);
+        if (archIdx !== -1) {
+            if (u.reincorporada || (!u.archivada && ['proceso', 'mayor', 'listo', 'considerar'].includes(u.estado))) {
+                archivadas.splice(archIdx, 1);
+                archivadasModificadas = true;
+                console.log(`[CESS Taller] Unidad ${k} reincorporada de archivadas.`);
+            }
+        }
+    });
+
+    if (archivadasModificadas) {
+        saveUnidadesArchivadas(archivadas);
+    }
+
+    const archivadasSet = new Set(archivadas.map(a => String(a.id).trim().toUpperCase()));
+
+    // FUSIÓN MULTIUSUARIO INTELIGENTE:
+    // 1. Inicializar con las unidades actuales en disco (para no perder el trabajo del otro usuario)
+    const mapa = new Map();
+    actualesEnDisco.forEach(u => {
+        if (u && u.id && !archivadasSet.has(String(u.id).trim().toUpperCase())) {
+            mapa.set(String(u.id).trim().toUpperCase(), { ...u });
+        }
+    });
+
+    // 2. Fusionar con las unidades que envía el usuario que guarda
+    incomingUnidades.forEach(inU => {
+        if (!inU || !inU.id) return;
+        const k = String(inU.id).trim().toUpperCase();
+        if (archivadasSet.has(k) && !inU.reincorporada) return;
+
+        if (!mapa.has(k)) {
+            // Unidad nueva: agregar al mapa
+            mapa.set(k, { ...inU, archivada: false });
+        } else {
+            // Unidad ya existente: fusionar datos preservando progresos y avances de ambos usuarios
+            const exist = mapa.get(k);
+
+            // A) AVANCES TÉCNICOS: Unión sin duplicados (ambos usuarios conservan sus avances)
+            const avancesMap = new Map();
+            (exist.avances || []).forEach(a => {
+                if (!a) return;
+                const aKey = a.id || `${a.fecha}_${a.hora}_${a.texto}`;
+                avancesMap.set(aKey, a);
+            });
+            (inU.avances || []).forEach(a => {
+                if (!a) return;
+                const aKey = a.id || `${a.fecha}_${a.hora}_${a.texto}`;
+                avancesMap.set(aKey, a);
+            });
+            exist.avances = Array.from(avancesMap.values()).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+            if (exist.avances.length > 0) exist.ultimo_avance = exist.avances[0];
+
+            // B) HISTORIAL: Unión sin duplicados
+            const histMap = new Map();
+            (exist.historial || []).forEach(h => {
+                if (!h) return;
+                histMap.set(`${h.fecha}_${h.evento}`, h);
+            });
+            (inU.historial || []).forEach(h => {
+                if (!h) return;
+                histMap.set(`${h.fecha}_${h.evento}`, h);
+            });
+            exist.historial = Array.from(histMap.values());
+
+            // C) PIEZAS / REFACCIONES
+            if (Array.isArray(inU.piezas) && inU.piezas.length > 0) {
+                const piezasMap = new Map();
+                (exist.piezas || []).forEach(p => piezasMap.set(p.id || p.id_pieza || p.descripcion, p));
+                inU.piezas.forEach(p => piezasMap.set(p.id || p.id_pieza || p.descripcion, p));
+                exist.piezas = Array.from(piezasMap.values());
+            }
+
+            // D) DATOS OPERATIVOS (Estado, Defecto, Sucursal, Folio, Costo)
+            if (inU.estado) exist.estado = inU.estado;
+            if (inU.defecto) exist.defecto = inU.defecto;
+            if (inU.notas !== undefined) exist.notas = inU.notas;
+            if (inU.reporte) exist.reporte = inU.reporte;
+            if (inU.folio_almacen) exist.folio_almacen = inU.folio_almacen;
+            if (inU.sucursal) exist.sucursal = inU.sucursal;
+            if (inU.categoriaFalla) exist.categoriaFalla = inU.categoriaFalla;
+            if (inU.tipo_procedimiento) exist.tipo_procedimiento = inU.tipo_procedimiento;
+            if (inU.fechaRefaccion) exist.fechaRefaccion = inU.fechaRefaccion;
+            if (inU.costo > 0) exist.costo = inU.costo;
+            exist.archivada = false;
+        }
+    });
+
+    let unidadesFinales = Array.from(mapa.values());
+
+    unidadesFinales.forEach(u => {
+        if (u.costo !== undefined) u.costo = Math.round((Number(u.costo) || 0) * 100) / 100;
+        if (u.costo_refacciones !== undefined) u.costo_refacciones = Math.round((Number(u.costo_refacciones) || 0) * 100) / 100;
+        if (u.costo_preventivo !== undefined) u.costo_preventivo = Math.round((Number(u.costo_preventivo) || 0) * 100) / 100;
+        if (u.costo_correctivo !== undefined) u.costo_correctivo = Math.round((Number(u.costo_correctivo) || 0) * 100) / 100;
+        if (u.costo_mano_obra !== undefined) u.costo_mano_obra = Math.round((Number(u.costo_mano_obra) || 0) * 100) / 100;
+        if (u.costo_externo !== undefined) u.costo_externo = Math.round((Number(u.costo_externo) || 0) * 100) / 100;
+        if (Array.isArray(u.piezas) && u.piezas.length > 0) {
+            u.piezas = u.piezas.map((p, idx) => normalizarPieza(p, idx)).filter(Boolean);
+        }
+    });
+
+    fs.writeFileSync(DB_FILE, JSON.stringify(unidadesFinales, null, 2), 'utf8');
+
+    ultimaMarcaTiempoDatos = Date.now();
+    broadcastSSE('units_updated', { units: unidadesFinales, autor, timestamp: ultimaMarcaTiempoDatos, count: unidadesFinales.length });
+    return unidadesFinales;
 }
 
 function getBitacoras() {
@@ -1287,7 +1312,7 @@ app.get('/api/unidades', (req, res) => {
     getJornadaActual(); // valida medianoche si aplica
     try { sincronizarFoliosConAlmacen('Consulta API /api/unidades'); } catch(e) {}
     const unidades = getUnidades();
-    res.json({ success: true, count: unidades.length, data: unidades });
+    res.json({ success: true, count: unidades.length, data: unidades, dataTimestamp: ultimaMarcaTiempoDatos });
 });
 
 // 4. Guardar / sincronizar todas las unidades (Full Sync)
@@ -1296,8 +1321,8 @@ app.post('/api/unidades', (req, res) => {
     if (!Array.isArray(unidades)) {
         return res.status(400).json({ error: 'Se esperaba un arreglo de unidades' });
     }
-    saveUnidades(unidades);
-    res.json({ success: true, count: unidades.length });
+    const guardadas = saveUnidades(unidades, 'Sincronización Unidades');
+    res.json({ success: true, count: guardadas.length, data: guardadas, dataTimestamp: ultimaMarcaTiempoDatos });
 });
 
 // 5. Actualizar una unidad específica
@@ -4691,9 +4716,13 @@ app.post('/api/guardar-todo', (req, res) => {
     const { unidades, rescates, remolques, archivadas } = req.body || {};
     try {
         let countU = 0, countR = 0, countRem = 0, countArch = 0;
+        let unidadesFinales = [];
         if (Array.isArray(unidades) && unidades.length > 0) {
-            saveUnidades(unidades, 'Guardar Todo Usuario');
-            countU = unidades.length;
+            unidadesFinales = saveUnidades(unidades, 'Guardar Todo Usuario');
+            countU = unidadesFinales.length;
+        } else {
+            unidadesFinales = getUnidades();
+            countU = unidadesFinales.length;
         }
         if (Array.isArray(rescates)) {
             saveRescates(rescates);
@@ -4714,6 +4743,8 @@ app.post('/api/guardar-todo', (req, res) => {
         res.json({
             success: true,
             mensaje: `Datos guardados exitosamente: ${countU} unidades, ${countR} rescates, ${countRem} remolques, ${countArch} archivadas.`,
+            data: unidadesFinales,
+            dataTimestamp: ultimaMarcaTiempoDatos,
             timestamp: new Date().toISOString()
         });
     } catch (err) {
