@@ -1,9 +1,25 @@
-const express = require('express');
-const cors = require('cors');
-const multer = require('multer');
+function loadMod(modName) {
+  try {
+    return require(modName);
+  } catch (e1) {
+    try {
+      return require(require('path').join(__dirname, 'almacen-app', 'node_modules', modName));
+    } catch (e2) {
+      try {
+        return require(require('path').join(__dirname, '..', 'almacen-app', 'node_modules', modName));
+      } catch (e3) {
+        throw e1;
+      }
+    }
+  }
+}
+
+const express = loadMod('express');
+const cors = loadMod('cors');
+const multer = loadMod('multer');
+const xlsx = loadMod('xlsx');
 const fs = require('fs');
 const path = require('path');
-const xlsx = require('xlsx');
 
 const app = express();
 const PORT = 3001;
@@ -905,7 +921,32 @@ app.post('/api/config/gemini-key', (req, res) => {
   if (!store.config) store.config = {};
   store.config.gemini_api_key = String(apiKey || '').trim();
   saveStore();
-  res.json({ success: true, message: 'API Key de Gemini guardada globalmente en el servidor.' });
+  res.json({ success: true, message: store.config.gemini_api_key ? 'API Key de Gemini guardada globalmente en el servidor.' : 'API Key de Gemini eliminada del servidor.' });
+});
+
+// Probar y validar una API Key de Gemini en tiempo real contra Google
+app.post('/api/config/gemini-key/test', async (req, res) => {
+  const testKey = String(req.body.apiKey || (store.config && store.config.gemini_api_key) || process.env.GEMINI_API_KEY || '').trim();
+  if (!testKey) {
+    return res.status(400).json({ success: false, error: 'Ingresa una API Key para validar.' });
+  }
+  try {
+    const checkRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${testKey}`);
+    if (!checkRes.ok) {
+      const errText = await checkRes.text();
+      let msg = 'API Key inválida o sin permisos de Google.';
+      try {
+        const parsed = JSON.parse(errText);
+        msg = parsed.error?.message || msg;
+      } catch (_) {}
+      return res.status(400).json({ success: false, error: msg });
+    }
+    const data = await checkRes.json();
+    const count = (data.models || []).length;
+    return res.json({ success: true, message: `¡API Key válida! Conexión exitosa con Google Gemini (${count} modelos autorizados).` });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: 'Error al conectar con los servidores de Google: ' + err.message });
+  }
 });
 
 // 1.1 Endpoint de Licencia y Propiedad Intelectual CESS
@@ -2031,16 +2072,40 @@ function matchItemToCatalog(numParteRaw, descRaw, marcaRaw, proveedorRaw, allowS
   }
 
   // 8. Coincidencia difusa por tokens morfológicos (lematizados)
+  const ENGINE_FAMILY_TOKENS = new Set([
+    'cummin', 'cummins', 'detroit', 'caterpillar', 'cat', 'international', 'navistar',
+    'kenworth', 'freightliner', 'volvo', 'isx', 'x15', 'dd15', 'dd13', 'serie60',
+    'egr', 'dpf', 'scr', 'def', 'diesel'
+  ]);
+
+  const COMPONENT_TYPES = [
+    'sensor', 'liga', 'empaque', 'junta', 'filtro', 'valvula', 'tubo', 'manguera',
+    'bomba', 'termostato', 'amortiguador', 'camara', 'buje', 'soporte', 'faro',
+    'foco', 'polea', 'banda', 'tornillo', 'tuerca', 'reten', 'sello', 'balero',
+    'disco', 'tambor', 'campana', 'balata', 'charnela', 'cruceta', 'yugo', 'codo'
+  ];
+
   const inputTokens = desc
     .split(/\s+/)
     .map(stemWord)
     .filter(w => w.length > 2 && !STOPWORDS.has(w));
 
+  const inputComponent = COMPONENT_TYPES.find(c => desc.includes(c));
+
   if (inputTokens.length > 0) {
     const scoredItems = [];
 
     for (const p of allItems) {
-      const pDescTokens = (p.descripcion || '')
+      const pDescNorm = (p.descripcion || '').toLowerCase();
+      // Si ambos tienen tipo de componente definido pero difieren (ej. uno es liga y el otro es sensor), NUNCA son la misma pieza
+      if (inputComponent) {
+        const pComponent = COMPONENT_TYPES.find(c => pDescNorm.includes(c));
+        if (pComponent && pComponent !== inputComponent) {
+          continue;
+        }
+      }
+
+      const pDescTokens = pDescNorm
         .split(/\s+/)
         .map(stemWord)
         .filter(w => w.length > 2 && !STOPWORDS.has(w));
@@ -2048,25 +2113,33 @@ function matchItemToCatalog(numParteRaw, descRaw, marcaRaw, proveedorRaw, allowS
       if (pDescTokens.length === 0) continue;
 
       let matchedTokensCount = 0;
+      let nonEngineTokensMatched = 0;
       for (const t of inputTokens) {
         if (pDescTokens.some(pt => pt === t || pt.includes(t) || t.includes(pt))) {
           matchedTokensCount++;
+          if (!ENGINE_FAMILY_TOKENS.has(t)) {
+            nonEngineTokensMatched++;
+          }
         }
       }
 
+      // Si sólo coincidieron tokens de marca o motor (como cummins, isx, egr), descartar para evitar falsos positivos cruzados
+      if (nonEngineTokensMatched === 0) continue;
+
       if (matchedTokensCount > 0) {
         const score = (matchedTokensCount * 2) / (inputTokens.length + pDescTokens.length);
-        scoredItems.push({ item: p, score, matchedCount: matchedTokensCount });
+        scoredItems.push({ item: p, score, matchedCount: matchedTokensCount, nonEngineCount: nonEngineTokensMatched });
       }
     }
 
-    scoredItems.sort((a, b) => b.score - a.score || b.matchedCount - a.matchedCount);
+    scoredItems.sort((a, b) => b.score - a.score || b.nonEngineCount - a.nonEngineCount || b.matchedCount - a.matchedCount);
 
     if (scoredItems.length > 0) {
       const best = scoredItems[0];
       const matchRatio = best.matchedCount / inputTokens.length;
 
-      if (matchRatio >= 0.6 || (best.matchedCount >= 2 && best.score >= 0.45)) {
+      // Requiere coincidir en al menos 1 token de componente o sustancia no de marca, y un umbral de coincidencia estricto
+      if (best.nonEngineCount >= 1 && (matchRatio >= 0.7 || (best.matchedCount >= 3 && best.score >= 0.6))) {
         return { match: best.item, tipo: 'PALABRAS_CLAVE', confianza: matchRatio >= 0.8 ? 'ALTA' : 'MEDIA' };
       }
 
@@ -3532,23 +3605,38 @@ app.post('/api/entrada-masiva', (req, res) => {
   for (const p of piezas) {
     const cant = Number(p.cantidad) || 1;
     const parte = String(p.numero_parte || '').trim();
+    const esForzadoNuevo = Boolean(p.esNuevo || p.es_nuevo || p.desvinculado || (!p.id && p.id !== 0));
 
-    // 1. Buscar por ID directo si viene identificado del frontend o escáner IA
-    let item = (p.id && store.catalog[p.id]) ? store.catalog[p.id] : null;
+    let item = null;
 
-    // 2. Buscar por ID o número de parte / equivalencias / alias con findPart
-    if (!item && p.id) {
-      item = findPart(p.id);
-    }
-    if (!item && parte) {
-      item = findPart(parte);
-    }
-
-    // 3. Buscar con coincidencia inteligente avanzada (sinónimos de taller, lematización, descripción)
-    if (!item && (parte || p.descripcion)) {
-      const matchRes = matchItemToCatalog(parte, p.descripcion, p.marca, null, false);
-      if (matchRes && matchRes.match) {
-        item = matchRes.match;
+    if (!esForzadoNuevo) {
+      // 1. Buscar por ID directo si viene identificado y validado del frontend
+      if (p.id && store.catalog[p.id]) {
+        item = store.catalog[p.id];
+      }
+      if (!item && p.id) {
+        item = findPart(p.id);
+      }
+      if (!item && parte) {
+        item = findPart(parte);
+      }
+      // 3. Buscar con coincidencia inteligente avanzada (SOLO EXACTA, NORMALIZADA o EQUIVALENCIA, NUNCA difusa)
+      if (!item && (parte || p.descripcion)) {
+        const matchRes = matchItemToCatalog(parte, p.descripcion, p.marca, null, false);
+        if (matchRes && matchRes.match && (matchRes.tipo === 'EXACTA' || matchRes.tipo === 'NORMALIZADA' || matchRes.tipo === 'EQUIVALENCIA')) {
+          item = matchRes.match;
+        }
+      }
+    } else {
+      // SI EL USUARIO PIDIÓ DESVINCULAR O REGISTRAR COMO PIEZA NUEVA:
+      // NUNCA buscar por coincidencia difusa ni por palabras de la descripción.
+      // Únicamente buscar si el número de parte exacto ya existe en catálogo (y no es genérico como S/N o INT-XXXX)
+      const genericCodes = ['S/N', 'SN', 'N/A', 'NA', 'SIN NUMERO', 'SIN PARTE', 'SIN CODIGO', 'GENERICA', 'GENERICO', ''];
+      if (parte && !genericCodes.includes(parte.toUpperCase()) && !parte.toUpperCase().startsWith('INT-') && !parte.toUpperCase().startsWith('SRV-')) {
+        const exactItem = findPart(parte);
+        if (exactItem && exactItem.numero_parte && exactItem.numero_parte.toUpperCase() === parte.toUpperCase()) {
+          item = exactItem;
+        }
       }
     }
 
@@ -4735,9 +4823,14 @@ async function callGeminiVision(apiKey, parts) {
           lastErrorDetail.toLowerCase().includes('permission_denied');
 
         if (isKeyError) {
+          if (store.config && store.config.gemini_api_key === apiKey) {
+            store.config.gemini_api_key = '';
+            try { saveStore(); } catch (_) {}
+          }
           return {
             success: false,
             status: 401,
+            requiresApiKey: true,
             error: 'Tu API Key de Google Gemini es inválida o no tiene permisos. Por favor verifica o renueva tu clave gratuita en el botón de Configuración IA.'
           };
         }

@@ -32909,8 +32909,8 @@
       "timestamp": "2026-11-14T17:34:43.882Z",
       "estado_folio": "LIBERADO",
       "estado_taller": "listo",
-      "fecha_liberacion": "14/11/2026",
-      "hora_liberacion": "11:34 a.m.",
+      "fecha_liberacion": "16/11/2026",
+      "hora_liberacion": "04:08 p.m.",
       "liberado_por": "Taller / Salida a Viaje",
       "salidas_count": 1
     }
@@ -33006,6 +33006,7 @@
     }
   ],
   "config": {
-    "gemini_api_key": "AQ.Ab8RN6KAlEF6WQo-4rNyn-pUQrOjieyN_Iiz7vTQm7-z921qrw"
-  }
+    "gemini_api_key": ""
+  },
+  "facturas_registradas": []
 }

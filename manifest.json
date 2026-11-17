@@ -1,19 +1,18 @@
 {
-  "name": "Taller Pro • Control CESS",
-  "short_name": "Taller CESS",
-  "description": "Sistema Móvil de Gestión de Taller, Reparaciones y Bitácora Diaria para Flotillas CESS",
-  "start_url": "./index.html",
-  "scope": "./",
-  "display": "standalone",
-  "orientation": "portrait-primary",
-  "background_color": "#141518",
-  "theme_color": "#1E1E1E",
+  "short_name": "SCC Almacén",
+  "name": "Sistema de Control CESS - Almacén",
+  "description": "Plataforma Empresarial de Almacén, Inventario & Mantenimiento",
   "icons": [
     {
-      "src": "./icon.svg",
-      "sizes": "any",
+      "src": "/favicon.svg",
       "type": "image/svg+xml",
+      "sizes": "192x192 512x512 any",
       "purpose": "any maskable"
     }
-  ]
+  ],
+  "start_url": "/",
+  "background_color": "#0F172A",
+  "theme_color": "#0F172A",
+  "display": "standalone",
+  "orientation": "any"
 }
