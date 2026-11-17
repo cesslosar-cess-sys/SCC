@@ -2508,10 +2508,10 @@
 
                 <div>
                     <label class="block text-[11px] font-bold text-slate-400 mb-1 flex items-center justify-between">
-                        <span>Defecto Mecánico / Diagnóstico Detallado *</span>
+                        <span>Defecto Mecánico / Diagnóstico Detallado</span>
                         <span class="text-[10px] text-amber-400/90 font-medium">Permite redactar varias líneas</span>
                     </label>
-                    <textarea id="form-defecto" required rows="4" placeholder="Describe detalladamente todas las fallas, ruidos, códigos de falla o diagnóstico...&#10;Ej:&#10;- Pérdida de potencia en subida&#10;- Sensor de nivel de refrigerante dañado&#10;- Fuga de aire en manguera principal&#10;- Inyectores 2 y 4 con retorno alto" class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2.5 text-white text-xs focus:border-[#C59B27] focus:outline-none leading-relaxed"></textarea>
+                    <textarea id="form-defecto" rows="3" placeholder="Escribe aquí el defecto mecánico, falla o motivo de ingreso (Ej: Fuga de aire, balatas, pernos de dirección)..." class="w-full bg-[#141518] border border-[#3A3D42] rounded-xl p-2.5 text-white text-xs focus:border-[#C59B27] focus:outline-none leading-relaxed"></textarea>
                 </div>
 
                 <div>
@@ -3788,6 +3788,8 @@
     let cacheRescates = [];
     let cachePreventivos = [];
     let cacheRemolques = [];
+    let cacheUnidadesLiberadas = [];
+    window.cacheUnidadesLiberadas = cacheUnidadesLiberadas;
     let filtroSucursalActual = 'TODAS';
         let reconocimientoVoz = null;
         let escuchandoActualmente = false;
@@ -7204,20 +7206,27 @@
 
         async function guardarUnidadForm(e) {
             e.preventDefault();
-            const editId = document.getElementById('form-edit-id').value;
-            const id = document.getElementById('form-id').value.trim();
-            const sucursal = document.getElementById('form-sucursal').value;
-            const estado = document.getElementById('form-estado').value;
-            const defecto = document.getElementById('form-defecto').value.trim();
-            const notas = document.getElementById('form-notas').value.trim();
-            const folio = document.getElementById('form-folio') ? document.getElementById('form-folio').value.trim() : '';
-            const costo = parseFloat(document.getElementById('form-costo').value) || 0;
-            const fechaRefaccion = document.getElementById('form-fecha').value || '';
-            const categoriaFalla = document.getElementById('form-categoria').value;
-            const tipo_procedimiento = document.getElementById('form-procedimiento') ? document.getElementById('form-procedimiento').value : 'correctivo';
+            try {
+                const editId = document.getElementById('form-edit-id').value;
+                const id = document.getElementById('form-id').value.trim();
+                if (!id) {
+                    mostrarToast('⚠️ Por favor ingresa el Número de Unidad', 'warning');
+                    document.getElementById('form-id')?.focus();
+                    return;
+                }
+                const sucursal = document.getElementById('form-sucursal').value;
+                const estado = document.getElementById('form-estado').value;
+                const defecto = document.getElementById('form-defecto').value.trim();
+                const notas = document.getElementById('form-notas').value.trim();
+                const folio = document.getElementById('form-folio') ? document.getElementById('form-folio').value.trim() : '';
+                const costo = parseFloat(document.getElementById('form-costo').value) || 0;
+                const fechaRefaccion = document.getElementById('form-fecha').value || '';
+                const categoriaFalla = document.getElementById('form-categoria').value;
+                const tipo_procedimiento = document.getElementById('form-procedimiento') ? document.getElementById('form-procedimiento').value : 'correctivo';
 
-            const reporte = defecto && notas ? `${defecto} • ${notas}` : (defecto || notas);
-            const nombres = { mayor: 'Reparación Mayor ($$)', proceso: 'En Proceso (Taller)', listo: 'Listas para Entrega' };
+                const defectoFinal = defecto || notas || 'Revisión general en taller';
+                const reporte = defectoFinal && notas && defectoFinal !== notas ? `${defectoFinal} • ${notas}` : (defectoFinal || notas);
+                const nombres = { mayor: 'Reparación Mayor ($$)', proceso: 'En Proceso (Taller)', listo: 'Listas para Entrega' };
 
             // REGLA FUNDAMENTAL DE INTEGRIDAD: NUNCA duplicar una unidad.
             // Si el usuario edita O si agrega una unidad cuyo ID ya existe en el tablero:
@@ -7274,7 +7283,7 @@
                     estado,
                     tipo_procedimiento,
                     es_rescate: (tipo_procedimiento === 'rescate' && estado !== 'listo'),
-                    defecto,
+                    defecto: defectoFinal,
                     notas,
                     reporte,
                     costo,
@@ -7357,11 +7366,15 @@
                 }
             }
 
-            sanitizarBaseDatos();
-            guardarDatosLocales();
-            renderizarTablero();
-            actualizarSelectoresUnidades();
-            cerrarModalNuevaUnidad();
+                sanitizarBaseDatos();
+                guardarDatosLocales();
+                renderizarTablero();
+                actualizarSelectoresUnidades();
+                cerrarModalNuevaUnidad();
+            } catch (err) {
+                console.error('Error al guardar unidad:', err);
+                mostrarToast('Error al guardar unidad: ' + (err.message || err), 'danger');
+            }
         }
 
         function eliminarUnidadActiva() {
@@ -11491,7 +11504,10 @@
         // ========================================================
         // --- GESTIÓN DE SALIDAS A VIAJE Y UNIDADES ARCHIVADAS ---
         // ========================================================
-        let cacheUnidadesLiberadas = [];
+        // cacheUnidadesLiberadas ya inicializado globalmente en el scope principal
+        if (typeof cacheUnidadesLiberadas === 'undefined') {
+            window.cacheUnidadesLiberadas = [];
+        }
 
         async function verificarEstatusAlmacenParaLiberar(folio, unitId) {
             const statusBox = document.getElementById('liberar-almacen-status');
