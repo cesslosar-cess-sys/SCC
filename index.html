@@ -9418,7 +9418,7 @@
         }
 
         // --- 1. MÓDULO DE MANTENIMIENTOS PREVENTIVOS (FLOTA CESS) ---
-        let cachePreventivos = [];
+        // cachePreventivos ya inicializado en el estado global superior
         let cacheBitacora = [];
         let subTabPreventivosActiva = 'unidades'; // 'unidades' | 'bitacora'
         let filtroPreventivoEstatus = 'TODOS';
@@ -10255,25 +10255,6 @@
             if (typeof cerrarModalLiberarUnidad === 'function') cerrarModalLiberarUnidad();
 
             mostrarToast(`🏁 ¡Unidad ${unitId} liberada y retirada del tablero con éxito!${folioTxt}`);
-
-            // 2. REGISTRAR Y ARCHIVAR EN SERVIDOR
-            try {
-                const folioFinal = (u && u.folio_almacen) || `OM-${unitId}-${new Date().toLocaleDateString('es-MX').replace(/\//g, '')}`;
-                const res = await fetch(`/api/unidad/${encodeURIComponent(unitId)}/liberar`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        motivo: 'Salida de taller / Asignada a viaje',
-                        folio: folioFinal
-                    })
-                });
-                if (res.ok) {
-                    cargarContadorUnidadesLiberadas();
-                }
-            } catch (err) {
-                console.warn('Liberación guardada localmente:', err);
-            }
-        }
 
             // 2. REGISTRAR Y ARCHIVAR EN SERVIDOR
             try {
