@@ -16711,7 +16711,11 @@
       "almacen": "Almacén de Refacciones",
       "almacen_id": "refacciones",
       "ubicacion": "Rack 1 Nivel 1",
-      "timestamp": "2026-11-16T23:26:47.000Z"
+      "timestamp": "2026-11-16T23:26:47.000Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-16"
     },
     {
       "id": "mov_recup_2",
@@ -16729,7 +16733,11 @@
       "almacen": "Almacén de Refacciones",
       "almacen_id": "refacciones",
       "ubicacion": "Rack 3 Nivel 3",
-      "timestamp": "2026-11-16T23:18:21.000Z"
+      "timestamp": "2026-11-16T23:18:21.000Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-16"
     },
     {
       "id": "mov_recup_3",
@@ -16747,7 +16755,11 @@
       "almacen": "Almacén de Refacciones",
       "almacen_id": "refacciones",
       "ubicacion": "Rack 7 Nivel 3",
-      "timestamp": "2026-11-16T23:18:21.000Z"
+      "timestamp": "2026-11-16T23:18:21.000Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-16"
     },
     {
       "id": "mov_recup_4",
@@ -16765,7 +16777,11 @@
       "almacen": "Almacén de Refacciones",
       "almacen_id": "refacciones",
       "ubicacion": "Rack 3 Nivel 3",
-      "timestamp": "2026-11-16T23:18:21.000Z"
+      "timestamp": "2026-11-16T23:18:21.000Z",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-16"
     },
     {
       "id": "mov_1794615066552_0_5436",
@@ -32777,6 +32793,45 @@
       "dias_credito": 0,
       "estado_pago": "PAGADO",
       "fecha_vencimiento": "2026-11-11"
+    },
+    {
+      "id": "fac_hist_MTY32765",
+      "factura": "MTY 32765",
+      "factura_normalizada": "MTY32765",
+      "proveedor": "PROVEEDOR FACTURA",
+      "proveedor_normalizado": "PROVEEDORFACTURA",
+      "fecha_factura": "2026-11-16",
+      "fecha_ingreso": "2026-11-16",
+      "hora_ingreso": "11:26:47 p.m.",
+      "total_monto": 6000,
+      "total_piezas": 12,
+      "total_items": 4,
+      "piezas_resumen": [
+        {
+          "numero_parte": "121396",
+          "cantidad": 6,
+          "descripcion": "LIGA AZUL TUBO AGUA EGR P/CUMMINS ISX(3682826)",
+          "costo_unitario": 50
+        },
+        {
+          "numero_parte": "65485",
+          "cantidad": 2,
+          "descripcion": "AMORTIGUADOR TRASERO INTERNACIONAL",
+          "costo_unitario": 1250
+        },
+        {
+          "numero_parte": "1612",
+          "cantidad": 2,
+          "descripcion": "TAPA PARA RUEDA DELANTERA",
+          "costo_unitario": 350
+        },
+        {
+          "numero_parte": "65485",
+          "cantidad": 2,
+          "descripcion": "AMORTIGUADOR TRASERO INTERNACIONAL",
+          "costo_unitario": 1250
+        }
+      ]
     }
   ],
   "usuarios": [

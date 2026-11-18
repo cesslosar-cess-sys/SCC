@@ -524,8 +524,16 @@ function saveStore() {
     fs.writeFileSync(DB_FILE, jsonStr, 'utf-8');
     const rootAlm = path.join(__dirname, '..', 'almacen_datos.json');
     const cloudAlm = path.join(__dirname, '..', 'taller-cloud-deploy', 'almacen_datos.json');
+    const githubAlm = path.join(__dirname, 'SUBIR_A_GITHUB', 'almacen_datos.json');
+    const githubAlmParent = path.join(__dirname, '..', 'SUBIR_A_GITHUB', 'almacen_datos.json');
+    const fecha = new Date().toISOString().slice(0, 10);
+    const backupFile = path.join(__dirname, `almacen_datos.backup_${fecha}.json`);
+
     try { fs.writeFileSync(rootAlm, jsonStr, 'utf-8'); } catch(e) {}
     try { fs.writeFileSync(cloudAlm, jsonStr, 'utf-8'); } catch(e) {}
+    try { fs.writeFileSync(githubAlm, jsonStr, 'utf-8'); } catch(e) {}
+    try { fs.writeFileSync(githubAlmParent, jsonStr, 'utf-8'); } catch(e) {}
+    try { fs.writeFileSync(backupFile, jsonStr, 'utf-8'); } catch(e) {}
   } catch (e) {
     console.error('Error guardando base de datos local:', e);
   }

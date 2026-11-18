@@ -107,6 +107,125 @@ const ALMACEN_DIST = fs.existsSync(path.join(__dirname, 'almacen_dist'))
         ? path.join(__dirname, 'almacen-app', 'frontend', 'dist')
         : null);
 
+const ALMACEN_GUARDIAN_SNIPPET = `
+<script id="cess-almacen-guardian">
+(function() {
+  const VAULT_MOVS_KEY = 'cess_almacen_vault_movimientos_v2';
+  const VAULT_CAT_KEY = 'cess_almacen_vault_catalog_v2';
+  let isRestoring = false;
+
+  const originalFetch = window.fetch;
+  window.fetch = async function(...args) {
+    const response = await originalFetch.apply(this, args);
+    try {
+      const url = typeof args[0] === 'string' ? args[0] : (args[0] && args[0].url ? args[0].url : '');
+      const method = (args[1] && args[1].method ? args[1].method : 'GET').toUpperCase();
+
+      if (url.includes('/api/bitacora') && method === 'GET') {
+        const clone = response.clone();
+        clone.json().then(data => {
+          if (Array.isArray(data)) {
+            handleServerMovimientos(data);
+          }
+        }).catch(() => {});
+      } else if (url.includes('/api/inventory') && method === 'GET') {
+        const clone = response.clone();
+        clone.json().then(data => {
+          if (data && typeof data === 'object') {
+            try { localStorage.setItem(VAULT_CAT_KEY, JSON.stringify(data)); } catch(e) {}
+          }
+        }).catch(() => {});
+      }
+    } catch(e) {}
+    return response;
+  };
+
+  async function handleServerMovimientos(serverMovs) {
+    if (isRestoring) return;
+    try {
+      let localMovs = [];
+      const stored = localStorage.getItem(VAULT_MOVS_KEY);
+      if (stored) {
+        localMovs = JSON.parse(stored);
+      }
+
+      if (serverMovs.length >= localMovs.length) {
+        localStorage.setItem(VAULT_MOVS_KEY, JSON.stringify(serverMovs));
+        updateGuardianBadge(serverMovs.length);
+      } else if (serverMovs.length < localMovs.length) {
+        isRestoring = true;
+        const diff = localMovs.length - serverMovs.length;
+        console.warn('[Guardián CESS] Servidor reiniciado sin datos recientes. Restaurando automáticamente ' + diff + ' movimientos desde este navegador...');
+        showGuardianToast('🛡️ Guardián CESS: Se detectó reinicio en la nube. Restaurando automáticamente ' + diff + ' movimientos respaldados...', 'warning');
+
+        let catalog = {};
+        try {
+          const catStr = localStorage.getItem(VAULT_CAT_KEY);
+          if (catStr) catalog = JSON.parse(catStr);
+        } catch(e) {}
+
+        const res = await originalFetch('/api/almacen/restaurar-respaldo', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            catalog: catalog,
+            movimientos: localMovs
+          })
+        });
+
+        if (res.ok) {
+          showGuardianToast('✅ ¡Protección exitosa! Se restauraron ' + localMovs.length + ' movimientos en la nube sin pérdida.', 'success');
+          setTimeout(() => {
+            isRestoring = false;
+            window.location.reload();
+          }, 1500);
+        } else {
+          isRestoring = false;
+        }
+      }
+    } catch(err) {
+      console.error('[Guardián CESS Error]:', err);
+      isRestoring = false;
+    }
+  }
+
+  function injectGuardianUI() {
+    if (document.getElementById('cess-guardian-widget')) return;
+    const widget = document.createElement('div');
+    widget.id = 'cess-guardian-widget';
+    widget.style.cssText = 'position:fixed;bottom:16px;right:16px;z-index:99999;display:flex;align-items:center;gap:10px;background:rgba(15,23,42,0.92);backdrop-filter:blur(10px);border:1px solid rgba(217,119,6,0.4);border-radius:12px;padding:8px 14px;box-shadow:0 8px 30px rgba(0,0,0,0.5);font-family:system-ui,-apple-system,sans-serif;font-size:12px;color:#f8fafc;';
+    widget.innerHTML = '<div style=\"display:flex;align-items:center;gap:6px;\"><span style=\"width:8px;height:8px;background:#10b981;border-radius:50%;display:inline-block;box-shadow:0 0 8px #10b981;\"></span><span id=\"guardian-status\" style=\"font-weight:700;color:#f59e0b;\">🛡️ Bóveda Blindada</span></div><button id=\"guardian-btn-backup\" style=\"background:#d97706;border:none;color:#fff;font-weight:800;font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:4px;\">💾 Respaldo JSON</button>';
+    document.body.appendChild(widget);
+
+    document.getElementById('guardian-btn-backup').addEventListener('click', function() {
+      window.location.href = '/api/almacen/descargar-respaldo';
+    });
+  }
+
+  function updateGuardianBadge(count) {
+    const el = document.getElementById('guardian-status');
+    if (el) {
+      el.textContent = '🛡️ ' + count + ' Movimientos Blindados';
+    }
+  }
+
+  function showGuardianToast(msg, type) {
+    const toast = document.createElement('div');
+    toast.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:999999;background:' + (type === 'success' ? '#065f46' : '#92400e') + ';color:#fff;padding:12px 20px;border-radius:8px;font-weight:700;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.2);';
+    toast.textContent = msg;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 4000);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', injectGuardianUI);
+  } else {
+    injectGuardianUI();
+  }
+})();
+</script>
+`;
+
 if (ALMACEN_DIST) {
     app.use('/almacen', express.static(ALMACEN_DIST));
     app.get(/^\/almacen(\/.*)?$/, (req, res, next) => {
@@ -114,7 +233,15 @@ if (ALMACEN_DIST) {
         res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
         res.setHeader('Pragma', 'no-cache');
         res.setHeader('Expires', '0');
-        res.sendFile(path.join(ALMACEN_DIST, 'index.html'));
+        const indexPath = path.join(ALMACEN_DIST, 'index.html');
+        if (fs.existsSync(indexPath)) {
+            let html = fs.readFileSync(indexPath, 'utf8');
+            if (!html.includes('cess-almacen-guardian')) {
+                html = html.replace('</body>', `${ALMACEN_GUARDIAN_SNIPPET}\n</body>`);
+            }
+            return res.send(html);
+        }
+        res.sendFile(indexPath);
     });
 }
 
