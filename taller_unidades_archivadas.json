@@ -1,5 +1,2312 @@
 [
   {
+    "id": "69",
+    "sucursal": "Apodaca",
+    "estado": "listo",
+    "defecto": "Revisión general en taller",
+    "notas": "",
+    "reporte": "Fuga de aire en valbula moduladora delantera\nHacer regenaeracion",
+    "costo": 9967.51,
+    "fechaRefaccion": "2026-11-19",
+    "categoriaFalla": "Frenos",
+    "piezas": [
+      {
+        "id": "mov_1795121209330_0_3504",
+        "id_pieza": "4721700020",
+        "numero_parte": "4721700020",
+        "descripcion": "ELECTRO VALVULA",
+        "marca": "WABCO",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 2100,
+        "costo_total": 2100,
+        "folio_almacen": "4108",
+        "solicitante": "MARTIN ALVARADO",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "correctivo",
+        "fecha_recepcion": "2026-11-19",
+        "hora_recepcion": "08:46:49 p.m."
+      },
+      {
+        "id": "mov_1794001823927_898",
+        "id_pieza": "CODO_TUERCA_BARRIL_1_574",
+        "numero_parte": "CODO_TUERCA_BARRIL_1_574",
+        "descripcion": "CODO TUERCA BARRIL 1/2 NPT A 1/2",
+        "marca": "",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 145.71,
+        "costo_total": 145.71,
+        "folio_almacen": "3987",
+        "solicitante": "Martin Alvarado",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "correctivo",
+        "fecha_recepcion": "2026-10-16",
+        "hora_recepcion": "03:50:23 p.m."
+      },
+      {
+        "id": "mov_1793061048907_0",
+        "id_pieza": "part_1793061048907_0_6280",
+        "numero_parte": "FM-9781",
+        "descripcion": "CAMARA DE SUSPENSION",
+        "marca": "FLEETMASTER",
+        "cantidad": 1,
+        "unidad_medida": "PZA",
+        "precio_unitario": 2072.92,
+        "costo_total": 2072.92,
+        "folio_almacen": "3987",
+        "solicitante": "MARTIN ALVARADO",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "correctivo",
+        "fecha_recepcion": "2026-10-16",
+        "hora_recepcion": "06:30:48 p.m."
+      },
+      {
+        "id": "mov_1792700634877_28",
+        "id_pieza": "P618478",
+        "numero_parte": "P618478",
+        "descripcion": "FILTRO DE AIRE PRIMARIO",
+        "marca": "DONALDSON",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 1447.03,
+        "costo_total": 1447.03,
+        "folio_almacen": "4108",
+        "solicitante": "Martin Alvarado",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "preventivo",
+        "fecha_recepcion": "2026-10-16",
+        "hora_recepcion": "02:23:54 p.m."
+      },
+      {
+        "id": "mov_1792700608204_944",
+        "id_pieza": "FS19915",
+        "numero_parte": "FS19915",
+        "descripcion": "FILTRO SEPARADOR",
+        "marca": "FLEETGUARD",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 1781,
+        "costo_total": 1781,
+        "folio_almacen": "4108",
+        "solicitante": "Martin Alvarado",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "preventivo",
+        "fecha_recepcion": "2026-10-16",
+        "hora_recepcion": "02:23:28 p.m."
+      },
+      {
+        "id": "mov_1792700568888_263",
+        "id_pieza": "AF26235",
+        "numero_parte": "AF26235",
+        "descripcion": "FILTRO DE AIRE DE CABINA",
+        "marca": "FLEETGUARD",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 254.55,
+        "costo_total": 254.55,
+        "folio_almacen": "4108",
+        "solicitante": "Martin Alvarado",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "preventivo",
+        "fecha_recepcion": "2026-10-16",
+        "hora_recepcion": "02:22:48 p.m."
+      },
+      {
+        "id": "mov_1792700516725_796",
+        "id_pieza": "LF17511",
+        "numero_parte": "LF17511",
+        "descripcion": "FILTRO DE ACEITE",
+        "marca": "FLEETGUARD",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 575.26,
+        "costo_total": 575.26,
+        "folio_almacen": "4108",
+        "solicitante": "Martin Alvarado",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "preventivo",
+        "fecha_recepcion": "2026-10-16",
+        "hora_recepcion": "02:21:56 p.m."
+      },
+      {
+        "id": "mov_1792695956221_392",
+        "id_pieza": "FK13850NN___P551063",
+        "numero_parte": "FK13850NN / P551063",
+        "descripcion": "KIT DE FILTRO PARA COMBUSTIBLE",
+        "marca": "FLEETGUARD",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 1428.84,
+        "costo_total": 1428.84,
+        "folio_almacen": "069",
+        "solicitante": "FRANCISCO PARDO",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "preventivo",
+        "fecha_recepcion": "2026-10-16",
+        "hora_recepcion": "01:05:56 p.m."
+      },
+      {
+        "id": "mov_1792695695016_266",
+        "id_pieza": "LIMPIAPARABRISAS_18__611",
+        "numero_parte": "LIMPIAPARABRISAS_18__611",
+        "descripcion": "LIMPIAPARABRISAS 18\"",
+        "marca": "PWR PRO",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 137,
+        "costo_total": 137,
+        "folio_almacen": "4108",
+        "solicitante": "FRANCISCO PARDO",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "correctivo",
+        "fecha_recepcion": "2026-10-16",
+        "hora_recepcion": "01:01:35 p.m."
+      },
+      {
+        "id": "mov_1792695295991_95",
+        "id_pieza": "JUNTA___EMPAQUE_MAZA_835",
+        "numero_parte": "JUNTA___EMPAQUE_MAZA_835",
+        "descripcion": "JUNTA / EMPAQUE MAZA EJE DELANTERA 6 BARRENOS",
+        "marca": "FRENZEL",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 25.2,
+        "costo_total": 25.2,
+        "folio_almacen": "4108",
+        "solicitante": "MARTIN ALVARADO",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "correctivo",
+        "fecha_recepcion": "2026-10-16",
+        "hora_recepcion": "12:54:55 p.m."
+      }
+    ],
+    "historial": [
+      {
+        "fecha": "19/11/2026 09:41 p.m.",
+        "evento": "Sincronización Almacén: 10 piezas (9,967.51 MXN) [Prev: $5,486.68 | Corr: $4,480.83]",
+        "tipo": "almacen_sync",
+        "autor": "Salida Unidad 69 con Orden #4108"
+      },
+      {
+        "fecha": "19/11/2026, 8:46:49 p.m.",
+        "evento": "Salida de Almacén registrada: 1x ELECTRO VALVULA ($2,100.00 MXN) [Folio #4108]",
+        "tipo": "almacen_salida",
+        "autor": "MARTIN ALVARADO"
+      },
+      {
+        "fecha": "19/11/2026, 10:30:10 a.m.",
+        "evento": "Unidad registrada en taller (En Proceso (Taller))",
+        "tipo": "alta"
+      },
+      {
+        "fecha": "19/11/2026 04:31 p.m.",
+        "evento": "Generado Folio de Almacén #4108: Fuga de aire en valbula moduladora delanteraHacer regenaeracion. Refacciones solicitadas: Por surtir en almacén",
+        "tipo": "generacion_folio_almacen",
+        "autor": "Encargado de Taller"
+      },
+      {
+        "fecha": "19/11/2026 04:31 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 04:33 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Guardar Todo"
+      },
+      {
+        "fecha": "19/11/2026 05:23 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 05:24 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 05:42 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Guardar Todo"
+      },
+      {
+        "fecha": "19/11/2026 05:43 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Salida Unidad 94 con Orden #4092"
+      },
+      {
+        "fecha": "19/11/2026 05:44 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Salida Unidad 83 con Orden #4077"
+      },
+      {
+        "fecha": "19/11/2026 05:45 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "19/11/2026 05:46 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Guardar Todo"
+      },
+      {
+        "fecha": "19/11/2026 05:50 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "19/11/2026 06:02 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 06:03 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 06:07 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 06:15 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 06:21 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 06:24 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 06:26 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 06:29 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 06:36 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 06:42 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 06:43 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 06:48 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almac��n CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 06:59 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 07:00 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 07:02 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 07:03 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 07:08 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 07:12 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 08:31 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 08:32 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 08:40 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 08:42 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 08:43 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 08:44 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (7,867.51 MXN) [Prev: $5,486.68 | Corr: $2,380.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 08:46 p.m.",
+        "evento": "Sincronización Almacén: 10 piezas (9,967.51 MXN) [Prev: $5,486.68 | Corr: $4,480.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 08:49 p.m.",
+        "evento": "Sincronización Almacén: 10 piezas (9,967.51 MXN) [Prev: $5,486.68 | Corr: $4,480.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 09:08 p.m.",
+        "evento": "Sincronización Almacén: 10 piezas (9,967.51 MXN) [Prev: $5,486.68 | Corr: $4,480.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 09:16 p.m.",
+        "evento": "Sincronización Almacén: 10 piezas (9,967.51 MXN) [Prev: $5,486.68 | Corr: $4,480.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 09:17 p.m.",
+        "evento": "Sincronización Almacén: 10 piezas (9,967.51 MXN) [Prev: $5,486.68 | Corr: $4,480.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 09:18 p.m.",
+        "evento": "Sincronización Almacén: 10 piezas (9,967.51 MXN) [Prev: $5,486.68 | Corr: $4,480.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 09:20 p.m.",
+        "evento": "Sincronización Almacén: 10 piezas (9,967.51 MXN) [Prev: $5,486.68 | Corr: $4,480.83]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "19/11/2026 09:23 p.m.",
+        "evento": "Sincronización Almacén: 10 piezas (9,967.51 MXN) [Prev: $5,486.68 | Corr: $4,480.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 09:25 p.m.",
+        "evento": "Sincronización Almacén: 10 piezas (9,967.51 MXN) [Prev: $5,486.68 | Corr: $4,480.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 09:30 p.m.",
+        "evento": "Sincronización Almacén: 10 piezas (9,967.51 MXN) [Prev: $5,486.68 | Corr: $4,480.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 09:31 p.m.",
+        "evento": "Sincronización Almacén: 10 piezas (9,967.51 MXN) [Prev: $5,486.68 | Corr: $4,480.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 09:32 p.m.",
+        "evento": "Sincronización Almacén: 10 piezas (9,967.51 MXN) [Prev: $5,486.68 | Corr: $4,480.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 09:33 p.m.",
+        "evento": "Sincronización Almacén: 10 piezas (9,967.51 MXN) [Prev: $5,486.68 | Corr: $4,480.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 09:38 p.m.",
+        "evento": "Sincronización Almacén: 10 piezas (9,967.51 MXN) [Prev: $5,486.68 | Corr: $4,480.83]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026, 9:40:57 p.m.",
+        "evento": "Movimiento rápido: De 'En Reparación Activa' a 'Listas para Entrega'",
+        "tipo": "movimiento_kanban",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "fecha": "19/11/2026",
+        "hora": "09:41 p.m.",
+        "evento": "Salida de taller: Salida de taller / Asignada a viaje. Orden #4108.",
+        "tipo": "liberacion",
+        "km": null
+      }
+    ],
+    "archivada": true,
+    "costo_preventivo": 5486.68,
+    "costo_correctivo": 4480.83,
+    "costo_refacciones": 9967.51,
+    "avances": [
+      {
+        "fecha": "19/11/2026",
+        "hora": "09:41 p.m.",
+        "texto": "🏁 Unidad liberada de taller con Orden #4108: Salida de taller / Asignada a viaje.",
+        "mecanico": "Jefe de Taller",
+        "porcentaje": 100
+      }
+    ],
+    "tipo_procedimiento": "correctivo",
+    "folio_almacen": "4108",
+    "fecha_salida": "19/11/2026",
+    "hora_salida": "09:41 p.m.",
+    "motivo_salida": "Salida de taller / Asignada a viaje",
+    "notas_salida": ""
+  },
+  {
+    "id": "80",
+    "sucursal": "Apodaca",
+    "estado": "proceso",
+    "tipo_procedimiento": "correctivo",
+    "defecto": "Respiradera de diferencial dañada\nDireccion mui dura\nFuga de aire en suspencion\nAmortiguadores\n5t con juego\nPerdida de potencia",
+    "notas": "",
+    "reporte": "Respiradera de diferencial dañada\nDireccion mui dura\nFuga de aire en suspencion\nAmortiguadores\n5t con juego\nPerdida de potencia",
+    "costo": 18448.38,
+    "fechaRefaccion": "2026-11-13",
+    "categoriaFalla": "Clima",
+    "piezas": [
+      {
+        "id": "mov_1795112674891_746",
+        "id_pieza": "SN-570",
+        "numero_parte": "SN-570",
+        "descripcion": "UNIDAD RAPIDA 3/8",
+        "marca": "GENERICA",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 123.66,
+        "costo_total": 123.66,
+        "folio_almacen": "4097",
+        "solicitante": "Martin Alvarado",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "correctivo",
+        "fecha_recepcion": "2026-11-19",
+        "hora_recepcion": "06:24:34 p.m."
+      },
+      {
+        "id": "mov_1795111643036_0_9799",
+        "id_pieza": "W023587206",
+        "numero_parte": "W023587206",
+        "descripcion": "BOLSA DE AIRE PARA CABINA FREIGHTLINER",
+        "marca": "FIRESTONE",
+        "cantidad": 2,
+        "unidad_medida": "PZ",
+        "precio_unitario": 1100,
+        "costo_total": 2200,
+        "folio_almacen": "4097",
+        "solicitante": "MARTIN ALVARADO",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "correctivo",
+        "fecha_recepcion": "2026-11-19",
+        "hora_recepcion": "06:07:23 p.m."
+      },
+      {
+        "id": "mov_1794615066552_0_5436",
+        "id_pieza": "MR65490",
+        "numero_parte": "MR65490",
+        "descripcion": "AMORTIGUADOR MONROE 65490",
+        "marca": "MONROE",
+        "cantidad": 4,
+        "unidad_medida": "PZ",
+        "precio_unitario": 985.2,
+        "costo_total": 3940.8,
+        "folio_almacen": "4097",
+        "solicitante": "MARTIN ALVARADO",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "correctivo",
+        "fecha_recepcion": "2026-11-13",
+        "hora_recepcion": "06:11:06 p.m."
+      },
+      {
+        "id": "mov_1794614974810_0_9693",
+        "id_pieza": "part_1793061048907_0_6280",
+        "numero_parte": "FM-9781",
+        "descripcion": "CAMARA DE SUSPENSION",
+        "marca": "FLEETMASTER",
+        "cantidad": 1,
+        "unidad_medida": "PZA",
+        "precio_unitario": 1209.92,
+        "costo_total": 1209.92,
+        "folio_almacen": "4097",
+        "solicitante": "MARTIN ALVARADO",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "correctivo",
+        "fecha_recepcion": "2026-11-13",
+        "hora_recepcion": "06:09:34 p.m."
+      },
+      {
+        "id": "mov_1794614692229_157",
+        "id_pieza": "CO-5764YPMT",
+        "numero_parte": "CO-5764YPMT",
+        "descripcion": "CONEXION RAPIDA TIPO Y 3/8 -3/8 A 1/4",
+        "marca": "GENÉRICA",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 300,
+        "costo_total": 300,
+        "folio_almacen": "4097",
+        "solicitante": "Martin Alvarado",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "correctivo",
+        "fecha_recepcion": "2026-11-13",
+        "hora_recepcion": "06:04:52 p.m."
+      },
+      {
+        "id": "mov_1794587106729_688",
+        "id_pieza": "part_1793061048907_0_6280",
+        "numero_parte": "FM-9781",
+        "descripcion": "CAMARA DE SUSPENSION",
+        "marca": "FLEETMASTER",
+        "cantidad": 2,
+        "unidad_medida": "PZA",
+        "precio_unitario": 2072.92,
+        "costo_total": 4145.84,
+        "folio_almacen": "4097",
+        "solicitante": "Martin Alvarado",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "correctivo",
+        "fecha_recepcion": "2026-11-13",
+        "hora_recepcion": "10:25:06 a.m."
+      },
+      {
+        "id": "mov_1794587022538_779",
+        "id_pieza": "CODO_TUERCA_BARRIL_3_580",
+        "numero_parte": "CODO_TUERCA_BARRIL_3_580",
+        "descripcion": "CODO TUERCA BARRIL 3/8 NPT A 3/8",
+        "marca": "",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 142.02,
+        "costo_total": 142.02,
+        "folio_almacen": "4097",
+        "solicitante": "Jose Guerra",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "correctivo",
+        "fecha_recepcion": "2026-11-13",
+        "hora_recepcion": "10:23:42 a.m."
+      },
+      {
+        "id": "mov_1794586837367_158",
+        "id_pieza": "59935002",
+        "numero_parte": "59935002",
+        "descripcion": "VALVULA NIVELADORA SUSPENSIÓN DELANTERA",
+        "marca": "HENDRIKSON",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 934.37,
+        "costo_total": 934.37,
+        "folio_almacen": "4097",
+        "solicitante": "Jose Guerra",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "correctivo",
+        "fecha_recepcion": "2026-11-13",
+        "hora_recepcion": "10:20:37 a.m."
+      },
+      {
+        "id": "mov_1793664338802_911",
+        "id_pieza": "part_1793135203117_8_3013",
+        "numero_parte": "P609422",
+        "descripcion": "FILTRO DE AIRE TIPO PANEL",
+        "marca": "DONALDSON",
+        "cantidad": 1,
+        "unidad_medida": "PZA",
+        "precio_unitario": 303.98,
+        "costo_total": 303.98,
+        "folio_almacen": "4063",
+        "solicitante": "Martin Alvarado",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "preventivo",
+        "fecha_recepcion": "2026-11-02",
+        "hora_recepcion": "06:05:38 p.m."
+      },
+      {
+        "id": "mov_1793664308206_755",
+        "id_pieza": "part_1793135203117_6_5796",
+        "numero_parte": "P551005",
+        "descripcion": "FILTRO DE ACEITE",
+        "marca": "DONALDSON",
+        "cantidad": 1,
+        "unidad_medida": "PZA",
+        "precio_unitario": 479.78,
+        "costo_total": 479.78,
+        "folio_almacen": "4063",
+        "solicitante": "Martin Alvarado",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "preventivo",
+        "fecha_recepcion": "2026-11-02",
+        "hora_recepcion": "06:05:08 p.m."
+      },
+      {
+        "id": "mov_1793664286339_189",
+        "id_pieza": "FS19915",
+        "numero_parte": "FS19915",
+        "descripcion": "FILTRO SEPARADOR",
+        "marca": "FLEETGUARD",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 1781,
+        "costo_total": 1781,
+        "folio_almacen": "4063",
+        "solicitante": "Martin Alvarado",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "preventivo",
+        "fecha_recepcion": "2026-11-02",
+        "hora_recepcion": "06:04:46 p.m."
+      },
+      {
+        "id": "mov_1793664266329_236",
+        "id_pieza": "part_1793135203117_5_1784",
+        "numero_parte": "P551063",
+        "descripcion": "FILTRO DE COMBUSTIBLE",
+        "marca": "DONALDSON",
+        "cantidad": 1,
+        "unidad_medida": "PZA",
+        "precio_unitario": 1439.98,
+        "costo_total": 1439.98,
+        "folio_almacen": "4063",
+        "solicitante": "Martin Alvarado",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "preventivo",
+        "fecha_recepcion": "2026-11-02",
+        "hora_recepcion": "06:04:26 p.m."
+      },
+      {
+        "id": "mov_1793664237074_677",
+        "id_pieza": "P618478",
+        "numero_parte": "P618478",
+        "descripcion": "FILTRO DE AIRE PRIMARIO",
+        "marca": "DONALDSON",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 1447.03,
+        "costo_total": 1447.03,
+        "folio_almacen": "4063",
+        "solicitante": "Martin Alvarado",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "preventivo",
+        "fecha_recepcion": "2026-11-02",
+        "hora_recepcion": "06:03:57 p.m."
+      }
+    ],
+    "historial": [
+      {
+        "fecha": "19/11/2026 06:24 p.m.",
+        "evento": "Sincronización Almacén: 13 piezas (18,448.38 MXN) [Prev: $5,451.77 | Corr: $12,996.61]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "19/11/2026 06:07 p.m.",
+        "evento": "Sincronización Almacén: 12 piezas (18,324.72 MXN) [Prev: $5,451.77 | Corr: $12,872.95]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 11 piezas (16,124.72 MXN) [Prev: $5,451.77 | Corr: $10,672.95]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 6 piezas (10,672.95 MXN) [Prev: $0 | Corr: $10,672.95]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:28 a.m.",
+        "evento": "Sincronización Almacén: 6 piezas (10,672.95 MXN) [Prev: $0 | Corr: $10,672.95]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:28 a.m.",
+        "evento": "Sincronización Almacén: 11 piezas (16,124.72 MXN) [Prev: $5,451.77 | Corr: $10,672.95]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 6 piezas (10,672.95 MXN) [Prev: $0 | Corr: $10,672.95]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 11 piezas (16,124.72 MXN) [Prev: $5,451.77 | Corr: $10,672.95]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:37 p.m.",
+        "evento": "Sincronización Almacén: 11 piezas (16,124.72 MXN) [Prev: $5,451.77 | Corr: $10,672.95]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:37 p.m.",
+        "evento": "Sincronización Almacén: 6 piezas (10,672.95 MXN) [Prev: $0 | Corr: $10,672.95]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:52 p.m.",
+        "evento": "Sincronización Almacén: 11 piezas (16,124.72 MXN) [Prev: $5,451.77 | Corr: $10,672.95]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:52 p.m.",
+        "evento": "Sincronización Almacén: 6 piezas (10,672.95 MXN) [Prev: $0 | Corr: $10,672.95]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:23 p.m.",
+        "evento": "Sincronización Almacén: 11 piezas (16,124.72 MXN) [Prev: $5,451.77 | Corr: $10,672.95]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "16/11/2026 04:08 p.m.",
+        "evento": "Sincronización Almacén: 6 piezas (10,672.95 MXN) [Prev: $0 | Corr: $10,672.95]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 03:30 p.m.",
+        "evento": "Sincronización Almacén: 11 piezas (16,124.72 MXN) [Prev: $5,451.77 | Corr: $10,672.95]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "13/11/2026, 6:11:06 p.m.",
+        "evento": "Salida de Almacén registrada: 4x AMORTIGUADOR MONROE 65490 ($3,940.80 MXN) [Folio #4097]",
+        "tipo": "almacen_salida",
+        "autor": "MARTIN ALVARADO"
+      },
+      {
+        "fecha": "13/11/2026, 6:09:34 p.m.",
+        "evento": "Salida de Almacén registrada: 1x CAMARA DE SUSPENSION ($1,209.92 MXN) [Folio #4097]",
+        "tipo": "almacen_salida",
+        "autor": "MARTIN ALVARADO"
+      },
+      {
+        "fecha": "13/11/2026, 6:05:48 p.m.",
+        "evento": "Salida de Almacén registrada: 1x FILTRO SEPARADOR AIRE ACEITE ($200.00 MXN) [Folio #4097]",
+        "tipo": "almacen_salida",
+        "autor": "MARTIN ALVARADO"
+      },
+      {
+        "fecha": "13/11/2026, 6:04:52 p.m.",
+        "evento": "Salida de Almacén registrada: 1x CONEXION RAPIDA TIPO Y 3/8 -3/8 A 1/4 ($300.00 MXN) [Folio #4097]",
+        "tipo": "almacen_salida",
+        "autor": "Martin Alvarado"
+      },
+      {
+        "fecha": "13/11/2026 04:41 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (5,222.23 MXN) [Prev: $0 | Corr: $5,222.23]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "13/11/2026 04:40 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (5,222.23 MXN) [Prev: $0 | Corr: $5,222.23]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "13/11/2026 04:21 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (5,222.23 MXN) [Prev: $0 | Corr: $5,222.23]",
+        "tipo": "almacen_sync",
+        "autor": "Sync manual Unidad 2509"
+      },
+      {
+        "fecha": "13/11/2026 03:47 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (5,222.23 MXN) [Prev: $0 | Corr: $5,222.23]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 03:25 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (5,222.23 MXN) [Prev: $0 | Corr: $5,222.23]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 03:23 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (5,222.23 MXN) [Prev: $0 | Corr: $5,222.23]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:22 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (5,222.23 MXN) [Prev: $0 | Corr: $5,222.23]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 03:17 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (5,222.23 MXN) [Prev: $0 | Corr: $5,222.23]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:16 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (5,222.23 MXN) [Prev: $0 | Corr: $5,222.23]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:13 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (5,222.23 MXN) [Prev: $0 | Corr: $5,222.23]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:12 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (5,222.23 MXN) [Prev: $0 | Corr: $5,222.23]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:11 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (5,222.23 MXN) [Prev: $0 | Corr: $5,222.23]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:10 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (5,222.23 MXN) [Prev: $0 | Corr: $5,222.23]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:08 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (5,222.23 MXN) [Prev: $0 | Corr: $5,222.23]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:07 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (5,222.23 MXN) [Prev: $0 | Corr: $5,222.23]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 03:06 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (5,222.23 MXN) [Prev: $0 | Corr: $5,222.23]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 03:05 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (5,222.23 MXN) [Prev: $0 | Corr: $5,222.23]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:02 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (5,222.23 MXN) [Prev: $0 | Corr: $5,222.23]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 03:00 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (5,222.23 MXN) [Prev: $0 | Corr: $5,222.23]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 01:52 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (5,222.23 MXN) [Prev: $0 | Corr: $5,222.23]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "13/11/2026 01:26 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (5,222.23 MXN) [Prev: $0 | Corr: $5,222.23]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 01:25 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (5,222.23 MXN) [Prev: $0 | Corr: $5,222.23]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 01:02 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (5,222.23 MXN) [Prev: $0 | Corr: $5,222.23]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 01:00 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (5,222.23 MXN) [Prev: $0 | Corr: $5,222.23]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 12:59 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (5,222.23 MXN) [Prev: $0 | Corr: $5,222.23]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "13/11/2026 12:42 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (5,222.23 MXN) [Prev: $0 | Corr: $5,222.23]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 12:39 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (5,222.23 MXN) [Prev: $0 | Corr: $5,222.23]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 12:34 p.m.",
+        "evento": "Sincronización Almacén: 3 piezas (5,222.23 MXN) [Prev: $0 | Corr: $5,222.23]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "13/11/2026 06:22 p.m.",
+        "evento": "Sincronización Almacén: 5 piezas (5,451.77 MXN) [Prev: $5,451.77 | Corr: $0]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 06:14 p.m.",
+        "evento": "Generado Folio de Almacén #4097: Respiradera de diferencial dañadaDireccion mui duraFuga de aire en suspencionAmortiguadores5t con juegoPerdida de potencia. Refacciones solicitadas: Por surtir en almacén",
+        "tipo": "generacion_folio_almacen",
+        "autor": "Encargado de Taller"
+      },
+      {
+        "fecha": "13/11/2026, 12:13:59 p.m.",
+        "evento": "Edición rápida: Respiradera de diferencial dañada\nDireccion mui dura\nFuga de aire en suspencion\nAmortiguadores\n5t con juego\nPerdida de potencia [Procedimiento: CORRECTIVO]",
+        "tipo": "edicion_rapida",
+        "foto": null
+      },
+      {
+        "fecha": "13/11/2026, 12:11:52 p.m.",
+        "evento": "Unidad registrada en taller (En Proceso (Taller))",
+        "tipo": "alta"
+      },
+      {
+        "fecha": "14/11/2026 10:30 a.m.",
+        "evento": "Sincronización Almacén: 6 piezas (10,672.95 MXN) [Prev: $0 | Corr: $10,672.95]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "14/11/2026, 12:40:35 p.m.",
+        "evento": "Cambio de estatus: De 'En Proceso (Taller)' a 'Listas para Entrega'",
+        "tipo": "cambio_estatus",
+        "foto": null
+      },
+      {
+        "fecha": "13/11/2026 10:51 p.m.",
+        "evento": "Sincronización Almacén: 0 piezas (0 MXN) [Prev: $0 | Corr: $0]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 10:23 p.m.",
+        "evento": "Sincronización Almacén: 0 piezas (0 MXN) [Prev: $0 | Corr: $0]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "19/11/2026",
+        "hora": "05:45 p.m.",
+        "evento": "Salida de taller: Salida de taller / Asignada a viaje. Orden #4097.",
+        "tipo": "liberacion",
+        "km": null
+      }
+    ],
+    "proveedor_externo": "",
+    "factura_externa": "",
+    "costo_externo": 0,
+    "estadoModificadoManualmente": true,
+    "folio_almacen": "4097",
+    "costo_refacciones": 18448.38,
+    "costo_preventivo": 5451.77,
+    "costo_correctivo": 12996.61,
+    "avances": [
+      {
+        "fecha": "19/11/2026",
+        "hora": "05:45 p.m.",
+        "texto": "🏁 Unidad liberada de taller con Orden #4097: Salida de taller / Asignada a viaje.",
+        "mecanico": "Jefe de Taller",
+        "porcentaje": 100
+      }
+    ],
+    "costo_mano_obra": 0,
+    "archivada": true,
+    "fecha_salida": "19/11/2026",
+    "hora_salida": "05:45 p.m.",
+    "motivo_salida": "Salida de taller / Asignada a viaje",
+    "notas_salida": ""
+  },
+  {
+    "id": "003",
+    "sucursal": "Apodaca",
+    "estado": "listo",
+    "defecto": "unidad lista recien salida de agencia Sitrak",
+    "notas": "",
+    "reporte": "unidad lista recien salida de agencia Sitrak",
+    "costo": 78.5,
+    "fechaRefaccion": "2026-11-09",
+    "categoriaFalla": "Motor",
+    "piezas": [
+      {
+        "id": "mov_1794354841784_0_5935",
+        "id_pieza": "WV-40010",
+        "descripcion": "VALVULA DE ESFERA NIQUELADA ROSCABLE / PASO",
+        "numero_parte": "WV-40010",
+        "marca": "WESTON",
+        "cantidad": 1,
+        "unidad_medida": "PZA",
+        "precio_unitario": 78.5,
+        "costo_total": 78.5,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "RECIBIDA_TALLER",
+        "fecha_solicitud": "2026-11-12T23:50:08.938Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "2026-11-10",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      }
+    ],
+    "historial": [
+      {
+        "fecha": "12/11/2026 05:50 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (78.5 MXN) [Prev: $0 | Corr: $78.5]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "9/11/2026, 12:23:50 p.m.",
+        "evento": "Cambio de estatus: De 'En Proceso (Taller)' a 'Listas para Entrega'",
+        "tipo": "cambio_estatus",
+        "foto": null
+      },
+      {
+        "fecha": "9/11/2026, 12:23:43 p.m.",
+        "evento": "Unidad registrada en taller (En Proceso (Taller))",
+        "tipo": "alta"
+      },
+      {
+        "fecha": "19/11/2026",
+        "hora": "05:44 p.m.",
+        "evento": "Salida de taller: Salida de taller / Asignada a viaje. Orden #4087.",
+        "tipo": "liberacion",
+        "km": null
+      }
+    ],
+    "estadoModificadoManualmente": true,
+    "folio_almacen": "4087",
+    "costo_refacciones": 78.5,
+    "costo_preventivo": 0,
+    "costo_correctivo": 78.5,
+    "tipo_procedimiento": "correctivo",
+    "avances": [
+      {
+        "fecha": "19/11/2026",
+        "hora": "05:44 p.m.",
+        "texto": "🏁 Unidad liberada de taller con Orden #4087: Salida de taller / Asignada a viaje.",
+        "mecanico": "Jefe de Taller",
+        "porcentaje": 100
+      }
+    ],
+    "costo_mano_obra": 0,
+    "costo_externo": 0,
+    "archivada": true,
+    "fecha_salida": "19/11/2026",
+    "hora_salida": "05:44 p.m.",
+    "motivo_salida": "Salida de taller / Asignada a viaje",
+    "notas_salida": ""
+  },
+  {
+    "id": "83",
+    "sucursal": "Apodaca",
+    "estado": "listo",
+    "defecto": "Pernos de dirección en proceso",
+    "notas": "",
+    "reporte": "Pernos de dirección en proceso",
+    "costo": 10174.27,
+    "fechaRefaccion": "2026-06-11",
+    "categoriaFalla": "Suspensión / Dirección",
+    "piezas": [
+      {
+        "id": "mov_1794586746980_105",
+        "id_pieza": "servicios_externos_SERVICIO",
+        "descripcion": "RIMAR PAR DE MANGOS DE DIRECCION CARRO 83",
+        "numero_parte": "SERVICIO",
+        "marca": "GENERICA",
+        "cantidad": 1,
+        "unidad_medida": "SERV",
+        "precio_unitario": 1500,
+        "costo_total": 1500,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "RECIBIDA_TALLER",
+        "fecha_solicitud": "2026-11-19T15:58:35.093Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "2026-11-13",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "mov_1794520259114_931",
+        "id_pieza": "4702",
+        "descripcion": "BALATA / ZAPATA DE FRENO DELANTERA 4702",
+        "numero_parte": "4702",
+        "marca": "GENERICA",
+        "cantidad": 2,
+        "unidad_medida": "PZ",
+        "precio_unitario": 750,
+        "costo_total": 1500,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "RECIBIDA_TALLER",
+        "fecha_solicitud": "2026-11-19T15:58:35.093Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "2026-11-10",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "mov_1794518668501_1_2012",
+        "id_pieza": "JUNTA___EMPAQUE_MAZA_835",
+        "descripcion": "JUNTA / EMPAQUE MAZA EJE DELANTERA 6 BARRENOS",
+        "numero_parte": "JUNTA___EMPAQUE_MAZA_835",
+        "marca": "FRENZEL",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 25.2,
+        "costo_total": 25.2,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "RECIBIDA_TALLER",
+        "fecha_solicitud": "2026-11-19T15:58:35.093Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "2026-11-12",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "mov_1794518668500_0_9328",
+        "id_pieza": "1612",
+        "descripcion": "TAPA PARA RUEDA DELANTERA",
+        "numero_parte": "1612",
+        "marca": "SKF",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 350,
+        "costo_total": 350,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "RECIBIDA_TALLER",
+        "fecha_solicitud": "2026-11-19T15:58:35.093Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "2026-11-12",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "mov_1794434037420_737",
+        "id_pieza": "35058",
+        "descripcion": "RETEN DELANTERO",
+        "numero_parte": "35058",
+        "marca": "SKF",
+        "cantidad": 2,
+        "unidad_medida": "PZ",
+        "precio_unitario": 420,
+        "costo_total": 840,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "RECIBIDA_TALLER",
+        "fecha_solicitud": "2026-11-19T15:58:35.093Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "2026-11-11",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "mov_1794433795670_802",
+        "id_pieza": "JUNTA___EMPAQUE_MAZA_835",
+        "descripcion": "JUNTA / EMPAQUE MAZA EJE DELANTERA 6 BARRENOS",
+        "numero_parte": "JUNTA___EMPAQUE_MAZA_835",
+        "marca": "FRENZEL",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 25.2,
+        "costo_total": 25.2,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "RECIBIDA_TALLER",
+        "fecha_solicitud": "2026-11-19T15:58:35.093Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "2026-11-11",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "mov_1794433716893_0_9555",
+        "id_pieza": "JUNTA___EMPAQUE_MAZA_835",
+        "descripcion": "JUNTA / EMPAQUE MAZA EJE DELANTERA 6 BARRENOS",
+        "numero_parte": "JUNTA___EMPAQUE_MAZA_835",
+        "marca": "FRENZEL",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 25.2,
+        "costo_total": 25.2,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "RECIBIDA_TALLER",
+        "fecha_solicitud": "2026-11-19T15:58:35.093Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "2026-11-11",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "mov_1794430330926_667",
+        "id_pieza": "60961040",
+        "descripcion": "KIT DE BUJES",
+        "numero_parte": "60961040",
+        "marca": "HENDRIKSON",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 3750,
+        "costo_total": 3750,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "RECIBIDA_TALLER",
+        "fecha_solicitud": "2026-11-19T15:58:35.093Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "2026-11-09",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "mov_1794347752067_884",
+        "id_pieza": "80685",
+        "descripcion": "BULBO DE BAJA PRESION",
+        "numero_parte": "80685",
+        "marca": "DC",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 454.99,
+        "costo_total": 454.99,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "RECIBIDA_TALLER",
+        "fecha_solicitud": "2026-11-19T15:58:35.093Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "2026-11-09",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "mov_1792703940862_22",
+        "id_pieza": "INT-0001",
+        "descripcion": "COLCHON 90 X 1.9",
+        "numero_parte": "INT-0001",
+        "marca": "A GRANEL / GENÉRICO",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 1327,
+        "costo_total": 1327,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "RECIBIDA_TALLER",
+        "fecha_solicitud": "2026-11-19T15:58:35.093Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "2026-10-21",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "mov_1792618911201_0_6017",
+        "id_pieza": "CODO_90_GRADOS_1_2_A_583",
+        "descripcion": "CODO 90 GRADOS 1/2 A 5/8 CONEXIÓN RAPIDA",
+        "numero_parte": "CODO_90_GRADOS_1_2_A_583",
+        "marca": "GENERICA",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 111,
+        "costo_total": 111,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "RECIBIDA_TALLER",
+        "fecha_solicitud": "2026-11-19T15:58:35.093Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "2026-10-21",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "mov_1792618889905_1_4863",
+        "id_pieza": "CODO_TUERCA_BARRIL_3_580",
+        "descripcion": "CODO TUERCA BARRIL 3/8 NPT A 3/8",
+        "numero_parte": "CODO_TUERCA_BARRIL_3_580",
+        "marca": "GENERICA",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 142.02,
+        "costo_total": 142.02,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "RECIBIDA_TALLER",
+        "fecha_solicitud": "2026-11-19T15:58:35.093Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "2026-10-21",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "mov_1792618889904_0_4870",
+        "id_pieza": "UNIDAD_RAPIDA_3_8_568",
+        "descripcion": "UNIDAD RAPIDA 3/8",
+        "numero_parte": "UNIDAD_RAPIDA_3_8_568",
+        "marca": "GENERICA",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 123.66,
+        "costo_total": 123.66,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "RECIBIDA_TALLER",
+        "fecha_solicitud": "2026-11-19T15:58:35.093Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "2026-10-21",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      }
+    ],
+    "historial": [
+      {
+        "fecha": "17/11/2026, 12:21:47 p.m.",
+        "evento": "Unidad reincorporada a taller por pernos de dirección (En Proceso)",
+        "tipo": "alta",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 13 piezas (10,174.27 MXN) [Prev: $1,500 | Corr: $8,674.27]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:28 a.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:28 a.m.",
+        "evento": "Sincronización Almacén: 13 piezas (10,174.27 MXN) [Prev: $1,500 | Corr: $8,674.27]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 13 piezas (10,174.27 MXN) [Prev: $1,500 | Corr: $8,674.27]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:37 p.m.",
+        "evento": "Sincronización Almacén: 13 piezas (10,174.27 MXN) [Prev: $1,500 | Corr: $8,674.27]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:37 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:52 p.m.",
+        "evento": "Sincronización Almacén: 13 piezas (10,174.27 MXN) [Prev: $1,500 | Corr: $8,674.27]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:52 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:23 p.m.",
+        "evento": "Sincronización Almacén: 13 piezas (10,174.27 MXN) [Prev: $1,500 | Corr: $8,674.27]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "16/11/2026 04:08 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 03:30 p.m.",
+        "evento": "Sincronización Almacén: 13 piezas (10,174.27 MXN) [Prev: $1,500 | Corr: $8,674.27]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "14/11/2026 10:30 a.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "13/11/2026 04:41 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "13/11/2026 04:40 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "13/11/2026 04:21 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Sync manual Unidad 2509"
+      },
+      {
+        "fecha": "13/11/2026 03:47 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 03:25 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 03:23 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:22 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 03:17 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:16 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:13 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:12 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:11 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:10 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:08 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:07 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 03:06 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:05 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:02 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 03:00 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 01:52 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "13/11/2026 01:26 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 01:25 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 01:02 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 01:00 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 12:59 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 12:42 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 12:39 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 12:34 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $6,970.59]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "13/11/2026 12:33 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $10,174.27]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 12:26 p.m.",
+        "evento": "Sincronización Almacén: 9 piezas (8,470.59 MXN) [Prev: $1,500 | Corr: $10,174.27]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "13/11/2026 12:20 p.m.",
+        "evento": "Sincronización Almacén: 13 piezas (10,174.27 MXN) [Prev: $1,500 | Corr: $11,674.27]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 12:00 p.m.",
+        "evento": "Sincronización Almacén: 13 piezas (10,174.27 MXN) [Prev: $1,500 | Corr: $10,174.27]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "13/11/2026 10:19 a.m.",
+        "evento": "Sincronización Almacén: 13 piezas (8,848.597 MXN) [Prev: $1,500 | Corr: $7,348.597]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "12/11/2026 05:50 p.m.",
+        "evento": "Sincronización Almacén: 12 piezas (7,348.597 MXN) [Prev: $0 | Corr: $7,348.597]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "9/11/2026, 12:22:25 p.m.",
+        "evento": "Edición rápida: bujes y pernos de direccion",
+        "tipo": "edicion_rapida",
+        "foto": null
+      },
+      {
+        "fecha": "6/11/2026, 3:31:06 p.m.",
+        "evento": "Unidad registrada en taller (En Proceso (Taller))",
+        "tipo": "alta"
+      },
+      {
+        "fecha": "19/11/2026, 4:32:54 p.m.",
+        "evento": "Movimiento rápido: De 'En Reparación Activa' a 'Listas para Entrega'",
+        "tipo": "movimiento_kanban",
+        "autor": "Jefe de Taller"
+      },
+      {
+        "fecha": "19/11/2026, 10:32:54 a.m.",
+        "evento": "Cambio de estatus: De 'En Proceso (Taller)' a 'Listas para Entrega'",
+        "tipo": "cambio_estatus",
+        "foto": null
+      },
+      {
+        "fecha": "19/11/2026",
+        "hora": "05:44 p.m.",
+        "evento": "Salida de taller: Salida de taller / Asignada a viaje. Orden #4077.",
+        "tipo": "liberacion",
+        "km": null
+      }
+    ],
+    "estadoModificadoManualmente": true,
+    "folio_almacen": "4077",
+    "costo_refacciones": 10174.27,
+    "costo_preventivo": 0,
+    "costo_correctivo": 10174.27,
+    "tipo_procedimiento": "correctivo",
+    "avances": [
+      {
+        "fecha": "19/11/2026",
+        "hora": "05:44 p.m.",
+        "texto": "🏁 Unidad liberada de taller con Orden #4077: Salida de taller / Asignada a viaje.",
+        "mecanico": "Jefe de Taller",
+        "porcentaje": 100
+      },
+      {
+        "fecha": "14/11/2026",
+        "hora": "10:58 a.m.",
+        "texto": "🏁 Unidad liberada de taller con Orden #4077: Asignada a viaje / Salió a ruta. Prueba liberacion",
+        "mecanico": "Jefe de Taller",
+        "porcentaje": 100
+      }
+    ],
+    "archivada": true,
+    "ultimo_avance": {
+      "fecha": "14/11/2026",
+      "hora": "10:58 a.m.",
+      "texto": "🏁 Unidad liberada de taller con Orden #4077: Asignada a viaje / Salió a ruta. Prueba liberacion",
+      "mecanico": "Jefe de Taller",
+      "porcentaje": 100
+    },
+    "fecha_salida": "19/11/2026",
+    "hora_salida": "05:44 p.m.",
+    "motivo_salida": "Salida de taller / Asignada a viaje",
+    "notas_salida": ""
+  },
+  {
+    "id": "94",
+    "sucursal": "Apodaca",
+    "estado": "listo",
+    "defecto": "Filtro de gases del EGR • Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer\n\nUnidad en preuba ya que ya se remplazo el bote del EGR",
+    "notas": "Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer",
+    "reporte": "Filtro de gases del EGR • Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer\n\nUnidad en preuba ya que ya se remplazo el bote del EGR",
+    "categoriaFalla": "Neumático/Emisiones",
+    "costo": 11176,
+    "fechaRefaccion": "2026-11-09",
+    "piezas": [
+      {
+        "id": "mov_1794433408186_821",
+        "id_pieza": "A4731400575",
+        "descripcion": "BOTE DE GASES EGR CASCADIA",
+        "numero_parte": "A4731400575",
+        "marca": "GENÉRICA",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 9500,
+        "costo_total": 9500,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "RECIBIDA_TALLER",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "2026-11-11",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      },
+      {
+        "id": "mov_1794431777908_635",
+        "id_pieza": "81001",
+        "descripcion": "MANGUERA DE AIRE DE 15\" AZUL/ROJO",
+        "numero_parte": "81001",
+        "marca": "GROTE",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 1676,
+        "costo_total": 1676,
+        "rack": "",
+        "nivel": "",
+        "stock_disponible": 0,
+        "estado": "RECIBIDA_TALLER",
+        "fecha_solicitud": "2026-11-17T15:54:32.888Z",
+        "folio_oc": "",
+        "proveedor_oc": "",
+        "fecha_estimada_arribo": "",
+        "autorizado_por": "",
+        "fecha_autorizacion": "",
+        "recibido_por": "",
+        "fecha_recepcion": "2026-11-09",
+        "instalado_por": "",
+        "fecha_instalacion": "",
+        "notas": ""
+      }
+    ],
+    "historial": [
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 2 piezas (11,176 MXN) [Prev: $0 | Corr: $11,176]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:54 a.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:28 a.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "17/11/2026 09:28 a.m.",
+        "evento": "Sincronización Almacén: 2 piezas (11,176 MXN) [Prev: $0 | Corr: $11,176]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:41 p.m.",
+        "evento": "Sincronización Almacén: 2 piezas (11,176 MXN) [Prev: $0 | Corr: $11,176]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:37 p.m.",
+        "evento": "Sincronización Almacén: 2 piezas (11,176 MXN) [Prev: $0 | Corr: $11,176]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 05:37 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:52 p.m.",
+        "evento": "Sincronización Almacén: 2 piezas (11,176 MXN) [Prev: $0 | Corr: $11,176]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:52 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "16/11/2026 04:23 p.m.",
+        "evento": "Sincronización Almacén: 2 piezas (11,176 MXN) [Prev: $0 | Corr: $11,176]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "16/11/2026 04:08 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 04:41 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "13/11/2026 04:40 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "13/11/2026 04:21 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Sync manual Unidad 2509"
+      },
+      {
+        "fecha": "13/11/2026 03:47 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 03:25 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 03:23 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:22 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 03:17 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:16 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:13 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:12 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:11 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:10 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:08 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:07 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 03:06 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 03:05 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 03:02 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 03:00 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 01:52 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "13/11/2026 01:26 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 01:25 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 01:02 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 01:00 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "13/11/2026 12:59 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "13/11/2026 12:42 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 12:39 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 12:34 p.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "12/11/2026 05:50 p.m.",
+        "evento": "Sincronización Almacén: 2 piezas (11,176 MXN) [Prev: $0 | Corr: $11,176]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "12/11/2026 05:35 p.m.",
+        "evento": "Almacén sincronizó Folio #4092: 1 piezas surtidas (1,676 MXN)",
+        "tipo": "almacen_sync",
+        "autor": "Almacén CESS en tiempo real"
+      },
+      {
+        "fecha": "9/11/2026, 3:25:06 p.m.",
+        "evento": "Edición rápida: Filtro de gases del EGR • Cotización presentada. Se puede usar rellenando a diario; revisar con Víctor Navarro para transfer\n\nUnidad en preuba ya que ya se remplazo el bote del EGR",
+        "tipo": "edicion_rapida",
+        "foto": null
+      },
+      {
+        "fecha": "9/11/2026, 3:22:42 p.m.",
+        "evento": "Cambio de estatus: De 'En Proceso (Taller)' a 'Listas para Entrega'",
+        "tipo": "cambio_estatus",
+        "foto": null
+      },
+      {
+        "fecha": "28/10/2026, 08:00:00",
+        "evento": "Carga inicial desde bitácora de flotilla (Filtro de gases del EGR)",
+        "tipo": "sistema",
+        "categoria": "Neumático/Emisiones",
+        "autor": "Excel Taller Flotilla"
+      },
+      {
+        "fecha": "14/11/2026 10:30 a.m.",
+        "evento": "Sincronización Almacén: 1 piezas (1,676 MXN) [Prev: $0 | Corr: $1,676]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "13/11/2026 10:51 p.m.",
+        "evento": "Sincronización Almacén: 0 piezas (0 MXN) [Prev: $0 | Corr: $0]",
+        "tipo": "almacen_sync",
+        "autor": "Consulta API /api/unidades"
+      },
+      {
+        "fecha": "13/11/2026 10:23 p.m.",
+        "evento": "Sincronización Almacén: 0 piezas (0 MXN) [Prev: $0 | Corr: $0]",
+        "tipo": "almacen_sync",
+        "autor": "Inicio Servidor"
+      },
+      {
+        "fecha": "19/11/2026",
+        "hora": "05:43 p.m.",
+        "evento": "Salida de taller: Salida de taller / Asignada a viaje. Orden #4092.",
+        "tipo": "liberacion",
+        "km": null
+      }
+    ],
+    "estadoModificadoManualmente": true,
+    "folio_almacen": "4092",
+    "costo_refacciones": 11176,
+    "costo_preventivo": 0,
+    "costo_correctivo": 11176,
+    "tipo_procedimiento": "correctivo",
+    "avances": [
+      {
+        "fecha": "19/11/2026",
+        "hora": "05:43 p.m.",
+        "texto": "🏁 Unidad liberada de taller con Orden #4092: Salida de taller / Asignada a viaje.",
+        "mecanico": "Jefe de Taller",
+        "porcentaje": 100
+      }
+    ],
+    "costo_mano_obra": 0,
+    "costo_externo": 0,
+    "archivada": true,
+    "fecha_salida": "19/11/2026",
+    "hora_salida": "05:43 p.m.",
+    "motivo_salida": "Salida de taller / Asignada a viaje",
+    "notas_salida": ""
+  },
+  {
     "id": "42",
     "sucursal": "Apodaca",
     "estado": "listo",
