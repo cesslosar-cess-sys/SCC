@@ -17861,7 +17861,11 @@
       "costo_total": 1350,
       "editado": true,
       "fecha_edicion": "2026-11-19T22:56:12.782Z",
-      "editado_por": "César Almacén (Administrador)"
+      "editado_por": "César Almacén (Administrador)",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-19"
     },
     {
       "id": "mov_1795120272131_0",
@@ -17891,7 +17895,11 @@
       "costo_total": 663.52,
       "editado": true,
       "fecha_edicion": "2026-11-19T20:32:22.854Z",
-      "editado_por": "César Almacén (Administrador)"
+      "editado_por": "César Almacén (Administrador)",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-19"
     },
     {
       "id": "mov_1795120270241_0",
@@ -17921,7 +17929,11 @@
       "costo_total": 320,
       "editado": true,
       "fecha_edicion": "2026-11-19T22:36:10.211Z",
-      "editado_por": "César Almacén (Administrador)"
+      "editado_por": "César Almacén (Administrador)",
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-19"
     },
     {
       "id": "mov_1795115533031_0_9635",
@@ -34932,6 +34944,39 @@
       "dias_credito": 0,
       "estado_pago": "PAGADO",
       "fecha_vencimiento": "2026-11-16"
+    },
+    {
+      "id": "fac_hist_8558",
+      "factura": "8558",
+      "factura_normalizada": "8558",
+      "proveedor": "TRACTO REFACCIONES GAYTAN",
+      "proveedor_normalizado": "TRACTOREFACCIONESGAYTAN",
+      "fecha_factura": "2026-11-19",
+      "fecha_ingreso": "2026-11-19",
+      "hora_ingreso": "08:31:14 p.m.",
+      "total_monto": 2333.52,
+      "total_piezas": 3,
+      "total_items": 3,
+      "piezas_resumen": [
+        {
+          "numero_parte": "A11206Y2729",
+          "cantidad": 1,
+          "descripcion": "RETÉN DE SALIDA / PIÑÓN DE DIFERENCIAL / RETEN DE INTER TRASERO",
+          "costo_unitario": 1350
+        },
+        {
+          "numero_parte": "1848293003",
+          "cantidad": 1,
+          "descripcion": "KIT VARILLA P/VALVULA NIVELADORA",
+          "costo_unitario": 663.52
+        },
+        {
+          "numero_parte": "250-74-11",
+          "cantidad": 1,
+          "descripcion": "TUERCA DE SEGURIDAD PARA YUGO DE FLECHA CARDÁN",
+          "costo_unitario": 320
+        }
+      ]
     }
   ],
   "usuarios": [

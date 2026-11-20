@@ -46,6 +46,18 @@ if (!fs.existsSync(UPLOADS_DIR)) {
 app.use('/uploads', express.static(UPLOADS_DIR));
 
 // =========================================================
+// MÓDULO DE PERSISTENCIA EN GOOGLE CLOUD FIRESTORE
+// =========================================================
+let cloudSync = null;
+try {
+    cloudSync = require('./cloud_sync');
+    console.log('☁️ [Server] Módulo cloud_sync cargado exitosamente.');
+} catch (e) {
+    console.warn('⚠️ [Server] Error cargando cloud_sync:', e.message);
+}
+let almacenAppModule = null;
+
+// =========================================================
 // AUTO-CORRECCIÓN INTELIGENTE DE ARCHIVOS DESPLAZADOS EN GITHUB
 // =========================================================
 try {
@@ -86,7 +98,8 @@ app.use('/assets', express.static(__dirname));
 // INTEGRACIÓN UNIFICADA: ALMACÉN CENTRAL CESS
 // =========================================================
 try {
-    let almacenAppModule;
+    // let almacenAppModule;
+
     if (fs.existsSync(path.join(__dirname, 'almacen_backend.js'))) {
         almacenAppModule = require('./almacen_backend');
     } else if (fs.existsSync(path.join(__dirname, 'almacen-app', 'server.js'))) {
@@ -281,6 +294,11 @@ function getUnidadesArchivadas() {
 function saveUnidadesArchivadas(archivadas) {
     try {
         fs.writeFileSync(ARCHIVADAS_FILE, JSON.stringify(archivadas, null, 2), 'utf8');
+        if (cloudSync && typeof cloudSync.pushTallerArchivadas === 'function') {
+            cloudSync.pushTallerArchivadas(archivadas).catch(e => {
+                console.error('⚠️ [CloudSync] Error sincronizando archivadas con Firestore:', e.message);
+            });
+        }
         return true;
     } catch(e) {
         return false;
@@ -672,6 +690,13 @@ function saveAlmacenData(data) {
                 }
             } catch(e) {}
         });
+
+        // Sincronización en tiempo real con Google Cloud Firestore
+        if (cloudSync && typeof cloudSync.pushAlmacenData === 'function') {
+            cloudSync.pushAlmacenData(data).catch(e => {
+                console.error('⚠️ [CloudSync] Error sincronizando Almacén con Firestore:', e.message);
+            });
+        }
         return true;
     } catch (e) {
         console.error('Error guardando almacen_datos.json:', e);
@@ -1186,6 +1211,13 @@ function saveUnidades(incomingUnidades, autor = 'Sistema') {
     });
 
     fs.writeFileSync(DB_FILE, JSON.stringify(unidadesFinales, null, 2), 'utf8');
+
+    // Sincronización en tiempo real de Taller con Google Cloud Firestore
+    if (cloudSync && typeof cloudSync.pushTallerData === 'function') {
+        cloudSync.pushTallerData(unidadesFinales).catch(e => {
+            console.error('⚠️ [CloudSync] Error sincronizando unidades con Firestore:', e.message);
+        });
+    }
 
     ultimaMarcaTiempoDatos = Date.now();
     broadcastSSE('units_updated', { units: unidadesFinales, autor, timestamp: ultimaMarcaTiempoDatos, count: unidadesFinales.length });
@@ -5054,6 +5086,40 @@ function getLocalIp() {
 
 const localIp = getLocalIp();
 
+
+// =========================================================
+// ENDPOINTS DE CONTROL DE SINCRONIZACIÓN EN LA NUBE (FIRESTORE)
+// =========================================================
+app.get('/api/cloud/status', async (req, res) => {
+    try {
+        const isEnabled = cloudSync ? cloudSync.isCloudEnabled() : false;
+        res.json({
+            cloud_connected: isEnabled,
+            provider: 'Google Cloud Firestore',
+            project_id: 'diesel-cess-40bbf',
+            collection: 'cess_cloud_database',
+            timestamp: new Date().toISOString()
+        });
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+app.post('/api/cloud/sync-now', async (req, res) => {
+    try {
+        if (!cloudSync || !cloudSync.isCloudEnabled()) {
+            return res.status(503).json({ success: false, message: 'CloudSync no habilitado (sin credenciales)' });
+        }
+        await cloudSync.syncAllFromCloudToDisk(__dirname);
+        if (almacenAppModule && typeof almacenAppModule.reloadStore === 'function') {
+            almacenAppModule.reloadStore();
+        }
+        res.json({ success: true, message: 'Sincronización completa con Google Cloud Firestore ejecutada con éxito' });
+    } catch (e) {
+        res.status(500).json({ success: false, error: e.message });
+    }
+});
+
 app.listen(PORT, '0.0.0.0', () => {
     console.log('================================================================');
     console.log('       SISTEMA SMART WORKSHOP - SPA INTELIGENTE CESS');
@@ -5063,7 +5129,18 @@ app.listen(PORT, '0.0.0.0', () => {
     console.log('================================================================');
     iniciarTunelAutomatico();
 
-    // Sincronizaciones automáticas iniciales
+    // Sincronizaciones automáticas iniciales con Firestore
+    if (cloudSync && typeof cloudSync.syncAllFromCloudToDisk === 'function') {
+        cloudSync.syncAllFromCloudToDisk(__dirname).then(() => {
+            console.log('✅ [CloudSync] Arranque sincronizado con Google Cloud Firestore.');
+            if (almacenAppModule && typeof almacenAppModule.reloadStore === 'function') {
+                almacenAppModule.reloadStore();
+            }
+        }).catch(err => {
+            console.error('⚠️ [CloudSync] Error en sincronización inicial:', err.message);
+        });
+    }
+
     setTimeout(() => {
         try { sincronizarFoliosConAlmacen('Inicio Servidor'); } catch(e) {}
         try { sincronizarPreventivosConFirestore(true); } catch(e) {}

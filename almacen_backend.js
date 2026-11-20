@@ -21,6 +21,15 @@ const xlsx = loadMod('xlsx');
 const fs = require('fs');
 const path = require('path');
 
+let cloudSync = null;
+try {
+  cloudSync = require('./cloud_sync');
+} catch (e1) {
+  try {
+    cloudSync = require('../cloud_sync');
+  } catch (e2) {}
+}
+
 const app = express();
 const PORT = 3001;
 
@@ -534,6 +543,13 @@ function saveStore() {
     try { fs.writeFileSync(githubAlm, jsonStr, 'utf-8'); } catch(e) {}
     try { fs.writeFileSync(githubAlmParent, jsonStr, 'utf-8'); } catch(e) {}
     try { fs.writeFileSync(backupFile, jsonStr, 'utf-8'); } catch(e) {}
+
+    // Sincronización automática en tiempo real con Google Cloud Firestore
+    if (cloudSync && typeof cloudSync.pushAlmacenData === 'function') {
+      cloudSync.pushAlmacenData(store).catch(err => {
+        console.error('⚠️ [CloudSync] Error sincronizando Almacén con Firestore:', err.message);
+      });
+    }
   } catch (e) {
     console.error('Error guardando base de datos local:', e);
   }
@@ -7208,6 +7224,9 @@ if (require.main === module) {
     console.log(`======================================================\n`);
   });
 }
+
+app.reloadStore = loadStore;
+app.getStore = () => store;
 
 module.exports = app;
 
