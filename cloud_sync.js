@@ -22,82 +22,83 @@ function initFirebase() {
     getFirestore = firestorePkg.getFirestore;
     FieldValue = firestorePkg.FieldValue;
 
-    let serviceAccount = null;
+    const candidates = [];
 
-    // 1. Revisar Variable de Entorno (ideal para Render / Producción Cloud)
+    // 1. Prioridad: Archivos locales certificados en disco (inmunes a errores de copiar/pegar en web)
+    const possibleKeyPaths = [
+      path.join(__dirname, 'firebase_key.json'),
+      path.join(process.cwd(), 'firebase_key.json'),
+      '/etc/secrets/firebase_key.json',
+      '/etc/secrets/FIREBASE_SERVICE_ACCOUNT',
+      path.join(__dirname, '..', 'firebase_key.json'),
+      path.join(__dirname, 'almacen-app', 'firebase_key.json')
+    ];
+
+    for (const p of possibleKeyPaths) {
+      if (fs.existsSync(p)) {
+        try {
+          const saData = JSON.parse(fs.readFileSync(p, 'utf8'));
+          if (saData && saData.project_id) {
+            candidates.push({ source: `archivo local (${path.basename(p)})`, data: saData });
+          }
+        } catch(e) {}
+      }
+    }
+
+    // 2. Variable de Entorno (Render / Hosting)
     if (process.env.FIREBASE_SERVICE_ACCOUNT) {
       try {
         let envVal = process.env.FIREBASE_SERVICE_ACCOUNT.trim();
-
-        // Si es una ruta a un archivo (ej: /etc/secrets/firebase_key.json)
         if (fs.existsSync(envVal)) {
-          serviceAccount = JSON.parse(fs.readFileSync(envVal, 'utf8'));
-          console.log(`☁️ [CloudSync] Credenciales cargadas desde ruta en env: ${envVal}`);
+          const saData = JSON.parse(fs.readFileSync(envVal, 'utf8'));
+          if (saData && saData.project_id) {
+            candidates.push({ source: `ruta en env (${envVal})`, data: saData });
+          }
         } else {
-          // Quitar comillas externas si las tiene
           if ((envVal.startsWith('"') && envVal.endsWith('"')) || (envVal.startsWith("'") && envVal.endsWith("'"))) {
             envVal = envVal.slice(1, -1).trim();
           }
-
+          let saData = null;
           if (envVal.startsWith('{')) {
-            serviceAccount = JSON.parse(envVal);
+            saData = JSON.parse(envVal);
           } else {
-            // Intentar decodificar Base64 (limpiando posibles saltos de línea o espacios)
             const cleanB64 = envVal.replace(/\s+/g, '');
             const decoded = Buffer.from(cleanB64, 'base64').toString('utf8');
-            serviceAccount = JSON.parse(decoded);
+            saData = JSON.parse(decoded);
           }
-          console.log('☁️ [CloudSync] Credenciales cargadas desde process.env.FIREBASE_SERVICE_ACCOUNT');
+          if (saData && saData.project_id) {
+            candidates.push({ source: 'process.env.FIREBASE_SERVICE_ACCOUNT', data: saData });
+          }
         }
       } catch (errEnv) {
-        console.error('⚠️ [CloudSync] Error parseando FIREBASE_SERVICE_ACCOUNT:', errEnv.message);
+        console.warn('⚠️ [CloudSync] Aviso al leer env variable:', errEnv.message);
       }
     }
 
-    // 2. Revisar archivos locales y Secret Files de Render (/etc/secrets)
-    if (!serviceAccount) {
-      const possibleKeyPaths = [
-        '/etc/secrets/firebase_key.json',
-        '/etc/secrets/FIREBASE_SERVICE_ACCOUNT',
-        path.join(__dirname, 'firebase_key.json'),
-        path.join(process.cwd(), 'firebase_key.json'),
-        path.join(__dirname, '..', 'firebase_key.json'),
-        path.join(__dirname, 'almacen-app', 'firebase_key.json')
-      ];
-
-      for (const p of possibleKeyPaths) {
-        if (fs.existsSync(p)) {
-          try {
-            serviceAccount = JSON.parse(fs.readFileSync(p, 'utf8'));
-            console.log(`☁️ [CloudSync] Credenciales cargadas desde archivo: ${p}`);
-            break;
-          } catch (e) {}
-        }
-      }
-    }
-
-    if (serviceAccount && serviceAccount.project_id) {
-      if (serviceAccount.private_key) {
-        serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
-      }
-
+    // Probar candidatos hasta lograr conexión exitosa
+    for (const cand of candidates) {
       try {
+        const sa = cand.data;
+        if (sa.private_key) {
+          sa.private_key = sa.private_key.replace(/\\n/g, '\n');
+        }
+
         if (admin.getApps().length === 0) {
           admin.initializeApp({
-            credential: admin.cert(serviceAccount)
+            credential: admin.cert(sa)
           });
         }
-      } catch (appErr) {
-        console.error('⚠️ [CloudSync] Error en admin.initializeApp:', appErr.message);
+        db = getFirestore();
+        isInitialized = true;
+        console.log(`✅ [CloudSync] Conectado exitosamente a Google Cloud Firestore (${sa.project_id}) vía ${cand.source}`);
+        return db;
+      } catch (candErr) {
+        console.warn(`⚠️ [CloudSync] Falló candidato ${cand.source}:`, candErr.message);
       }
-      db = getFirestore();
-      isInitialized = true;
-      console.log(`✅ [CloudSync] Conectado exitosamente a Google Cloud Firestore (${serviceAccount.project_id})`);
-      return db;
-    } else {
-      console.warn('⚠️ [CloudSync] No se encontraron credenciales de Firebase. Operando en modo disco local.');
-      return null;
     }
+
+    console.warn('⚠️ [CloudSync] No se logró conectar a Firebase. Operando en modo disco local.');
+    return null;
   } catch (err) {
     console.error('⚠️ [CloudSync] Error inicializando Firebase Admin:', err.message);
     return null;

@@ -233,7 +233,7 @@
                 <!-- BADGE DE ROL & CONTROL DE ACCESO PIN -->
                 <div id="contenedor-rol-usuario" class="flex items-center bg-[#141518] border border-[#3A3D42] hover:border-[#C59B27]/50 rounded-xl px-2 sm:px-2.5 py-1 transition shadow-sm">
                     <div class="flex items-center gap-1.5 cursor-pointer" onclick="clickBadgeRol()" title="Clic para ver detalles de permisos o cambiar de rol">
-                        <span id="badge-rol-icono" class="text-sm">👀</span>
+                        <span id="badge-rol-icono" class="text-sm"><i class="fa-solid fa-eye text-slate-400"></i></span>
                         <div class="flex flex-col text-left">
                             <span id="badge-rol-nombre" class="text-[10px] sm:text-[11px] font-black text-slate-200 leading-tight">Supervisión</span>
                             <span id="badge-rol-sub" class="text-[8px] sm:text-[9px] text-amber-400 font-semibold leading-none">Solo Lectura</span>
@@ -1930,7 +1930,7 @@
                                 📋 Detallada (Con Preventivos)
                             </button>
                             <button id="btn-modo-bitacora-resumen" onclick="cambiarModoBitacoraCompartir('resumen')" class="px-2.5 py-1 rounded-lg text-[10px] font-bold text-slate-400 hover:text-white transition">
-                                📊 Resumen Totales
+                                <i class="fa-solid fa-chart-pie text-blue-400"></i> Resumen Totales
                             </button>
                         </div>
                     </div>
@@ -2225,7 +2225,7 @@
                     <div class="flex items-center gap-2 flex-wrap">
                         <span class="text-2xl font-black text-white" id="exp-titulo">Unidad --</span>
                         <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-[#282A2E] text-[#C59B27] border border-[#3A3D42]" id="exp-terminal">--</span>
-                        <span id="exp-badge-archivada" class="hidden bg-cyan-950 text-cyan-300 border border-cyan-700 px-2.5 py-0.5 rounded-full text-[10px] font-bold font-mono">🏁 ARCHIVADA / SALIDA</span>
+                        <span id="exp-badge-archivada" class="hidden bg-cyan-950 text-cyan-300 border border-cyan-700 px-2.5 py-0.5 rounded-full text-[10px] font-bold font-mono"><i class="fa-solid fa-flag-checkered text-emerald-400"></i> ARCHIVADA / SALIDA</span>
                         <span id="exp-badge-folio" class="hidden bg-indigo-950 text-indigo-300 border border-indigo-700 px-2.5 py-0.5 rounded-full text-[10px] font-bold font-mono flex items-center gap-1"><i class="fa-solid fa-receipt text-[9px]"></i> <span id="exp-badge-folio-txt">Orden #--</span></span>
                     </div>
                     <p class="text-xs text-slate-400 mt-1 font-mono" id="exp-subtitulo">Expediente Digital Inalterable de Mantenimiento</p>
@@ -4000,7 +4000,7 @@
             <div class="mt-4 flex flex-col gap-2">
                 <label class="text-xs font-bold text-slate-300 flex justify-between">
                     <span>Introduce tu PIN:</span>
-                    <span class="text-[10px] text-amber-400 font-mono">Ejemplo: MA2026</span>
+                    <span class="text-[10px] text-amber-400 font-mono">PIN de 6 caracteres</span>
                 </label>
                 <div class="relative">
                     <input type="password" id="input-auth-pin" maxlength="10" placeholder="••••••" autocomplete="off"
@@ -4018,28 +4018,28 @@
                 <span class="text-[10px] font-black uppercase text-slate-400 tracking-wider">Perfiles Autorizados:</span>
                 <div class="grid grid-cols-2 gap-2 text-[11px]">
                     <div class="p-2 rounded-xl bg-[#1E1E1E] border border-[#3A3D42] flex items-center gap-2">
-                        <span class="text-base">👑</span>
+                        <span class="text-base"><i class="fa-solid fa-user-shield text-amber-400"></i></span>
                         <div>
                             <span class="font-bold text-white block">Administrador</span>
                             <span class="text-[9px] text-slate-400">Control total</span>
                         </div>
                     </div>
                     <div class="p-2 rounded-xl bg-[#1E1E1E] border border-[#3A3D42] flex items-center gap-2">
-                        <span class="text-base">🛠️</span>
+                        <span class="text-base"><i class="fa-solid fa-wrench text-slate-300"></i></span>
                         <div>
                             <span class="font-bold text-white block">Jefe de Taller</span>
                             <span class="text-[9px] text-slate-400">Operativo patio</span>
                         </div>
                     </div>
                     <div class="p-2 rounded-xl bg-[#1E1E1E] border border-[#3A3D42] flex items-center gap-2">
-                        <span class="text-base">📊</span>
+                        <span class="text-base"><i class="fa-solid fa-chart-pie text-blue-400"></i></span>
                         <div>
                             <span class="font-bold text-white block">Finanzas</span>
                             <span class="text-[9px] text-slate-400">Costos y reportes</span>
                         </div>
                     </div>
                     <div class="p-2 rounded-xl bg-[#1E1E1E] border border-[#3A3D42] flex items-center gap-2">
-                        <span class="text-base">👀</span>
+                        <span class="text-base"><i class="fa-solid fa-eye text-slate-400"></i></span>
                         <div>
                             <span class="font-bold text-white block">Supervisión</span>
                             <span class="text-[9px] text-slate-400">Solo lectura</span>
@@ -4083,7 +4083,7 @@
             </div>
 
             <p class="text-xs text-slate-300 mt-3 leading-relaxed">
-                Asigna o edita los PINs de cada perfil. Los PINs deben tener <strong class="text-amber-400">2 letras seguidas de 4 números</strong> (ejemplo: <span class="font-mono text-white bg-black/40 px-1.5 py-0.5 rounded">MA2026</span>).
+                Asigna o edita los PINs de cada perfil. Los PINs deben tener <strong class="text-amber-400">2 letras seguidas de 4 números</strong> .
             </p>
 
             <!-- Formulario de 4 Perfiles -->
@@ -4091,14 +4091,14 @@
                 <!-- 1. Administrador -->
                 <div class="p-3 rounded-2xl bg-[#141518] border border-[#3A3D42] flex items-center justify-between gap-3">
                     <div class="flex items-center gap-2.5">
-                        <span class="text-xl">👑</span>
+                        <span class="text-xl"><i class="fa-solid fa-user-shield text-amber-400"></i></span>
                         <div>
                             <span class="text-xs font-black text-white block">Administrador General</span>
                             <span class="text-[10px] text-slate-400">Control total y edición de PINs</span>
                         </div>
                     </div>
                     <div class="w-32">
-                        <input type="text" id="cfg-pin-admin" maxlength="6" placeholder="CL2026"
+                        <input type="text" id="cfg-pin-admin" maxlength="6" placeholder="••••••"
                             class="w-full bg-[#1E1E1E] border border-amber-500/60 focus:border-amber-400 rounded-xl py-1.5 px-2.5 text-center font-mono font-black text-sm text-amber-400 uppercase outline-none">
                     </div>
                 </div>
@@ -4106,14 +4106,14 @@
                 <!-- 2. Jefe de Taller -->
                 <div class="p-3 rounded-2xl bg-[#141518] border border-[#3A3D42] flex items-center justify-between gap-3">
                     <div class="flex items-center gap-2.5">
-                        <span class="text-xl">🛠️</span>
+                        <span class="text-xl"><i class="fa-solid fa-wrench text-slate-300"></i></span>
                         <div>
                             <span class="text-xs font-black text-white block">Jefe de Taller</span>
                             <span class="text-[10px] text-slate-400">Altas, avances, movimientos y partes</span>
                         </div>
                     </div>
                     <div class="w-32">
-                        <input type="text" id="cfg-pin-jefe" maxlength="6" placeholder="MA2026"
+                        <input type="text" id="cfg-pin-jefe" maxlength="6" placeholder="••••••"
                             class="w-full bg-[#1E1E1E] border border-[#3A3D42] focus:border-[#C59B27] rounded-xl py-1.5 px-2.5 text-center font-mono font-black text-sm text-white uppercase outline-none">
                     </div>
                 </div>
@@ -4121,14 +4121,14 @@
                 <!-- 3. Finanzas -->
                 <div class="p-3 rounded-2xl bg-[#141518] border border-[#3A3D42] flex items-center justify-between gap-3">
                     <div class="flex items-center gap-2.5">
-                        <span class="text-xl">📊</span>
+                        <span class="text-xl"><i class="fa-solid fa-chart-pie text-blue-400"></i></span>
                         <div>
                             <span class="text-xs font-black text-white block">Finanzas & Contabilidad</span>
                             <span class="text-[10px] text-slate-400">Centro de costos y exportación Excel</span>
                         </div>
                     </div>
                     <div class="w-32">
-                        <input type="text" id="cfg-pin-finanzas" maxlength="6" placeholder="GT2026"
+                        <input type="text" id="cfg-pin-finanzas" maxlength="6" placeholder="••••••"
                             class="w-full bg-[#1E1E1E] border border-[#3A3D42] focus:border-[#C59B27] rounded-xl py-1.5 px-2.5 text-center font-mono font-black text-sm text-white uppercase outline-none">
                     </div>
                 </div>
@@ -4136,14 +4136,14 @@
                 <!-- 4. Supervisión -->
                 <div class="p-3 rounded-2xl bg-[#141518] border border-[#3A3D42] flex items-center justify-between gap-3">
                     <div class="flex items-center gap-2.5">
-                        <span class="text-xl">👀</span>
+                        <span class="text-xl"><i class="fa-solid fa-eye text-slate-400"></i></span>
                         <div>
                             <span class="text-xs font-black text-white block">Supervisión / Monitoreo</span>
                             <span class="text-[10px] text-slate-400">Visualización de patio sin edición</span>
                         </div>
                     </div>
                     <div class="w-32">
-                        <input type="text" id="cfg-pin-supervision" maxlength="6" placeholder="SP2026"
+                        <input type="text" id="cfg-pin-supervision" maxlength="6" placeholder="••••••"
                             class="w-full bg-[#1E1E1E] border border-[#3A3D42] focus:border-[#C59B27] rounded-xl py-1.5 px-2.5 text-center font-mono font-black text-sm text-white uppercase outline-none">
                     </div>
                 </div>
@@ -4332,7 +4332,7 @@
                             if (unidadActiva && document.getElementById('modal-expediente') && !document.getElementById('modal-expediente').classList.contains('hidden')) {
                                 abrirModalExpediente(unidadActiva.id);
                             }
-                            mostrarToast(`📦 Refacciones y costos actualizados desde Almacén`);
+                            mostrarToast(`<i class="fa-solid fa-box text-purple-400"></i> Refacciones y costos actualizados desde Almacén`);
                         } else if (msg.type === 'unit_released') {
                             const releasedId = String(msg.unitId || msg.id || '').trim();
                             if (releasedId) {
@@ -4566,7 +4566,7 @@
                         actualizarSelectoresUnidades();
                         actualizarTimestampSincronizacion();
                         actualizarBadgeRealtime(true);
-                        mostrarToast(`✅ Tablero sincronizado: ${baseDatos.length} unidades (avances e historial protegidos)`);
+                        mostrarToast(`<i class="fa-solid fa-check text-emerald-400"></i> Tablero sincronizado: ${baseDatos.length} unidades (avances e historial protegidos)`);
                     }
                 }
                 await cargarJornadaServidor();
@@ -4784,7 +4784,7 @@
                 guardarDatosLocales(true);
                 renderizarTablero();
                 actualizarSelectoresUnidades();
-                mostrarToast(`✅ ${baseDatos.length} unidades sincronizadas a la nube exitosamente`);
+                mostrarToast(`<i class="fa-solid fa-check text-emerald-400"></i> ${baseDatos.length} unidades sincronizadas a la nube exitosamente`);
             } catch(e) {
                 mostrarToast('Error al procesar datos del dispositivo');
             }
@@ -5954,8 +5954,8 @@
             txt += `────────────────────────────\n\n`;
 
             const etapas = [
-                { id: 'mayor', emoji: '🔴', titulo: (nombresColumnas && nombresColumnas.mayor) || 'Reparación Mayor / Presupuesto' },
-                { id: 'proceso', emoji: '🟡', titulo: (nombresColumnas && nombresColumnas.proceso) || 'En Reparación Activa' },
+                { id: 'mayor', emoji: '<i class="fa-solid fa-circle text-red-500 text-[10px]"></i>', titulo: (nombresColumnas && nombresColumnas.mayor) || 'Reparación Mayor / Presupuesto' },
+                { id: 'proceso', emoji: '<i class="fa-solid fa-circle text-amber-500 text-[10px]"></i>', titulo: (nombresColumnas && nombresColumnas.proceso) || 'En Reparación Activa' },
                 { id: 'listo', emoji: '🟢', titulo: (nombresColumnas && nombresColumnas.listo) || 'Listas para Entrega' },
                 { id: 'considerar', emoji: '🔍', titulo: (nombresColumnas && nombresColumnas.considerar) || 'A Considerar / Detecciones' }
             ];
@@ -6009,9 +6009,9 @@
                             const exceso = kmRest < 0 ? Math.abs(kmRest).toLocaleString() : '0';
                             txt += `   🚨 *LE TOCA PREVENTIVO: VENCIDO (-${exceso} km)*\n`;
                         } else if (estNorm === 'PROXIMO') {
-                            txt += `   ⚠️ *LE TOCA PREVENTIVO: PRÓXIMO (Restan ${Math.round(kmRest).toLocaleString()} km)*\n`;
+                            txt += `   <i class="fa-solid fa-triangle-exclamation text-amber-400"></i> *LE TOCA PREVENTIVO: PRÓXIMO (Restan ${Math.round(kmRest).toLocaleString()} km)*\n`;
                         } else if (estNorm === 'VIGENTE') {
-                            txt += `   ✅ Preventivo al día (Restan ${Math.round(kmRest).toLocaleString()} km)\n`;
+                            txt += `   <i class="fa-solid fa-check text-emerald-400"></i> Preventivo al día (Restan ${Math.round(kmRest).toLocaleString()} km)\n`;
                         }
                     }
 
@@ -7363,7 +7363,7 @@
                 // Descargar archivo Excel
                 const nombreArchivo = `Reporte_Gerencial_Taller_CESS_${new Date().toISOString().slice(0, 10)}.xlsx`;
                 XLSX.writeFile(wb, nombreArchivo);
-                mostrarToast(`✅ Archivo Excel descargado: ${nombreArchivo}`);
+                mostrarToast(`<i class="fa-solid fa-check text-emerald-400"></i> Archivo Excel descargado: ${nombreArchivo}`);
             } catch (err) {
                 console.error('Error generando Excel:', err);
                 mostrarToast('Error al generar archivo Excel: ' + err.message);
@@ -7638,7 +7638,7 @@
                 const editId = document.getElementById('form-edit-id').value;
                 const id = document.getElementById('form-id').value.trim();
                 if (!id) {
-                    mostrarToast('⚠️ Por favor ingresa el Número de Unidad', 'warning');
+                    mostrarToast('<i class="fa-solid fa-triangle-exclamation text-amber-400"></i> Por favor ingresa el Número de Unidad', 'warning');
                     document.getElementById('form-id')?.focus();
                     return;
                 }
@@ -7845,7 +7845,7 @@
             if (badgeArch) {
                 if (unidadActiva.archivada) {
                     badgeArch.classList.remove('hidden');
-                    badgeArch.innerText = `🏁 LIBERADA (${unidadActiva.fecha_salida || 'Salida a viaje'})`;
+                    badgeArch.innerText = `<i class="fa-solid fa-flag-checkered text-emerald-400"></i> LIBERADA (${unidadActiva.fecha_salida || 'Salida a viaje'})`;
                 } else {
                     badgeArch.classList.add('hidden');
                 }
@@ -9957,7 +9957,7 @@
                     actualizarMetricasPreventivos(resumen);
                     renderizarTablaPreventivos();
                     if (forzar) {
-                        mostrarToast(`✅ Odómetros y preventivos actualizados en vivo (${cachePreventivos.length} unidades de la flota).`);
+                        mostrarToast(`<i class="fa-solid fa-check text-emerald-400"></i> Odómetros y preventivos actualizados en vivo (${cachePreventivos.length} unidades de la flota).`);
                     }
                 }
 
@@ -10705,7 +10705,7 @@
                     }
                     cerrarModalAvanceRescate();
                     renderizarRescatesModulo();
-                    mostrarToast('✅ Avance de rescate registrado con éxito');
+                    mostrarToast('<i class="fa-solid fa-check text-emerald-400"></i> Avance de rescate registrado con éxito');
                 } else {
                     mostrarToast('Error registrando avance en el servidor');
                 }
@@ -10737,7 +10737,7 @@
             if (typeof cerrarModalExpediente === 'function') cerrarModalExpediente();
             if (typeof cerrarModalLiberarUnidad === 'function') cerrarModalLiberarUnidad();
 
-            mostrarToast(`🏁 ¡Unidad ${unitId} liberada y retirada del tablero con éxito!${folioTxt}`);
+            mostrarToast(`<i class="fa-solid fa-flag-checkered text-emerald-400"></i> ¡Unidad ${unitId} liberada y retirada del tablero con éxito!${folioTxt}`);
 
             // 2. REGISTRAR Y ARCHIVAR EN SERVIDOR
             try {
@@ -10826,7 +10826,7 @@
             try { localStorage.setItem('taller_rescates_cache', JSON.stringify(cacheRescates)); } catch(err) {}
             cerrarModalEditarRescate();
             renderizarRescatesModulo();
-            mostrarToast('✅ Rescate actualizado con éxito');
+            mostrarToast('<i class="fa-solid fa-check text-emerald-400"></i> Rescate actualizado con éxito');
 
             try {
                 const res = await fetch(`/api/rescates/${encodeURIComponent(id)}`, {
@@ -10902,7 +10902,7 @@
                     localStorage.setItem('taller_remolques_cache', JSON.stringify(cacheRemolques));
                     cerrarModalLiberarRemolque();
                     renderizarModuloRemolques();
-                    mostrarToast(`🏁 Caja/Remolque ${id} liberada y retirada del tablero con éxito.`);
+                    mostrarToast(`<i class="fa-solid fa-flag-checkered text-emerald-400"></i> Caja/Remolque ${id} liberada y retirada del tablero con éxito.`);
                 } else {
                     mostrarToast('Error liberando remolque en servidor');
                 }
@@ -10973,7 +10973,7 @@
                     mostrarToast('💾 Cambios de unidades guardados en el servidor.');
                 }
             } catch (e) {
-                mostrarToast('⚠️ Aviso: Cambios guardados localmente en este navegador.');
+                mostrarToast('<i class="fa-solid fa-triangle-exclamation text-amber-400"></i> Aviso: Cambios guardados localmente en este navegador.');
             } finally {
                 setTimeout(() => {
                     if (btn) btn.disabled = false;
@@ -11883,28 +11883,28 @@
             if (!badgeIcono) return;
 
             if (usuarioActual.rol === 'ADMIN') {
-                badgeIcono.textContent = '👑';
+                badgeIcono.textContent = '<i class="fa-solid fa-user-shield text-amber-400"></i>';
                 badgeNombre.textContent = 'Administrador';
                 badgeSub.textContent = 'Control Total';
                 badgeSub.className = 'text-[8px] sm:text-[9px] text-amber-400 font-black leading-none';
                 btnAuth.textContent = 'Salir';
                 if (btnAdminPins) btnAdminPins.classList.remove('hidden');
             } else if (usuarioActual.rol === 'JEFE_TALLER') {
-                badgeIcono.textContent = '🛠️';
+                badgeIcono.textContent = '<i class="fa-solid fa-wrench text-slate-300"></i>';
                 badgeNombre.textContent = 'Jefe de Taller';
                 badgeSub.textContent = 'Operativo Patio';
                 badgeSub.className = 'text-[8px] sm:text-[9px] text-emerald-400 font-bold leading-none';
                 btnAuth.textContent = 'Salir';
                 if (btnAdminPins) btnAdminPins.classList.add('hidden');
             } else if (usuarioActual.rol === 'FINANZAS') {
-                badgeIcono.textContent = '📊';
+                badgeIcono.textContent = '<i class="fa-solid fa-chart-pie text-blue-400"></i>';
                 badgeNombre.textContent = 'Finanzas';
                 badgeSub.textContent = 'Costos & Análisis';
                 badgeSub.className = 'text-[8px] sm:text-[9px] text-blue-400 font-bold leading-none';
                 btnAuth.textContent = 'Salir';
                 if (btnAdminPins) btnAdminPins.classList.add('hidden');
             } else {
-                badgeIcono.textContent = '👀';
+                badgeIcono.textContent = '<i class="fa-solid fa-eye text-slate-400"></i>';
                 badgeNombre.textContent = 'Supervisión';
                 badgeSub.textContent = 'Solo Lectura';
                 badgeSub.className = 'text-[8px] sm:text-[9px] text-slate-400 font-bold leading-none';
@@ -11993,11 +11993,11 @@
                 const data = await res.json();
 
                 if (res.ok && data.success) {
-                    usuarioActual = data.user;
+                    usuarioActual = data.usuario || data.user;
                     localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(usuarioActual));
                     aplicarPermisosVisuales();
                     cerrarModalLoginPin();
-                    mostrarToast(`✅ Acceso concedido: ${data.user.nombre}`);
+                    mostrarToast(`<i class="fa-solid fa-check text-emerald-400"></i> Acceso concedido: ${data.user.nombre}`);
 
                     // Ejecutar acción pendiente si existía
                     if (typeof accionPendienteAuth === 'function') {
@@ -12054,7 +12054,7 @@
         // =========================================================================
         async function abrirModalGestionarPins() {
             if (usuarioActual.rol !== 'ADMIN') {
-                mostrarToast('⚠️ Solo el Administrador puede gestionar PINs.');
+                mostrarToast('<i class="fa-solid fa-triangle-exclamation text-amber-400"></i> Solo el Administrador puede gestionar PINs.');
                 return;
             }
 
@@ -12095,7 +12095,7 @@
             const pinRegex = /^[A-Za-z]{2}\d{4}$/;
             if (!pinRegex.test(pinAdmin) || !pinRegex.test(pinJefe) || !pinRegex.test(pinFin) || !pinRegex.test(pinSup)) {
                 if (msgError) {
-                    msgError.textContent = 'Todos los PINs deben tener 2 letras seguidas de 4 números (ejemplo: MA2026).';
+                    msgError.textContent = 'Todos los PINs deben tener 2 letras seguidas de 4 números .';
                     msgError.classList.remove('hidden');
                 }
                 return;
@@ -12122,7 +12122,7 @@
                     usuarioActual.pin = pinAdmin;
                     localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(usuarioActual));
                     cerrarModalGestionarPins();
-                    mostrarToast('✅ PINs actualizados y sincronizados en la nube.');
+                    mostrarToast('<i class="fa-solid fa-check text-emerald-400"></i> PINs actualizados y sincronizados en la nube.');
                 } else {
                     if (msgError) {
                         msgError.textContent = data.error || 'Error al actualizar PINs.';
@@ -12312,7 +12312,7 @@
 
             const fechaNombre = datosCostosActuales.periodo.desde.replace(/-/g, '') + '_' + datosCostosActuales.periodo.hasta.replace(/-/g, '');
             XLSX.writeFile(wb, `Reporte_Costos_Taller_CESS_${fechaNombre}.xlsx`);
-            mostrarToast('📗 Archivo Excel descargado exitosamente');
+            mostrarToast('<i class="fa-solid fa-file-excel text-emerald-400"></i> Archivo Excel descargado exitosamente');
         }
 
         function copiarCostosWhatsApp() {
@@ -12325,22 +12325,22 @@
             const p = datosCostosActuales.periodo;
             const formatMxn = (val) => '$' + (Number(val) || 0).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-            const msg = `📊 *INFORME DE COSTOS TALLER CENTRAL CESS*
+            const msg = `<i class="fa-solid fa-chart-pie text-blue-400"></i> *INFORME DE COSTOS TALLER CENTRAL CESS*
 📅 *Período:* ${p.desde} al ${p.hasta}
 🔢 *Registros atendidos:* ${datosCostosActuales.conteo}
 
-💰 *GRAN TOTAL INVERTIDO:* ${formatMxn(t.granTotal)}
+<i class="fa-solid fa-dollar-sign text-emerald-400"></i> *GRAN TOTAL INVERTIDO:* ${formatMxn(t.granTotal)}
 
-🔴 *Mantenimiento Correctivo:* ${formatMxn(t.correctivo)}
-🟡 *Mantenimiento Preventivo:* ${formatMxn(t.preventivo)}
-🟠 *Rescates Carreteros:* ${formatMxn(t.rescates)}
-🔵 *Taller Externo / Prov:* ${formatMxn(t.externos)}
-📦 *Refacciones de Almacén:* ${formatMxn(t.refacciones)}
+<i class="fa-solid fa-circle text-red-500 text-[10px]"></i> *Mantenimiento Correctivo:* ${formatMxn(t.correctivo)}
+<i class="fa-solid fa-circle text-amber-500 text-[10px]"></i> *Mantenimiento Preventivo:* ${formatMxn(t.preventivo)}
+<i class="fa-solid fa-circle text-orange-500 text-[10px]"></i> *Rescates Carreteros:* ${formatMxn(t.rescates)}
+<i class="fa-solid fa-circle text-blue-500 text-[10px]"></i> *Taller Externo / Prov:* ${formatMxn(t.externos)}
+<i class="fa-solid fa-box text-purple-400"></i> *Refacciones de Almacén:* ${formatMxn(t.refacciones)}
 
 _Generado automáticamente desde Sistema Smart Workshop CESS._`;
 
             navigator.clipboard.writeText(msg).then(() => {
-                mostrarToast('📱 Resumen copiado al portapapeles para WhatsApp');
+                mostrarToast('<i class="fa-brands fa-whatsapp text-emerald-400"></i> Resumen copiado al portapapeles para WhatsApp');
             }).catch(() => {
                 mostrarToast('Error al copiar al portapapeles');
             });
@@ -12550,7 +12550,7 @@ window.addEventListener('DOMContentLoaded', inicializarAplicacion);
             const checkAlm = document.getElementById('liberar-check-almacen');
             if (checkAlm) {
                 checkAlm.checked = true;
-                mostrarToast('✅ Validación de servicio sin refacciones de almacén marcada.');
+                mostrarToast('<i class="fa-solid fa-check text-emerald-400"></i> Validación de servicio sin refacciones de almacén marcada.');
             }
         }
 
@@ -12631,7 +12631,7 @@ window.addEventListener('DOMContentLoaded', inicializarAplicacion);
             cerrarModalExpediente();
             cargarContadorUnidadesLiberadas();
 
-            mostrarToast(`🏁 Unidad ${id} liberada y archivada. Guardando en Historial Clínico...`);
+            mostrarToast(`<i class="fa-solid fa-flag-checkered text-emerald-400"></i> Unidad ${id} liberada y archivada. Guardando en Historial Clínico...`);
 
             try {
                 const res = await fetch(`/api/unidad/${encodeURIComponent(id)}/liberar`, {
@@ -12641,7 +12641,7 @@ window.addEventListener('DOMContentLoaded', inicializarAplicacion);
                 });
 
                 if (res.ok) {
-                    mostrarToast(`🏁 ¡Unidad ${id} liberada con éxito con Orden #${folio}!`);
+                    mostrarToast(`<i class="fa-solid fa-flag-checkered text-emerald-400"></i> ¡Unidad ${id} liberada con éxito con Orden #${folio}!`);
                 } else {
                     // Si el servidor ya la había liberado previamente, no pasa nada
                     console.info('Respuesta servidor liberación:', res.status);
@@ -12684,7 +12684,7 @@ window.addEventListener('DOMContentLoaded', inicializarAplicacion);
                         actualizarSelectoresUnidades();
                         cerrarModalExpediente();
                         cargarContadorUnidadesLiberadas();
-                        mostrarToast(`✅ Unidad ${id} retirada del tablero y resguardada con Orden #${folio}.`);
+                        mostrarToast(`<i class="fa-solid fa-check text-emerald-400"></i> Unidad ${id} retirada del tablero y resguardada con Orden #${folio}.`);
                     } else {
                         const err = await res.json().catch(() => ({}));
                         mostrarToast(err.error || 'Error al retirar la unidad');
@@ -12804,7 +12804,7 @@ window.addEventListener('DOMContentLoaded', inicializarAplicacion);
                     renderizarListaUnidadesLiberadas();
                     const cant = Array.isArray(data.unidad?.piezas) ? data.unidad.piezas.length : 0;
                     const costo = Number(data.unidad?.costo) || 0;
-                    mostrarToast(`✅ Almacén sincronizado: ${cant} refacciones (${formatearMoneda(costo)})`);
+                    mostrarToast(`<i class="fa-solid fa-check text-emerald-400"></i> Almacén sincronizado: ${cant} refacciones (${formatearMoneda(costo)})`);
                 } else {
                     mostrarToast('Error al sincronizar con Almacén');
                 }
@@ -12906,7 +12906,7 @@ window.addEventListener('DOMContentLoaded', inicializarAplicacion);
 
                 if (res.ok) {
                     cerrarModalActualizarServicio();
-                    mostrarToast(`✅ Servicio de Unidad ${unidad} guardado. Pasó a VIGENTE (+35,000 km).`);
+                    mostrarToast(`<i class="fa-solid fa-check text-emerald-400"></i> Servicio de Unidad ${unidad} guardado. Pasó a VIGENTE (+35,000 km).`);
                     await cargarModuloPreventivos();
                     await cargarResumenCabeceras();
                     if (vistaActual === 'tablero') renderizarTablero();
