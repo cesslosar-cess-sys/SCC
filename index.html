@@ -230,6 +230,22 @@
 
             <!-- Botones de Acción Global (Optimizados para Móvil y Desktop) -->
             <div class="flex items-center gap-1.5 sm:gap-2">
+                <!-- BADGE DE ROL & CONTROL DE ACCESO PIN -->
+                <div id="contenedor-rol-usuario" class="flex items-center bg-[#141518] border border-[#3A3D42] hover:border-[#C59B27]/50 rounded-xl px-2 sm:px-2.5 py-1 transition shadow-sm">
+                    <div class="flex items-center gap-1.5 cursor-pointer" onclick="clickBadgeRol()" title="Clic para ver detalles de permisos o cambiar de rol">
+                        <span id="badge-rol-icono" class="text-sm">👀</span>
+                        <div class="flex flex-col text-left">
+                            <span id="badge-rol-nombre" class="text-[10px] sm:text-[11px] font-black text-slate-200 leading-tight">Supervisión</span>
+                            <span id="badge-rol-sub" class="text-[8px] sm:text-[9px] text-amber-400 font-semibold leading-none">Solo Lectura</span>
+                        </div>
+                    </div>
+                    <button onclick="clickBotonLoginHeader()" id="btn-auth-accion-header" class="ml-1.5 text-[10px] font-black px-2 py-0.5 rounded-lg bg-[#282A2E] hover:bg-[#3A3D42] text-[#C59B27] border border-[#3A3D42] hover:border-[#C59B27] transition flex items-center gap-1" title="Ingresar PIN de acceso">
+                        <i class="fa-solid fa-key text-[9px]"></i> <span id="txt-auth-btn">PIN</span>
+                    </button>
+                    <button onclick="abrirModalGestionarPins()" id="btn-admin-config-pins" class="hidden ml-1 text-[10px] font-black px-1.5 py-0.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/40 text-amber-300 border border-amber-500/40 transition" title="Gestionar PINs de Usuarios (Solo Administrador)">
+                        <i class="fa-solid fa-gear text-[10px]"></i>
+                    </button>
+                </div>
                 <!-- BOTÓN GENERAL: GUARDAR CAMBIOS (PERSISTENCIA INMEDIATA A SERVIDOR) -->
                 <button onclick="guardarTodoEnServidorManual()" id="btn-guardar-cambios-global" class="bg-emerald-700 hover:bg-emerald-600 text-white border border-emerald-500/80 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-black shadow-lg shadow-emerald-900/40 flex items-center gap-1.5 transition active:scale-95" title="Guardar todos los cambios en el servidor permanentemente">
                     <i class="fa-solid fa-floppy-disk text-white" id="icono-guardar-global"></i>
@@ -1243,6 +1259,194 @@
                 <div class="flex items-center gap-2 text-[11px] text-slate-400 font-mono">
                     <i class="fa-solid fa-database text-[#C59B27]"></i>
                     <span>Datos actualizados en tiempo real</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- MÓDULO FINANCIERO: CENTRO DE COSTOS & REPORTES POR RANGO DE FECHAS -->
+        <!-- ============================================================== -->
+        <div class="bg-[#1E1E1E] border border-[#C59B27]/40 rounded-2xl p-4 sm:p-5 shadow-2xl flex flex-col gap-4">
+            <!-- Barra Superior del Centro de Costos -->
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-[#3A3D42] pb-3.5">
+                <div>
+                    <h3 class="text-sm sm:text-base font-black text-white flex items-center gap-2">
+                        <span class="w-7 h-7 rounded-lg bg-[#C59B27]/20 flex items-center justify-center text-[#C59B27]">
+                            <i class="fa-solid fa-coins text-sm"></i>
+                        </span>
+                        Centro de Costos & Análisis Financiero Taller CESS
+                    </h3>
+                    <p class="text-xs text-slate-400 mt-0.5">
+                        Filtro dinámico de gastos por período: Mantenimientos Correctivos, Preventivos, Rescates y Trabajos Externos.
+                    </p>
+                </div>
+
+                <!-- Botones de Exportación Rápida -->
+                <div class="flex items-center gap-2 flex-wrap">
+                    <button onclick="exportarCostosExcel()" class="bg-[#107c41] hover:bg-[#0f6b38] text-white border border-[#107c41] px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow active:scale-95" title="Descargar desglose completo de costos en formato Excel (.xlsx)">
+                        <i class="fa-solid fa-file-excel text-sm"></i> <span>Exportar Excel</span>
+                    </button>
+                    <button onclick="copiarCostosWhatsApp()" class="bg-[#282A2E] hover:bg-[#3A3D42] text-emerald-400 border border-[#3A3D42] hover:border-emerald-500/50 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition active:scale-95" title="Copiar resumen ejecutivo formateado para WhatsApp">
+                        <i class="fa-brands fa-whatsapp text-sm"></i> <span>Copiar WA</span>
+                    </button>
+                    <button onclick="consultarReporteCostos()" class="btn-cess-gold px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow active:scale-95" title="Actualizar datos de costos">
+                        <i class="fa-solid fa-rotate text-xs"></i> <span>Calcular</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filtros de Período y Rango Personalizado -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 bg-[#141518] p-3 rounded-xl border border-[#3A3D42]">
+                <!-- Botones de Períodos Rápidos -->
+                <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="text-[11px] font-black text-slate-400 uppercase tracking-wider mr-1">Período:</span>
+                    <button onclick="seleccionarPresetCostos('hoy')" id="btn-costo-hoy" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-[#C59B27] text-black transition">Hoy</button>
+                    <button onclick="seleccionarPresetCostos('ayer')" id="btn-costo-ayer" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-[#282A2E] text-slate-300 hover:text-white border border-[#3A3D42] transition">Ayer</button>
+                    <button onclick="seleccionarPresetCostos('semana')" id="btn-costo-semana" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-[#282A2E] text-slate-300 hover:text-white border border-[#3A3D42] transition">Esta Semana</button>
+                    <button onclick="seleccionarPresetCostos('semana_anterior')" id="btn-costo-semana-ant" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-[#282A2E] text-slate-300 hover:text-white border border-[#3A3D42] transition">Semana Pasada</button>
+                    <button onclick="seleccionarPresetCostos('mes')" id="btn-costo-mes" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-[#282A2E] text-slate-300 hover:text-white border border-[#3A3D42] transition">Este Mes</button>
+                    <button onclick="seleccionarPresetCostos('mes_anterior')" id="btn-costo-mes-ant" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-[#282A2E] text-slate-300 hover:text-white border border-[#3A3D42] transition">Mes Anterior</button>
+                    <button onclick="seleccionarPresetCostos('personalizado')" id="btn-costo-personalizado" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-[#282A2E] text-slate-300 hover:text-white border border-[#3A3D42] transition">Personalizado</button>
+                </div>
+
+                <!-- Selector de Fechas Desde / Hasta -->
+                <div class="flex items-center gap-2 flex-wrap">
+                    <div class="flex items-center gap-1.5">
+                        <label class="text-[11px] font-bold text-slate-400">Desde:</label>
+                        <input type="date" id="input-costo-desde" class="bg-[#1E1E1E] border border-[#3A3D42] focus:border-[#C59B27] rounded-lg px-2 py-1 text-xs text-white outline-none">
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <label class="text-[11px] font-bold text-slate-400">Hasta:</label>
+                        <input type="date" id="input-costo-hasta" class="bg-[#1E1E1E] border border-[#3A3D42] focus:border-[#C59B27] rounded-lg px-2 py-1 text-xs text-white outline-none">
+                    </div>
+                    <button onclick="consultarReporteCostos()" class="bg-[#282A2E] hover:bg-[#3A3D42] text-[#C59B27] border border-[#C59B27]/40 px-2.5 py-1 rounded-lg text-xs font-black transition">
+                        Filtrar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Indicador del Período Activo -->
+            <div class="flex items-center justify-between text-xs text-slate-400 px-1">
+                <span id="txt-costos-rango-activo" class="font-bold text-slate-300 flex items-center gap-1.5">
+                    <i class="fa-regular fa-calendar-check text-[#C59B27]"></i> Mostrando: Hoy
+                </span>
+                <span id="txt-costos-conteo-registros" class="font-mono text-[11px] text-[#C59B27]">0 registros encontrados</span>
+            </div>
+
+            <!-- 6 TARJETAS EJECUTIVAS DE COSTOS -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
+                <!-- 1. Gran Total Invertido -->
+                <div class="bg-[#141518] p-3 rounded-xl border border-emerald-500/40 flex flex-col justify-between shadow">
+                    <div class="flex justify-between items-start">
+                        <span class="text-[10px] font-black text-emerald-400 uppercase tracking-wider">Gran Total</span>
+                        <i class="fa-solid fa-sack-dollar text-emerald-400 text-xs"></i>
+                    </div>
+                    <div class="mt-1.5">
+                        <span id="card-costo-gran-total" class="text-base sm:text-lg font-black text-white font-mono">$0.00</span>
+                        <span class="text-[9px] text-slate-400 block mt-0.5">Total inversión</span>
+                    </div>
+                </div>
+
+                <!-- 2. Mantenimiento Correctivo -->
+                <div class="bg-[#141518] p-3 rounded-xl border border-red-500/40 flex flex-col justify-between shadow">
+                    <div class="flex justify-between items-start">
+                        <span class="text-[10px] font-black text-red-400 uppercase tracking-wider">Correctivo</span>
+                        <i class="fa-solid fa-wrench text-red-400 text-xs"></i>
+                    </div>
+                    <div class="mt-1.5">
+                        <span id="card-costo-correctivo" class="text-base sm:text-lg font-black text-red-300 font-mono">$0.00</span>
+                        <span class="text-[9px] text-slate-400 block mt-0.5">Fallas y reparaciones</span>
+                    </div>
+                </div>
+
+                <!-- 3. Mantenimiento Preventivo -->
+                <div class="bg-[#141518] p-3 rounded-xl border border-amber-500/40 flex flex-col justify-between shadow">
+                    <div class="flex justify-between items-start">
+                        <span class="text-[10px] font-black text-amber-400 uppercase tracking-wider">Preventivo</span>
+                        <i class="fa-solid fa-oil-can text-amber-400 text-xs"></i>
+                    </div>
+                    <div class="mt-1.5">
+                        <span id="card-costo-preventivo" class="text-base sm:text-lg font-black text-amber-300 font-mono">$0.00</span>
+                        <span class="text-[9px] text-slate-400 block mt-0.5">Servicios programados</span>
+                    </div>
+                </div>
+
+                <!-- 4. Rescates Carreteros -->
+                <div class="bg-[#141518] p-3 rounded-xl border border-orange-500/40 flex flex-col justify-between shadow">
+                    <div class="flex justify-between items-start">
+                        <span class="text-[10px] font-black text-orange-400 uppercase tracking-wider">Rescates</span>
+                        <i class="fa-solid fa-truck-pickup text-orange-400 text-xs"></i>
+                    </div>
+                    <div class="mt-1.5">
+                        <span id="card-costo-rescates" class="text-base sm:text-lg font-black text-orange-300 font-mono">$0.00</span>
+                        <span class="text-[9px] text-slate-400 block mt-0.5">Auxilios en ruta</span>
+                    </div>
+                </div>
+
+                <!-- 5. Taller Externo / Prov -->
+                <div class="bg-[#141518] p-3 rounded-xl border border-blue-500/40 flex flex-col justify-between shadow">
+                    <div class="flex justify-between items-start">
+                        <span class="text-[10px] font-black text-blue-400 uppercase tracking-wider">Taller Externo</span>
+                        <i class="fa-solid fa-building-user text-blue-400 text-xs"></i>
+                    </div>
+                    <div class="mt-1.5">
+                        <span id="card-costo-externos" class="text-base sm:text-lg font-black text-blue-300 font-mono">$0.00</span>
+                        <span class="text-[9px] text-slate-400 block mt-0.5">Proveedores externos</span>
+                    </div>
+                </div>
+
+                <!-- 6. Refacciones de Almacén -->
+                <div class="bg-[#141518] p-3 rounded-xl border border-purple-500/40 flex flex-col justify-between shadow">
+                    <div class="flex justify-between items-start">
+                        <span class="text-[10px] font-black text-purple-400 uppercase tracking-wider">Refacciones</span>
+                        <i class="fa-solid fa-boxes-stacked text-purple-400 text-xs"></i>
+                    </div>
+                    <div class="mt-1.5">
+                        <span id="card-costo-refacciones" class="text-base sm:text-lg font-black text-purple-300 font-mono">$0.00</span>
+                        <span class="text-[9px] text-slate-400 block mt-0.5">Piezas surtidas</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de Desglose Ítem por Ítem -->
+            <div class="mt-2 bg-[#141518] border border-[#3A3D42] rounded-xl overflow-hidden flex flex-col">
+                <div class="p-3 bg-[#1E1E1E] border-b border-[#3A3D42] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <span class="text-xs font-black text-white flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-[#C59B27]"></i> Desglose Detallado de Trabajos y Refacciones
+                    </span>
+                    <input type="text" id="filtro-costos-tabla" oninput="filtrarTablaCostos(this.value)" placeholder="🔍 Buscar por unidad, folio, tipo..." class="bg-[#141518] border border-[#3A3D42] focus:border-[#C59B27] rounded-lg px-2.5 py-1 text-xs text-white placeholder-slate-500 outline-none w-full sm:w-64">
+                </div>
+
+                <div class="overflow-x-auto max-h-96">
+                    <table class="w-full text-left text-xs text-slate-300">
+                        <thead class="bg-[#1E1E1E] text-[10px] font-black text-slate-400 uppercase tracking-wider border-b border-[#3A3D42] sticky top-0 z-10">
+                            <tr>
+                                <th class="p-2.5">Folio / ID</th>
+                                <th class="p-2.5">Fecha</th>
+                                <th class="p-2.5">Unidad</th>
+                                <th class="p-2.5">Tipo Servicio</th>
+                                <th class="p-2.5">Descripción de Trabajos</th>
+                                <th class="p-2.5 text-right">Refacciones</th>
+                                <th class="p-2.5 text-right">M.O. / Terceros</th>
+                                <th class="p-2.5 text-right font-black text-emerald-400">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-costos-body" class="divide-y divide-[#282A2E]">
+                            <tr>
+                                <td colspan="8" class="p-6 text-center text-slate-500 font-medium">
+                                    Cargando datos de costos...
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot id="tabla-costos-footer" class="bg-[#1E1E1E] border-t-2 border-[#3A3D42] font-black text-xs text-white">
+                            <tr>
+                                <td colspan="5" class="p-2.5 text-right uppercase tracking-wider text-slate-400">Total del Período:</td>
+                                <td id="foot-costo-refacciones" class="p-2.5 text-right font-mono text-purple-300">$0.00</td>
+                                <td id="foot-costo-externos" class="p-2.5 text-right font-mono text-blue-300">$0.00</td>
+                                <td id="foot-costo-gran-total" class="p-2.5 text-right font-mono text-emerald-400 font-black text-sm">$0.00</td>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
             </div>
         </div>
@@ -3765,6 +3969,201 @@
         </div>
     </div>
 
+    <!-- ============================================================== -->
+    <!-- MODAL DE CONTROL DE ACCESO: INGRESO POR PIN ALFANUMÉRICO (6 DÍGITOS) -->
+    <!-- ============================================================== -->
+    <div id="modal-login-pin" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden flex justify-center items-center z-50 p-4">
+        <div class="bg-[#1E1E1E] border-2 border-[#C59B27] rounded-3xl w-full max-w-md p-6 flex flex-col shadow-2xl animate-in fade-in duration-200">
+            <!-- Header Modal -->
+            <div class="flex items-center justify-between pb-3 border-b border-[#3A3D42]">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-10 h-10 rounded-2xl bg-[#C59B27]/20 border border-[#C59B27]/40 flex items-center justify-center text-[#C59B27] shadow">
+                        <i class="fa-solid fa-shield-halved text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black text-white">Control de Acceso CESS</h3>
+                        <p class="text-xs text-slate-400">Ingreso por PIN de Seguridad</p>
+                    </div>
+                </div>
+                <button onclick="cerrarModalLoginPin()" class="text-slate-400 hover:text-white p-2 rounded-xl hover:bg-[#282A2E] transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Motivo de la Solicitud -->
+            <div id="box-motivo-auth" class="mt-4 p-3 rounded-xl bg-[#141518] border border-[#3A3D42] text-xs text-slate-300 flex items-center gap-2">
+                <i class="fa-solid fa-lock text-[#C59B27]"></i>
+                <span id="txt-motivo-auth">Esta acción requiere autorización con PIN.</span>
+            </div>
+
+            <!-- Input PIN con Formato 2 Letras + 4 Números -->
+            <div class="mt-4 flex flex-col gap-2">
+                <label class="text-xs font-bold text-slate-300 flex justify-between">
+                    <span>Introduce tu PIN:</span>
+                    <span class="text-[10px] text-amber-400 font-mono">Ejemplo: MA2026</span>
+                </label>
+                <div class="relative">
+                    <input type="password" id="input-auth-pin" maxlength="10" placeholder="••••••" autocomplete="off"
+                        onkeydown="if(event.key === 'Enter') verificarPinIngresado()"
+                        class="w-full bg-[#141518] border-2 border-[#3A3D42] focus:border-[#C59B27] rounded-2xl py-3 px-4 text-center text-2xl font-mono tracking-widest text-white uppercase outline-none shadow-inner transition">
+                    <button type="button" onclick="toggleVerPinInput()" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-eye text-sm" id="icono-ver-pin"></i>
+                    </button>
+                </div>
+                <p id="msg-error-pin" class="text-xs text-red-400 font-bold hidden text-center mt-1"></p>
+            </div>
+
+            <!-- Accesos Rápidos / Roles Disponibles -->
+            <div class="mt-4 p-3 rounded-2xl bg-[#141518]/70 border border-[#3A3D42]/60 flex flex-col gap-2 text-xs">
+                <span class="text-[10px] font-black uppercase text-slate-400 tracking-wider">Perfiles Autorizados:</span>
+                <div class="grid grid-cols-2 gap-2 text-[11px]">
+                    <div class="p-2 rounded-xl bg-[#1E1E1E] border border-[#3A3D42] flex items-center gap-2">
+                        <span class="text-base">👑</span>
+                        <div>
+                            <span class="font-bold text-white block">Administrador</span>
+                            <span class="text-[9px] text-slate-400">Control total</span>
+                        </div>
+                    </div>
+                    <div class="p-2 rounded-xl bg-[#1E1E1E] border border-[#3A3D42] flex items-center gap-2">
+                        <span class="text-base">🛠️</span>
+                        <div>
+                            <span class="font-bold text-white block">Jefe de Taller</span>
+                            <span class="text-[9px] text-slate-400">Operativo patio</span>
+                        </div>
+                    </div>
+                    <div class="p-2 rounded-xl bg-[#1E1E1E] border border-[#3A3D42] flex items-center gap-2">
+                        <span class="text-base">📊</span>
+                        <div>
+                            <span class="font-bold text-white block">Finanzas</span>
+                            <span class="text-[9px] text-slate-400">Costos y reportes</span>
+                        </div>
+                    </div>
+                    <div class="p-2 rounded-xl bg-[#1E1E1E] border border-[#3A3D42] flex items-center gap-2">
+                        <span class="text-base">👀</span>
+                        <div>
+                            <span class="font-bold text-white block">Supervisión</span>
+                            <span class="text-[9px] text-slate-400">Solo lectura</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botones de Acción -->
+            <div class="mt-5 flex gap-2.5">
+                <button type="button" onclick="cerrarModalLoginPin()" class="flex-1 py-2.5 rounded-xl border border-[#3A3D42] text-slate-300 hover:bg-[#282A2E] text-xs font-bold transition">
+                    Cancelar
+                </button>
+                <button type="button" onclick="verificarPinIngresado()" class="flex-1 py-2.5 rounded-xl btn-cess-gold text-xs font-black shadow-lg transition active:scale-95 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-unlock text-xs"></i>
+                    <span>Desbloquear</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL DE ADMINISTRADOR: GESTIONAR PINS DE SEGURIDAD -->
+    <!-- ============================================================== -->
+    <div id="modal-gestionar-pins" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden flex justify-center items-center z-50 p-4">
+        <div class="bg-[#1E1E1E] border-2 border-amber-500 rounded-3xl w-full max-w-lg p-6 flex flex-col shadow-2xl animate-in fade-in duration-200">
+            <!-- Header Modal -->
+            <div class="flex items-center justify-between pb-3 border-b border-[#3A3D42]">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-10 h-10 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 shadow">
+                        <i class="fa-solid fa-user-gear text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black text-white">Gestión de PINs de Seguridad</h3>
+                        <p class="text-xs text-amber-400 font-bold">Exclusivo: Administrador General</p>
+                    </div>
+                </div>
+                <button onclick="cerrarModalGestionarPins()" class="text-slate-400 hover:text-white p-2 rounded-xl hover:bg-[#282A2E] transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <p class="text-xs text-slate-300 mt-3 leading-relaxed">
+                Asigna o edita los PINs de cada perfil. Los PINs deben tener <strong class="text-amber-400">2 letras seguidas de 4 números</strong> (ejemplo: <span class="font-mono text-white bg-black/40 px-1.5 py-0.5 rounded">MA2026</span>).
+            </p>
+
+            <!-- Formulario de 4 Perfiles -->
+            <div class="mt-4 flex flex-col gap-3">
+                <!-- 1. Administrador -->
+                <div class="p-3 rounded-2xl bg-[#141518] border border-[#3A3D42] flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-xl">👑</span>
+                        <div>
+                            <span class="text-xs font-black text-white block">Administrador General</span>
+                            <span class="text-[10px] text-slate-400">Control total y edición de PINs</span>
+                        </div>
+                    </div>
+                    <div class="w-32">
+                        <input type="text" id="cfg-pin-admin" maxlength="6" placeholder="CL2026"
+                            class="w-full bg-[#1E1E1E] border border-amber-500/60 focus:border-amber-400 rounded-xl py-1.5 px-2.5 text-center font-mono font-black text-sm text-amber-400 uppercase outline-none">
+                    </div>
+                </div>
+
+                <!-- 2. Jefe de Taller -->
+                <div class="p-3 rounded-2xl bg-[#141518] border border-[#3A3D42] flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-xl">🛠️</span>
+                        <div>
+                            <span class="text-xs font-black text-white block">Jefe de Taller</span>
+                            <span class="text-[10px] text-slate-400">Altas, avances, movimientos y partes</span>
+                        </div>
+                    </div>
+                    <div class="w-32">
+                        <input type="text" id="cfg-pin-jefe" maxlength="6" placeholder="MA2026"
+                            class="w-full bg-[#1E1E1E] border border-[#3A3D42] focus:border-[#C59B27] rounded-xl py-1.5 px-2.5 text-center font-mono font-black text-sm text-white uppercase outline-none">
+                    </div>
+                </div>
+
+                <!-- 3. Finanzas -->
+                <div class="p-3 rounded-2xl bg-[#141518] border border-[#3A3D42] flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-xl">📊</span>
+                        <div>
+                            <span class="text-xs font-black text-white block">Finanzas & Contabilidad</span>
+                            <span class="text-[10px] text-slate-400">Centro de costos y exportación Excel</span>
+                        </div>
+                    </div>
+                    <div class="w-32">
+                        <input type="text" id="cfg-pin-finanzas" maxlength="6" placeholder="GT2026"
+                            class="w-full bg-[#1E1E1E] border border-[#3A3D42] focus:border-[#C59B27] rounded-xl py-1.5 px-2.5 text-center font-mono font-black text-sm text-white uppercase outline-none">
+                    </div>
+                </div>
+
+                <!-- 4. Supervisión -->
+                <div class="p-3 rounded-2xl bg-[#141518] border border-[#3A3D42] flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-xl">👀</span>
+                        <div>
+                            <span class="text-xs font-black text-white block">Supervisión / Monitoreo</span>
+                            <span class="text-[10px] text-slate-400">Visualización de patio sin edición</span>
+                        </div>
+                    </div>
+                    <div class="w-32">
+                        <input type="text" id="cfg-pin-supervision" maxlength="6" placeholder="SP2026"
+                            class="w-full bg-[#1E1E1E] border border-[#3A3D42] focus:border-[#C59B27] rounded-xl py-1.5 px-2.5 text-center font-mono font-black text-sm text-white uppercase outline-none">
+                    </div>
+                </div>
+            </div>
+
+            <p id="msg-error-cfg-pins" class="text-xs text-red-400 font-bold hidden text-center mt-2"></p>
+
+            <!-- Botones Guardar -->
+            <div class="mt-5 flex gap-2.5">
+                <button type="button" onclick="cerrarModalGestionarPins()" class="flex-1 py-2.5 rounded-xl border border-[#3A3D42] text-slate-300 hover:bg-[#282A2E] text-xs font-bold transition">
+                    Cancelar
+                </button>
+                <button type="button" onclick="guardarNuevosPinsServidor()" class="flex-1 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black text-xs font-black shadow-lg transition active:scale-95 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-floppy-disk text-xs"></i>
+                    <span>Guardar y Sincronizar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- TOAST DE NOTIFICACIÓN FLOTANTE -->
     <div id="toast-notificacion" class="fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-[#282A2E] border border-[#C59B27]/60 text-white px-5 py-2.5 rounded-full shadow-2xl hidden z-50 text-xs font-bold transition flex items-center gap-2 pointer-events-none">
         <i class="fa-solid fa-circle-check text-emerald-400"></i>
@@ -4927,6 +5326,11 @@
 
         // --- CONTROLADORES DE HTML5 DRAG & DROP ---
         function iniciarArrastre(event, id) {
+            if (!usuarioActual || !usuarioActual.permisos || !usuarioActual.permisos.taller_mover) {
+                if (event && event.preventDefault) event.preventDefault();
+                abrirModalLoginPin('Modo Supervisión: Ingresa PIN de Jefe de Taller o Admin para mover unidades.');
+                return false;
+            }
             idArrastrando = String(id);
             event.dataTransfer.setData('text/plain', id);
             event.dataTransfer.effectAllowed = 'move';
@@ -5014,7 +5418,11 @@
         }
 
         function moverUnidad(event, id, direccion) {
-            event.stopPropagation();
+            if (event && event.stopPropagation) event.stopPropagation();
+            if (!usuarioActual || !usuarioActual.permisos || !usuarioActual.permisos.taller_mover) {
+                abrirModalLoginPin('Modo Supervisión: Ingresa PIN de Jefe de Taller o Admin para mover unidades.');
+                return;
+            }
             const orden = ['considerar', 'mayor', 'proceso', 'listo'];
             const unidad = baseDatos.find(u => String(u.id) === String(id));
             if (!unidad) return;
@@ -6966,6 +7374,10 @@
         let piezasNuevaUnidad = [];
 
         function abrirModalNuevaUnidad() {
+            if (!usuarioActual || !usuarioActual.permisos || !usuarioActual.permisos.taller_alta) {
+                abrirModalLoginPin('Ingresa PIN de Jefe de Taller o Administrador para registrar unidades.', abrirModalNuevaUnidad);
+                return;
+            }
             document.getElementById('modal-form-titulo').innerHTML = '<i class="fa-solid fa-truck text-[#C59B27]"></i> Registrar Unidad';
             document.getElementById('form-edit-id').value = '';
             document.getElementById('form-id').value = '';
@@ -7394,6 +7806,10 @@
         }
 
         function eliminarUnidadActiva() {
+            if (!usuarioActual || !usuarioActual.permisos || !usuarioActual.permisos.taller_editar) {
+                abrirModalLoginPin('Ingresa PIN de Administrador para eliminar registros.', eliminarUnidadActiva);
+                return;
+            }
             eliminarDefinitivoUnidadActiva();
         }
 
@@ -10303,6 +10719,10 @@
             if (event && event.stopPropagation) {
                 event.stopPropagation();
             }
+            if (!usuarioActual || !usuarioActual.permisos || !usuarioActual.permisos.taller_liberar) {
+                abrirModalLoginPin('Ingresa PIN de Jefe de Taller o Admin para liberar unidades.', () => liberarUnidadDirecto(event, id));
+                return;
+            }
             const unitId = String(id || (unidadActiva ? unidadActiva.id : '')).trim();
             if (!unitId) return;
 
@@ -11415,7 +11835,525 @@
             }
         }
 
-        window.addEventListener('DOMContentLoaded', inicializarAplicacion);
+        
+        // =========================================================================
+        // MÓDULO DE AUTENTICACIÓN, ROLES (RBAC) Y PERMISOS POR PIN ALFANUMÉRICO
+        // =========================================================================
+        const AUTH_STORAGE_KEY = 'taller_auth_user_v2';
+        let usuarioActual = {
+            id: 'supervision',
+            nombre: 'Supervisión / Monitoreo',
+            rol: 'SUPERVISION',
+            pin: 'SP2026',
+            permisos: {
+                taller_editar: false,
+                taller_mover: false,
+                taller_liberar: false,
+                taller_alta: false,
+                almacen_surtir: false,
+                finanzas_ver: true,
+                finanzas_exportar: false,
+                admin_usuarios: false
+            }
+        };
+        let accionPendienteAuth = null;
+        let datosCostosActuales = null;
+        let presetCostosActivo = 'hoy';
+
+        function inicializarAuthUsuario() {
+            try {
+                const sesionGuardada = localStorage.getItem(AUTH_STORAGE_KEY);
+                if (sesionGuardada) {
+                    const u = JSON.parse(sesionGuardada);
+                    if (u && u.rol && u.permisos) {
+                        usuarioActual = u;
+                    }
+                }
+            } catch(e) {}
+            aplicarPermisosVisuales();
+        }
+
+        function aplicarPermisosVisuales() {
+            const badgeIcono = document.getElementById('badge-rol-icono');
+            const badgeNombre = document.getElementById('badge-rol-nombre');
+            const badgeSub = document.getElementById('badge-rol-sub');
+            const btnAuth = document.getElementById('txt-auth-btn');
+            const btnAdminPins = document.getElementById('btn-admin-config-pins');
+
+            if (!badgeIcono) return;
+
+            if (usuarioActual.rol === 'ADMIN') {
+                badgeIcono.textContent = '👑';
+                badgeNombre.textContent = 'Administrador';
+                badgeSub.textContent = 'Control Total';
+                badgeSub.className = 'text-[8px] sm:text-[9px] text-amber-400 font-black leading-none';
+                btnAuth.textContent = 'Salir';
+                if (btnAdminPins) btnAdminPins.classList.remove('hidden');
+            } else if (usuarioActual.rol === 'JEFE_TALLER') {
+                badgeIcono.textContent = '🛠️';
+                badgeNombre.textContent = 'Jefe de Taller';
+                badgeSub.textContent = 'Operativo Patio';
+                badgeSub.className = 'text-[8px] sm:text-[9px] text-emerald-400 font-bold leading-none';
+                btnAuth.textContent = 'Salir';
+                if (btnAdminPins) btnAdminPins.classList.add('hidden');
+            } else if (usuarioActual.rol === 'FINANZAS') {
+                badgeIcono.textContent = '📊';
+                badgeNombre.textContent = 'Finanzas';
+                badgeSub.textContent = 'Costos & Análisis';
+                badgeSub.className = 'text-[8px] sm:text-[9px] text-blue-400 font-bold leading-none';
+                btnAuth.textContent = 'Salir';
+                if (btnAdminPins) btnAdminPins.classList.add('hidden');
+            } else {
+                badgeIcono.textContent = '👀';
+                badgeNombre.textContent = 'Supervisión';
+                badgeSub.textContent = 'Solo Lectura';
+                badgeSub.className = 'text-[8px] sm:text-[9px] text-slate-400 font-bold leading-none';
+                btnAuth.textContent = 'PIN';
+                if (btnAdminPins) btnAdminPins.classList.add('hidden');
+            }
+        }
+
+        function clickBadgeRol() {
+            if (usuarioActual.rol === 'SUPERVISION') {
+                abrirModalLoginPin('Ingreso por PIN para habilitar funciones operativas');
+            } else {
+                mostrarToast(`Sesión activa: ${usuarioActual.nombre} (${usuarioActual.rol})`);
+            }
+        }
+
+        function clickBotonLoginHeader() {
+            if (usuarioActual.rol === 'SUPERVISION') {
+                abrirModalLoginPin('Ingreso por PIN de usuario');
+            } else {
+                cerrarSesionUsuario();
+            }
+        }
+
+        function abrirModalLoginPin(motivo, callbackAccion = null) {
+            accionPendienteAuth = callbackAccion;
+            const modal = document.getElementById('modal-login-pin');
+            const txtMotivo = document.getElementById('txt-motivo-auth');
+            const inputPin = document.getElementById('input-auth-pin');
+            const msgError = document.getElementById('msg-error-pin');
+
+            if (txtMotivo && motivo) txtMotivo.textContent = motivo;
+            if (inputPin) {
+                inputPin.value = '';
+                inputPin.type = 'password';
+            }
+            if (msgError) {
+                msgError.textContent = '';
+                msgError.classList.add('hidden');
+            }
+            if (modal) {
+                modal.classList.remove('hidden');
+                setTimeout(() => { if (inputPin) inputPin.focus(); }, 150);
+            }
+        }
+
+        function cerrarModalLoginPin() {
+            const modal = document.getElementById('modal-login-pin');
+            if (modal) modal.classList.add('hidden');
+            accionPendienteAuth = null;
+        }
+
+        function toggleVerPinInput() {
+            const inp = document.getElementById('input-auth-pin');
+            const ico = document.getElementById('icono-ver-pin');
+            if (!inp || !ico) return;
+            if (inp.type === 'password') {
+                inp.type = 'text';
+                ico.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                inp.type = 'password';
+                ico.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+
+        async function verificarPinIngresado() {
+            const inputPin = document.getElementById('input-auth-pin');
+            const msgError = document.getElementById('msg-error-pin');
+            if (!inputPin) return;
+
+            const pinVal = inputPin.value.trim().toUpperCase();
+            if (!pinVal) {
+                if (msgError) {
+                    msgError.textContent = 'Por favor introduce el PIN de 6 caracteres.';
+                    msgError.classList.remove('hidden');
+                }
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/taller/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ pin: pinVal })
+                });
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    usuarioActual = data.user;
+                    localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(usuarioActual));
+                    aplicarPermisosVisuales();
+                    cerrarModalLoginPin();
+                    mostrarToast(`✅ Acceso concedido: ${data.user.nombre}`);
+
+                    // Ejecutar acción pendiente si existía
+                    if (typeof accionPendienteAuth === 'function') {
+                        const cb = accionPendienteAuth;
+                        accionPendienteAuth = null;
+                        cb();
+                    }
+                } else {
+                    if (msgError) {
+                        msgError.textContent = data.error || 'PIN incorrecto o no autorizado.';
+                        msgError.classList.remove('hidden');
+                    }
+                }
+            } catch (err) {
+                if (msgError) {
+                    msgError.textContent = 'Error conectando con el servidor.';
+                    msgError.classList.remove('hidden');
+                }
+            }
+        }
+
+        function cerrarSesionUsuario() {
+            usuarioActual = {
+                id: 'supervision',
+                nombre: 'Supervisión / Monitoreo',
+                rol: 'SUPERVISION',
+                pin: 'SP2026',
+                permisos: {
+                    taller_editar: false,
+                    taller_mover: false,
+                    taller_liberar: false,
+                    taller_alta: false,
+                    almacen_surtir: false,
+                    finanzas_ver: true,
+                    finanzas_exportar: false,
+                    admin_usuarios: false
+                }
+            };
+            localStorage.removeItem(AUTH_STORAGE_KEY);
+            aplicarPermisosVisuales();
+            mostrarToast('🔒 Sesión cerrada: Modo Supervisión activo');
+        }
+
+        function requerirPermiso(permiso, accionCallback, mensajeMotivo = 'Se requiere autorización para realizar esta acción.') {
+            if (usuarioActual && usuarioActual.permisos && usuarioActual.permisos[permiso]) {
+                accionCallback();
+            } else {
+                abrirModalLoginPin(mensajeMotivo, accionCallback);
+            }
+        }
+
+        // =========================================================================
+        // GESTIÓN DE PINS POR EL ADMINISTRADOR
+        // =========================================================================
+        async function abrirModalGestionarPins() {
+            if (usuarioActual.rol !== 'ADMIN') {
+                mostrarToast('⚠️ Solo el Administrador puede gestionar PINs.');
+                return;
+            }
+
+            const modal = document.getElementById('modal-gestionar-pins');
+            const msgError = document.getElementById('msg-error-cfg-pins');
+            if (msgError) msgError.classList.add('hidden');
+
+            try {
+                const res = await fetch(`/api/taller/auth/usuarios?pin=${usuarioActual.pin}`);
+                const data = await res.json();
+                if (res.ok && data.success && Array.isArray(data.usuarios)) {
+                    data.usuarios.forEach(u => {
+                        if (u.id === 'admin') document.getElementById('cfg-pin-admin').value = u.pin || '';
+                        if (u.id === 'jefe_taller') document.getElementById('cfg-pin-jefe').value = u.pin || '';
+                        if (u.id === 'finanzas') document.getElementById('cfg-pin-finanzas').value = u.pin || '';
+                        if (u.id === 'supervision') document.getElementById('cfg-pin-supervision').value = u.pin || '';
+                    });
+                }
+            } catch(e) {
+                console.error('Error cargando usuarios:', e);
+            }
+
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function cerrarModalGestionarPins() {
+            const modal = document.getElementById('modal-gestionar-pins');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        async function guardarNuevosPinsServidor() {
+            const pinAdmin = document.getElementById('cfg-pin-admin').value.trim().toUpperCase();
+            const pinJefe = document.getElementById('cfg-pin-jefe').value.trim().toUpperCase();
+            const pinFin = document.getElementById('cfg-pin-finanzas').value.trim().toUpperCase();
+            const pinSup = document.getElementById('cfg-pin-supervision').value.trim().toUpperCase();
+            const msgError = document.getElementById('msg-error-cfg-pins');
+
+            const pinRegex = /^[A-Za-z]{2}\d{4}$/;
+            if (!pinRegex.test(pinAdmin) || !pinRegex.test(pinJefe) || !pinRegex.test(pinFin) || !pinRegex.test(pinSup)) {
+                if (msgError) {
+                    msgError.textContent = 'Todos los PINs deben tener 2 letras seguidas de 4 números (ejemplo: MA2026).';
+                    msgError.classList.remove('hidden');
+                }
+                return;
+            }
+
+            const usuariosActualizados = [
+                { id: 'admin', nombre: 'Administrador General (Control Total)', rol: 'ADMIN', pin: pinAdmin },
+                { id: 'jefe_taller', nombre: 'Jefe de Taller (Operativo)', rol: 'JEFE_TALLER', pin: pinJefe },
+                { id: 'finanzas', nombre: 'Finanzas & Contabilidad', rol: 'FINANZAS', pin: pinFin },
+                { id: 'supervision', nombre: 'Supervisión / Monitoreo (Solo Lectura)', rol: 'SUPERVISION', pin: pinSup }
+            ];
+
+            try {
+                const res = await fetch('/api/taller/auth/usuarios', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        adminPin: usuarioActual.pin,
+                        usuarios: usuariosActualizados
+                    })
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    usuarioActual.pin = pinAdmin;
+                    localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(usuarioActual));
+                    cerrarModalGestionarPins();
+                    mostrarToast('✅ PINs actualizados y sincronizados en la nube.');
+                } else {
+                    if (msgError) {
+                        msgError.textContent = data.error || 'Error al actualizar PINs.';
+                        msgError.classList.remove('hidden');
+                    }
+                }
+            } catch (err) {
+                if (msgError) {
+                    msgError.textContent = 'Error conectando con el servidor.';
+                    msgError.classList.remove('hidden');
+                }
+            }
+        }
+
+        // =========================================================================
+        // MÓDULO FINANCIERO: CENTRO DE COSTOS (DIARIO, SEMANAL, MENSUAL, PERSONALIZADO)
+        // =========================================================================
+        function seleccionarPresetCostos(preset) {
+            presetCostosActivo = preset;
+            const botones = ['hoy', 'ayer', 'semana', 'semana_anterior', 'mes', 'mes_anterior', 'personalizado'];
+            botones.forEach(p => {
+                const btn = document.getElementById(`btn-costo-${p === 'semana_anterior' ? 'semana-ant' : (p === 'mes_anterior' ? 'mes-ant' : p)}`);
+                if (btn) {
+                    if (p === preset) {
+                        btn.className = 'px-2.5 py-1 rounded-lg text-xs font-bold bg-[#C59B27] text-black transition';
+                    } else {
+                        btn.className = 'px-2.5 py-1 rounded-lg text-xs font-bold bg-[#282A2E] text-slate-300 hover:text-white border border-[#3A3D42] transition';
+                    }
+                }
+            });
+
+            // Establecer fechas sugeridas si no es personalizado
+            const hoy = new Date();
+            const yyyy = hoy.getFullYear();
+            const mm = String(hoy.getMonth() + 1).padStart(2, '0');
+            const dd = String(hoy.getDate()).padStart(2, '0');
+            const inputDesde = document.getElementById('input-costo-desde');
+            const inputHasta = document.getElementById('input-costo-hasta');
+
+            if (preset === 'hoy') {
+                if (inputDesde) inputDesde.value = `${yyyy}-${mm}-${dd}`;
+                if (inputHasta) inputHasta.value = `${yyyy}-${mm}-${dd}`;
+            } else if (preset === 'mes') {
+                if (inputDesde) inputDesde.value = `${yyyy}-${mm}-01`;
+                if (inputHasta) inputHasta.value = `${yyyy}-${mm}-${dd}`;
+            }
+
+            consultarReporteCostos();
+        }
+
+        async function consultarReporteCostos() {
+            const inputDesde = document.getElementById('input-costo-desde');
+            const inputHasta = document.getElementById('input-costo-hasta');
+            const txtRango = document.getElementById('txt-costos-rango-activo');
+            const txtConteo = document.getElementById('txt-costos-conteo-registros');
+
+            let url = `/api/taller/reportes/costos?preset=${presetCostosActivo}`;
+            if (presetCostosActivo === 'personalizado' && inputDesde && inputHasta && inputDesde.value && inputHasta.value) {
+                url += `&desde=${inputDesde.value}&hasta=${inputHasta.value}`;
+            }
+
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    datosCostosActuales = data;
+                    renderizarReporteCostos(data);
+                }
+            } catch (err) {
+                console.error('Error al consultar reporte de costos:', err);
+            }
+        }
+
+        function renderizarReporteCostos(data) {
+            const tot = data.totales || {};
+            const formatMxn = (val) => '$' + (Number(val) || 0).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            const setTxt = (id, val) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = formatMxn(val);
+            };
+
+            setTxt('card-costo-gran-total', tot.granTotal);
+            setTxt('card-costo-correctivo', tot.correctivo);
+            setTxt('card-costo-preventivo', tot.preventivo);
+            setTxt('card-costo-rescates', tot.rescates);
+            setTxt('card-costo-externos', tot.externos);
+            setTxt('card-costo-refacciones', tot.refacciones);
+
+            setTxt('foot-costo-refacciones', tot.refacciones);
+            setTxt('foot-costo-externos', tot.externos);
+            setTxt('foot-costo-gran-total', tot.granTotal);
+
+            const txtRango = document.getElementById('txt-costos-rango-activo');
+            if (txtRango && data.periodo) {
+                txtRango.innerHTML = `<i class="fa-regular fa-calendar-check text-[#C59B27]"></i> Período: <span class="text-white font-mono ml-1">${data.periodo.desde} al ${data.periodo.hasta}</span>`;
+            }
+
+            const txtConteo = document.getElementById('txt-costos-conteo-registros');
+            if (txtConteo) {
+                txtConteo.textContent = `${data.conteo || 0} registros encontrados`;
+            }
+
+            // Renderizar Filas de la Tabla
+            const tbody = document.getElementById('tabla-costos-body');
+            if (!tbody) return;
+
+            if (!data.desglose || data.desglose.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-slate-500 font-medium">No se registraron movimientos con costo en este período.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = data.desglose.map(item => {
+                let badgeClass = 'bg-slate-800 text-slate-300';
+                if (item.tipo.includes('Correctivo')) badgeClass = 'bg-red-950 text-red-400 border border-red-800/60';
+                else if (item.tipo.includes('Preventivo')) badgeClass = 'bg-amber-950 text-amber-400 border border-amber-800/60';
+                else if (item.tipo.includes('Rescate')) badgeClass = 'bg-orange-950 text-orange-400 border border-orange-800/60';
+                else if (item.tipo.includes('Externo')) badgeClass = 'bg-blue-950 text-blue-400 border border-blue-800/60';
+
+                return `
+                    <tr class="hover:bg-[#1E1E1E] transition">
+                        <td class="p-2.5 font-mono text-slate-400 text-[11px]">${item.folio || item.id || '--'}</td>
+                        <td class="p-2.5 font-mono text-slate-300 text-[11px] whitespace-nowrap">${item.fecha}</td>
+                        <td class="p-2.5 font-black text-white">#${item.unidad}</td>
+                        <td class="p-2.5">
+                            <span class="px-2 py-0.5 rounded-md text-[10px] font-bold ${badgeClass}">
+                                ${item.tipo}
+                            </span>
+                        </td>
+                        <td class="p-2.5 text-slate-300 max-w-xs truncate" title="${item.descripcion}">${item.descripcion}</td>
+                        <td class="p-2.5 text-right font-mono text-purple-300">${formatMxn(item.refaccionesCosto)}</td>
+                        <td class="p-2.5 text-right font-mono text-blue-300">${formatMxn(item.manoObraCosto)}</td>
+                        <td class="p-2.5 text-right font-mono font-black text-emerald-400">${formatMxn(item.total)}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function filtrarTablaCostos(query) {
+            const term = (query || '').toLowerCase().trim();
+            const rows = document.querySelectorAll('#tabla-costos-body tr');
+            rows.forEach(r => {
+                const text = r.textContent.toLowerCase();
+                r.style.display = text.includes(term) ? '' : 'none';
+            });
+        }
+
+        function exportarCostosExcel() {
+            if (!datosCostosActuales || !datosCostosActuales.desglose || datosCostosActuales.desglose.length === 0) {
+                mostrarToast('No hay datos en el período para exportar');
+                return;
+            }
+
+            if (typeof XLSX === 'undefined') {
+                mostrarToast('Librería Excel cargando, reintente en un momento');
+                return;
+            }
+
+            const rows = datosCostosActuales.desglose.map(item => ({
+                'Folio / ID': item.folio || item.id,
+                'Fecha': item.fecha,
+                'Unidad': item.unidad,
+                'Tipo de Servicio': item.tipo,
+                'Subtipo': item.subtipo,
+                'Descripción de Trabajos': item.descripcion,
+                'Refacciones (MXN)': item.refaccionesCosto,
+                'Mano de Obra / Externo (MXN)': item.manoObraCosto,
+                'Total Invertido (MXN)': item.total
+            }));
+
+            // Fila de Totales
+            rows.push({
+                'Folio / ID': 'TOTAL',
+                'Fecha': datosCostosActuales.periodo.hasta,
+                'Unidad': '--',
+                'Tipo de Servicio': '--',
+                'Subtipo': '--',
+                'Descripción de Trabajos': 'TOTAL GENERAL DEL PERÍODO',
+                'Refacciones (MXN)': datosCostosActuales.totales.refacciones,
+                'Mano de Obra / Externo (MXN)': datosCostosActuales.totales.externos,
+                'Total Invertido (MXN)': datosCostosActuales.totales.granTotal
+            });
+
+            const ws = XLSX.utils.json_to_sheet(rows);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Centro de Costos");
+
+            const fechaNombre = datosCostosActuales.periodo.desde.replace(/-/g, '') + '_' + datosCostosActuales.periodo.hasta.replace(/-/g, '');
+            XLSX.writeFile(wb, `Reporte_Costos_Taller_CESS_${fechaNombre}.xlsx`);
+            mostrarToast('📗 Archivo Excel descargado exitosamente');
+        }
+
+        function copiarCostosWhatsApp() {
+            if (!datosCostosActuales || !datosCostosActuales.totales) {
+                mostrarToast('No hay datos calculados para compartir');
+                return;
+            }
+
+            const t = datosCostosActuales.totales;
+            const p = datosCostosActuales.periodo;
+            const formatMxn = (val) => '$' + (Number(val) || 0).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            const msg = `📊 *INFORME DE COSTOS TALLER CENTRAL CESS*
+📅 *Período:* ${p.desde} al ${p.hasta}
+🔢 *Registros atendidos:* ${datosCostosActuales.conteo}
+
+💰 *GRAN TOTAL INVERTIDO:* ${formatMxn(t.granTotal)}
+
+🔴 *Mantenimiento Correctivo:* ${formatMxn(t.correctivo)}
+🟡 *Mantenimiento Preventivo:* ${formatMxn(t.preventivo)}
+🟠 *Rescates Carreteros:* ${formatMxn(t.rescates)}
+🔵 *Taller Externo / Prov:* ${formatMxn(t.externos)}
+📦 *Refacciones de Almacén:* ${formatMxn(t.refacciones)}
+
+_Generado automáticamente desde Sistema Smart Workshop CESS._`;
+
+            navigator.clipboard.writeText(msg).then(() => {
+                mostrarToast('📱 Resumen copiado al portapapeles para WhatsApp');
+            }).catch(() => {
+                mostrarToast('Error al copiar al portapapeles');
+            });
+        }
+
+        // Modificar inicializarAplicacion para cargar Auth y Costos
+        const originalInicializarAplicacion = typeof inicializarAplicacion === 'function' ? inicializarAplicacion : null;
+        window.addEventListener('DOMContentLoaded', () => {
+            inicializarAuthUsuario();
+            seleccionarPresetCostos('hoy');
+        });
+
+window.addEventListener('DOMContentLoaded', inicializarAplicacion);
     </script>
     <!-- Sincronización en Tiempo Real con Firebase Firestore (Sistema Control CESS Combustible) -->
     <script type="module">

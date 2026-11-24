@@ -1,0 +1,66 @@
+[
+  {
+    "id": "admin",
+    "nombre": "Administrador General (Control Total)",
+    "rol": "ADMIN",
+    "pin": "CL2026",
+    "permisos": {
+      "taller_editar": true,
+      "taller_mover": true,
+      "taller_liberar": true,
+      "taller_alta": true,
+      "almacen_surtir": true,
+      "finanzas_ver": true,
+      "finanzas_exportar": true,
+      "admin_usuarios": true
+    }
+  },
+  {
+    "id": "jefe_taller",
+    "nombre": "Jefe de Taller (Operativo)",
+    "rol": "JEFE_TALLER",
+    "pin": "MA2026",
+    "permisos": {
+      "taller_editar": true,
+      "taller_mover": true,
+      "taller_liberar": true,
+      "taller_alta": true,
+      "almacen_surtir": true,
+      "finanzas_ver": false,
+      "finanzas_exportar": false,
+      "admin_usuarios": false
+    }
+  },
+  {
+    "id": "finanzas",
+    "nombre": "Finanzas & Contabilidad",
+    "rol": "FINANZAS",
+    "pin": "GT2026",
+    "permisos": {
+      "taller_editar": false,
+      "taller_mover": false,
+      "taller_liberar": false,
+      "taller_alta": false,
+      "almacen_surtir": false,
+      "finanzas_ver": true,
+      "finanzas_exportar": true,
+      "admin_usuarios": false
+    }
+  },
+  {
+    "id": "supervision",
+    "nombre": "Supervisión / Monitoreo (Solo Lectura)",
+    "rol": "SUPERVISION",
+    "pin": "SP2026",
+    "permisos": {
+      "taller_editar": false,
+      "taller_mover": false,
+      "taller_liberar": false,
+      "taller_alta": false,
+      "almacen_surtir": false,
+      "finanzas_ver": true,
+      "finanzas_exportar": false,
+      "admin_usuarios": false
+    }
+  }
+]

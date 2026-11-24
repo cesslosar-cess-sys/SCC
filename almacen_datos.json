@@ -16978,7 +16978,8 @@
       "costo_unitario": 1950,
       "costo_total": 1950,
       "notas": "",
-      "timestamp": "2026-11-19T22:52:07.075Z"
+      "timestamp": "2026-11-19T22:52:07.075Z",
+      "unidad": "30"
     },
     {
       "id": "mov_1795127077151_590",
@@ -17091,7 +17092,8 @@
       "orden_compra": "",
       "editado": true,
       "fecha_edicion": "2026-11-19T22:52:39.170Z",
-      "editado_por": "César Almacén (Administrador)"
+      "editado_por": "César Almacén (Administrador)",
+      "unidad": "30"
     },
     {
       "id": "mov_1795126032353_0_8395",
@@ -17121,7 +17123,8 @@
       "orden_compra": "",
       "editado": true,
       "fecha_edicion": "2026-11-19T22:52:51.975Z",
-      "editado_por": "César Almacén (Administrador)"
+      "editado_por": "César Almacén (Administrador)",
+      "unidad": "30"
     },
     {
       "id": "mov_1795125953065_1_8453",
@@ -17151,7 +17154,8 @@
       "orden_compra": "",
       "editado": true,
       "fecha_edicion": "2026-11-19T22:41:49.567Z",
-      "editado_por": "César Almacén (Administrador)"
+      "editado_por": "César Almacén (Administrador)",
+      "unidad": "30"
     },
     {
       "id": "mov_1795125953065_0_3662",
@@ -17181,7 +17185,8 @@
       "orden_compra": "",
       "editado": true,
       "fecha_edicion": "2026-11-19T22:43:42.989Z",
-      "editado_por": "César Almacén (Administrador)"
+      "editado_por": "César Almacén (Administrador)",
+      "unidad": "30"
     },
     {
       "id": "mov_1795125687185_0_7676",
@@ -17211,7 +17216,8 @@
       "orden_compra": "",
       "editado": true,
       "fecha_edicion": "2026-11-19T22:41:04.407Z",
-      "editado_por": "César Almacén (Administrador)"
+      "editado_por": "César Almacén (Administrador)",
+      "unidad": "30"
     },
     {
       "id": "mov_1795125604596_548",
@@ -17239,7 +17245,8 @@
       "factura": "",
       "editado": true,
       "fecha_edicion": "2026-11-19T22:42:47.891Z",
-      "editado_por": "César Almacén (Administrador)"
+      "editado_por": "César Almacén (Administrador)",
+      "unidad": "30"
     },
     {
       "id": "mov_1795124659665_924",
@@ -17783,7 +17790,8 @@
       "costo_unitario": 25.2,
       "costo_total": 25.2,
       "notas": "Despacho por foto: Despacho de Patio / Taller",
-      "timestamp": "2026-11-19T20:44:41.209Z"
+      "timestamp": "2026-11-19T20:44:41.209Z",
+      "unidad": "30"
     },
     {
       "id": "mov_1795121013098_0_7227",
@@ -17809,7 +17817,8 @@
       "costo_unitario": 0,
       "costo_total": 0,
       "notas": "Despacho por foto: Despacho de Patio / Taller",
-      "timestamp": "2026-11-19T20:43:33.098Z"
+      "timestamp": "2026-11-19T20:43:33.098Z",
+      "unidad": "30"
     },
     {
       "id": "mov_1795120943324_307",
@@ -17933,7 +17942,8 @@
       "condicion_pago": "CONTADO",
       "dias_credito": 0,
       "estado_pago": "PAGADO",
-      "fecha_vencimiento": "2026-11-19"
+      "fecha_vencimiento": "2026-11-19",
+      "unidad": "30"
     },
     {
       "id": "mov_1795115533031_0_9635",
@@ -35414,6 +35424,15 @@
       "hora_liberacion": "04:08 p.m.",
       "liberado_por": "Taller / Salida a Viaje",
       "salidas_count": 1
+    },
+    {
+      "folio": "4103",
+      "unidad": "30",
+      "fecha": "19/11/2026",
+      "motivo": "Cardán, crucetas, balero de centro y sistema de frenos",
+      "operador": "Arturo Jimenez",
+      "creado_por": "Jefe de Taller",
+      "estado": "proceso"
     }
   ],
   "almacenes": [

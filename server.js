@@ -5088,19 +5088,485 @@ const localIp = getLocalIp();
 
 
 // =========================================================
+// SISTEMA DE ROLES, PERMISOS Y CONTROL DE ACCESO (RBAC)
+// =========================================================
+const USUARIOS_FILE = path.join(__dirname, 'taller_usuarios.json');
+
+const DEFAULT_USUARIOS = [
+  {
+    id: "admin",
+    nombre: "Administrador General",
+    rol: "ADMIN",
+    pin: "CL2026",
+    permisos: {
+      taller_editar: true,
+      taller_mover: true,
+      taller_liberar: true,
+      taller_alta: true,
+      almacen_surtir: true,
+      finanzas_ver: true,
+      finanzas_exportar: true,
+      admin_usuarios: true
+    }
+  },
+  {
+    id: "jefe_taller",
+    nombre: "Jefe de Taller",
+    rol: "JEFE_TALLER",
+    pin: "MA2026",
+    permisos: {
+      taller_editar: true,
+      taller_mover: true,
+      taller_liberar: true,
+      taller_alta: true,
+      almacen_surtir: true,
+      finanzas_ver: false,
+      finanzas_exportar: false,
+      admin_usuarios: false
+    }
+  },
+  {
+    id: "finanzas",
+    nombre: "Finanzas & Contabilidad",
+    rol: "FINANZAS",
+    pin: "GT2026",
+    permisos: {
+      taller_editar: false,
+      taller_mover: false,
+      taller_liberar: false,
+      taller_alta: false,
+      almacen_surtir: false,
+      finanzas_ver: true,
+      finanzas_exportar: true,
+      admin_usuarios: false
+    }
+  },
+  {
+    id: "supervision",
+    nombre: "Supervisión / Monitoreo",
+    rol: "SUPERVISION",
+    pin: "SP2026",
+    permisos: {
+      taller_editar: false,
+      taller_mover: false,
+      taller_liberar: false,
+      taller_alta: false,
+      almacen_surtir: false,
+      finanzas_ver: true,
+      finanzas_exportar: false,
+      admin_usuarios: false
+    }
+  }
+];
+
+function getTallerUsuarios() {
+  if (fs.existsSync(USUARIOS_FILE)) {
+    try {
+      const data = JSON.parse(fs.readFileSync(USUARIOS_FILE, 'utf8'));
+      if (Array.isArray(data) && data.length > 0) return data;
+    } catch(e) {}
+  }
+  return DEFAULT_USUARIOS;
+}
+
+function saveTallerUsuarios(usuarios) {
+  try {
+    fs.writeFileSync(USUARIOS_FILE, JSON.stringify(usuarios, null, 2), 'utf8');
+    if (cloudSync && typeof cloudSync.pushTallerUsuarios === 'function') {
+      cloudSync.pushTallerUsuarios(usuarios).catch(e => console.error('CloudSync usuarios error:', e.message));
+    }
+    return true;
+  } catch(e) {
+    console.error('Error guardando taller_usuarios.json:', e);
+    return false;
+  }
+}
+
+// 1. Login con PIN
+app.post('/api/taller/auth/login', (req, res) => {
+  const { pin } = req.body || {};
+  if (!pin) {
+    return res.status(400).json({ success: false, error: 'PIN requerido' });
+  }
+  const cleanPin = String(pin).trim().toUpperCase();
+  const usuarios = getTallerUsuarios();
+  const user = usuarios.find(u => String(u.pin).trim().toUpperCase() === cleanPin);
+
+  if (!user) {
+    return res.status(401).json({ success: false, error: 'PIN no reconocido o incorrecto' });
+  }
+
+  res.json({
+    success: true,
+    usuario: {
+      id: user.id,
+      nombre: user.nombre,
+      rol: user.rol,
+      permisos: user.permisos
+    }
+  });
+});
+
+// 2. Obtener lista de usuarios/PINs (Solo Administrador)
+app.get('/api/taller/auth/usuarios', (req, res) => {
+  const pin = String(req.query.admin_pin || '').trim().toUpperCase();
+  const usuarios = getTallerUsuarios();
+  const adminUser = usuarios.find(u => u.rol === 'ADMIN' && String(u.pin).trim().toUpperCase() === pin);
+
+  if (!adminUser) {
+    return res.status(403).json({ success: false, error: 'Acceso no autorizado. Se requiere PIN de Administrador.' });
+  }
+
+  res.json({ success: true, usuarios });
+});
+
+// 3. Modificar PINs / Usuarios (Solo Administrador)
+app.post('/api/taller/auth/usuarios', (req, res) => {
+  const { admin_pin, usuarios } = req.body || {};
+  const cleanPin = String(admin_pin || '').trim().toUpperCase();
+  const actuales = getTallerUsuarios();
+  const adminUser = actuales.find(u => u.rol === 'ADMIN' && String(u.pin).trim().toUpperCase() === cleanPin);
+
+  if (!adminUser) {
+    return res.status(403).json({ success: false, error: 'Acceso no autorizado. Solo el Administrador puede editar los accesos.' });
+  }
+
+  if (!Array.isArray(usuarios) || usuarios.length === 0) {
+    return res.status(400).json({ success: false, error: 'Lista de usuarios inválida' });
+  }
+
+  const sanitizados = usuarios.map(u => ({
+    id: u.id,
+    nombre: String(u.nombre || '').trim(),
+    rol: u.rol,
+    pin: String(u.pin || '').trim().toUpperCase(),
+    permisos: u.permisos || {}
+  }));
+
+  saveTallerUsuarios(sanitizados);
+  res.json({ success: true, message: 'Usuarios y PINs actualizados exitosamente en disco y nube', usuarios: sanitizados });
+});
+
+// =========================================================
+// CENTRO INTEGRAL DE REPORTES FINANCIEROS Y COSTOS
+// =========================================================
+app.get('/api/taller/reportes/costos', (req, res) => {
+  try {
+    let { desde, hasta, preset } = req.query;
+    const ahora = new Date();
+
+    // Calcular fechas según preset si no vienen explícitas
+    if (preset === 'hoy') {
+      const hoyISO = ahora.toISOString().slice(0, 10);
+      desde = hoyISO;
+      hasta = hoyISO;
+    } else if (preset === 'ayer') {
+      const ayer = new Date(ahora.getTime() - 86400000);
+      const ayerISO = ayer.toISOString().slice(0, 10);
+      desde = ayerISO;
+      hasta = ayerISO;
+    } else if (preset === 'semana') {
+      // Esta semana (Lunes a Domingo)
+      const day = ahora.getDay() || 7;
+      const lunes = new Date(ahora);
+      lunes.setDate(ahora.getDate() - day + 1);
+      const domingo = new Date(lunes);
+      domingo.setDate(lunes.getDate() + 6);
+      desde = lunes.toISOString().slice(0, 10);
+      hasta = domingo.toISOString().slice(0, 10);
+    } else if (preset === 'semana_pasada') {
+      const day = ahora.getDay() || 7;
+      const lunesPasado = new Date(ahora);
+      lunesPasado.setDate(ahora.getDate() - day - 6);
+      const domingoPasado = new Date(lunesPasado);
+      domingoPasado.setDate(lunesPasado.getDate() + 6);
+      desde = lunesPasado.toISOString().slice(0, 10);
+      hasta = domingoPasado.toISOString().slice(0, 10);
+    } else if (preset === 'mes') {
+      const mesInicio = new Date(ahora.getFullYear(), ahora.getMonth(), 1);
+      const mesFin = new Date(ahora.getFullYear(), ahora.getMonth() + 1, 0);
+      desde = mesInicio.toISOString().slice(0, 10);
+      hasta = mesFin.toISOString().slice(0, 10);
+    } else if (preset === 'mes_pasado') {
+      const mesPasadoInicio = new Date(ahora.getFullYear(), ahora.getMonth() - 1, 1);
+      const mesPasadoFin = new Date(ahora.getFullYear(), ahora.getMonth(), 0);
+      desde = mesPasadoInicio.toISOString().slice(0, 10);
+      hasta = mesPasadoFin.toISOString().slice(0, 10);
+    }
+
+    if (!desde) desde = '2026-11-01';
+    if (!hasta) hasta = ahora.toISOString().slice(0, 10);
+
+    const normalizarFechaISO = (fStr) => {
+      if (!fStr) return '';
+      fStr = String(fStr).trim();
+      if (/^\d{4}-\d{2}-\d{2}/.test(fStr)) return fStr.slice(0, 10);
+      const m = fStr.match(/(\d{1,2})\/(\d{1,2})\/(\d{2,4})/);
+      if (m) {
+        const dia = m[1].padStart(2, '0');
+        const mes = m[2].padStart(2, '0');
+        let anio = m[3];
+        if (anio.length === 2) anio = '20' + anio;
+        return `${anio}-${mes}-${dia}`;
+      }
+      return '';
+    };
+
+    const fechaEnRango = (fStr) => {
+      const iso = normalizarFechaISO(fStr);
+      if (!iso) return true; // si no tiene fecha, no descartar por defecto o filtrar
+      return iso >= desde && iso <= hasta;
+    };
+
+    const unidades = getUnidades();
+    const archivadas = getUnidadesArchivadas();
+    const todasUnidades = [...unidades, ...archivadas];
+    const rescates = getRescates();
+    const almData = getAlmacenData();
+    const movimientosAlm = almData.movimientos || [];
+
+    let totalCorrectivo = 0;
+    let totalPreventivo = 0;
+    let totalRescates = 0;
+    let totalExterno = 0;
+    let totalRefaccionesMonto = 0;
+    let totalPiezasCount = 0;
+
+    const itemsDetallados = [];
+    const mapaDias = new Map();
+
+    const sumarADia = (fStr, monto, categoria) => {
+      const iso = normalizarFechaISO(fStr) || desde;
+      if (!mapaDias.has(iso)) {
+        mapaDias.set(iso, { fecha: iso, correctivo: 0, preventivo: 0, rescates: 0, externo: 0, total: 0 });
+      }
+      const d = mapaDias.get(iso);
+      d[categoria] = Math.round((d[categoria] + monto) * 100) / 100;
+      d.total = Math.round((d.total + monto) * 100) / 100;
+    };
+
+    // 1. Procesar Unidades y sus refacciones
+    todasUnidades.forEach(u => {
+      const fechaU = u.fechaRefaccion || u.fechaIngreso || u.fecha_salida || '';
+      const uId = u.id;
+      const folio = u.folio_almacen || '-';
+
+      // Evaluar si la unidad misma tiene piezas
+      if (Array.isArray(u.piezas) && u.piezas.length > 0) {
+        u.piezas.forEach(pz => {
+          const fPz = pz.fecha_recepcion || fechaU;
+          if (fechaEnRango(fPz)) {
+            const monto = Number(pz.costo_total) || 0;
+            const esPrev = pz.tipo_trabajo === 'preventivo';
+            const cat = esPrev ? 'preventivo' : 'correctivo';
+
+            if (esPrev) totalPreventivo += monto;
+            else totalCorrectivo += monto;
+
+            totalRefaccionesMonto += monto;
+            totalPiezasCount += (Number(pz.cantidad) || 1);
+
+            sumarADia(fPz, monto, cat);
+
+            itemsDetallados.push({
+              tipo: esPrev ? 'Preventivo' : 'Correctivo',
+              categoria: esPrev ? 'Mantenimiento Preventivo' : 'Mantenimiento Correctivo',
+              unidad: uId,
+              folio: folio,
+              fecha: normalizarFechaISO(fPz),
+              concepto: pz.descripcion || 'Refacción de Taller',
+              numero_parte: pz.numero_parte || '-',
+              cantidad: pz.cantidad || 1,
+              costo: monto,
+              responsable: pz.solicitante || u.operador || 'Taller'
+            });
+          }
+        });
+      } else {
+        // Unidad sin piezas pero con costo registrado
+        if (fechaEnRango(fechaU)) {
+          const costo = Number(u.costo) || 0;
+          if (costo > 0) {
+            const esPrev = u.categoriaFalla === 'Preventivo' || u.tipo_procedimiento === 'preventivo';
+            const esExt = u.tipo_procedimiento === 'externo';
+            const cat = esExt ? 'externo' : (esPrev ? 'preventivo' : 'correctivo');
+
+            if (esExt) totalExterno += costo;
+            else if (esPrev) totalPreventivo += costo;
+            else totalCorrectivo += costo;
+
+            sumarADia(fechaU, costo, cat);
+
+            itemsDetallados.push({
+              tipo: esExt ? 'Externo' : (esPrev ? 'Preventivo' : 'Correctivo'),
+              categoria: esExt ? 'Taller Externo' : (esPrev ? 'Preventivo' : 'Correctivo'),
+              unidad: uId,
+              folio: folio,
+              fecha: normalizarFechaISO(fechaU),
+              concepto: u.defecto || u.reporte || 'Servicio de mantenimiento',
+              numero_parte: '-',
+              cantidad: 1,
+              costo: costo,
+              responsable: u.operador || 'Taller'
+            });
+          }
+        }
+      }
+
+      // Costos externos adicionales
+      const cExt = Number(u.costo_externo) || 0;
+      if (cExt > 0 && fechaEnRango(fechaU)) {
+        totalExterno += cExt;
+        sumarADia(fechaU, cExt, 'externo');
+        itemsDetallados.push({
+          tipo: 'Externo',
+          categoria: 'Taller Externo / Especialista',
+          unidad: uId,
+          folio: folio,
+          fecha: normalizarFechaISO(fechaU),
+          concepto: `Servicio externo: ${u.proveedor_externo || u.defecto || 'Proveedor'}`,
+          numero_parte: '-',
+          cantidad: 1,
+          costo: cExt,
+          responsable: u.proveedor_externo || 'Proveedor Externo'
+        });
+      }
+    });
+
+    // 2. Procesar Rescates Carreteros
+    rescates.forEach(r => {
+      const fR = r.fecha || '';
+      if (fechaEnRango(fR)) {
+        const monto = Number(r.costo_real) || Number(r.costo_estimado) || 0;
+        totalRescates += monto;
+        sumarADia(fR, monto, 'rescates');
+
+        itemsDetallados.push({
+          tipo: 'Rescate',
+          categoria: 'Rescate Carretero / Auxilio Vial',
+          unidad: r.unidad || '-',
+          folio: r.folio || '-',
+          fecha: normalizarFechaISO(fR),
+          concepto: `Auxilio Vial: ${r.falla_reportada || 'Falla en carretera'} (${r.carretera || r.tramo || 'Ruta'})`,
+          numero_parte: '-',
+          cantidad: 1,
+          costo: monto,
+          responsable: r.mecanico_asignado || r.proveedor_externo || 'Auxilio CESS'
+        });
+      }
+    });
+
+    // Redondear totales
+    totalCorrectivo = Math.round(totalCorrectivo * 100) / 100;
+    totalPreventivo = Math.round(totalPreventivo * 100) / 100;
+    totalRescates = Math.round(totalRescates * 100) / 100;
+    totalExterno = Math.round(totalExterno * 100) / 100;
+    const granTotal = Math.round((totalCorrectivo + totalPreventivo + totalRescates + totalExterno) * 100) / 100;
+
+    // Convertir mapa de días a arreglo ordenado
+    const desglosePorDia = Array.from(mapaDias.values()).sort((a, b) => b.fecha.localeCompare(a.fecha));
+    itemsDetallados.sort((a, b) => b.fecha.localeCompare(a.fecha));
+
+    res.json({
+      success: true,
+      rango: {
+        desde,
+        hasta,
+        preset: preset || 'personalizado'
+      },
+      resumen: {
+        gran_total: granTotal,
+        total_correctivo: totalCorrectivo,
+        total_preventivo: totalPreventivo,
+        total_rescates: totalRescates,
+        total_externo: totalExterno,
+        total_refacciones_monto: Math.round(totalRefaccionesMonto * 100) / 100,
+        total_piezas_count: totalPiezasCount,
+        total_registros: itemsDetallados.length
+      },
+      desglose_por_dia: desglosePorDia,
+      detalle_items: itemsDetallados
+    });
+  } catch (err) {
+    console.error('Error generando reporte de costos:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// =========================================================
 // ENDPOINTS DE CONTROL DE SINCRONIZACIÓN EN LA NUBE (FIRESTORE)
 // =========================================================
 app.get('/api/cloud/status', async (req, res) => {
     try {
         const isEnabled = cloudSync ? cloudSync.isCloudEnabled() : false;
+        const envPresent = Boolean(process.env.FIREBASE_SERVICE_ACCOUNT);
+        const envLen = envPresent ? process.env.FIREBASE_SERVICE_ACCOUNT.length : 0;
+        const secretsFileExists = fs.existsSync('/etc/secrets/firebase_key.json');
+        const localKeyExists = fs.existsSync(path.join(__dirname, 'firebase_key.json'));
+
         res.json({
             cloud_connected: isEnabled,
             provider: 'Google Cloud Firestore',
             project_id: 'diesel-cess-40bbf',
             collection: 'cess_cloud_database',
+            env_var_detected: envPresent,
+            env_var_length: envLen,
+            render_secret_file_detected: secretsFileExists,
+            local_key_detected: localKeyExists,
             timestamp: new Date().toISOString()
         });
     } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+app.post('/api/cloud/setup-key', async (req, res) => {
+    try {
+        const { pin, key_data, key_base64 } = req.body || {};
+        if (pin !== 'CESS-2026') {
+            return res.status(401).json({ error: 'PIN de seguridad CESS no autorizado' });
+        }
+        let parsed = null;
+        if (key_data && typeof key_data === 'object') {
+            parsed = key_data;
+        } else if (typeof key_data === 'string') {
+            const cleanStr = key_data.trim();
+            if (cleanStr.startsWith('{')) {
+                parsed = JSON.parse(cleanStr);
+            } else {
+                parsed = JSON.parse(Buffer.from(cleanStr.replace(/\s+/g, ''), 'base64').toString('utf8'));
+            }
+        } else if (key_base64) {
+            const cleanB64 = String(key_base64).trim().replace(/\s+/g, '');
+            parsed = JSON.parse(Buffer.from(cleanB64, 'base64').toString('utf8'));
+        }
+
+        if (!parsed || !parsed.project_id) {
+            return res.status(400).json({ error: 'Formato de clave inválido (falta project_id)' });
+        }
+
+        const keyPath = path.join(__dirname, 'firebase_key.json');
+        fs.writeFileSync(keyPath, JSON.stringify(parsed, null, 2), 'utf8');
+        console.log('🔑 [Server] Clave guardada localmente vía /api/cloud/setup-key');
+
+        if (cloudSync && typeof cloudSync.reloadFirebase === 'function') {
+            cloudSync.reloadFirebase();
+        }
+
+        const connected = cloudSync ? cloudSync.isCloudEnabled() : false;
+        if (connected) {
+            await cloudSync.syncAllFromCloudToDisk(__dirname);
+            if (almacenAppModule && typeof almacenAppModule.reloadStore === 'function') {
+                almacenAppModule.reloadStore();
+            }
+        }
+
+        res.json({
+            success: true,
+            cloud_connected: connected,
+            message: 'Clave configurada y enlazada con Google Cloud Firestore exitosamente'
+        });
+    } catch(e) {
         res.status(500).json({ error: e.message });
     }
 });

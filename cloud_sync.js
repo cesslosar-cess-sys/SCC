@@ -27,24 +27,40 @@ function initFirebase() {
     // 1. Revisar Variable de Entorno (ideal para Render / Producción Cloud)
     if (process.env.FIREBASE_SERVICE_ACCOUNT) {
       try {
-        const envVal = process.env.FIREBASE_SERVICE_ACCOUNT.trim();
-        if (envVal.startsWith('{')) {
-          serviceAccount = JSON.parse(envVal);
+        let envVal = process.env.FIREBASE_SERVICE_ACCOUNT.trim();
+
+        // Si es una ruta a un archivo (ej: /etc/secrets/firebase_key.json)
+        if (fs.existsSync(envVal)) {
+          serviceAccount = JSON.parse(fs.readFileSync(envVal, 'utf8'));
+          console.log(`☁️ [CloudSync] Credenciales cargadas desde ruta en env: ${envVal}`);
         } else {
-          // Intentar decodificar Base64
-          const decoded = Buffer.from(envVal, 'base64').toString('utf8');
-          serviceAccount = JSON.parse(decoded);
+          // Quitar comillas externas si las tiene
+          if ((envVal.startsWith('"') && envVal.endsWith('"')) || (envVal.startsWith("'") && envVal.endsWith("'"))) {
+            envVal = envVal.slice(1, -1).trim();
+          }
+
+          if (envVal.startsWith('{')) {
+            serviceAccount = JSON.parse(envVal);
+          } else {
+            // Intentar decodificar Base64 (limpiando posibles saltos de línea o espacios)
+            const cleanB64 = envVal.replace(/\s+/g, '');
+            const decoded = Buffer.from(cleanB64, 'base64').toString('utf8');
+            serviceAccount = JSON.parse(decoded);
+          }
+          console.log('☁️ [CloudSync] Credenciales cargadas desde process.env.FIREBASE_SERVICE_ACCOUNT');
         }
-        console.log('☁️ [CloudSync] Credenciales cargadas desde process.env.FIREBASE_SERVICE_ACCOUNT');
       } catch (errEnv) {
         console.error('⚠️ [CloudSync] Error parseando FIREBASE_SERVICE_ACCOUNT:', errEnv.message);
       }
     }
 
-    // 2. Revisar archivo local firebase_key.json
+    // 2. Revisar archivos locales y Secret Files de Render (/etc/secrets)
     if (!serviceAccount) {
       const possibleKeyPaths = [
+        '/etc/secrets/firebase_key.json',
+        '/etc/secrets/FIREBASE_SERVICE_ACCOUNT',
         path.join(__dirname, 'firebase_key.json'),
+        path.join(process.cwd(), 'firebase_key.json'),
         path.join(__dirname, '..', 'firebase_key.json'),
         path.join(__dirname, 'almacen-app', 'firebase_key.json')
       ];
@@ -61,12 +77,18 @@ function initFirebase() {
     }
 
     if (serviceAccount && serviceAccount.project_id) {
+      if (serviceAccount.private_key) {
+        serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
+      }
+
       try {
-        admin.initializeApp({
-          credential: admin.cert(serviceAccount)
-        });
+        if (admin.getApps().length === 0) {
+          admin.initializeApp({
+            credential: admin.cert(serviceAccount)
+          });
+        }
       } catch (appErr) {
-        // Podría estar ya inicializada la app por defecto
+        console.error('⚠️ [CloudSync] Error en admin.initializeApp:', appErr.message);
       }
       db = getFirestore();
       isInitialized = true;
@@ -238,13 +260,14 @@ async function pullTallerData() {
 
   try {
     console.log('🔄 [CloudSync] Descargando datos de Taller desde Firestore...');
-    const [unidadesSnap, archivadasSnap, bitacorasSnap, remolquesSnap, rescatesSnap, colsSnap] = await Promise.all([
+    const [unidadesSnap, archivadasSnap, bitacorasSnap, remolquesSnap, rescatesSnap, colsSnap, usuariosSnap] = await Promise.all([
       db.collection(COLL).doc('taller_unidades').get(),
       db.collection(COLL).doc('taller_archivadas').get(),
       db.collection(COLL).doc('taller_bitacoras').get(),
       db.collection(COLL).doc('taller_remolques').get(),
       db.collection(COLL).doc('taller_rescates').get(),
-      db.collection(COLL).doc('taller_columnas').get()
+      db.collection(COLL).doc('taller_columnas').get(),
+      db.collection(COLL).doc('taller_usuarios').get()
     ]);
 
     const result = {
@@ -253,7 +276,8 @@ async function pullTallerData() {
       bitacoras: bitacorasSnap.exists ? JSON.parse(bitacorasSnap.data().json_data || '[]') : null,
       remolques: remolquesSnap.exists ? JSON.parse(remolquesSnap.data().json_data || '[]') : null,
       rescates: rescatesSnap.exists ? JSON.parse(rescatesSnap.data().json_data || '[]') : null,
-      columnas: colsSnap.exists ? JSON.parse(colsSnap.data().json_data || '{}') : null
+      columnas: colsSnap.exists ? JSON.parse(colsSnap.data().json_data || '{}') : null,
+      usuarios: usuariosSnap.exists ? JSON.parse(usuariosSnap.data().json_data || '[]') : null
     };
 
     console.log(`✅ [CloudSync] Taller descargado de la nube: ${Array.isArray(result.unidades) ? result.unidades.length : 0} unidades activas.`);
@@ -371,6 +395,10 @@ async function syncAllFromCloudToDisk(baseDir) {
       if (cloudTaller.columnas) {
         fs.writeFileSync(path.join(rootDir, 'taller_config_columnas.json'), JSON.stringify(cloudTaller.columnas, null, 2), 'utf8');
       }
+      if (Array.isArray(cloudTaller.usuarios) && cloudTaller.usuarios.length > 0) {
+        fs.writeFileSync(path.join(rootDir, 'taller_usuarios.json'), JSON.stringify(cloudTaller.usuarios, null, 2), 'utf8');
+        console.log(`✅ [CloudSync] Roles y Usuarios de Taller hidratados desde Firestore.`);
+      }
     }
 
     return true;
@@ -380,15 +408,40 @@ async function syncAllFromCloudToDisk(baseDir) {
   }
 }
 
+/**
+ * PUSH de usuarios y roles a Firestore
+ */
+async function pushTallerUsuarios(usuarios) {
+  if (!isCloudEnabled() || !Array.isArray(usuarios)) return;
+  try {
+    await db.collection(COLL).doc('taller_usuarios').set({
+      count: usuarios.length,
+      json_data: JSON.stringify(usuarios),
+      updatedAt: FieldValue.serverTimestamp()
+    });
+    console.log(`☁️ [CloudSync] Usuarios y Roles guardados en Firestore: ${usuarios.length} cuentas.`);
+  } catch (err) {
+    console.error('❌ [CloudSync] Error subiendo usuarios a Firestore:', err.message);
+  }
+}
+
+function reloadFirebase() {
+  isInitialized = false;
+  db = null;
+  return initFirebase();
+}
+
 // Inicializar de inmediato al importar
 initFirebase();
 
 module.exports = {
   isCloudEnabled,
+  reloadFirebase,
   pullAlmacenData,
   pushAlmacenData,
   pullTallerData,
   pushTallerData,
   pushTallerArchivadas,
+  pushTallerUsuarios,
   syncAllFromCloudToDisk
 };
