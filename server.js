@@ -51,9 +51,9 @@ app.use('/uploads', express.static(UPLOADS_DIR));
 let cloudSync = null;
 try {
     cloudSync = require('./cloud_sync');
-    console.log('☁️ [Server] Módulo cloud_sync cargado exitosamente.');
+    console.log(' [Server] Módulo cloud_sync cargado exitosamente.');
 } catch (e) {
-    console.warn('⚠️ [Server] Error cargando cloud_sync:', e.message);
+    console.warn(' [Server] Error cargando cloud_sync:', e.message);
 }
 let almacenAppModule = null;
 
@@ -66,7 +66,7 @@ try {
     if (fs.existsSync(index1)) {
         const statMain = fs.existsSync(mainIndex) ? fs.statSync(mainIndex) : null;
         if (!statMain || statMain.size < 10000) {
-            console.log('🔄 [Auto-Fix] Restaurando Taller Pro: index (1).html -> index.html');
+            console.log(' [Auto-Fix] Restaurando Taller Pro: index (1).html -> index.html');
             fs.copyFileSync(index1, mainIndex);
         }
     }
@@ -80,7 +80,7 @@ try {
         if (f.startsWith('index-') && (f.endsWith('.js') || f.endsWith('.css'))) {
             try {
                 fs.copyFileSync(path.join(__dirname, f), path.join(targetAssetsDir, f));
-                console.log(`🔄 [Auto-Fix] Asset copiado a almacen_dist/assets/${f}`);
+                console.log(` [Auto-Fix] Asset copiado a almacen_dist/assets/${f}`);
             } catch(e) {}
         }
     });
@@ -107,10 +107,10 @@ try {
     }
     if (almacenAppModule) {
         app.use(almacenAppModule);
-        console.log('✅ [Unified Suite] Almacén Central montado exitosamente en /almacen y /api/*');
+        console.log(' [Unified Suite] Almacén Central montado exitosamente en /almacen y /api/*');
     }
 } catch (errAlm) {
-    console.error('⚠️ [Unified Suite] Error montando Almacén Central:', errAlm.message);
+    console.error(' [Unified Suite] Error montando Almacén Central:', errAlm.message);
 }
 
 // Servir frontend de Almacén Central en /almacen
@@ -169,7 +169,7 @@ const ALMACEN_GUARDIAN_SNIPPET = `
         isRestoring = true;
         const diff = localMovs.length - serverMovs.length;
         console.warn('[Guardián CESS] Servidor reiniciado sin datos recientes. Restaurando automáticamente ' + diff + ' movimientos desde este navegador...');
-        showGuardianToast('🛡️ Guardián CESS: Se detectó reinicio en la nube. Restaurando automáticamente ' + diff + ' movimientos respaldados...', 'warning');
+        showGuardianToast(' Guardián CESS: Se detectó reinicio en la nube. Restaurando automáticamente ' + diff + ' movimientos respaldados...', 'warning');
 
         let catalog = {};
         try {
@@ -187,7 +187,7 @@ const ALMACEN_GUARDIAN_SNIPPET = `
         });
 
         if (res.ok) {
-          showGuardianToast('✅ ¡Protección exitosa! Se restauraron ' + localMovs.length + ' movimientos en la nube sin pérdida.', 'success');
+          showGuardianToast(' ¡Protección exitosa! Se restauraron ' + localMovs.length + ' movimientos en la nube sin pérdida.', 'success');
           setTimeout(() => {
             isRestoring = false;
             window.location.reload();
@@ -207,7 +207,7 @@ const ALMACEN_GUARDIAN_SNIPPET = `
     const widget = document.createElement('div');
     widget.id = 'cess-guardian-widget';
     widget.style.cssText = 'position:fixed;bottom:16px;right:16px;z-index:99999;display:flex;align-items:center;gap:10px;background:rgba(15,23,42,0.92);backdrop-filter:blur(10px);border:1px solid rgba(217,119,6,0.4);border-radius:12px;padding:8px 14px;box-shadow:0 8px 30px rgba(0,0,0,0.5);font-family:system-ui,-apple-system,sans-serif;font-size:12px;color:#f8fafc;';
-    widget.innerHTML = '<div style=\"display:flex;align-items:center;gap:6px;\"><span style=\"width:8px;height:8px;background:#10b981;border-radius:50%;display:inline-block;box-shadow:0 0 8px #10b981;\"></span><span id=\"guardian-status\" style=\"font-weight:700;color:#f59e0b;\">🛡️ Bóveda Blindada</span></div><button id=\"guardian-btn-backup\" style=\"background:#d97706;border:none;color:#fff;font-weight:800;font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:4px;\">💾 Respaldo JSON</button>';
+    widget.innerHTML = '<div style=\"display:flex;align-items:center;gap:6px;\"><span style=\"width:8px;height:8px;background:#10b981;border-radius:50%;display:inline-block;box-shadow:0 0 8px #10b981;\"></span><span id=\"guardian-status\" style=\"font-weight:700;color:#f59e0b;\"> Bóveda Blindada</span></div><button id=\"guardian-btn-backup\" style=\"background:#d97706;border:none;color:#fff;font-weight:800;font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:4px;\"> Respaldo JSON</button>';
     document.body.appendChild(widget);
 
     document.getElementById('guardian-btn-backup').addEventListener('click', function() {
@@ -218,7 +218,7 @@ const ALMACEN_GUARDIAN_SNIPPET = `
   function updateGuardianBadge(count) {
     const el = document.getElementById('guardian-status');
     if (el) {
-      el.textContent = '🛡️ ' + count + ' Movimientos Blindados';
+      el.textContent = ' ' + count + ' Movimientos Blindados';
     }
   }
 
@@ -296,7 +296,7 @@ function saveUnidadesArchivadas(archivadas) {
         fs.writeFileSync(ARCHIVADAS_FILE, JSON.stringify(archivadas, null, 2), 'utf8');
         if (cloudSync && typeof cloudSync.pushTallerArchivadas === 'function') {
             cloudSync.pushTallerArchivadas(archivadas).catch(e => {
-                console.error('⚠️ [CloudSync] Error sincronizando archivadas con Firestore:', e.message);
+                console.error(' [CloudSync] Error sincronizando archivadas con Firestore:', e.message);
             });
         }
         return true;
@@ -319,6 +319,9 @@ function getRemolques() {
 function saveRemolques(remolques) {
     try {
         fs.writeFileSync(REMOLQUES_FILE, JSON.stringify(remolques, null, 2), 'utf8');
+        if (cloudSync && typeof cloudSync.pushRemolquesData === 'function') {
+            cloudSync.pushRemolquesData(remolques).catch(() => {});
+        }
         broadcastSSE('remolques_updated', { remolques, count: remolques.length });
         return true;
     } catch(e) {
@@ -694,7 +697,7 @@ function saveAlmacenData(data) {
         // Sincronización en tiempo real con Google Cloud Firestore
         if (cloudSync && typeof cloudSync.pushAlmacenData === 'function') {
             cloudSync.pushAlmacenData(data).catch(e => {
-                console.error('⚠️ [CloudSync] Error sincronizando Almacén con Firestore:', e.message);
+                console.error(' [CloudSync] Error sincronizando Almacén con Firestore:', e.message);
             });
         }
         return true;
@@ -1215,7 +1218,7 @@ function saveUnidades(incomingUnidades, autor = 'Sistema') {
     // Sincronización en tiempo real de Taller con Google Cloud Firestore
     if (cloudSync && typeof cloudSync.pushTallerData === 'function') {
         cloudSync.pushTallerData(unidadesFinales).catch(e => {
-            console.error('⚠️ [CloudSync] Error sincronizando unidades con Firestore:', e.message);
+            console.error(' [CloudSync] Error sincronizando unidades con Firestore:', e.message);
         });
     }
 
@@ -1466,10 +1469,9 @@ app.post('/api/jornada/movimiento', (req, res) => {
     res.json({ success: true, movimiento: mov });
 });
 
-// 3. Obtener todas las unidades
+// 3. Obtener todas las unidades (Consulta de lectura pura, sin re-escrituras)
 app.get('/api/unidades', (req, res) => {
     getJornadaActual(); // valida medianoche si aplica
-    try { sincronizarFoliosConAlmacen('Consulta API /api/unidades'); } catch(e) {}
     const unidades = getUnidades();
     res.json({ success: true, count: unidades.length, data: unidades, dataTimestamp: ultimaMarcaTiempoDatos });
 });
@@ -1689,7 +1691,7 @@ app.post('/api/unidad/:id/liberar', (req, res) => {
     unidad.avances.unshift({
         fecha: fechaSalida,
         hora: horaSalida,
-        texto: `🏁 Unidad liberada de taller con Orden #${folioFinal}: ${motivo || 'Asignada a viaje'}. ${notas || ''}`.trim(),
+        texto: ` Unidad liberada de taller con Orden #${folioFinal}: ${motivo || 'Asignada a viaje'}. ${notas || ''}`.trim(),
         mecanico: 'Jefe de Taller',
         porcentaje: 100
     });
@@ -3303,11 +3305,11 @@ app.get('/api/exportar-excel-ejecutivo', (req, res) => {
                 const estNorm = (p.estatus || '').toUpperCase().trim();
                 kmRestPrev = Number(p.km_restantes) || 0;
                 if (estNorm === 'VENCIDO') {
-                    prevTag = `🚨 VENCIDO (${kmRestPrev.toLocaleString()} km)`;
+                    prevTag = ` VENCIDO (${kmRestPrev.toLocaleString()} km)`;
                 } else if (estNorm.includes('PROXIM')) {
-                    prevTag = `⚠️ PRÓXIMO (+${kmRestPrev.toLocaleString()} km)`;
+                    prevTag = ` PRÓXIMO (+${kmRestPrev.toLocaleString()} km)`;
                 } else {
-                    prevTag = `✅ Al Día (+${kmRestPrev.toLocaleString()} km)`;
+                    prevTag = ` Al Día (+${kmRestPrev.toLocaleString()} km)`;
                 }
             } else {
                 prevTag = 'Sin registro';
@@ -4563,8 +4565,17 @@ app.get('/api/almacen/folio/:folio/detalle', (req, res) => {
 
     const items = matches.map(m => {
         const itemCat = catalog[m.id_pieza] || Object.values(catalog).find(c => c.numero_parte && c.numero_parte === m.numero_parte) || {};
-        const pu = getPiezaPrecioUnitario(m, catalog);
+        let pu = getPiezaPrecioUnitario(m, catalog);
         const cant = Number(m.cantidad) || 1;
+
+        // Si el precio de almacén viene en 0, verificar si la unidad ya tiene esta pieza con precio válido
+        if (pu <= 0 && uMatch && Array.isArray(uMatch.piezas)) {
+            const pMatch = uMatch.piezas.find(p => String(p.id) === String(m.id) || (p.numero_parte && p.numero_parte === m.numero_parte) || (p.descripcion && p.descripcion.toLowerCase() === (m.descripcion || '').toLowerCase()));
+            if (pMatch && Number(pMatch.precio_unitario) > 0) {
+                pu = Number(pMatch.precio_unitario);
+            }
+        }
+
         const total = cant * pu;
         return {
             id_item: m.id || m.numero_parte,
@@ -4582,12 +4593,15 @@ app.get('/api/almacen/folio/:folio/detalle', (req, res) => {
         };
     });
 
-    const costoTotal = items.reduce((acc, it) => acc + it.total_costo, 0);
+    let costoTotal = items.reduce((acc, it) => acc + it.total_costo, 0);
+    if (costoTotal <= 0 && uMatch && (Number(uMatch.costo_refacciones) > 0 || Number(uMatch.costo) > 0)) {
+        costoTotal = Number(uMatch.costo_refacciones) || Number(uMatch.costo) || 0;
+    }
 
     res.json({
         success: true,
         folio,
-        unidad: matches[0].unidad_camion || matches[0].unidad || '--',
+        unidad: matches[0].unidad_camion || matches[0].unidad || (uMatch ? uMatch.id : '--'),
         solicitante: matches[0].solicitante || matches[0].entregado_a || '--',
         fecha: matches[0].fecha || matches[0].fecha_salida || '--',
         items,
@@ -4683,7 +4697,7 @@ app.post('/api/rescates', (req, res) => {
     // Sincronizar OBLIGATORIAMENTE con el Tablero Kanban de Taller
     let unidades = getUnidades();
     let uTaller = unidades.find(u => String(u.id).trim().toUpperCase() === String(nuevoRescate.unidad).trim().toUpperCase());
-    const descRescate = `🚨 RESCATE CARRETERO (SOS EN RUTA): ${nuevoRescate.falla_reportada}. Carretera: ${nuevoRescate.carretera} (${kmVal}). Operador: ${nuevoRescate.operador}`;
+    const descRescate = ` RESCATE CARRETERO (SOS EN RUTA): ${nuevoRescate.falla_reportada}. Carretera: ${nuevoRescate.carretera} (${kmVal}). Operador: ${nuevoRescate.operador}`;
 
     if (uTaller) {
         uTaller.es_rescate = nuevoRescate.estado !== 'CONCLUIDO';
@@ -4720,13 +4734,13 @@ app.post('/api/rescates', (req, res) => {
             avances: [{
                 fecha: new Date().toLocaleDateString('es-MX'),
                 hora: new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
-                texto: `🚨 Auxilio en carretera registrado: ${nuevoRescate.carretera} (${kmVal}). Falla: ${nuevoRescate.falla_reportada}`,
+                texto: ` Auxilio en carretera registrado: ${nuevoRescate.carretera} (${kmVal}). Falla: ${nuevoRescate.falla_reportada}`,
                 mecanico: nuevoRescate.mecanico_asignado || 'Auxilio Móvil',
                 porcentaje: 20
             }],
             historial: [{
                 fecha: new Date().toLocaleString('es-MX'),
-                evento: `🚨 Rescate Carretero registrado: ${nuevoRescate.falla_reportada} en ${nuevoRescate.carretera} (Folio #${nuevoRescate.folio})`,
+                evento: ` Rescate Carretero registrado: ${nuevoRescate.falla_reportada} en ${nuevoRescate.carretera} (Folio #${nuevoRescate.folio})`,
                 tipo: 'alta'
             }]
         };
@@ -4763,7 +4777,7 @@ app.post('/api/rescates/:id/concluir', (req, res) => {
         if (!Array.isArray(uTaller.historial)) uTaller.historial = [];
         uTaller.historial.unshift({
             fecha: new Date().toLocaleString('es-MX'),
-            evento: `🏁 Rescate carretero concluido en ruta. Costo real: $${Number(rescate.costo_real).toLocaleString('en-US', {minimumFractionDigits: 2})} MXN`,
+            evento: ` Rescate carretero concluido en ruta. Costo real: $${Number(rescate.costo_real).toLocaleString('en-US', {minimumFractionDigits: 2})} MXN`,
             tipo: 'rescate_concluido'
         });
         saveUnidades(unidades);
@@ -5564,7 +5578,7 @@ app.post('/api/cloud/setup-key', async (req, res) => {
 
         const keyPath = path.join(__dirname, 'firebase_key.json');
         fs.writeFileSync(keyPath, JSON.stringify(parsed, null, 2), 'utf8');
-        console.log('🔑 [Server] Clave guardada localmente vía /api/cloud/setup-key');
+        console.log(' [Server] Clave guardada localmente vía /api/cloud/setup-key');
 
         if (cloudSync && typeof cloudSync.reloadFirebase === 'function') {
             cloudSync.reloadFirebase();
@@ -5615,12 +5629,12 @@ app.listen(PORT, '0.0.0.0', () => {
     // Sincronizaciones automáticas iniciales con Firestore
     if (cloudSync && typeof cloudSync.syncAllFromCloudToDisk === 'function') {
         cloudSync.syncAllFromCloudToDisk(__dirname).then(() => {
-            console.log('✅ [CloudSync] Arranque sincronizado con Google Cloud Firestore.');
+            console.log(' [CloudSync] Arranque sincronizado con Google Cloud Firestore.');
             if (almacenAppModule && typeof almacenAppModule.reloadStore === 'function') {
                 almacenAppModule.reloadStore();
             }
         }).catch(err => {
-            console.error('⚠️ [CloudSync] Error en sincronización inicial:', err.message);
+            console.error(' [CloudSync] Error en sincronización inicial:', err.message);
         });
     }
 

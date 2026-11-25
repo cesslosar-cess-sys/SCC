@@ -547,7 +547,7 @@ function saveStore() {
     // Sincronización automática en tiempo real con Google Cloud Firestore
     if (cloudSync && typeof cloudSync.pushAlmacenData === 'function') {
       cloudSync.pushAlmacenData(store).catch(err => {
-        console.error('⚠️ [CloudSync] Error sincronizando Almacén con Firestore:', err.message);
+        console.error('[CloudSync] Error sincronizando Almacén con Firestore:', err.message);
       });
     }
   } catch (e) {
@@ -1831,7 +1831,7 @@ function getMemoriaIAPromptContext() {
     const raw = m.codigo_extraido || m.texto_original || "";
     const cat = (m.numero_parte_catalogo || "") + " (" + (m.descripcion_catalogo || "") + ")";
     const marca = m.marca_catalogo ? (" [" + m.marca_catalogo + "]") : "";
-    return "- \"" + raw + "\" ➔ Corresponde a: \"" + cat + "\"" + marca;
+    return "- \"" + raw + "\" -> Corresponde a: \"" + cat + "\"" + marca;
   }).join("\n");
   return "\nREGLAS DE APRENDIZAJE Y ASOCIACIÓN PREVIA RECORDADAS POR EL ALMACÉN (Usa estas asociaciones si detectas textos o piezas afines):\n" + topMem + "\n";
 }
@@ -1960,7 +1960,7 @@ function registrarAprendizajeIA({
   targetItem.aprendizaje_ia = (targetItem.aprendizaje_ia || 0) + 1;
 
   saveStore();
-  console.log(`[IA Aprendizaje] Record memorizado: "${rawText || rawCode}" ➔ ${targetItem.numero_parte} (${targetItem.descripcion})`);
+  console.log(`[IA Aprendizaje] Record memorizado: "${rawText || rawCode}" -> ${targetItem.numero_parte} (${targetItem.descripcion})`);
   return record;
 }
 
@@ -2810,13 +2810,13 @@ app.post('/api/inventario/ajuste', (req, res) => {
   if (stockCambiado || ubicacionCambiada || almacenCambiado) {
     const notasDetalle = [];
     if (stockCambiado) {
-      notasDetalle.push(`Stock: ${prevStock} ➔ ${item.stock_actual} (${diff > 0 ? '+' : ''}${diff} ${item.unidad || 'PZ'})`);
+      notasDetalle.push(`Stock: ${prevStock} -> ${item.stock_actual} (${diff > 0 ? '+' : ''}${diff} ${item.unidad || 'PZ'})`);
     }
     if (ubicacionCambiada) {
-      notasDetalle.push(`Ubicación: "${prevRack} / ${prevNivel}" ➔ "${item.rack} / ${item.nivel}"`);
+      notasDetalle.push(`Ubicación: "${prevRack} / ${prevNivel}" -> "${item.rack} / ${item.nivel}"`);
     }
     if (almacenCambiado) {
-      notasDetalle.push(`Almacén: "${prevAlmNombre}" ➔ "${item.almacen}"`);
+      notasDetalle.push(`Almacén: "${prevAlmNombre}" -> "${item.almacen}"`);
     }
     notasDetalle.push(`Motivo: ${motivoTexto}`);
     if (justificacion && String(justificacion).trim()) {
@@ -3547,7 +3547,7 @@ app.post('/api/paso-directo', (req, res) => {
     marca: item.marca,
     almacen: item ? (item.almacen || almNombre) : almNombre,
     almacen_id: item ? (item.almacen_id || almId) : almId,
-    ubicacion: `PASO DIRECTO ➔ UNIDAD ${unidadClean}`,
+    ubicacion: `PASO DIRECTO -> UNIDAD ${unidadClean}`,
     cantidad: cant,
     // Datos de Entrada
     proveedor: String(proveedor || '').trim(),
@@ -3578,7 +3578,7 @@ app.post('/api/paso-directo', (req, res) => {
 
   res.json({
     success: true,
-    message: `⚡ Paso Directo (E/S) registrado con éxito. Refacción aplicada a Unidad ${unidadClean}.`,
+    message: `Paso Directo (E/S) registrado con éxito. Refacción aplicada a Unidad ${unidadClean}.`,
     movimiento: mov,
     stock_almacen: item.stock_actual
   });
@@ -3731,7 +3731,7 @@ app.post('/api/entrada-masiva', (req, res) => {
       marca: item.marca,
       almacen: item.almacen || almNombre,
       almacen_id: item.almacen_id || almId,
-      ubicacion: isSrv ? `SERVICIO EXTERNO ➔ ${unidadDirecta ? `UNIDAD ${unidadDirecta}` : 'TALLER'}` : (esPasoDirecto ? `PASO DIRECTO ➔ UNIDAD ${unidadDirecta || 'TALLER'}` : `${item.rack} / ${item.nivel}`),
+      ubicacion: isSrv ? `SERVICIO EXTERNO -> ${unidadDirecta ? `UNIDAD ${unidadDirecta}` : 'TALLER'}` : (esPasoDirecto ? `PASO DIRECTO -> UNIDAD ${unidadDirecta || 'TALLER'}` : `${item.rack} / ${item.nivel}`),
       cantidad: cant,
       proveedor: String(proveedor || p.proveedor || '').trim(),
       factura: String(factura || p.factura || '').trim(),
@@ -4208,7 +4208,7 @@ app.post('/api/bitacora/:id/devolucion', (req, res) => {
     mov.fecha_devolucion = fechaHoy;
     mov.hora_devolucion = horaHoy;
     mov.notas = (mov.notas ? mov.notas + ' | ' : '') + `[DEVUELTA A ALMACÉN (${cantDevuelta} PZ): ${motivoTexto}]`;
-    mensaje = `✅ Salida anulada con éxito: Se reincorporaron ${cantDevuelta} PZ al inventario. Acomodar en: ${ubicacionDestino}`;
+    mensaje = `Salida anulada con éxito: Se reincorporaron ${cantDevuelta} PZ al inventario. Acomodar en: ${ubicacionDestino}`;
   } else {
     // Devolución Parcial: Reducir cantidad de salida y registrar contra-movimiento informativo
     const nuevaCant = cantOriginal - cantDevuelta;
@@ -4233,7 +4233,7 @@ app.post('/api/bitacora/:id/devolucion', (req, res) => {
       timestamp: now.toISOString()
     };
     store.movimientos.unshift(movReingreso);
-    mensaje = `✅ Devolución parcial procesada: Se reincorporaron ${cantDevuelta} PZ a ${ubicacionDestino}. Salida ajustada a ${nuevaCant} PZ.`;
+    mensaje = `Devolución parcial procesada: Se reincorporaron ${cantDevuelta} PZ a ${ubicacionDestino}. Salida ajustada a ${nuevaCant} PZ.`;
   }
 
   saveStore();
@@ -5859,7 +5859,7 @@ app.post('/api/confirmar-entradas-fotos', (req, res) => {
         numero_parte: it.numero_parte || (itemCat ? itemCat.numero_parte : 'S/N'),
         descripcion: it.descripcion || (itemCat ? itemCat.descripcion : 'Refacción'),
         marca: it.marca || (itemCat ? itemCat.marca : 'GENÉRICA'),
-        ubicacion: esPasoDirecto ? `PASO DIRECTO ➔ UNIDAD ${unidadDirecta || 'TALLER'}` : (itemCat ? `${itemCat.rack} / ${itemCat.nivel}` : 'Almacén General'),
+        ubicacion: esPasoDirecto ? `PASO DIRECTO -> UNIDAD ${unidadDirecta || 'TALLER'}` : (itemCat ? `${itemCat.rack} / ${itemCat.nivel}` : 'Almacén General'),
         cantidad: cant,
         proveedor: String(proveedor || 'MOSTRADOR / PROVEEDOR').trim().toUpperCase(),
         factura: folioGen,
@@ -6276,7 +6276,7 @@ function syncSalidaConTaller(mov) {
 
       if (!Array.isArray(u.historial)) u.historial = [];
       const eventoTexto = isSrv
-        ? `🛠️ Servicio Externo registrado: ${cant > 1 ? cant + 'x ' : ''}${piezaObj.descripcion} por ${piezaObj.proveedor || 'Proveedor'} ($${total.toLocaleString('es-MX', { minimumFractionDigits: 2 })} MXN) [Fact/Rem: ${mov.factura || folioMov || 'S/F'}]`
+        ? `Servicio Externo registrado: ${cant > 1 ? cant + 'x ' : ''}${piezaObj.descripcion} por ${piezaObj.proveedor || 'Proveedor'} ($${total.toLocaleString('es-MX', { minimumFractionDigits: 2 })} MXN) [Fact/Rem: ${mov.factura || folioMov || 'S/F'}]`
         : `Salida de Almacén registrada: ${cant}x ${piezaObj.descripcion} ($${total.toLocaleString('es-MX', { minimumFractionDigits: 2 })} MXN) [Folio #${folioMov || u.folio_almacen}]`;
 
       u.historial.unshift({
@@ -7217,10 +7217,10 @@ if (require.main === module) {
   app.listen(PORT, '0.0.0.0', () => {
     const localIp = getLocalIp();
     console.log(`\n======================================================`);
-    console.log(` 🚀 SISTEMA DE CONTROL CESS - ALMACÉN ACTIVO`);
-    console.log(` 💻 Local:            http://localhost:${PORT}/almacen`);
-    console.log(` 🏢 URL SCC Almacén:  http://localhost:${PORT}/almacen`);
-    console.log(` 📱 Red Local (LAN):  http://${localIp}:${PORT}/almacen`);
+    console.log(` SISTEMA DE CONTROL CESS - ALMACÉN ACTIVO`);
+    console.log(` Local:            http://localhost:${PORT}/almacen`);
+    console.log(` URL SCC Almacén:  http://localhost:${PORT}/almacen`);
+    console.log(` Red Local (LAN):  http://${localIp}:${PORT}/almacen`);
     console.log(`======================================================\n`);
   });
 }

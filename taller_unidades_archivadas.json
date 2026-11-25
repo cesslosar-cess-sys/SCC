@@ -2677,7 +2677,7 @@
       {
         "fecha": "19/11/2026",
         "hora": "09:41 p.m.",
-        "texto": "🏁 Unidad liberada de taller con Orden #4108: Salida de taller / Asignada a viaje.",
+        "texto": " Unidad liberada de taller con Orden #4108: Salida de taller / Asignada a viaje.",
         "mecanico": "Jefe de Taller",
         "porcentaje": 100
       }
@@ -3273,7 +3273,7 @@
       {
         "fecha": "19/11/2026",
         "hora": "05:45 p.m.",
-        "texto": "🏁 Unidad liberada de taller con Orden #4097: Salida de taller / Asignada a viaje.",
+        "texto": " Unidad liberada de taller con Orden #4097: Salida de taller / Asignada a viaje.",
         "mecanico": "Jefe de Taller",
         "porcentaje": 100
       }
@@ -3359,7 +3359,7 @@
       {
         "fecha": "19/11/2026",
         "hora": "05:44 p.m.",
-        "texto": "🏁 Unidad liberada de taller con Orden #4087: Salida de taller / Asignada a viaje.",
+        "texto": " Unidad liberada de taller con Orden #4087: Salida de taller / Asignada a viaje.",
         "mecanico": "Jefe de Taller",
         "porcentaje": 100
       }
@@ -4058,14 +4058,14 @@
       {
         "fecha": "19/11/2026",
         "hora": "05:44 p.m.",
-        "texto": "🏁 Unidad liberada de taller con Orden #4077: Salida de taller / Asignada a viaje.",
+        "texto": " Unidad liberada de taller con Orden #4077: Salida de taller / Asignada a viaje.",
         "mecanico": "Jefe de Taller",
         "porcentaje": 100
       },
       {
         "fecha": "14/11/2026",
         "hora": "10:58 a.m.",
-        "texto": "🏁 Unidad liberada de taller con Orden #4077: Asignada a viaje / Salió a ruta. Prueba liberacion",
+        "texto": " Unidad liberada de taller con Orden #4077: Asignada a viaje / Salió a ruta. Prueba liberacion",
         "mecanico": "Jefe de Taller",
         "porcentaje": 100
       }
@@ -4074,7 +4074,7 @@
     "ultimo_avance": {
       "fecha": "14/11/2026",
       "hora": "10:58 a.m.",
-      "texto": "🏁 Unidad liberada de taller con Orden #4077: Asignada a viaje / Salió a ruta. Prueba liberacion",
+      "texto": " Unidad liberada de taller con Orden #4077: Asignada a viaje / Salió a ruta. Prueba liberacion",
       "mecanico": "Jefe de Taller",
       "porcentaje": 100
     },
@@ -4455,7 +4455,7 @@
       {
         "fecha": "19/11/2026",
         "hora": "05:43 p.m.",
-        "texto": "🏁 Unidad liberada de taller con Orden #4092: Salida de taller / Asignada a viaje.",
+        "texto": " Unidad liberada de taller con Orden #4092: Salida de taller / Asignada a viaje.",
         "mecanico": "Jefe de Taller",
         "porcentaje": 100
       }
@@ -5698,7 +5698,7 @@
       {
         "fecha": "17/11/2026",
         "hora": "05:39 p.m.",
-        "texto": "🏁 Unidad liberada de taller con Orden #4062: Salida de taller / Asignada a viaje.",
+        "texto": " Unidad liberada de taller con Orden #4062: Salida de taller / Asignada a viaje.",
         "mecanico": "Jefe de Taller",
         "porcentaje": 100
       }
@@ -6123,7 +6123,7 @@
       {
         "fecha": "16/11/2026",
         "hora": "04:08 p.m.",
-        "texto": "🏁 Unidad liberada de taller con Orden #4094: Asignada a viaje.",
+        "texto": " Unidad liberada de taller con Orden #4094: Asignada a viaje.",
         "mecanico": "Jefe de Taller",
         "porcentaje": 100
       }
@@ -6164,7 +6164,7 @@
       {
         "fecha": "13/11/2026",
         "hora": "01:27 p.m.",
-        "texto": "🏁 Unidad liberada de taller con Orden #4099: Prueba.",
+        "texto": " Unidad liberada de taller con Orden #4099: Prueba.",
         "mecanico": "Jefe de Taller",
         "porcentaje": 100
       }

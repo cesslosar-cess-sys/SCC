@@ -71,7 +71,7 @@ function initFirebase() {
           }
         }
       } catch (errEnv) {
-        console.warn('⚠️ [CloudSync] Aviso al leer env variable:', errEnv.message);
+        console.warn('️ [CloudSync] Aviso al leer env variable:', errEnv.message);
       }
     }
 
@@ -90,17 +90,17 @@ function initFirebase() {
         }
         db = getFirestore();
         isInitialized = true;
-        console.log(`✅ [CloudSync] Conectado exitosamente a Google Cloud Firestore (${sa.project_id}) vía ${cand.source}`);
+        console.log(` [CloudSync] Conectado exitosamente a Google Cloud Firestore (${sa.project_id}) vía ${cand.source}`);
         return db;
       } catch (candErr) {
-        console.warn(`⚠️ [CloudSync] Falló candidato ${cand.source}:`, candErr.message);
+        console.warn(`️ [CloudSync] Falló candidato ${cand.source}:`, candErr.message);
       }
     }
 
-    console.warn('⚠️ [CloudSync] No se logró conectar a Firebase. Operando en modo disco local.');
+    console.warn('️ [CloudSync] No se logró conectar a Firebase. Operando en modo disco local.');
     return null;
   } catch (err) {
-    console.error('⚠️ [CloudSync] Error inicializando Firebase Admin:', err.message);
+    console.error('️ [CloudSync] Error inicializando Firebase Admin:', err.message);
     return null;
   }
 }
@@ -120,13 +120,13 @@ async function pullAlmacenData() {
   if (!isCloudEnabled()) return null;
 
   try {
-    console.log('🔄 [CloudSync] Descargando datos de Almacén desde Firestore...');
+    console.log(' [CloudSync] Descargando datos de Almacén desde Firestore...');
     const catDoc = await db.collection(COLL).doc('almacen_catalog').get();
     const metaDoc = await db.collection(COLL).doc('almacen_movimientos_meta').get();
     const extraMetaDoc = await db.collection(COLL).doc('almacen_metadata').get();
 
     if (!catDoc.exists && !metaDoc.exists) {
-      console.warn('⚠️ [CloudSync] No se encontraron documentos de Almacén en Firestore.');
+      console.warn('️ [CloudSync] No se encontraron documentos de Almacén en Firestore.');
       return null;
     }
 
@@ -171,10 +171,10 @@ async function pullAlmacenData() {
       facturas_registradas: extraMeta.facturas_registradas || []
     };
 
-    console.log(`✅ [CloudSync] Almacén descargado de la nube: ${Object.keys(catalog).length} refacciones, ${movimientos.length} movimientos.`);
+    console.log(` [CloudSync] Almacén descargado de la nube: ${Object.keys(catalog).length} refacciones, ${movimientos.length} movimientos.`);
     return reconstructed;
   } catch (err) {
-    console.error('❌ [CloudSync] Error descargando Almacén desde Firestore:', err.message);
+    console.error(' [CloudSync] Error descargando Almacén desde Firestore:', err.message);
     return null;
   }
 }
@@ -243,10 +243,10 @@ async function pushAlmacenData(data) {
         });
 
         await batch.commit();
-        console.log(`☁️ [CloudSync] Almacén guardado en la nube: ${Object.keys(catalog).length} partes, ${totalMovs} movimientos.`);
+        console.log(`️ [CloudSync] Almacén guardado en la nube: ${Object.keys(catalog).length} partes, ${totalMovs} movimientos.`);
         resolve(true);
       } catch (err) {
-        console.error('❌ [CloudSync] Error subiendo Almacén a Firestore:', err.message);
+        console.error(' [CloudSync] Error subiendo Almacén a Firestore:', err.message);
         resolve(false);
       }
     }, 250);
@@ -260,7 +260,7 @@ async function pullTallerData() {
   if (!isCloudEnabled()) return null;
 
   try {
-    console.log('🔄 [CloudSync] Descargando datos de Taller desde Firestore...');
+    console.log(' [CloudSync] Descargando datos de Taller desde Firestore...');
     const [unidadesSnap, archivadasSnap, bitacorasSnap, remolquesSnap, rescatesSnap, colsSnap, usuariosSnap] = await Promise.all([
       db.collection(COLL).doc('taller_unidades').get(),
       db.collection(COLL).doc('taller_archivadas').get(),
@@ -281,10 +281,10 @@ async function pullTallerData() {
       usuarios: usuariosSnap.exists ? JSON.parse(usuariosSnap.data().json_data || '[]') : null
     };
 
-    console.log(`✅ [CloudSync] Taller descargado de la nube: ${Array.isArray(result.unidades) ? result.unidades.length : 0} unidades activas.`);
+    console.log(` [CloudSync] Taller descargado de la nube: ${Array.isArray(result.unidades) ? result.unidades.length : 0} unidades activas.`);
     return result;
   } catch (err) {
-    console.error('❌ [CloudSync] Error descargando Taller desde Firestore:', err.message);
+    console.error(' [CloudSync] Error descargando Taller desde Firestore:', err.message);
     return null;
   }
 }
@@ -306,10 +306,10 @@ async function pushTallerData(unidades) {
           json_data: JSON.stringify(unidades),
           updatedAt: FieldValue.serverTimestamp()
         });
-        console.log(`☁️ [CloudSync] Taller guardado en la nube: ${unidades.length} unidades.`);
+        console.log(`️ [CloudSync] Taller guardado en la nube: ${unidades.length} unidades.`);
         resolve(true);
       } catch (err) {
-        console.error('❌ [CloudSync] Error subiendo unidades de Taller a Firestore:', err.message);
+        console.error(' [CloudSync] Error subiendo unidades de Taller a Firestore:', err.message);
         resolve(false);
       }
     }, 250);
@@ -328,7 +328,24 @@ async function pushTallerArchivadas(archivadas) {
       updatedAt: FieldValue.serverTimestamp()
     });
   } catch (err) {
-    console.error('❌ [CloudSync] Error subiendo archivadas a Firestore:', err.message);
+    console.error(' [CloudSync] Error subiendo archivadas a Firestore:', err.message);
+  }
+}
+
+/**
+ * PUSH de Cajas y Remolques a Firestore
+ */
+async function pushRemolquesData(remolques) {
+  if (!isCloudEnabled() || !Array.isArray(remolques)) return;
+  try {
+    await db.collection(COLL).doc('taller_remolques').set({
+      count: remolques.length,
+      json_data: JSON.stringify(remolques),
+      updatedAt: FieldValue.serverTimestamp()
+    });
+    console.log(`[CloudSync] Remolques guardados en la nube: ${remolques.length} unidades.`);
+  } catch (err) {
+    console.error('[CloudSync] Error subiendo remolques a Firestore:', err.message);
   }
 }
 
@@ -339,7 +356,7 @@ async function syncAllFromCloudToDisk(baseDir) {
   if (!isCloudEnabled()) return false;
 
   const rootDir = baseDir || __dirname;
-  console.log('🚀 [CloudSync] Verificando sincronización de arranque con Firestore...');
+  console.log(' [CloudSync] Verificando sincronización de arranque con Firestore...');
 
   try {
     // 1. Sincronizar Almacén
@@ -369,7 +386,7 @@ async function syncAllFromCloudToDisk(baseDir) {
             }
           } catch(e) {}
         });
-        console.log(`✅ [CloudSync] Almacén hidratado en disco local con ${cloudAlm.movimientos.length} movimientos.`);
+        console.log(` [CloudSync] Almacén hidratado en disco local con ${cloudAlm.movimientos.length} movimientos.`);
       }
     }
 
@@ -379,7 +396,7 @@ async function syncAllFromCloudToDisk(baseDir) {
       if (Array.isArray(cloudTaller.unidades)) {
         const tallerFile = path.join(rootDir, 'taller_db.json');
         fs.writeFileSync(tallerFile, JSON.stringify(cloudTaller.unidades, null, 2), 'utf8');
-        console.log(`✅ [CloudSync] Taller hidratado en disco local con ${cloudTaller.unidades.length} unidades activas.`);
+        console.log(` [CloudSync] Taller hidratado en disco local con ${cloudTaller.unidades.length} unidades activas.`);
       }
       if (Array.isArray(cloudTaller.archivadas)) {
         fs.writeFileSync(path.join(rootDir, 'taller_unidades_archivadas.json'), JSON.stringify(cloudTaller.archivadas, null, 2), 'utf8');
@@ -398,13 +415,13 @@ async function syncAllFromCloudToDisk(baseDir) {
       }
       if (Array.isArray(cloudTaller.usuarios) && cloudTaller.usuarios.length > 0) {
         fs.writeFileSync(path.join(rootDir, 'taller_usuarios.json'), JSON.stringify(cloudTaller.usuarios, null, 2), 'utf8');
-        console.log(`✅ [CloudSync] Roles y Usuarios de Taller hidratados desde Firestore.`);
+        console.log(` [CloudSync] Roles y Usuarios de Taller hidratados desde Firestore.`);
       }
     }
 
     return true;
   } catch (err) {
-    console.error('❌ [CloudSync] Error en syncAllFromCloudToDisk:', err.message);
+    console.error(' [CloudSync] Error en syncAllFromCloudToDisk:', err.message);
     return false;
   }
 }
@@ -420,9 +437,9 @@ async function pushTallerUsuarios(usuarios) {
       json_data: JSON.stringify(usuarios),
       updatedAt: FieldValue.serverTimestamp()
     });
-    console.log(`☁️ [CloudSync] Usuarios y Roles guardados en Firestore: ${usuarios.length} cuentas.`);
+    console.log(`️ [CloudSync] Usuarios y Roles guardados en Firestore: ${usuarios.length} cuentas.`);
   } catch (err) {
-    console.error('❌ [CloudSync] Error subiendo usuarios a Firestore:', err.message);
+    console.error(' [CloudSync] Error subiendo usuarios a Firestore:', err.message);
   }
 }
 
@@ -444,5 +461,6 @@ module.exports = {
   pushTallerData,
   pushTallerArchivadas,
   pushTallerUsuarios,
+  pushRemolquesData,
   syncAllFromCloudToDisk
 };
