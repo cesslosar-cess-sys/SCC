@@ -4413,14 +4413,19 @@
       "descripcion": "MANGUERA IZQ POST, DD15",
       "marca": "GEATES",
       "numero_parte": "134720000",
-      "foto_referencia": "",
-      "equivalencias": [],
-      "alias": [],
+      "foto_referencia": "/uploads/foto_1795643760431_91910.jpg",
+      "equivalencias": [
+        "TSP4X8W3RB"
+      ],
+      "alias": [
+        "MANGUERA DE SILICON REFORZADA CON ANILLOS"
+      ],
       "es_a_granel": false,
       "unidad": "PZ",
       "precio_unitario": 1562.8788,
       "stock_inicial": 3,
-      "stock_actual": 3
+      "stock_actual": 2,
+      "aprendizaje_ia": 1
     },
     "135625635": {
       "id": "135625635",
@@ -10909,14 +10914,14 @@
       "descripcion": "INYECTOR DE COMBUSTIBLE DD15",
       "marca": "DETROIT",
       "numero_parte": "RA4600701087S",
-      "foto_referencia": "",
+      "foto_referencia": "/uploads/foto_1795644482648_3700.jpg",
       "equivalencias": [],
       "alias": [],
       "es_a_granel": false,
       "unidad": "PZ",
       "precio_unitario": 10266.9,
       "stock_inicial": 0,
-      "stock_actual": 0
+      "stock_actual": -2
     },
     "EM36620": {
       "id": "EM36620",
@@ -16929,9 +16934,107 @@
       "almacen_id": "refacciones",
       "creado_en_salida": true,
       "fecha_creacion": "2026-11-19"
+    },
+    "TB34-108": {
+      "id": "TB34-108",
+      "rack": "Rack 8",
+      "nivel": "Nivel 1",
+      "descripcion": "ABRAZADERA DE PERNO CON RESORTE TIPO T PARA POST ENFRIADOR",
+      "marca": "GENERICA",
+      "numero_parte": "TB34-108",
+      "equivalencias": [],
+      "alias": [],
+      "es_a_granel": false,
+      "foto_referencia": "",
+      "unidad": "PZ",
+      "precio_unitario": 150,
+      "stock_inicial": 1,
+      "stock_actual": 0,
+      "almacen": "Almacén de Refacciones",
+      "almacen_id": "refacciones",
+      "creado_en_salida": true,
+      "fecha_creacion": "2026-11-25"
     }
   },
   "movimientos": [
+    {
+      "id": "mov_1795644722190_0_5506",
+      "tipo": "S",
+      "tipo_movimiento": "SALIDA",
+      "es_servicio": false,
+      "fecha": "2026-11-25",
+      "hora": "10:12:02 p.m.",
+      "id_pieza": "RA4600701087S",
+      "numero_parte": "RA4600701087S",
+      "descripcion": "INYECTOR DE COMBUSTIBLE DD15",
+      "marca": "DETROIT",
+      "proveedor": "",
+      "factura": "",
+      "almacen": "Almacén de Refacciones",
+      "almacen_id": "refacciones",
+      "ubicacion": "Rack 4 / Nivel 3",
+      "cantidad": 2,
+      "unidad_camion": "48",
+      "folio": "4096",
+      "solicitante": "MARTIN ALVARADO",
+      "foto": "/uploads/foto_1795644482648_3700.jpg",
+      "costo_unitario": 10266.9,
+      "costo_total": 20533.8,
+      "notas": "Despacho por foto: Despacho de Patio / Taller",
+      "timestamp": "2026-11-25T22:12:02.190Z",
+      "orden_compra": "",
+      "editado": true,
+      "fecha_edicion": "2026-11-25T22:14:09.061Z",
+      "editado_por": "César Almacén (Administrador)"
+    },
+    {
+      "id": "mov_1795644244019_0_8934",
+      "tipo": "S",
+      "tipo_movimiento": "SALIDA",
+      "es_servicio": false,
+      "fecha": "2026-11-25",
+      "hora": "10:04:04 p.m.",
+      "id_pieza": "134720000",
+      "numero_parte": "134720000",
+      "descripcion": "MANGUERA IZQ POST, DD15",
+      "marca": "GEATES",
+      "proveedor": "",
+      "factura": "",
+      "almacen": "Almacén de Refacciones",
+      "almacen_id": "refacciones",
+      "ubicacion": "Rack 2 / Nivel 3",
+      "cantidad": 1,
+      "unidad_camion": "30",
+      "folio": "4103",
+      "solicitante": "MARTIN ALVARADO",
+      "foto": "/uploads/foto_1795643760431_91910.jpg",
+      "costo_unitario": 1562.8788,
+      "costo_total": 1562.8788,
+      "notas": "Despacho por foto: Despacho de Patio / Taller",
+      "timestamp": "2026-11-25T22:04:04.018Z"
+    },
+    {
+      "id": "mov_1795644211111_810",
+      "tipo": "S",
+      "fecha": "2026-11-25",
+      "hora": "10:03:31 p.m.",
+      "id_pieza": "TB34-108",
+      "numero_parte": "TB34-108",
+      "descripcion": "ABRAZADERA DE PERNO CON RESORTE TIPO T PARA POST ENFRIADOR",
+      "marca": "GENERICA",
+      "almacen": "Almacén de Refacciones",
+      "almacen_id": "refacciones",
+      "ubicacion": "Rack 8 / Nivel 1",
+      "cantidad": 1,
+      "unidad_camion": "30",
+      "folio": "4103",
+      "solicitante": "JEFE DE TALLER",
+      "foto": "",
+      "costo_unitario": 150,
+      "costo_total": 150,
+      "notas": "[PIEZA NUEVA REGISTRADA EN CATÁLOGO DURANTE ESTA SALIDA]",
+      "timestamp": "2026-11-25T22:03:31.111Z"
+    },
     {
       "id": "mov_1795129594681_0_7415",
       "tipo": "S",
@@ -34986,7 +35089,11 @@
           "descripcion": "TUERCA DE SEGURIDAD PARA YUGO DE FLECHA CARDÁN",
           "costo_unitario": 320
         }
-      ]
+      ],
+      "condicion_pago": "CONTADO",
+      "dias_credito": 0,
+      "estado_pago": "PAGADO",
+      "fecha_vencimiento": "2026-11-19"
     }
   ],
   "usuarios": [
@@ -35049,6 +35156,24 @@
     }
   ],
   "memoria_ia": [
+    {
+      "id": "mem_1795643861418_917",
+      "texto_original": "MANGUERA DE SILICON REFORZADA CON ANILLOS",
+      "texto_normalizado": "manguera de silicon reforzada con anillos",
+      "codigo_extraido": "TSP4X8W3RB",
+      "marca_detectada": "THREE STAR",
+      "proveedor": "",
+      "id_pieza_catalogo": "134720000",
+      "numero_parte_catalogo": "134720000",
+      "descripcion_catalogo": "MANGUERA IZQ POST, DD15",
+      "marca_catalogo": "GEATES",
+      "rack": "Rack 2",
+      "nivel": "Nivel 3",
+      "origen": "correccion_manual_foto_despacho",
+      "veces_utilizado": 1,
+      "fecha_registro": "2026-11-25",
+      "timestamp": "2026-11-25T21:57:41.418Z"
+    },
     {
       "id": "mem_1795127026509_665",
       "texto_original": "BOLSA DE AIRE",

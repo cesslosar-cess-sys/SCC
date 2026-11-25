@@ -2982,6 +2982,7 @@
                             <th class="p-2.5 text-center">Cantidad</th>
                             <th class="p-2.5 text-right">P. Unitario</th>
                             <th class="p-2.5 text-right">Subtotal</th>
+                            <th class="p-2.5 text-right">Total c/ IVA</th>
                             <th class="p-2.5 text-center">Acción</th>
                         </tr>
                     </thead>
@@ -5256,14 +5257,15 @@
             if (unidad.folio_almacen) {
                 const fActivo = String(unidad.folio_almacen).trim();
                 const piezasFolio = (Array.isArray(unidad.piezas) ? unidad.piezas : []).filter(p => {
-                    const pF = String(p.folio_almacen || p.folio || '').trim();
+                    const pF = String(p.folio_almacen || p.folio || (unidad.folio_almacen === fActivo ? fActivo : '')).trim();
                     return pF && pF === fActivo;
                 });
                 const cantPiezas = piezasFolio.reduce((acc, p) => acc + (Number(p.cantidad) || 1), 0);
                 const costoRefFolio = piezasFolio.reduce((acc, p) => acc + (Number(p.costo_total) || (Number(p.cantidad || 1) * Number(p.precio_unitario || 0))), 0);
-                const costoTotalCard = (Number(unidad.costo_mano_obra) || 0) + (Number(unidad.costo_externo) || 0) + costoRefFolio;
+                const costoRefFinal = costoRefFolio > 0 ? costoRefFolio : (Number(unidad.costo_refacciones) || 0);
+                const costoTotalCard = (Number(unidad.costo_mano_obra) || 0) + (Number(unidad.costo_externo) || 0) + costoRefFinal;
                 const txtCostoCard = cantPiezas > 0 
-                    ? (costoRefFolio > 0 ? formatearMoneda(costoTotalCard) : '$0.00 MXN (Por cotizar)')
+                    ? (costoRefFinal > 0 ? formatearMoneda(costoTotalCard) : '$0.00 MXN (Por cotizar)')
                     : 'Por surtir';
 
                 stripFolioAlmacen = `
@@ -9630,6 +9632,10 @@
                 let u = baseDatos.find(x => String(x.id).trim() === String(id).trim());
                 if (!u) u = (cacheUnidadesLiberadas || []).find(x => String(x.id).trim() === String(id).trim());
                 if (!u && typeof cacheRemolques !== 'undefined') u = (cacheRemolques || []).find(x => String(x.id).trim().toUpperCase() === String(id).trim().toUpperCase());
+                if (!u && typeof cacheRescates !== 'undefined') {
+                    const resc = cacheRescates.find(x => String(x.id).trim() === String(id).trim() || String(x.unidad).trim() === String(id).trim());
+                    if (resc) u = { id: resc.unidad, folio_almacen: resc.folio || resc.folio_almacen, tipo_procedimiento: 'rescate', sucursal: resc.sucursal || 'Ruta' };
+                }
                 if (!u) return;
                 if (!u.folio_almacen) {
                     abrirModalVincularAlmacen(event, id);
@@ -9651,7 +9657,7 @@
             }
 
             const tbody = document.getElementById('det-folio-tabla-body');
-            tbody.innerHTML = '<tr><td colspan="7" class="p-4 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-1 text-indigo-400"></i> Cargando desglose oficial de refacciones...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="8" class="p-4 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-1 text-indigo-400"></i> Cargando desglose oficial de refacciones...</td></tr>';
 
             document.getElementById('modal-detalle-folio-almacen').classList.remove('hidden');
 
@@ -9662,14 +9668,20 @@
                     document.getElementById('det-folio-solicitante').innerText = json.solicitante || 'Personal Taller';
                     
                     let costoCalculado = Number(json.costo_total !== undefined ? json.costo_total : (json.costoTotal || 0));
-                    document.getElementById('det-folio-costo-total').innerText = formatearMoneda(costoCalculado);
+                    let costoConIva = Number(json.costo_total_con_iva !== undefined ? json.costo_total_con_iva : (costoCalculado * 1.16));
+                    let totalPzs = Number(json.total_piezas !== undefined ? json.total_piezas : 0);
+
+                    document.getElementById('det-folio-costo-total').innerHTML = `
+                        <span class="text-[#DFB743] font-bold block">${formatearMoneda(costoCalculado)}</span>
+                        <span class="text-[10px] text-emerald-400 font-mono font-normal block">c/ IVA: ${formatearMoneda(costoConIva)} (${totalPzs} pzs)</span>
+                    `;
 
                     // Calcular subtotales preventivo vs correctivo
                     let cPrev = 0, cCorr = 0;
                     (json.items || []).forEach(it => {
-                        const tot = Number(it.total_costo || (it.cantidad * (it.precio_unitario || 0))) || 0;
+                        const tot = Number(it.costo_total !== undefined ? it.costo_total : (it.total_costo || (it.cantidad * (it.precio_unitario || 0)))) || 0;
                         const pzMatch = (u.piezas || []).find(p => String(p.id) === String(it.id_item) || String(p.numero_parte) === String(it.numero_parte));
-                        it.tipo_trabajo = (pzMatch && pzMatch.tipo_trabajo) || clasificarTextoPieza(it.descripcion, it.numero_parte);
+                        it.tipo_trabajo = (pzMatch && pzMatch.tipo_trabajo) || it.tipo_trabajo || clasificarTextoPieza(it.descripcion, it.numero_parte);
                         if (it.tipo_trabajo === 'preventivo') cPrev += tot;
                         else cCorr += tot;
                     });
@@ -9684,7 +9696,7 @@
                     if (!json.items || json.items.length === 0) {
                         tbody.innerHTML = `
                             <tr>
-                                <td colspan="7" class="p-8 text-center text-slate-400">
+                                <td colspan="8" class="p-8 text-center text-slate-400">
                                     <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-slate-800 text-slate-400 mb-2">
                                         <i class="fa-solid fa-boxes-stacked text-xl"></i>
                                     </div>
@@ -9697,12 +9709,19 @@
                         tbody.innerHTML = json.items.map(it => {
                             const safeDesc = (it.descripcion || '').replace(/'/g, "\\'");
                             const pu = Number(it.precio_unitario || 0);
-                            const tot = Number(it.costo_total !== undefined ? it.costo_total : (it.total_costo || (it.cantidad * pu))) || 0;
+                            const cant = Number(it.cantidad) || 1;
+                            const tot = Number(it.costo_total !== undefined ? it.costo_total : (it.total_costo || (cant * pu))) || 0;
+                            const subtotal = Math.round(tot * 100) / 100;
+                            const totConIva = Number(it.total_con_iva !== undefined ? it.total_con_iva : (subtotal * 1.16)) || 0;
+
                             const precioHtml = pu > 0 
                                 ? formatearMoneda(pu)
                                 : `<span class="text-amber-400 font-bold">$0.00 MXN</span> <span class="bg-amber-950 text-amber-300 text-[9px] px-1 py-0.5 rounded border border-amber-700/60 ml-0.5 font-bold">Por cotizar</span>`;
-                            const totHtml = tot > 0 
-                                ? formatearMoneda(tot)
+                            const totHtml = subtotal > 0 
+                                ? formatearMoneda(subtotal)
+                                : `<span class="text-amber-400 font-bold">$0.00 MXN</span>`;
+                            const totConIvaHtml = totConIva > 0
+                                ? formatearMoneda(totConIva)
                                 : `<span class="text-amber-400 font-bold">$0.00 MXN</span>`;
                             const btnText = pu > 0 ? '<i class="fa-solid fa-pencil text-[10px]"></i> Ajustar' : '<i class="fa-solid fa-dollar-sign text-[10px]"></i> Asignar Costo';
                             const btnClass = pu > 0 ? 'bg-[#282A2E] hover:bg-[#3A3D42] text-slate-300 hover:text-white border border-[#3A3D42]' : 'bg-amber-500 hover:bg-amber-400 text-black font-black border border-amber-400 shadow';
@@ -9716,11 +9735,12 @@
                                             ${it.tipo_trabajo === 'preventivo' ? 'Preventivo' : 'Correctivo'}
                                         </button>
                                     </td>
-                                    <td class="p-2.5 text-center font-bold text-slate-200 font-mono">${it.cantidad}</td>
+                                    <td class="p-2.5 text-center font-bold text-slate-200 font-mono">${cant} PZ</td>
                                     <td class="p-2.5 text-right font-mono text-slate-300">${precioHtml}</td>
                                     <td class="p-2.5 text-right font-mono text-[#DFB743] font-bold">${totHtml}</td>
+                                    <td class="p-2.5 text-right font-mono text-emerald-400 font-bold">${totConIvaHtml}</td>
                                     <td class="p-2.5 text-center">
-                                        <button onclick="abrirModalEditarPiezaFolio('${it.id_item || it.id}', ${it.cantidad}, ${pu}, '${safeDesc}')" class="${btnClass} px-2 py-0.5 rounded text-[11px] font-bold transition flex items-center gap-1 mx-auto" title="Asignar o editar precio/cantidad">
+                                        <button onclick="abrirModalEditarPiezaFolio('${it.id_item || it.id}', ${cant}, ${pu}, '${safeDesc}')" class="${btnClass} px-2 py-0.5 rounded text-[11px] font-bold transition flex items-center gap-1 mx-auto" title="Asignar o editar precio/cantidad">
                                             ${btnText}
                                         </button>
                                     </td>
@@ -9731,12 +9751,18 @@
                 } else {
                     const fActivo = String(u.folio_almacen || '').trim();
                     const piezas = (Array.isArray(u.piezas) ? u.piezas : []).filter(pz => {
-                        const pzF = String(pz.folio_almacen || pz.folio || '').trim();
+                        const pzF = String(pz.folio_almacen || pz.folio || (u.folio_almacen === fActivo ? fActivo : '')).trim();
                         return pzF && pzF === fActivo;
                     });
                     const costo = piezas.reduce((acc, p) => acc + (Number(p.costo_total) || ((Number(p.cantidad) || 1) * (Number(p.precio_unitario) || 0))), 0);
+                    const costoConIva = Math.round(costo * 1.16 * 100) / 100;
+                    const totalPzs = piezas.reduce((acc, p) => acc + (Number(p.cantidad) || 1), 0);
+
                     document.getElementById('det-folio-solicitante').innerText = 'Almacén Central';
-                    document.getElementById('det-folio-costo-total').innerText = formatearMoneda(costo);
+                    document.getElementById('det-folio-costo-total').innerHTML = `
+                        <span class="text-[#DFB743] font-bold block">${formatearMoneda(costo)}</span>
+                        <span class="text-[10px] text-emerald-400 font-mono font-normal block">c/ IVA: ${formatearMoneda(costoConIva)} (${totalPzs} pzs)</span>
+                    `;
 
                     if (chipsEl) {
                         chipsEl.innerHTML = `
@@ -9746,13 +9772,15 @@
                     }
 
                     if (piezas.length === 0) {
-                        tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-amber-300/80 italic bg-amber-950/20 rounded-xl"><i class="fa-solid fa-clock mr-1.5"></i> Folio #${u.folio_almacen} registrado y vinculado. En espera de surtido de refacciones desde Almacén.</td></tr>`;
+                        tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-amber-300/80 italic bg-amber-950/20 rounded-xl"><i class="fa-solid fa-clock mr-1.5"></i> Folio #${u.folio_almacen} registrado y vinculado. En espera de surtido de refacciones desde Almacén.</td></tr>`;
                     } else {
                         tbody.innerHTML = piezas.map(it => {
                             const safeDesc = (it.descripcion || '').replace(/'/g, "\\'");
                             const pTipo = it.tipo_trabajo || clasificarTextoPieza(it.descripcion, it.numero_parte);
                             const puVal = Number(it.precio_unitario || 0);
-                            const totVal = Number(it.costo_total !== undefined ? it.costo_total : (it.total_costo || (it.cantidad * puVal))) || 0;
+                            const cantVal = Number(it.cantidad || 1);
+                            const totVal = Number(it.costo_total !== undefined ? it.costo_total : (it.total_costo || (cantVal * puVal))) || 0;
+                            const totConIva = Math.round(totVal * 1.16 * 100) / 100;
                             return `
                                 <tr class="hover:bg-[#141518]/60 transition text-xs">
                                     <td class="p-2.5 font-mono text-indigo-300 font-bold">${it.numero_parte || '--'}</td>
@@ -9762,11 +9790,12 @@
                                             ${pTipo === 'preventivo' ? 'Preventivo' : 'Correctivo'}
                                         </button>
                                     </td>
-                                    <td class="p-2.5 text-center font-bold text-slate-200 font-mono">${it.cantidad || 1}</td>
+                                    <td class="p-2.5 text-center font-bold text-slate-200 font-mono">${cantVal} PZ</td>
                                     <td class="p-2.5 text-right font-mono text-slate-400">${formatearMoneda(puVal)}</td>
                                     <td class="p-2.5 text-right font-mono text-[#DFB743] font-bold">${formatearMoneda(totVal)}</td>
+                                    <td class="p-2.5 text-right font-mono text-emerald-400 font-bold">${formatearMoneda(totConIva)}</td>
                                     <td class="p-2.5 text-center">
-                                        <button onclick="abrirModalEditarPiezaFolio('${it.id}', ${it.cantidad || 1}, ${Number(it.precio_unitario||0)}, '${safeDesc}')" class="bg-amber-950/70 hover:bg-amber-900 text-amber-300 border border-amber-700/60 px-2 py-0.5 rounded text-[11px] font-bold transition flex items-center gap-1 mx-auto" title="Modificar pieza">
+                                        <button onclick="abrirModalEditarPiezaFolio('${it.id}', ${cantVal}, ${puVal}, '${safeDesc}')" class="bg-amber-950/70 hover:bg-amber-900 text-amber-300 border border-amber-700/60 px-2 py-0.5 rounded text-[11px] font-bold transition flex items-center gap-1 mx-auto" title="Modificar pieza">
                                             <i class="fa-solid fa-pencil text-[10px]"></i> Ajustar
                                         </button>
                                     </td>
@@ -9776,7 +9805,7 @@
                     }
                 }
             } catch(e) {
-                tbody.innerHTML = '<tr><td colspan="7" class="p-4 text-center text-red-400">Error al consultar desglose de almacén.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="8" class="p-4 text-center text-red-400">Error al consultar desglose de almacén.</td></tr>';
             }
         } catch(errGral) {
             console.error('[Error al abrir detalle folio]:', errGral);
@@ -10516,9 +10545,9 @@
                                         <div class="flex items-center gap-2 flex-wrap">
                                             <h3 class="text-base font-black text-white">Unidad ${r.unidad}</h3>
                                             <span class="text-[10px] bg-[#141518] px-2 py-0.5 rounded border border-[#3A3D42] text-slate-300 font-bold">${r.sucursal || 'Apodaca'}</span>
-                                            <span class="text-[10px] font-mono text-amber-300 font-bold bg-amber-950/80 px-2 py-0.5 rounded border border-amber-600/60 flex items-center gap-1">
+                                            <button onclick="abrirDetalleFolioAlmacen(event, '${r.unidad}')" class="text-[10px] font-mono text-amber-300 font-bold bg-amber-950/80 hover:bg-amber-900 px-2 py-0.5 rounded border border-amber-600/60 flex items-center gap-1 transition cursor-pointer" title="Clic para ver refacciones de este folio en Almacén">
                                                 <i class="fa-solid fa-receipt text-amber-400"></i> Folio #${r.folio || r.id}
-                                            </span>
+                                            </button>
                                         </div>
                                         <p class="text-xs text-slate-400">Operador: <span class="text-slate-200 font-bold">${r.operador || 'No asignado'}</span></p>
                                     </div>
@@ -11305,7 +11334,7 @@
                     const tieneFolioAlmacen = !!(r.folio_almacen && String(r.folio_almacen).trim());
                     const folioBadge = tieneFolioAlmacen ? `<span class="bg-blue-950 text-blue-300 font-mono text-[9px] px-1.5 py-0.5 rounded border border-blue-800" title="Folio de Almacén"><i class="fa-solid fa-boxes-stacked mr-1"></i>#${r.folio_almacen}</span>` : '';
                     const fechaDisplay = r.fechaIngreso || r.fecha || 'Hoy';
-                    const cantPiezas = Array.isArray(r.piezas) ? r.piezas.length : 0;
+                    const cantPiezas = Array.isArray(r.piezas) ? r.piezas.reduce((acc, p) => acc + (Number(p.cantidad) || 1), 0) : 0;
                     const costoRefacc = Number(r.costo_refacciones || r.costo || 0);
 
                     const stripAlmacenHtml = tieneFolioAlmacen ? `
@@ -11313,10 +11342,10 @@
                             <div class="flex items-center gap-1.5 flex-wrap">
                                 <i class="fa-solid fa-boxes-stacked text-blue-400 text-xs"></i>
                                 <span class="font-mono font-bold text-[10px] text-blue-200">ALMACÉN FOLIO #${r.folio_almacen}</span>
-                                <span class="text-[9px] text-blue-300 bg-blue-900/80 px-1.5 py-0.5 rounded border border-blue-700 font-bold">${cantPiezas} refacciones</span>
+                                <span class="text-[9px] text-blue-300 bg-blue-900/80 px-1.5 py-0.5 rounded border border-blue-700 font-bold">${cantPiezas > 0 ? `${cantPiezas} ${cantPiezas === 1 ? 'pieza surtida' : 'piezas surtidas'}` : 'Sin piezas surtidas'}</span>
                             </div>
                             <div class="flex items-center gap-1">
-                                <span class="font-mono font-black text-xs text-emerald-400 group-hover/strip:scale-105 transition">${formatearMoneda(costoRefacc)}</span>
+                                <span class="font-mono font-black text-xs text-emerald-400 group-hover/strip:scale-105 transition">${cantPiezas > 0 ? (costoRefacc > 0 ? formatearMoneda(costoRefacc) : '$0.00 MXN') : 'Por surtir'}</span>
                                 <i class="fa-solid fa-chevron-right text-[10px] text-blue-400"></i>
                             </div>
                         </div>

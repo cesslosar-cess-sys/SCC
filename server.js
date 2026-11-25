@@ -624,8 +624,9 @@ function formatearFechaTitulo(fechaISO) {
 }
 
 // Normalización de Refacciones y Materiales
-function normalizarPieza(p, idx = 0) {
+function normalizarPieza(p, idx = 0, fallbackFolio = '') {
     if (!p) return null;
+    const folioStr = String((p && (p.folio_almacen || p.folio)) || fallbackFolio || '').trim();
     if (typeof p === 'string') {
         return {
             id: `pz_leg_${idx}_${Date.now()}`,
@@ -637,10 +638,14 @@ function normalizarPieza(p, idx = 0) {
             unidad_medida: 'PZ',
             precio_unitario: 0,
             costo_total: 0,
+            folio_almacen: folioStr,
+            folio: folioStr,
+            solicitante: 'Almacén',
+            tipo_trabajo: clasificarPiezaPreventivoOCorrectivo(p, ''),
             rack: '',
             nivel: '',
             stock_disponible: 0,
-            estado: 'SOLICITADA_ALMACEN', // SOLICITADA_ALMACEN, SALIDA_AUTORIZADA, EN_ORDEN_COMPRA, RECIBIDA_TALLER, INSTALADA
+            estado: 'RECIBIDA_TALLER',
             fecha_solicitud: new Date().toISOString(),
             folio_oc: '',
             proveedor_oc: '',
@@ -649,6 +654,7 @@ function normalizarPieza(p, idx = 0) {
             fecha_autorizacion: '',
             recibido_por: '',
             fecha_recepcion: '',
+            hora_recepcion: '',
             instalado_por: '',
             fecha_instalacion: '',
             notas: ''
@@ -667,10 +673,14 @@ function normalizarPieza(p, idx = 0) {
         unidad_medida: p.unidad_medida || p.unidad || 'PZ',
         precio_unitario: pu,
         costo_total: costoCalculado,
+        folio_almacen: folioStr,
+        folio: folioStr,
+        solicitante: p.solicitante || 'Almacén',
+        tipo_trabajo: p.tipo_trabajo || clasificarPiezaPreventivoOCorrectivo(p.descripcion, p.numero_parte),
         rack: p.rack || '',
         nivel: p.nivel || '',
         stock_disponible: p.stock_disponible !== undefined ? Number(p.stock_disponible) : (p.stock_actual !== undefined ? Number(p.stock_actual) : 0),
-        estado: p.estado || 'SOLICITADA_ALMACEN',
+        estado: p.estado || 'RECIBIDA_TALLER',
         fecha_solicitud: p.fecha_solicitud || new Date().toISOString(),
         folio_oc: p.folio_oc || '',
         proveedor_oc: p.proveedor_oc || '',
@@ -678,7 +688,8 @@ function normalizarPieza(p, idx = 0) {
         autorizado_por: p.autorizado_por || '',
         fecha_autorizacion: p.fecha_autorizacion || '',
         recibido_por: p.recibido_por || '',
-        fecha_recepcion: p.fecha_recepcion || '',
+        fecha_recepcion: p.fecha_recepcion || p.fecha || '',
+        hora_recepcion: p.hora_recepcion || p.hora || '',
         instalado_por: p.instalado_por || '',
         fecha_instalacion: p.fecha_instalacion || '',
         notas: p.notas || ''
@@ -764,8 +775,9 @@ function getPiezaPrecioUnitario(m, catalog) {
         return catPrice;
     }
 
-    if (movPrice > 0) return movPrice;
+    // Regla ERP Almacén: Priorizar precio oficial actualizado en catálogo de almacén (> 0), de lo contrario usar precio del movimiento
     if (catPrice > 0) return catPrice;
+    if (movPrice > 0) return movPrice;
     return 0;
 }
 
@@ -1116,7 +1128,7 @@ function getUnidades() {
         if (Array.isArray(unidades)) {
             unidades.forEach(u => {
                 if (Array.isArray(u.piezas) && u.piezas.length > 0) {
-                    u.piezas = u.piezas.map((p, idx) => normalizarPieza(p, idx)).filter(Boolean);
+                    u.piezas = u.piezas.map((p, idx) => normalizarPieza(p, idx, u.folio_almacen)).filter(Boolean);
                 } else if (!Array.isArray(u.piezas)) {
                     u.piezas = [];
                 }
@@ -1260,7 +1272,7 @@ function saveUnidades(incomingUnidades, autor = 'Sistema') {
         if (u.costo_mano_obra !== undefined) u.costo_mano_obra = Math.round((Number(u.costo_mano_obra) || 0) * 100) / 100;
         if (u.costo_externo !== undefined) u.costo_externo = Math.round((Number(u.costo_externo) || 0) * 100) / 100;
         if (Array.isArray(u.piezas) && u.piezas.length > 0) {
-            u.piezas = u.piezas.map((p, idx) => normalizarPieza(p, idx)).filter(Boolean);
+            u.piezas = u.piezas.map((p, idx) => normalizarPieza(p, idx, u.folio_almacen)).filter(Boolean);
         }
     });
 
@@ -4630,10 +4642,15 @@ app.get('/api/almacen/folio/:folio/detalle', (req, res) => {
                 return pzF && pzF === folio;
             });
             if (piezasFolio.length > 0) {
+                let totalPiezasCount = 0;
                 const items = piezasFolio.map((pz, idx) => {
                     const pu = Number(pz.precio_unitario) || 0;
                     const cant = Number(pz.cantidad) || 1;
-                    const tot = Number(pz.costo_total !== undefined ? pz.costo_total : (pu * cant));
+                    totalPiezasCount += cant;
+                    const tot = Math.round((Number(pz.costo_total !== undefined ? pz.costo_total : (pu * cant))) * 100) / 100;
+                    const subtotal = tot;
+                    const totConIva = Math.round(subtotal * 1.16 * 100) / 100;
+                    const puConIva = Math.round(pu * 1.16 * 100) / 100;
                     return {
                         id_item: pz.id || 'pz_' + idx,
                         id_pieza: pz.id_pieza || '',
@@ -4642,15 +4659,19 @@ app.get('/api/almacen/folio/:folio/detalle', (req, res) => {
                         marca: pz.marca || '',
                         cantidad: cant,
                         precio_unitario: pu,
+                        precio_con_iva: puConIva,
+                        subtotal: subtotal,
                         total_costo: tot,
                         costo_total: tot,
+                        total_con_iva: totConIva,
                         fecha: pz.fecha_recepcion || '--',
                         solicitante: pz.solicitante || 'Personal Taller',
                         unidad: uMatch.id,
                         tipo_trabajo: pz.tipo_trabajo || clasificarPiezaPreventivoOCorrectivo(pz.descripcion, pz.numero_parte)
                     };
                 });
-                const costoTotal = items.reduce((acc, it) => acc + (Number(it.costo_total) || 0), 0);
+                const costoTotal = Math.round(items.reduce((acc, it) => acc + (Number(it.costo_total) || 0), 0) * 100) / 100;
+                const totalConIva = Math.round(items.reduce((acc, it) => acc + (Number(it.total_con_iva) || 0), 0) * 100) / 100;
                 return res.json({
                     success: true,
                     folio,
@@ -4658,8 +4679,12 @@ app.get('/api/almacen/folio/:folio/detalle', (req, res) => {
                     solicitante: 'Personal Taller',
                     fecha: items[0]?.fecha || '--',
                     items,
-                    costo_total: Math.round(costoTotal * 100) / 100,
-                    costoTotal: Math.round(costoTotal * 100) / 100
+                    total_piezas: totalPiezasCount,
+                    total_renglones: items.length,
+                    costo_total: costoTotal,
+                    costoTotal: costoTotal,
+                    costo_iva: Math.round((totalConIva - costoTotal) * 100) / 100,
+                    costo_total_con_iva: totalConIva
                 });
             }
         }
@@ -4671,16 +4696,22 @@ app.get('/api/almacen/folio/:folio/detalle', (req, res) => {
             solicitante: uMatch ? (uMatch.solicitante || 'Personal Taller') : 'Almacén Central',
             fecha: '--',
             items: [],
+            total_piezas: 0,
+            total_renglones: 0,
             costo_total: 0,
             costoTotal: 0,
+            costo_iva: 0,
+            costo_total_con_iva: 0,
             mensaje: 'Folio activo en taller, pendiente de surtido de refacciones en almacén'
         });
     }
 
+    let totalPiezasCount = 0;
     const items = matches.map(m => {
         const itemCat = catalog[m.id_pieza] || Object.values(catalog).find(c => c.numero_parte && c.numero_parte === m.numero_parte) || {};
         let pu = getPiezaPrecioUnitario(m, catalog);
         const cant = Number(m.cantidad) || 1;
+        totalPiezasCount += cant;
 
         // Si el precio de almacén viene en 0, verificar si la unidad ya tiene esta pieza con precio válido
         if (pu <= 0 && uMatch && Array.isArray(uMatch.piezas)) {
@@ -4690,7 +4721,10 @@ app.get('/api/almacen/folio/:folio/detalle', (req, res) => {
             }
         }
 
-        const total = cant * pu;
+        const total = Math.round(cant * pu * 100) / 100;
+        const subtotal = total;
+        const totConIva = Math.round(subtotal * 1.16 * 100) / 100;
+        const puConIva = Math.round(pu * 1.16 * 100) / 100;
         return {
             id_item: m.id || m.numero_parte,
             id_pieza: m.id_pieza,
@@ -4699,16 +4733,21 @@ app.get('/api/almacen/folio/:folio/detalle', (req, res) => {
             marca: m.marca || itemCat.marca || '',
             cantidad: cant,
             precio_unitario: pu,
+            precio_con_iva: puConIva,
+            subtotal: subtotal,
             total_costo: total,
             costo_total: total,
+            total_con_iva: totConIva,
             fecha: m.fecha || m.fecha_salida || '--',
             solicitante: m.solicitante || m.entregado_a || '--',
-            unidad: m.unidad_camion || m.unidad || '--'
+            unidad: m.unidad_camion || m.unidad || '--',
+            tipo_trabajo: m.tipo_trabajo || clasificarPiezaPreventivoOCorrectivo(m.descripcion || itemCat.descripcion, m.numero_parte || itemCat.numero_parte)
         };
     });
 
     let costoTotal = items.reduce((acc, it) => acc + (Number(it.costo_total !== undefined ? it.costo_total : it.total_costo) || 0), 0);
     costoTotal = Math.round(costoTotal * 100) / 100;
+    const totalConIva = Math.round(items.reduce((acc, it) => acc + (Number(it.total_con_iva) || 0), 0) * 100) / 100;
 
     res.json({
         success: true,
@@ -4717,8 +4756,12 @@ app.get('/api/almacen/folio/:folio/detalle', (req, res) => {
         solicitante: matches[0].solicitante || matches[0].entregado_a || '--',
         fecha: matches[0].fecha || matches[0].fecha_salida || '--',
         items,
+        total_piezas: totalPiezasCount,
+        total_renglones: items.length,
         costo_total: costoTotal,
-        costoTotal: costoTotal
+        costoTotal: costoTotal,
+        costo_iva: Math.round((totalConIva - costoTotal) * 100) / 100,
+        costo_total_con_iva: totalConIva
     });
 });
 
