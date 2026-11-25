@@ -880,36 +880,38 @@ function sincronizarFoliosConAlmacen(origen = 'Watcher Almacén') {
 
             // Si la unidad tiene un folio asignado, purgar cualquier pieza residual de folios anteriores
             if (folioBuscado && Array.isArray(unidad.piezas) && unidad.piezas.length > 0) {
-                unidad.piezas = unidad.piezas.filter(p => !p.folio_almacen || String(p.folio_almacen).trim() === folioBuscado);
+                unidad.piezas = unidad.piezas.filter(p => {
+                    const pF = String(p.folio_almacen || p.folio || '').trim();
+                    return pF && pF === folioBuscado;
+                });
             }
 
             let { piezasActualizadas, nuevoCostoRefacciones, nuevoCostoPreventivo, nuevoCostoCorrectivo } = procesarPiezasParaUnidad(unidad, folioBuscado);
             if (piezasActualizadas.length === 0) {
-                const piezasMismoFolio = (Array.isArray(unidad.piezas) ? unidad.piezas : []).filter(p => !p.folio_almacen || String(p.folio_almacen).trim() === folioBuscado);
+                const piezasMismoFolio = (Array.isArray(unidad.piezas) ? unidad.piezas : []).filter(p => {
+                    const pF = String(p.folio_almacen || p.folio || '').trim();
+                    return pF && pF === folioBuscado;
+                });
                 if (piezasMismoFolio.length > 0) {
                     // Mantener piezas manuales de este mismo folio si existen
                 } else {
-                    if (Number(unidad.costo_refacciones) > 0 || (Array.isArray(unidad.piezas) && unidad.piezas.length > 0)) {
+                    const costoEsperado = Math.round(((Number(unidad.costo_mano_obra) || 0) + (Number(unidad.costo_externo) || 0)) * 100) / 100;
+                    if (Number(unidad.costo_refacciones) > 0 || (Array.isArray(unidad.piezas) && unidad.piezas.length > 0) || Math.abs((Number(unidad.costo) || 0) - costoEsperado) > 0.01 || Number(unidad.costo_preventivo) > 0 || Number(unidad.costo_correctivo) > 0) {
                         unidad.costo_refacciones = 0;
                         unidad.costo_preventivo = 0;
                         unidad.costo_correctivo = 0;
                         unidad.piezas = [];
-                        unidad.costo = Math.round(((Number(unidad.costo_mano_obra) || 0) + (Number(unidad.costo_externo) || 0)) * 100) / 100;
+                        unidad.costo = costoEsperado;
                         cambios = true;
                     }
                     if (!folioBuscado) return;
                 }
             }
 
-            // Conservar ÚNICAMENTE piezas o servicios verdaderamente externos o manuales de este mismo folio
-            // Descartar piezas viejas con folios que no coincidan con folioBuscado
+            // Conservar UNICAMENTE piezas o servicios de este mismo folio exacto
             const piezasExternasPrevias = (Array.isArray(unidad.piezas) ? unidad.piezas : []).filter(p => {
-                if (p.folio_almacen && folioBuscado && String(p.folio_almacen).trim() !== folioBuscado) return false;
-                if (p.es_servicio || p.tipo_item === 'SERVICIO') return true;
-                if (p.id_pieza && (p.id_pieza.startsWith('servicios_externos') || p.id_pieza.startsWith('externo') || p.id_pieza === 'SERVICIO')) return true;
-                if (p.proveedor_oc || p.folio_oc) return true;
-                if (p.folio_almacen && folioBuscado && String(p.folio_almacen).trim() === folioBuscado) return true;
-                return false;
+                const pF = String(p.folio_almacen || p.folio || '').trim();
+                return folioBuscado && pF === folioBuscado;
             }).filter(pe => {
                 // Evitar duplicar si el servicio externo ya vino en piezasActualizadas
                 return !piezasActualizadas.some(pa => pa.id === pe.id || (pa.id_pieza && pa.id_pieza === pe.id_pieza && pa.descripcion === pe.descripcion));
@@ -926,14 +928,15 @@ function sincronizarFoliosConAlmacen(origen = 'Watcher Almacén') {
             });
 
             const costoTotalRefaccionesFinal = Math.round((nuevoCostoRefacciones + costoExternasExtra) * 100) / 100;
+            const costoTotalEsperado = Math.round(((Number(unidad.costo_mano_obra) || 0) + (Number(unidad.costo_externo) || 0) + costoTotalRefaccionesFinal) * 100) / 100;
 
-            if (Math.abs(costoPrevio - costoTotalRefaccionesFinal) > 0.01 || cantPrevias !== piezasCombinadas.length || !unidad.tipo_procedimiento) {
+            if (Math.abs(costoPrevio - costoTotalRefaccionesFinal) > 0.01 || cantPrevias !== piezasCombinadas.length || Math.abs((Number(unidad.costo) || 0) - costoTotalEsperado) > 0.01 || !unidad.tipo_procedimiento) {
                 cambios = true;
                 unidad.costo_refacciones = costoTotalRefaccionesFinal;
                 unidad.costo_preventivo = Math.round(nuevoCostoPreventivo * 100) / 100;
                 unidad.costo_correctivo = Math.round(nuevoCostoCorrectivo * 100) / 100;
                 unidad.piezas = piezasCombinadas;
-                unidad.costo = Math.round(((Number(unidad.costo_mano_obra) || 0) + (Number(unidad.costo_externo) || 0) + costoTotalRefaccionesFinal) * 100) / 100;
+                unidad.costo = costoTotalEsperado;
 
                 // Clasificar procedimiento de la unidad si no fue fijado manualmente
                 if (!unidad.tipo_procedimiento || unidad.tipo_procedimiento === 'general') {
@@ -953,7 +956,7 @@ function sincronizarFoliosConAlmacen(origen = 'Watcher Almacén') {
                 if (!Array.isArray(unidad.historial)) unidad.historial = [];
                 unidad.historial.unshift({
                     fecha: new Date().toLocaleDateString('es-MX') + ' ' + new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
-                    evento: `Sincronización Almacén: ${piezasActualizadas.length} piezas (${nuevoCostoRefacciones.toLocaleString()} MXN) [Prev: $${nuevoCostoPreventivo.toLocaleString()} | Corr: $${nuevoCostoCorrectivo.toLocaleString()}]`,
+                    evento: `Sincronizacion Almacen: ${piezasActualizadas.length} piezas (${nuevoCostoRefacciones.toLocaleString()} MXN) [Prev: $${nuevoCostoPreventivo.toLocaleString()} | Corr: $${nuevoCostoCorrectivo.toLocaleString()}]`,
                     tipo: 'almacen_sync',
                     autor: origen
                 });
@@ -966,6 +969,8 @@ function sincronizarFoliosConAlmacen(origen = 'Watcher Almacén') {
 
     huboCambios = sincronizarLista(unidades, false);
     huboCambiosArchivadas = sincronizarLista(archivadas, true);
+    let remolques = getRemolques();
+    let huboCambiosRemolques = sincronizarLista(remolques, false);
 
     if (huboCambios) {
         saveUnidades(unidades, origen);
@@ -973,8 +978,11 @@ function sincronizarFoliosConAlmacen(origen = 'Watcher Almacén') {
     if (huboCambiosArchivadas) {
         saveUnidadesArchivadas(archivadas);
     }
+    if (huboCambiosRemolques) {
+        saveRemolques(remolques);
+    }
 
-    if (huboCambios || huboCambiosArchivadas) {
+    if (huboCambios || huboCambiosArchivadas || huboCambiosRemolques) {
         if (typeof broadcastSSE === 'function') {
             broadcastSSE('almacen_folio_updated', {
                 mensaje: 'Refacciones y costos actualizados en vivo desde Almacén CESS',
@@ -1608,13 +1616,35 @@ app.post('/api/unidad/:id', (req, res) => {
     }
 
     const estadoPrevio = unidades[index].estado;
-    const folioPrevio = unidades[index].folio_almacen;
-    if (updates.folio_almacen && folioPrevio && String(updates.folio_almacen).trim() !== String(folioPrevio).trim()) {
+    const folioPrevio = String(unidades[index].folio_almacen || '').trim();
+    const folioNuevo = String(updates.folio_almacen !== undefined ? updates.folio_almacen : folioPrevio).trim();
+
+    if (folioNuevo && folioPrevio && folioNuevo !== folioPrevio) {
         // El folio cambió a uno nuevo: limpiar piezas y costos del folio previo
         unidades[index].piezas = [];
         unidades[index].costo_refacciones = 0;
         unidades[index].costo_preventivo = 0;
         unidades[index].costo_correctivo = 0;
+        unidades[index].costo = 0;
+        delete updates.piezas;
+        delete updates.costo_refacciones;
+        delete updates.costo;
+    } else if (folioNuevo) {
+        // Asegurar que solo se conserven piezas que coincidan exactamente con el folio activo
+        if (Array.isArray(updates.piezas)) {
+            updates.piezas = updates.piezas.filter(pz => {
+                const pzF = String(pz.folio_almacen || pz.folio || '').trim();
+                return pzF === folioNuevo;
+            });
+            updates.costo_refacciones = updates.piezas.reduce((s, p) => s + (Number(p.costo_total) || 0), 0);
+        }
+        if (Array.isArray(unidades[index].piezas)) {
+            unidades[index].piezas = unidades[index].piezas.filter(pz => {
+                const pzF = String(pz.folio_almacen || pz.folio || '').trim();
+                return pzF === folioNuevo;
+            });
+            unidades[index].costo_refacciones = unidades[index].piezas.reduce((s, p) => s + (Number(p.costo_total) || 0), 0);
+        }
     }
     unidades[index] = { ...unidades[index], ...updates };
     saveUnidades(unidades);
@@ -4594,8 +4624,11 @@ app.get('/api/almacen/folio/:folio/detalle', (req, res) => {
 
     if (matches.length === 0) {
         if (uMatch && Array.isArray(uMatch.piezas) && uMatch.piezas.length > 0) {
-            // Filtrar ÚNICAMENTE piezas que coincidan con este folio específico
-            const piezasFolio = uMatch.piezas.filter(pz => !pz.folio_almacen || String(pz.folio_almacen).trim() === folio);
+            // Filtrar ÚNICAMENTE piezas que coincidan EXACTAMENTE con este folio específico
+            const piezasFolio = uMatch.piezas.filter(pz => {
+                const pzF = String(pz.folio_almacen || pz.folio || '').trim();
+                return pzF && pzF === folio;
+            });
             if (piezasFolio.length > 0) {
                 const items = piezasFolio.map((pz, idx) => {
                     const pu = Number(pz.precio_unitario) || 0;
@@ -4630,7 +4663,18 @@ app.get('/api/almacen/folio/:folio/detalle', (req, res) => {
                 });
             }
         }
-        return res.status(404).json({ success: false, error: 'Folio no encontrado en Almacén' });
+        // Si no hay refacciones surtidas aún para este folio en almacén, devolver lista vacía y $0.00
+        return res.json({
+            success: true,
+            folio,
+            unidad: targetUnitId,
+            solicitante: uMatch ? (uMatch.solicitante || 'Personal Taller') : 'Almacén Central',
+            fecha: '--',
+            items: [],
+            costo_total: 0,
+            costoTotal: 0,
+            mensaje: 'Folio activo en taller, pendiente de surtido de refacciones en almacén'
+        });
     }
 
     const items = matches.map(m => {
@@ -4663,10 +4707,8 @@ app.get('/api/almacen/folio/:folio/detalle', (req, res) => {
         };
     });
 
-    let costoTotal = items.reduce((acc, it) => acc + it.total_costo, 0);
-    if (costoTotal <= 0 && uMatch && (Number(uMatch.costo_refacciones) > 0 || Number(uMatch.costo) > 0)) {
-        costoTotal = Number(uMatch.costo_refacciones) || Number(uMatch.costo) || 0;
-    }
+    let costoTotal = items.reduce((acc, it) => acc + (Number(it.costo_total !== undefined ? it.costo_total : it.total_costo) || 0), 0);
+    costoTotal = Math.round(costoTotal * 100) / 100;
 
     res.json({
         success: true,

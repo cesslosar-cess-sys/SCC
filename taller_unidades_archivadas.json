@@ -53,7 +53,7 @@
     "defecto": "Perdida de potencia\nSensor de nivel de refrigerante\nParabrisas se le mete el agua\nInyectores dañados\nCHecar espejos retrovisor no se muebe el mecanismo",
     "notas": "",
     "reporte": "Perdida de potencia\nSensor de nivel de refrigerante\nParabrisas se le mete el agua\nInyectores dañados\nCHecar espejos retrovisor no se muebe el mecanismo",
-    "costo": 7327.18,
+    "costo": 4594.18,
     "fechaRefaccion": "2026-11-12",
     "categoriaFalla": "General",
     "piezas": [
@@ -71,8 +71,7 @@
         "solicitante": "MARTIN ALVARADO",
         "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-11-19",
-        "hora_recepcion": "09:18:30 p.m."
+        "fecha_recepcion": "2026-11-19"
       },
       {
         "id": "mov_1795115533031_0_9635",
@@ -88,8 +87,7 @@
         "solicitante": "MARTIN ALVARADO",
         "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-11-19",
-        "hora_recepcion": "07:12:13 p.m."
+        "fecha_recepcion": "2026-11-19"
       },
       {
         "id": "mov_1795115284406_775",
@@ -105,8 +103,7 @@
         "solicitante": "Martin Alvarado",
         "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-11-19",
-        "hora_recepcion": "07:08:04 p.m."
+        "fecha_recepcion": "2026-11-19"
       },
       {
         "id": "mov_1795112947477_0_9264",
@@ -122,8 +119,7 @@
         "solicitante": "MARTIN ALVARADO",
         "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "preventivo",
-        "fecha_recepcion": "2026-11-19",
-        "hora_recepcion": "06:29:07 p.m."
+        "fecha_recepcion": "2026-11-19"
       },
       {
         "id": "mov_1794520852282_596",
@@ -138,26 +134,8 @@
         "folio_almacen": "4096",
         "solicitante": "Jose Guerra",
         "estado": "RECIBIDA_TALLER",
-        "tipo_trabajo": "preventivo",
-        "fecha_recepcion": "2026-11-10",
-        "hora_recepcion": "04:00:52 p.m."
-      },
-      {
-        "id": "mov_1794002021899_950",
-        "id_pieza": "A0133820001",
-        "numero_parte": "A0133820001",
-        "descripcion": "PEDAL ACELERADOR FREIGTHLINER",
-        "marca": "WILIAMS",
-        "cantidad": 1,
-        "unidad_medida": "PZ",
-        "precio_unitario": 2733,
-        "costo_total": 2733,
-        "folio_almacen": "4071",
-        "solicitante": "Martin Alvarado",
-        "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-11-06",
-        "hora_recepcion": "03:53:41 p.m."
+        "fecha_recepcion": "2026-11-10"
       }
     ],
     "historial": [
@@ -976,9 +954,9 @@
     "costo_externo": 0,
     "estadoModificadoManualmente": true,
     "folio_almacen": "4096",
-    "costo_refacciones": 7327.18,
-    "costo_preventivo": 1369.16,
-    "costo_correctivo": 5958.02,
+    "costo_refacciones": 4594.18,
+    "costo_preventivo": 781,
+    "costo_correctivo": 3813.18,
     "avances": [
       {
         "id": "av_1794937592365_pucd",
@@ -1013,7 +991,7 @@
     "defecto": "Revisión general en taller",
     "notas": "",
     "reporte": "Fuga de aire en valbula moduladora delantera\nHacer regenaeracion",
-    "costo": 9967.51,
+    "costo": 2100,
     "fechaRefaccion": "2026-11-19",
     "categoriaFalla": "Frenos",
     "piezas": [
@@ -1031,161 +1009,7 @@
         "solicitante": "MARTIN ALVARADO",
         "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-11-19",
-        "hora_recepcion": "08:46:49 p.m."
-      },
-      {
-        "id": "mov_1794001823927_898",
-        "id_pieza": "CODO_TUERCA_BARRIL_1_574",
-        "numero_parte": "CODO_TUERCA_BARRIL_1_574",
-        "descripcion": "CODO TUERCA BARRIL 1/2 NPT A 1/2",
-        "marca": "",
-        "cantidad": 1,
-        "unidad_medida": "PZ",
-        "precio_unitario": 145.71,
-        "costo_total": 145.71,
-        "folio_almacen": "3987",
-        "solicitante": "Martin Alvarado",
-        "estado": "RECIBIDA_TALLER",
-        "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-10-16",
-        "hora_recepcion": "03:50:23 p.m."
-      },
-      {
-        "id": "mov_1793061048907_0",
-        "id_pieza": "part_1793061048907_0_6280",
-        "numero_parte": "FM-9781",
-        "descripcion": "CAMARA DE SUSPENSION",
-        "marca": "FLEETMASTER",
-        "cantidad": 1,
-        "unidad_medida": "PZA",
-        "precio_unitario": 2072.92,
-        "costo_total": 2072.92,
-        "folio_almacen": "3987",
-        "solicitante": "MARTIN ALVARADO",
-        "estado": "RECIBIDA_TALLER",
-        "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-10-16",
-        "hora_recepcion": "06:30:48 p.m."
-      },
-      {
-        "id": "mov_1792700634877_28",
-        "id_pieza": "P618478",
-        "numero_parte": "P618478",
-        "descripcion": "FILTRO DE AIRE PRIMARIO",
-        "marca": "DONALDSON",
-        "cantidad": 1,
-        "unidad_medida": "PZ",
-        "precio_unitario": 1447.03,
-        "costo_total": 1447.03,
-        "folio_almacen": "4108",
-        "solicitante": "Martin Alvarado",
-        "estado": "RECIBIDA_TALLER",
-        "tipo_trabajo": "preventivo",
-        "fecha_recepcion": "2026-10-16",
-        "hora_recepcion": "02:23:54 p.m."
-      },
-      {
-        "id": "mov_1792700608204_944",
-        "id_pieza": "FS19915",
-        "numero_parte": "FS19915",
-        "descripcion": "FILTRO SEPARADOR",
-        "marca": "FLEETGUARD",
-        "cantidad": 1,
-        "unidad_medida": "PZ",
-        "precio_unitario": 1781,
-        "costo_total": 1781,
-        "folio_almacen": "4108",
-        "solicitante": "Martin Alvarado",
-        "estado": "RECIBIDA_TALLER",
-        "tipo_trabajo": "preventivo",
-        "fecha_recepcion": "2026-10-16",
-        "hora_recepcion": "02:23:28 p.m."
-      },
-      {
-        "id": "mov_1792700568888_263",
-        "id_pieza": "AF26235",
-        "numero_parte": "AF26235",
-        "descripcion": "FILTRO DE AIRE DE CABINA",
-        "marca": "FLEETGUARD",
-        "cantidad": 1,
-        "unidad_medida": "PZ",
-        "precio_unitario": 254.55,
-        "costo_total": 254.55,
-        "folio_almacen": "4108",
-        "solicitante": "Martin Alvarado",
-        "estado": "RECIBIDA_TALLER",
-        "tipo_trabajo": "preventivo",
-        "fecha_recepcion": "2026-10-16",
-        "hora_recepcion": "02:22:48 p.m."
-      },
-      {
-        "id": "mov_1792700516725_796",
-        "id_pieza": "LF17511",
-        "numero_parte": "LF17511",
-        "descripcion": "FILTRO DE ACEITE",
-        "marca": "FLEETGUARD",
-        "cantidad": 1,
-        "unidad_medida": "PZ",
-        "precio_unitario": 575.26,
-        "costo_total": 575.26,
-        "folio_almacen": "4108",
-        "solicitante": "Martin Alvarado",
-        "estado": "RECIBIDA_TALLER",
-        "tipo_trabajo": "preventivo",
-        "fecha_recepcion": "2026-10-16",
-        "hora_recepcion": "02:21:56 p.m."
-      },
-      {
-        "id": "mov_1792695956221_392",
-        "id_pieza": "FK13850NN___P551063",
-        "numero_parte": "FK13850NN / P551063",
-        "descripcion": "KIT DE FILTRO PARA COMBUSTIBLE",
-        "marca": "FLEETGUARD",
-        "cantidad": 1,
-        "unidad_medida": "PZ",
-        "precio_unitario": 1428.84,
-        "costo_total": 1428.84,
-        "folio_almacen": "069",
-        "solicitante": "FRANCISCO PARDO",
-        "estado": "RECIBIDA_TALLER",
-        "tipo_trabajo": "preventivo",
-        "fecha_recepcion": "2026-10-16",
-        "hora_recepcion": "01:05:56 p.m."
-      },
-      {
-        "id": "mov_1792695695016_266",
-        "id_pieza": "LIMPIAPARABRISAS_18__611",
-        "numero_parte": "LIMPIAPARABRISAS_18__611",
-        "descripcion": "LIMPIAPARABRISAS 18\"",
-        "marca": "PWR PRO",
-        "cantidad": 1,
-        "unidad_medida": "PZ",
-        "precio_unitario": 137,
-        "costo_total": 137,
-        "folio_almacen": "4108",
-        "solicitante": "FRANCISCO PARDO",
-        "estado": "RECIBIDA_TALLER",
-        "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-10-16",
-        "hora_recepcion": "01:01:35 p.m."
-      },
-      {
-        "id": "mov_1792695295991_95",
-        "id_pieza": "JUNTA___EMPAQUE_MAZA_835",
-        "numero_parte": "JUNTA___EMPAQUE_MAZA_835",
-        "descripcion": "JUNTA / EMPAQUE MAZA EJE DELANTERA 6 BARRENOS",
-        "marca": "FRENZEL",
-        "cantidad": 1,
-        "unidad_medida": "PZ",
-        "precio_unitario": 25.2,
-        "costo_total": 25.2,
-        "folio_almacen": "4108",
-        "solicitante": "MARTIN ALVARADO",
-        "estado": "RECIBIDA_TALLER",
-        "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-10-16",
-        "hora_recepcion": "12:54:55 p.m."
+        "fecha_recepcion": "2026-11-19"
       }
     ],
     "historial": [
@@ -1515,14 +1339,14 @@
       }
     ],
     "archivada": true,
-    "costo_preventivo": 5486.68,
-    "costo_correctivo": 4480.83,
-    "costo_refacciones": 9967.51,
+    "costo_preventivo": 0,
+    "costo_correctivo": 2100,
+    "costo_refacciones": 2100,
     "avances": [
       {
         "fecha": "19/11/2026",
         "hora": "09:41 p.m.",
-        "texto": " Unidad liberada de taller con Orden #4108: Salida de taller / Asignada a viaje.",
+        "texto": "Unidad liberada de taller con Orden #4108: Salida de taller / Asignada a viaje.",
         "mecanico": "Jefe de Taller",
         "porcentaje": 100
       }
@@ -1542,7 +1366,7 @@
     "defecto": "Respiradera de diferencial dañada\nDireccion mui dura\nFuga de aire en suspencion\nAmortiguadores\n5t con juego\nPerdida de potencia",
     "notas": "",
     "reporte": "Respiradera de diferencial dañada\nDireccion mui dura\nFuga de aire en suspencion\nAmortiguadores\n5t con juego\nPerdida de potencia",
-    "costo": 18448.38,
+    "costo": 12996.61,
     "fechaRefaccion": "2026-11-13",
     "categoriaFalla": "Clima",
     "piezas": [
@@ -1560,8 +1384,7 @@
         "solicitante": "Martin Alvarado",
         "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-11-19",
-        "hora_recepcion": "06:24:34 p.m."
+        "fecha_recepcion": "2026-11-19"
       },
       {
         "id": "mov_1795111643036_0_9799",
@@ -1577,8 +1400,7 @@
         "solicitante": "MARTIN ALVARADO",
         "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-11-19",
-        "hora_recepcion": "06:07:23 p.m."
+        "fecha_recepcion": "2026-11-19"
       },
       {
         "id": "mov_1794615066552_0_5436",
@@ -1594,8 +1416,7 @@
         "solicitante": "MARTIN ALVARADO",
         "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-11-13",
-        "hora_recepcion": "06:11:06 p.m."
+        "fecha_recepcion": "2026-11-13"
       },
       {
         "id": "mov_1794614974810_0_9693",
@@ -1611,8 +1432,7 @@
         "solicitante": "MARTIN ALVARADO",
         "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-11-13",
-        "hora_recepcion": "06:09:34 p.m."
+        "fecha_recepcion": "2026-11-13"
       },
       {
         "id": "mov_1794614692229_157",
@@ -1628,8 +1448,7 @@
         "solicitante": "Martin Alvarado",
         "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-11-13",
-        "hora_recepcion": "06:04:52 p.m."
+        "fecha_recepcion": "2026-11-13"
       },
       {
         "id": "mov_1794587106729_688",
@@ -1645,8 +1464,7 @@
         "solicitante": "Martin Alvarado",
         "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-11-13",
-        "hora_recepcion": "10:25:06 a.m."
+        "fecha_recepcion": "2026-11-13"
       },
       {
         "id": "mov_1794587022538_779",
@@ -1662,8 +1480,7 @@
         "solicitante": "Jose Guerra",
         "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-11-13",
-        "hora_recepcion": "10:23:42 a.m."
+        "fecha_recepcion": "2026-11-13"
       },
       {
         "id": "mov_1794586837367_158",
@@ -1679,93 +1496,7 @@
         "solicitante": "Jose Guerra",
         "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-11-13",
-        "hora_recepcion": "10:20:37 a.m."
-      },
-      {
-        "id": "mov_1793664338802_911",
-        "id_pieza": "part_1793135203117_8_3013",
-        "numero_parte": "P609422",
-        "descripcion": "FILTRO DE AIRE TIPO PANEL",
-        "marca": "DONALDSON",
-        "cantidad": 1,
-        "unidad_medida": "PZA",
-        "precio_unitario": 303.98,
-        "costo_total": 303.98,
-        "folio_almacen": "4063",
-        "solicitante": "Martin Alvarado",
-        "estado": "RECIBIDA_TALLER",
-        "tipo_trabajo": "preventivo",
-        "fecha_recepcion": "2026-11-02",
-        "hora_recepcion": "06:05:38 p.m."
-      },
-      {
-        "id": "mov_1793664308206_755",
-        "id_pieza": "part_1793135203117_6_5796",
-        "numero_parte": "P551005",
-        "descripcion": "FILTRO DE ACEITE",
-        "marca": "DONALDSON",
-        "cantidad": 1,
-        "unidad_medida": "PZA",
-        "precio_unitario": 479.78,
-        "costo_total": 479.78,
-        "folio_almacen": "4063",
-        "solicitante": "Martin Alvarado",
-        "estado": "RECIBIDA_TALLER",
-        "tipo_trabajo": "preventivo",
-        "fecha_recepcion": "2026-11-02",
-        "hora_recepcion": "06:05:08 p.m."
-      },
-      {
-        "id": "mov_1793664286339_189",
-        "id_pieza": "FS19915",
-        "numero_parte": "FS19915",
-        "descripcion": "FILTRO SEPARADOR",
-        "marca": "FLEETGUARD",
-        "cantidad": 1,
-        "unidad_medida": "PZ",
-        "precio_unitario": 1781,
-        "costo_total": 1781,
-        "folio_almacen": "4063",
-        "solicitante": "Martin Alvarado",
-        "estado": "RECIBIDA_TALLER",
-        "tipo_trabajo": "preventivo",
-        "fecha_recepcion": "2026-11-02",
-        "hora_recepcion": "06:04:46 p.m."
-      },
-      {
-        "id": "mov_1793664266329_236",
-        "id_pieza": "part_1793135203117_5_1784",
-        "numero_parte": "P551063",
-        "descripcion": "FILTRO DE COMBUSTIBLE",
-        "marca": "DONALDSON",
-        "cantidad": 1,
-        "unidad_medida": "PZA",
-        "precio_unitario": 1439.98,
-        "costo_total": 1439.98,
-        "folio_almacen": "4063",
-        "solicitante": "Martin Alvarado",
-        "estado": "RECIBIDA_TALLER",
-        "tipo_trabajo": "preventivo",
-        "fecha_recepcion": "2026-11-02",
-        "hora_recepcion": "06:04:26 p.m."
-      },
-      {
-        "id": "mov_1793664237074_677",
-        "id_pieza": "P618478",
-        "numero_parte": "P618478",
-        "descripcion": "FILTRO DE AIRE PRIMARIO",
-        "marca": "DONALDSON",
-        "cantidad": 1,
-        "unidad_medida": "PZ",
-        "precio_unitario": 1447.03,
-        "costo_total": 1447.03,
-        "folio_almacen": "4063",
-        "solicitante": "Martin Alvarado",
-        "estado": "RECIBIDA_TALLER",
-        "tipo_trabajo": "preventivo",
-        "fecha_recepcion": "2026-11-02",
-        "hora_recepcion": "06:03:57 p.m."
+        "fecha_recepcion": "2026-11-13"
       }
     ],
     "historial": [
@@ -2111,14 +1842,14 @@
     "costo_externo": 0,
     "estadoModificadoManualmente": true,
     "folio_almacen": "4097",
-    "costo_refacciones": 18448.38,
-    "costo_preventivo": 5451.77,
+    "costo_refacciones": 12996.61,
+    "costo_preventivo": 0,
     "costo_correctivo": 12996.61,
     "avances": [
       {
         "fecha": "19/11/2026",
         "hora": "05:45 p.m.",
-        "texto": " Unidad liberada de taller con Orden #4097: Salida de taller / Asignada a viaje.",
+        "texto": "Unidad liberada de taller con Orden #4097: Salida de taller / Asignada a viaje.",
         "mecanico": "Jefe de Taller",
         "porcentaje": 100
       }
@@ -2165,7 +1896,8 @@
         "fecha_recepcion": "2026-11-10",
         "instalado_por": "",
         "fecha_instalacion": "",
-        "notas": ""
+        "notas": "",
+        "folio_almacen": "4087"
       }
     ],
     "historial": [
@@ -2204,7 +1936,7 @@
       {
         "fecha": "19/11/2026",
         "hora": "05:44 p.m.",
-        "texto": " Unidad liberada de taller con Orden #4087: Salida de taller / Asignada a viaje.",
+        "texto": "Unidad liberada de taller con Orden #4087: Salida de taller / Asignada a viaje.",
         "mecanico": "Jefe de Taller",
         "porcentaje": 100
       }
@@ -2499,7 +2231,7 @@
     "defecto": "Bolsa de aire trasera dañada y Motor de Wipers",
     "notas": "",
     "reporte": "Bolsa de aire trasera dañada y Motor de Wipers",
-    "costo": 14258.68,
+    "costo": 2301.68,
     "fechaRefaccion": "2026-11-12",
     "categoriaFalla": "General",
     "piezas": [
@@ -2517,76 +2249,7 @@
         "solicitante": "MARTIN ALVARADO",
         "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-11-12",
-        "hora_recepcion": "03:01:05 p.m."
-      },
-      {
-        "id": "mov_1793138307116_29",
-        "id_pieza": "part_1793137315943_0_4446",
-        "numero_parte": "4921517",
-        "descripcion": "SENSOR PRESION DE ACEITE P/CUMMINS ISX EGR",
-        "marca": "CUMMINS",
-        "cantidad": 1,
-        "unidad_medida": "PZA",
-        "precio_unitario": 1300,
-        "costo_total": 1300,
-        "folio_almacen": "4052",
-        "solicitante": "Martin Alvarado",
-        "estado": "RECIBIDA_TALLER",
-        "tipo_trabajo": "preventivo",
-        "fecha_recepcion": "2026-10-27",
-        "hora_recepcion": "03:58:27 p.m."
-      },
-      {
-        "id": "mov_1792712908324_648",
-        "id_pieza": "part_1792712818641_0_7111",
-        "numero_parte": "65523",
-        "descripcion": "AMORTIGUADOR",
-        "marca": "MONROE",
-        "cantidad": 4,
-        "unidad_medida": "PZA",
-        "precio_unitario": 1250,
-        "costo_total": 5000,
-        "folio_almacen": "3990",
-        "solicitante": "Martin Alvarado",
-        "estado": "RECIBIDA_TALLER",
-        "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-10-22",
-        "hora_recepcion": "05:48:28 p.m."
-      },
-      {
-        "id": "mov_1792692789407_982",
-        "id_pieza": "1859922",
-        "numero_parte": "1859922",
-        "descripcion": "SOPORTE  / BUJE DE CABINA",
-        "marca": "OUTSAID",
-        "cantidad": 1,
-        "unidad_medida": "PZ",
-        "precio_unitario": 1657,
-        "costo_total": 1657,
-        "folio_almacen": "3990",
-        "solicitante": "MARTIN ALVARADO",
-        "estado": "RECIBIDA_TALLER",
-        "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-10-22",
-        "hora_recepcion": "12:13:09 p.m."
-      },
-      {
-        "id": "mov_1792692729038_271",
-        "id_pieza": "2B12440",
-        "numero_parte": "2B12440",
-        "descripcion": "BOLSA DE AIRE TIPO HAMBURGUESA",
-        "marca": "GOODYEAR",
-        "cantidad": 4,
-        "unidad_medida": "PZ",
-        "precio_unitario": 1000,
-        "costo_total": 4000,
-        "folio_almacen": "3990",
-        "solicitante": "MARTIN ALVARADO",
-        "estado": "RECIBIDA_TALLER",
-        "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-10-22",
-        "hora_recepcion": "12:12:09 p.m."
+        "fecha_recepcion": "2026-11-12"
       }
     ],
     "historial": [
@@ -2898,14 +2561,14 @@
     ],
     "folio_almacen": "4094",
     "estadoModificadoManualmente": true,
-    "costo_refacciones": 14258.68,
-    "costo_preventivo": 1300,
-    "costo_correctivo": 12958.68,
+    "costo_refacciones": 2301.68,
+    "costo_preventivo": 0,
+    "costo_correctivo": 2301.68,
     "avances": [
       {
         "fecha": "16/11/2026",
         "hora": "04:08 p.m.",
-        "texto": " Unidad liberada de taller con Orden #4094: Asignada a viaje.",
+        "texto": "Unidad liberada de taller con Orden #4094: Asignada a viaje.",
         "mecanico": "Jefe de Taller",
         "porcentaje": 100
       }
@@ -2946,7 +2609,7 @@
       {
         "fecha": "13/11/2026",
         "hora": "01:27 p.m.",
-        "texto": " Unidad liberada de taller con Orden #4099: Prueba.",
+        "texto": "Unidad liberada de taller con Orden #4099: Prueba.",
         "mecanico": "Jefe de Taller",
         "porcentaje": 100
       }

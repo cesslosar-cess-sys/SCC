@@ -4857,6 +4857,16 @@
             return `$${formatted}${conMxn ? ' MXN' : ''}`;
         }
 
+        function obtenerInversionUnidad(u) {
+            if (!u) return 0;
+            const mo = Number(u.costo_mano_obra) || 0;
+            const ext = Number(u.costo_externo) || 0;
+            const ref = Number(u.costo_refacciones) || 0;
+            const c = Number(u.costo) || 0;
+            if (ref > 0 || mo > 0 || ext > 0) return Math.round((mo + ext + ref) * 100) / 100;
+            return Math.round(c * 100) / 100;
+        }
+
         // --- 3. GESTOR DE PESTAÑAS Y VISTAS PRINCIPALES ---
         function cambiarVistaPrincipal(vista) {
             vistaActual = vista;
@@ -5056,7 +5066,7 @@
                 try {
                     if (u.sucursal === 'Apodaca') conteos.apodaca++;
                     if (u.sucursal === 'Querétaro') conteos.queretaro++;
-                    conteos.costoTotal += (Number(u.costo) || 0) + (Number(u.costo_refacciones) || 0);
+                    conteos.costoTotal += obtenerInversionUnidad(u);
 
                     if (filtroSucursalActual !== 'TODAS' && u.sucursal !== filtroSucursalActual) return;
 
@@ -5135,7 +5145,7 @@
                 abrirEdicionRapida(e, unidad.id);
             };
 
-            const costoTotalUnidad = (Number(unidad.costo) || 0) + (Number(unidad.costo_refacciones) || 0);
+            const costoTotalUnidad = obtenerInversionUnidad(unidad);
 
             // 1. Alerta de Preventivo (si aplica) - Línea compacta, no invasiva
             const preventivoInfo = Array.isArray(cachePreventivos) ? cachePreventivos.find(p => {
@@ -5244,15 +5254,17 @@
             // =========================================================================
             let stripFolioAlmacen = '';
             if (unidad.folio_almacen) {
-                let costoRef = Number(unidad.costo_refacciones !== undefined ? unidad.costo_refacciones : 0);
-                if (!costoRef && Array.isArray(unidad.piezas) && unidad.piezas.length > 0) {
-                    costoRef = unidad.piezas.reduce((acc, p) => acc + (Number(p.costo_total) || (Number(p.cantidad || 1) * Number(p.precio_unitario || 0))), 0);
-                }
-                const costoTotalCard = Math.max(Number(unidad.costo) || 0, (Number(unidad.costo_mano_obra) || 0) + (Number(unidad.costo_externo) || 0) + costoRef);
-                const cantPiezas = Array.isArray(unidad.piezas) ? unidad.piezas.reduce((acc, p) => acc + (Number(p.cantidad) || 1), 0) : 0;
-                const txtCostoCard = costoTotalCard > 0 
-                    ? formatearMoneda(costoTotalCard)
-                    : (cantPiezas > 0 ? '$0.00 MXN (Por cotizar)' : 'Por surtir');
+                const fActivo = String(unidad.folio_almacen).trim();
+                const piezasFolio = (Array.isArray(unidad.piezas) ? unidad.piezas : []).filter(p => {
+                    const pF = String(p.folio_almacen || p.folio || '').trim();
+                    return pF && pF === fActivo;
+                });
+                const cantPiezas = piezasFolio.reduce((acc, p) => acc + (Number(p.cantidad) || 1), 0);
+                const costoRefFolio = piezasFolio.reduce((acc, p) => acc + (Number(p.costo_total) || (Number(p.cantidad || 1) * Number(p.precio_unitario || 0))), 0);
+                const costoTotalCard = (Number(unidad.costo_mano_obra) || 0) + (Number(unidad.costo_externo) || 0) + costoRefFolio;
+                const txtCostoCard = cantPiezas > 0 
+                    ? (costoRefFolio > 0 ? formatearMoneda(costoTotalCard) : '$0.00 MXN (Por cotizar)')
+                    : 'Por surtir';
 
                 stripFolioAlmacen = `
                     <div data-no-expediente="true" onclick="abrirDetalleFolioAlmacen(event, '${unidad.id}')" class="bg-[#141518] hover:bg-[#1C1D21] border border-indigo-700/60 hover:border-indigo-500 rounded-xl px-3 py-2 flex items-center justify-between cursor-pointer transition shadow-sm group" title="Clic para ver desglose de refacciones y precios de Almacén">
@@ -5262,7 +5274,7 @@
                             </div>
                             <div>
                                 <span class="text-[9px] text-indigo-400 font-black uppercase tracking-wider block">ALMACÉN FOLIO #${unidad.folio_almacen}</span>
-                                <span class="text-[11px] text-slate-300 font-medium">${cantPiezas} ${cantPiezas === 1 ? 'pieza surtida' : 'piezas surtidas'}</span>
+                                <span class="text-[11px] text-slate-300 font-medium">${cantPiezas > 0 ? `${cantPiezas} ${cantPiezas === 1 ? 'pieza surtida' : 'piezas surtidas'}` : 'Sin piezas surtidas'}</span>
                             </div>
                         </div>
                         <div class="text-right">
@@ -5978,7 +5990,7 @@
         function generarBitacoraDetalladaWhatsApp() {
             const linkPublico = obtenerEnlaceCompartible();
             const fechaStr = new Date().toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-            const inversionTotal = baseDatos.reduce((acc, u) => acc + (Number(u.costo) || 0) + (Number(u.costo_refacciones) || 0), 0);
+            const inversionTotal = baseDatos.reduce((acc, u) => acc + obtenerInversionUnidad(u), 0);
 
             let txt = `*BITÁCORA OPERATIVA • TALLER PRO CESS*\n`;
             txt += `*${fechaStr.toUpperCase()}*\n`;
@@ -6022,7 +6034,7 @@
                     }
 
                     // Costo
-                    const costoU = (Number(u.costo) || 0) + (Number(u.costo_refacciones) || 0);
+                    const costoU = obtenerInversionUnidad(u);
                     if (costoU > 0) {
                         txt += `   └ Costo Estimado: ${formatearMoneda(costoU)}\n`;
                     }
@@ -6076,7 +6088,7 @@
             const proceso = baseDatos.filter(u => u.estado === 'proceso');
             const listo = baseDatos.filter(u => u.estado === 'listo');
             const considerar = baseDatos.filter(u => u.estado === 'considerar');
-            const inversionTotal = baseDatos.reduce((acc, u) => acc + (Number(u.costo) || 0) + (Number(u.costo_refacciones) || 0), 0);
+            const inversionTotal = baseDatos.reduce((acc, u) => acc + obtenerInversionUnidad(u), 0);
 
             const linkPublico = obtenerEnlaceCompartible();
             const fechaStr = new Date().toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -7705,6 +7717,24 @@
                 }
                 if (defecto) unidadExistente.defecto = defecto;
                 if (notas) unidadExistente.notas = notas;
+                
+                const folioAnterior = String(unidadExistente.folio_almacen || '').trim();
+                const folioNuevo = String(folio || '').trim();
+                if (folioNuevo && folioAnterior && folioNuevo !== folioAnterior) {
+                    // Cambió de folio: resetear piezas de la orden anterior
+                    unidadExistente.piezas = [];
+                    unidadExistente.costo_refacciones = 0;
+                    unidadExistente.costo_preventivo = 0;
+                    unidadExistente.costo_correctivo = 0;
+                    unidadExistente.costo = 0;
+                } else if (folioNuevo && Array.isArray(unidadExistente.piezas)) {
+                    // Filtrar estrictamente solo piezas de este folio activo
+                    unidadExistente.piezas = unidadExistente.piezas.filter(pz => {
+                        const pzF = String(pz.folio_almacen || pz.folio || '').trim();
+                        return pzF === folioNuevo;
+                    });
+                    unidadExistente.costo_refacciones = unidadExistente.piezas.reduce((s, p) => s + (Number(p.costo_total) || 0), 0);
+                }
                 if (folio) unidadExistente.folio_almacen = folio;
                 unidadExistente.reporte = reporte || unidadExistente.reporte;
                 if (costo > 0) unidadExistente.costo = costo;
@@ -9611,10 +9641,7 @@
             const tipoLabel = u.tipo ? `Caja / Remolque ${u.id}` : `Unidad ${u.id}`;
             document.getElementById('det-folio-unidad').innerText = `${tipoLabel} (${u.sucursal || 'Patio'})`;
             document.getElementById('det-folio-solicitante').innerText = 'Consultando Almacén...';
-            
-            // Pre-popular de inmediato con el costo registrado en la unidad para evitar mostrar $0
-            const costoBaseUnidad = Number(u.costo_refacciones) || Number(u.costo) || 0;
-            document.getElementById('det-folio-costo-total').innerText = costoBaseUnidad > 0 ? formatearMoneda(costoBaseUnidad) : 'Consultando...';
+            document.getElementById('det-folio-costo-total').innerText = 'Consultando...';
 
             const procBadgeEl = document.getElementById('det-folio-procedimiento-badge');
             const chipsEl = document.getElementById('det-folio-desglose-chips');
@@ -9654,41 +9681,59 @@
                         `;
                     }
 
-                    tbody.innerHTML = (json.items || []).map(it => {
-                        const safeDesc = (it.descripcion || '').replace(/'/g, "\\'");
-                        const pu = Number(it.precio_unitario || 0);
-                        const tot = Number(it.costo_total !== undefined ? it.costo_total : (it.total_costo || (it.cantidad * pu))) || 0;
-                        const precioHtml = pu > 0 
-                            ? formatearMoneda(pu)
-                            : `<span class="text-amber-400 font-bold">$0.00 MXN</span> <span class="bg-amber-950 text-amber-300 text-[9px] px-1 py-0.5 rounded border border-amber-700/60 ml-0.5 font-bold">Por cotizar</span>`;
-                        const totHtml = tot > 0 
-                            ? formatearMoneda(tot)
-                            : `<span class="text-amber-400 font-bold">$0.00 MXN</span>`;
-                        const btnText = pu > 0 ? '<i class="fa-solid fa-pencil text-[10px]"></i> Ajustar' : '<i class="fa-solid fa-dollar-sign text-[10px]"></i> Asignar Costo';
-                        const btnClass = pu > 0 ? 'bg-[#282A2E] hover:bg-[#3A3D42] text-slate-300 hover:text-white border border-[#3A3D42]' : 'bg-amber-500 hover:bg-amber-400 text-black font-black border border-amber-400 shadow';
-
-                        return `
-                            <tr class="hover:bg-[#141518]/60 transition text-xs">
-                                <td class="p-2.5 font-mono text-indigo-300 font-bold">${it.numero_parte || '--'}</td>
-                                <td class="p-2.5 text-white font-medium">${it.descripcion}</td>
-                                <td class="p-2.5 text-center">
-                                    <button onclick="alternarTipoTrabajoPieza('${u.id}', '${it.id_item || it.id}', '${it.tipo_trabajo || 'correctivo'}')" class="${it.tipo_trabajo === 'preventivo' ? 'bg-emerald-950 text-emerald-300 border-emerald-700' : 'bg-blue-950 text-blue-300 border-blue-700'} border px-2 py-0.5 rounded text-[10px] font-bold shadow transition hover:scale-105" title="Haz clic para cambiar entre Preventivo y Correctivo">
-                                        ${it.tipo_trabajo === 'preventivo' ? 'Preventivo' : 'Correctivo'}
-                                    </button>
-                                </td>
-                                <td class="p-2.5 text-center font-bold text-slate-200 font-mono">${it.cantidad}</td>
-                                <td class="p-2.5 text-right font-mono text-slate-300">${precioHtml}</td>
-                                <td class="p-2.5 text-right font-mono text-[#DFB743] font-bold">${totHtml}</td>
-                                <td class="p-2.5 text-center">
-                                    <button onclick="abrirModalEditarPiezaFolio('${it.id_item || it.id}', ${it.cantidad}, ${pu}, '${safeDesc}')" class="${btnClass} px-2 py-0.5 rounded text-[11px] font-bold transition flex items-center gap-1 mx-auto" title="Asignar o editar precio/cantidad">
-                                        ${btnText}
-                                    </button>
+                    if (!json.items || json.items.length === 0) {
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="7" class="p-8 text-center text-slate-400">
+                                    <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-slate-800 text-slate-400 mb-2">
+                                        <i class="fa-solid fa-boxes-stacked text-xl"></i>
+                                    </div>
+                                    <p class="text-sm font-bold text-slate-300">Folio #${u.folio_almacen} sin refacciones surtidas aún</p>
+                                    <p class="text-xs text-slate-500 mt-1">Este folio está activo en taller pero almacén aún no registra piezas surtidas para esta orden.</p>
                                 </td>
                             </tr>
                         `;
-                    }).join('');
+                    } else {
+                        tbody.innerHTML = json.items.map(it => {
+                            const safeDesc = (it.descripcion || '').replace(/'/g, "\\'");
+                            const pu = Number(it.precio_unitario || 0);
+                            const tot = Number(it.costo_total !== undefined ? it.costo_total : (it.total_costo || (it.cantidad * pu))) || 0;
+                            const precioHtml = pu > 0 
+                                ? formatearMoneda(pu)
+                                : `<span class="text-amber-400 font-bold">$0.00 MXN</span> <span class="bg-amber-950 text-amber-300 text-[9px] px-1 py-0.5 rounded border border-amber-700/60 ml-0.5 font-bold">Por cotizar</span>`;
+                            const totHtml = tot > 0 
+                                ? formatearMoneda(tot)
+                                : `<span class="text-amber-400 font-bold">$0.00 MXN</span>`;
+                            const btnText = pu > 0 ? '<i class="fa-solid fa-pencil text-[10px]"></i> Ajustar' : '<i class="fa-solid fa-dollar-sign text-[10px]"></i> Asignar Costo';
+                            const btnClass = pu > 0 ? 'bg-[#282A2E] hover:bg-[#3A3D42] text-slate-300 hover:text-white border border-[#3A3D42]' : 'bg-amber-500 hover:bg-amber-400 text-black font-black border border-amber-400 shadow';
+
+                            return `
+                                <tr class="hover:bg-[#141518]/60 transition text-xs">
+                                    <td class="p-2.5 font-mono text-indigo-300 font-bold">${it.numero_parte || '--'}</td>
+                                    <td class="p-2.5 text-white font-medium">${it.descripcion}</td>
+                                    <td class="p-2.5 text-center">
+                                        <button onclick="alternarTipoTrabajoPieza('${u.id}', '${it.id_item || it.id}', '${it.tipo_trabajo || 'correctivo'}')" class="${it.tipo_trabajo === 'preventivo' ? 'bg-emerald-950 text-emerald-300 border-emerald-700' : 'bg-blue-950 text-blue-300 border-blue-700'} border px-2 py-0.5 rounded text-[10px] font-bold shadow transition hover:scale-105" title="Haz clic para cambiar entre Preventivo y Correctivo">
+                                            ${it.tipo_trabajo === 'preventivo' ? 'Preventivo' : 'Correctivo'}
+                                        </button>
+                                    </td>
+                                    <td class="p-2.5 text-center font-bold text-slate-200 font-mono">${it.cantidad}</td>
+                                    <td class="p-2.5 text-right font-mono text-slate-300">${precioHtml}</td>
+                                    <td class="p-2.5 text-right font-mono text-[#DFB743] font-bold">${totHtml}</td>
+                                    <td class="p-2.5 text-center">
+                                        <button onclick="abrirModalEditarPiezaFolio('${it.id_item || it.id}', ${it.cantidad}, ${pu}, '${safeDesc}')" class="${btnClass} px-2 py-0.5 rounded text-[11px] font-bold transition flex items-center gap-1 mx-auto" title="Asignar o editar precio/cantidad">
+                                            ${btnText}
+                                        </button>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('');
+                    }
                 } else {
-                    const piezas = (Array.isArray(u.piezas) ? u.piezas : []).filter(pz => !pz.folio_almacen || String(pz.folio_almacen).trim() === String(u.folio_almacen).trim());
+                    const fActivo = String(u.folio_almacen || '').trim();
+                    const piezas = (Array.isArray(u.piezas) ? u.piezas : []).filter(pz => {
+                        const pzF = String(pz.folio_almacen || pz.folio || '').trim();
+                        return pzF && pzF === fActivo;
+                    });
                     const costo = piezas.reduce((acc, p) => acc + (Number(p.costo_total) || ((Number(p.cantidad) || 1) * (Number(p.precio_unitario) || 0))), 0);
                     document.getElementById('det-folio-solicitante').innerText = 'Almacén Central';
                     document.getElementById('det-folio-costo-total').innerText = formatearMoneda(costo);
