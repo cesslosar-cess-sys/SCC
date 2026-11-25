@@ -9635,9 +9635,6 @@
                     document.getElementById('det-folio-solicitante').innerText = json.solicitante || 'Personal Taller';
                     
                     let costoCalculado = Number(json.costo_total !== undefined ? json.costo_total : (json.costoTotal || 0));
-                    if (costoCalculado <= 0 && costoBaseUnidad > 0) {
-                        costoCalculado = costoBaseUnidad;
-                    }
                     document.getElementById('det-folio-costo-total').innerText = formatearMoneda(costoCalculado);
 
                     // Calcular subtotales preventivo vs correctivo
@@ -9691,8 +9688,8 @@
                         `;
                     }).join('');
                 } else {
-                    const piezas = Array.isArray(u.piezas) ? u.piezas : [];
-                    const costo = Number(u.costo_refacciones) || Number(u.costo) || 0;
+                    const piezas = (Array.isArray(u.piezas) ? u.piezas : []).filter(pz => !pz.folio_almacen || String(pz.folio_almacen).trim() === String(u.folio_almacen).trim());
+                    const costo = piezas.reduce((acc, p) => acc + (Number(p.costo_total) || ((Number(p.cantidad) || 1) * (Number(p.precio_unitario) || 0))), 0);
                     document.getElementById('det-folio-solicitante').innerText = 'Almacén Central';
                     document.getElementById('det-folio-costo-total').innerText = formatearMoneda(costo);
 

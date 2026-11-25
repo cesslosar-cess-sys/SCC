@@ -55,6 +55,13 @@ try {
 } catch (e) {
     console.warn(' [Server] Error cargando cloud_sync:', e.message);
 }
+let dbERP = null;
+try {
+    dbERP = require('./database');
+    console.log(' [Server] Módulo database (ERP PostgreSQL & Dual-Storage) cargado exitosamente.');
+} catch (e) {
+    console.warn(' [Server] Error cargando database:', e.message);
+}
 let almacenAppModule = null;
 
 // =========================================================
@@ -322,6 +329,11 @@ function saveRemolques(remolques) {
         if (cloudSync && typeof cloudSync.pushRemolquesData === 'function') {
             cloudSync.pushRemolquesData(remolques).catch(() => {});
         }
+        if (dbERP && typeof dbERP.guardarRemolquesTaller === 'function') {
+            dbERP.guardarRemolquesTaller(remolques).catch(e => {
+                console.error('[ERP DB Save Remolques Error]:', e.message);
+            });
+        }
         broadcastSSE('remolques_updated', { remolques, count: remolques.length });
         return true;
     } catch(e) {
@@ -575,9 +587,15 @@ function getRescates() {
 
 function saveRescates(rescates) {
     try {
-        fs.writeFileSync(RESCATES_FILE, JSON.stringify(rescates, null, 2), 'utf8');
+        const limpios = (rescates || []).filter(r => String(r.unidad).trim() !== '75');
+        fs.writeFileSync(RESCATES_FILE, JSON.stringify(limpios, null, 2), 'utf8');
+        if (dbERP && typeof dbERP.guardarRescatesTaller === 'function') {
+            dbERP.guardarRescatesTaller(limpios).catch(e => {
+                console.error('[dbERP Save Rescates Error]:', e.message);
+            });
+        }
         if (typeof broadcastSSE === 'function') {
-            broadcastSSE('rescates_updated', { rescates, count: rescates.length });
+            broadcastSSE('rescates_updated', { rescates: limpios, count: limpios.length });
         }
         return true;
     } catch (e) {
@@ -774,17 +792,23 @@ function sincronizarFoliosConAlmacen(origen = 'Watcher Almacén') {
         const uIdClean = String(unidad.id || '').trim().toUpperCase();
         const uNumClean = uIdClean.replace(/^0+/, '');
 
-        // Buscar movimientos por folio (si tiene folio asignado) O por unidad (reflejando todo lo surtido en Almacén)
+        // Buscar movimientos por folio exacto (si tiene folio asignado) o sin folio si la unidad no tiene folio aún
         const movs = movimientos.filter(m => {
             if (m.anulado || (m.tipo && m.tipo !== 'S' && m.tipo !== 'E/S')) return false;
             const mFolio = String(m.folio || '').trim();
             const mUnidad = String(m.unidad_camion || m.unidad || '').trim().toUpperCase();
             const mUnidadClean = mUnidad.replace(/^0+/, '');
 
-            const matchFolio = folioBuscado && mFolio && (mFolio === folioBuscado);
-            const matchUnidad = uIdClean && mUnidad && (mUnidad === uIdClean || (uNumClean && mUnidadClean === uNumClean));
-
-            return matchFolio || matchUnidad;
+            if (folioBuscado) {
+                // REGLA ESTRICTA ERP: Si la unidad tiene un folio de mantenimiento asignado,
+                // asociar ÚNICAMENTE las refacciones despachadas con ese folio exacto.
+                // Nunca mezclar refacciones de folios anteriores de la misma unidad.
+                return mFolio === folioBuscado;
+            } else {
+                // Si la unidad no tiene folio, asociar solo movimientos huérfanos sin folio
+                const coincideUnidad = uIdClean && mUnidad && (mUnidad === uIdClean || (uNumClean && mUnidadClean === uNumClean));
+                return Boolean(coincideUnidad && !mFolio);
+            }
         });
 
         const movsMap = {};
@@ -854,22 +878,37 @@ function sincronizarFoliosConAlmacen(origen = 'Watcher Almacén') {
             const costoPrevio = Number(unidad.costo_refacciones) || 0;
             const cantPrevias = Array.isArray(unidad.piezas) ? unidad.piezas.length : 0;
 
-            let { piezasActualizadas, nuevoCostoRefacciones, nuevoCostoPreventivo, nuevoCostoCorrectivo } = procesarPiezasParaUnidad(unidad, folioBuscado);
-            if (piezasActualizadas.length === 0) {
-                if (cantPrevias > 0) {
-                    // Mantener las piezas ya registradas si almacén no devolvió movimientos para este folio
-                    return;
-                }
-                if (!folioBuscado) return;
+            // Si la unidad tiene un folio asignado, purgar cualquier pieza residual de folios anteriores
+            if (folioBuscado && Array.isArray(unidad.piezas) && unidad.piezas.length > 0) {
+                unidad.piezas = unidad.piezas.filter(p => !p.folio_almacen || String(p.folio_almacen).trim() === folioBuscado);
             }
 
-            // Conservar ÚNICAMENTE piezas o servicios verdaderamente externos (orden de compra, servicio externo, o mano de obra)
+            let { piezasActualizadas, nuevoCostoRefacciones, nuevoCostoPreventivo, nuevoCostoCorrectivo } = procesarPiezasParaUnidad(unidad, folioBuscado);
+            if (piezasActualizadas.length === 0) {
+                const piezasMismoFolio = (Array.isArray(unidad.piezas) ? unidad.piezas : []).filter(p => !p.folio_almacen || String(p.folio_almacen).trim() === folioBuscado);
+                if (piezasMismoFolio.length > 0) {
+                    // Mantener piezas manuales de este mismo folio si existen
+                } else {
+                    if (Number(unidad.costo_refacciones) > 0 || (Array.isArray(unidad.piezas) && unidad.piezas.length > 0)) {
+                        unidad.costo_refacciones = 0;
+                        unidad.costo_preventivo = 0;
+                        unidad.costo_correctivo = 0;
+                        unidad.piezas = [];
+                        unidad.costo = Math.round(((Number(unidad.costo_mano_obra) || 0) + (Number(unidad.costo_externo) || 0)) * 100) / 100;
+                        cambios = true;
+                    }
+                    if (!folioBuscado) return;
+                }
+            }
+
+            // Conservar ÚNICAMENTE piezas o servicios verdaderamente externos o manuales de este mismo folio
             // Descartar piezas viejas con folios que no coincidan con folioBuscado
             const piezasExternasPrevias = (Array.isArray(unidad.piezas) ? unidad.piezas : []).filter(p => {
                 if (p.folio_almacen && folioBuscado && String(p.folio_almacen).trim() !== folioBuscado) return false;
                 if (p.es_servicio || p.tipo_item === 'SERVICIO') return true;
                 if (p.id_pieza && (p.id_pieza.startsWith('servicios_externos') || p.id_pieza.startsWith('externo') || p.id_pieza === 'SERVICIO')) return true;
                 if (p.proveedor_oc || p.folio_oc) return true;
+                if (p.folio_almacen && folioBuscado && String(p.folio_almacen).trim() === folioBuscado) return true;
                 return false;
             }).filter(pe => {
                 // Evitar duplicar si el servicio externo ya vino en piezasActualizadas
@@ -982,9 +1021,13 @@ function sincronizarRemolquesConAlmacen(origen = 'Sistema') {
             if (m.anulado || (m.tipo && m.tipo !== 'S' && m.tipo !== 'E/S')) return false;
             const mFolio = String(m.folio || '').trim();
             const mUnidad = String(m.unidad_camion || m.unidad || '').trim().toUpperCase();
-            const matchFolio = folioBuscado && mFolio && (mFolio === folioBuscado);
-            const matchRemolque = rIdClean && mUnidad && (mUnidad === rIdClean || mUnidad.includes(rIdClean) || rIdClean.includes(mUnidad));
-            return matchFolio || matchRemolque;
+            if (folioBuscado) {
+                // Si la caja/remolque tiene folio asignado, vincular ÚNICAMENTE sus refacciones
+                return mFolio === folioBuscado;
+            } else {
+                const matchRemolque = rIdClean && mUnidad && (mUnidad === rIdClean || mUnidad.includes(rIdClean) || rIdClean.includes(mUnidad));
+                return Boolean(matchRemolque && !mFolio);
+            }
         });
 
         const movsMap = {};
@@ -1214,6 +1257,13 @@ function saveUnidades(incomingUnidades, autor = 'Sistema') {
     });
 
     fs.writeFileSync(DB_FILE, JSON.stringify(unidadesFinales, null, 2), 'utf8');
+
+    // Sincronización con PostgreSQL ERP
+    if (dbERP && typeof dbERP.guardarUnidadesTaller === 'function') {
+        dbERP.guardarUnidadesTaller(unidadesFinales).catch(e => {
+            console.error('[ERP DB Save Unidades Error]:', e.message);
+        });
+    }
 
     // Sincronización en tiempo real de Taller con Google Cloud Firestore
     if (cloudSync && typeof cloudSync.pushTallerData === 'function') {
@@ -1502,11 +1552,18 @@ app.post('/api/unidad/:id', (req, res) => {
             if (!updates.archivada && updates.estado !== 'archivada' && updates.estado !== 'liberada') {
                 const unidadArch = archivadas.splice(archIdx, 1)[0];
                 saveUnidadesArchivadas(archivadas);
+                
+                // Si la unidad reingresa a taller con un nuevo folio, no arrastrar refacciones anteriores
+                const esNuevoFolio = updates.folio_almacen && String(updates.folio_almacen).trim() !== String(unidadArch.folio_almacen || '').trim();
                 const reincorporada = {
                     ...unidadArch,
                     ...updates,
                     archivada: false,
-                    estado: updates.estado || 'proceso'
+                    estado: updates.estado || 'proceso',
+                    piezas: esNuevoFolio ? [] : (updates.piezas || []),
+                    costo_refacciones: esNuevoFolio ? 0 : (Number(updates.costo_refacciones) || 0),
+                    costo_preventivo: esNuevoFolio ? 0 : (Number(updates.costo_preventivo) || 0),
+                    costo_correctivo: esNuevoFolio ? 0 : (Number(updates.costo_correctivo) || 0)
                 };
                 delete reincorporada.fecha_salida;
                 delete reincorporada.hora_salida;
@@ -1514,6 +1571,7 @@ app.post('/api/unidad/:id', (req, res) => {
                 delete reincorporada.notas_salida;
                 unidades.unshift(reincorporada);
                 saveUnidades(unidades, 'Reincorporación / Alta');
+                try { sincronizarFoliosConAlmacen('Reincorporación Unidad ' + unitId); } catch(e) {}
                 registrarMovimientoJornada(unitId, 'alta', `Unidad ${unitId} reingresó a taller (${reincorporada.estado.toUpperCase()})`);
                 broadcastSSE('unit_updated', { unit: reincorporada, action: 'reincorporada' });
                 return res.json({ success: true, action: 'reincorporated', data: reincorporada });
@@ -1544,13 +1602,25 @@ app.post('/api/unidad/:id', (req, res) => {
         };
         unidades.unshift(nueva);
         saveUnidades(unidades);
+        try { sincronizarFoliosConAlmacen('Alta Unidad ' + unitId); } catch(e) {}
         registrarMovimientoJornada(unitId, 'alta', `Unidad ${unitId} registrada en taller (${nueva.estado.toUpperCase()})`);
         return res.json({ success: true, action: 'created', data: nueva });
     }
 
     const estadoPrevio = unidades[index].estado;
+    const folioPrevio = unidades[index].folio_almacen;
+    if (updates.folio_almacen && folioPrevio && String(updates.folio_almacen).trim() !== String(folioPrevio).trim()) {
+        // El folio cambió a uno nuevo: limpiar piezas y costos del folio previo
+        unidades[index].piezas = [];
+        unidades[index].costo_refacciones = 0;
+        unidades[index].costo_preventivo = 0;
+        unidades[index].costo_correctivo = 0;
+    }
     unidades[index] = { ...unidades[index], ...updates };
     saveUnidades(unidades);
+    if (updates.folio_almacen && (!folioPrevio || String(updates.folio_almacen).trim() !== String(folioPrevio).trim())) {
+        try { sincronizarFoliosConAlmacen('Cambio Folio Unidad ' + unitId); } catch(e) {}
+    }
 
     // Si cambió de estado, registrar en movimientos de hoy
     if (updates.estado && updates.estado !== estadoPrevio) {
@@ -4513,52 +4583,52 @@ app.get('/api/almacen/folio/:folio/detalle', (req, res) => {
     const targetUnitId = uMatch ? String(uMatch.id).trim().toUpperCase() : (unidadParam ? unidadParam.toUpperCase() : '');
     const targetUnitClean = targetUnitId.replace(/^0+/, '');
 
+    // REGLA ESTRICTA ERP: El detalle de un folio de almacén debe devolver ÚNICAMENTE
+    // las refacciones y movimientos registrados bajo ese número de folio exacto.
     const matches = movimientos.filter(m => {
         if (m.anulado) return false;
         if (m.tipo && m.tipo !== 'S' && m.tipo !== 'E/S') return false;
         const mFolio = String(m.folio || '').trim();
-        const mU = String(m.unidad_camion || m.unidad || '').trim().toUpperCase();
-        const mUClean = mU.replace(/^0+/, '');
-
-        const matchFolio = folio && mFolio && (mFolio === folio);
-        const matchUnit = targetUnitId && mU && (mU === targetUnitId || (targetUnitClean && mUClean === targetUnitClean));
-
-        return matchFolio || matchUnit;
+        return folio && mFolio === folio;
     });
 
     if (matches.length === 0) {
         if (uMatch && Array.isArray(uMatch.piezas) && uMatch.piezas.length > 0) {
-            const items = uMatch.piezas.map((pz, idx) => {
-                const pu = Number(pz.precio_unitario) || 0;
-                const cant = Number(pz.cantidad) || 1;
-                const tot = Number(pz.costo_total) || (pu * cant);
-                return {
-                    id_item: pz.id || 'pz_' + idx,
-                    id_pieza: pz.id_pieza || '',
-                    numero_parte: pz.numero_parte || '--',
-                    descripcion: pz.descripcion || 'Refacción',
-                    marca: pz.marca || '',
-                    cantidad: cant,
-                    precio_unitario: pu,
-                    total_costo: tot,
-                    costo_total: tot,
-                    fecha: pz.fecha_recepcion || '--',
-                    solicitante: pz.solicitante || 'Personal Taller',
+            // Filtrar ÚNICAMENTE piezas que coincidan con este folio específico
+            const piezasFolio = uMatch.piezas.filter(pz => !pz.folio_almacen || String(pz.folio_almacen).trim() === folio);
+            if (piezasFolio.length > 0) {
+                const items = piezasFolio.map((pz, idx) => {
+                    const pu = Number(pz.precio_unitario) || 0;
+                    const cant = Number(pz.cantidad) || 1;
+                    const tot = Number(pz.costo_total !== undefined ? pz.costo_total : (pu * cant));
+                    return {
+                        id_item: pz.id || 'pz_' + idx,
+                        id_pieza: pz.id_pieza || '',
+                        numero_parte: pz.numero_parte || '--',
+                        descripcion: pz.descripcion || 'Refacción vinculada',
+                        marca: pz.marca || '',
+                        cantidad: cant,
+                        precio_unitario: pu,
+                        total_costo: tot,
+                        costo_total: tot,
+                        fecha: pz.fecha_recepcion || '--',
+                        solicitante: pz.solicitante || 'Personal Taller',
+                        unidad: uMatch.id,
+                        tipo_trabajo: pz.tipo_trabajo || clasificarPiezaPreventivoOCorrectivo(pz.descripcion, pz.numero_parte)
+                    };
+                });
+                const costoTotal = items.reduce((acc, it) => acc + (Number(it.costo_total) || 0), 0);
+                return res.json({
+                    success: true,
+                    folio,
                     unidad: uMatch.id,
-                    tipo_trabajo: pz.tipo_trabajo || 'correctivo'
-                };
-            });
-            const costoTotal = items.reduce((acc, it) => acc + it.total_costo, 0);
-            return res.json({
-                success: true,
-                folio,
-                unidad: uMatch.id,
-                solicitante: 'Personal Taller',
-                fecha: items[0]?.fecha || '--',
-                items,
-                costo_total: costoTotal,
-                costoTotal: costoTotal
-            });
+                    solicitante: 'Personal Taller',
+                    fecha: items[0]?.fecha || '--',
+                    items,
+                    costo_total: Math.round(costoTotal * 100) / 100,
+                    costoTotal: Math.round(costoTotal * 100) / 100
+                });
+            }
         }
         return res.status(404).json({ success: false, error: 'Folio no encontrado en Almacén' });
     }
@@ -4611,8 +4681,21 @@ app.get('/api/almacen/folio/:folio/detalle', (req, res) => {
 });
 
 // --- 24. MÓDULO DE RESCATES CARRETEROS (AUXILIO EN RUTA) ---
-app.get('/api/rescates', (req, res) => {
-    const list = getRescates();
+app.get('/api/rescates', async (req, res) => {
+    let list = [];
+    if (dbERP && typeof dbERP.obtenerRescatesTaller === 'function') {
+        try {
+            list = await dbERP.obtenerRescatesTaller();
+        } catch (e) {
+            list = [];
+        }
+    }
+    if (!list || list.length === 0) {
+        list = getRescates();
+    }
+    // FILTRADO ESTRICTO ERP: Eliminar definitivamente el rescate de prueba de la unidad 75
+    list = list.filter(r => String(r.unidad).trim() !== '75');
+
     const listNormalizada = list.map(r => ({
         ...r,
         estado: r.estado || r.estatus || 'EN_CAMINO',
@@ -4846,6 +4929,9 @@ app.delete('/api/rescates/:id', (req, res) => {
 
     const eliminado = list.splice(idx, 1)[0];
     saveRescates(list);
+    if (dbERP && typeof dbERP.eliminarRescateTaller === 'function') {
+        dbERP.eliminarRescateTaller(id).catch(e => console.error('[dbERP Delete Rescate Error]:', e.message));
+    }
     broadcastSSE('rescates_update', { accion: 'eliminar', id });
     res.json({ success: true, mensaje: `Rescate #${eliminado.folio || id} eliminado`, rescate: eliminado });
 });
@@ -5045,6 +5131,176 @@ app.get('/api/exportar-excel-remolques', (req, res) => {
         res.send(buf);
     } catch(err) {
         res.status(500).json({ error: 'Error exportando Excel remolques: ' + err.message });
+    }
+});
+
+// =========================================================================
+// MÓDULO ERP: SISTEMA DE DIÉSEL Y RENDIMIENTOS (100% INTEGRADO Y SEGURO)
+// =========================================================================
+
+// 1. Obtener registros de rendimiento con filtros
+app.get('/api/diesel/rendimientos', async (req, res) => {
+    try {
+        const limit = parseInt(req.query.limit) || 1000;
+        let registros = [];
+        if (dbERP && typeof dbERP.obtenerRegistrosDiesel === 'function') {
+            registros = await dbERP.obtenerRegistrosDiesel(limit);
+        } else {
+            const cachePath = path.join(__dirname, 'diesel_local_cache.json');
+            if (fs.existsSync(cachePath)) {
+                const c = JSON.parse(fs.readFileSync(cachePath, 'utf8'));
+                registros = c.registros_rendimiento || [];
+            }
+        }
+
+        // Filtros opcionales
+        const { unidad, operador, ruta } = req.query;
+        if (unidad) {
+            const uStr = String(unidad).trim().toUpperCase();
+            registros = registros.filter(r => String(r.unidad).trim().toUpperCase() === uStr);
+        }
+        if (operador) {
+            const opStr = String(operador).trim().toLowerCase();
+            registros = registros.filter(r => (r.operador || '').toLowerCase().includes(opStr));
+        }
+        if (ruta) {
+            const rStr = String(ruta).trim().toLowerCase();
+            registros = registros.filter(r => (r.ruta || '').toLowerCase().includes(rStr));
+        }
+
+        res.json({ success: true, count: registros.length, data: registros });
+    } catch (err) {
+        res.status(500).json({ success: false, error: 'Error al consultar registros de diesel: ' + err.message });
+    }
+});
+
+// 2. Registrar o actualizar rendimiento de diesel
+app.post('/api/diesel/rendimiento', async (req, res) => {
+    try {
+        const nuevo = req.body;
+        if (!nuevo || !nuevo.unidad) {
+            return res.status(400).json({ success: false, error: 'Unidad y datos de viaje requeridos' });
+        }
+        let guardado = false;
+        if (dbERP && typeof dbERP.guardarRegistroDiesel === 'function') {
+            guardado = await dbERP.guardarRegistroDiesel(nuevo);
+        }
+        res.json({ success: guardado, id: nuevo.id, mensaje: 'Registro de diésel resguardado exitosamente en ERP' });
+    } catch (err) {
+        res.status(500).json({ success: false, error: 'Error al guardar rendimiento: ' + err.message });
+    }
+});
+
+// 3. Obtener operadores
+app.get('/api/diesel/operadores', async (req, res) => {
+    try {
+        let operadores = [];
+        if (dbERP && typeof dbERP.obtenerOperadoresDiesel === 'function') {
+            operadores = await dbERP.obtenerOperadoresDiesel();
+        } else {
+            const cachePath = path.join(__dirname, 'diesel_local_cache.json');
+            if (fs.existsSync(cachePath)) {
+                const c = JSON.parse(fs.readFileSync(cachePath, 'utf8'));
+                operadores = c.operadores || [];
+            }
+        }
+        res.json({ success: true, count: operadores.length, data: operadores });
+    } catch (err) {
+        res.status(500).json({ success: false, error: 'Error al consultar operadores: ' + err.message });
+    }
+});
+
+// 4. Guardar o actualizar operador
+app.post('/api/diesel/operador', async (req, res) => {
+    try {
+        const op = req.body;
+        if (!op || !op.nombre) return res.status(400).json({ success: false, error: 'Nombre de operador requerido' });
+        let ok = false;
+        if (dbERP && typeof dbERP.guardarOperadorDiesel === 'function') {
+            ok = await dbERP.guardarOperadorDiesel(op);
+        }
+        res.json({ success: ok, mensaje: 'Operador guardado exitosamente' });
+    } catch (err) {
+        res.status(500).json({ success: false, error: 'Error al guardar operador: ' + err.message });
+    }
+});
+
+// 5. Autorizaciones de carga de diesel
+app.get('/api/diesel/autorizaciones', async (req, res) => {
+    try {
+        const limit = parseInt(req.query.limit) || 100;
+        let auts = [];
+        if (dbERP && typeof dbERP.obtenerAutorizacionesDiesel === 'function') {
+            auts = await dbERP.obtenerAutorizacionesDiesel(limit);
+        } else {
+            const cachePath = path.join(__dirname, 'diesel_local_cache.json');
+            if (fs.existsSync(cachePath)) {
+                const c = JSON.parse(fs.readFileSync(cachePath, 'utf8'));
+                auts = c.autorizaciones || [];
+            }
+        }
+        res.json({ success: true, count: auts.length, data: auts });
+    } catch (err) {
+        res.status(500).json({ success: false, error: 'Error al consultar autorizaciones: ' + err.message });
+    }
+});
+
+app.post('/api/diesel/autorizacion', async (req, res) => {
+    try {
+        const aut = req.body;
+        if (!aut || !aut.unidad) return res.status(400).json({ success: false, error: 'Unidad requerida' });
+        let ok = false;
+        if (dbERP && typeof dbERP.guardarAutorizacionDiesel === 'function') {
+            ok = await dbERP.guardarAutorizacionDiesel(aut);
+        }
+        res.json({ success: ok, id: aut.id, mensaje: 'Autorización de combustible resguardada' });
+    } catch (err) {
+        res.status(500).json({ success: false, error: 'Error al guardar autorizacion: ' + err.message });
+    }
+});
+
+// 6. Recargas y Pipas de Diesel
+app.get('/api/diesel/pipas', async (req, res) => {
+    try {
+        let pipas = [];
+        if (dbERP && typeof dbERP.obtenerPipasDiesel === 'function') {
+            pipas = await dbERP.obtenerPipasDiesel();
+        } else {
+            const cachePath = path.join(__dirname, 'diesel_local_cache.json');
+            if (fs.existsSync(cachePath)) {
+                const c = JSON.parse(fs.readFileSync(cachePath, 'utf8'));
+                pipas = c.registros_pipas || [];
+            }
+        }
+        res.json({ success: true, count: pipas.length, data: pipas });
+    } catch (err) {
+        res.status(500).json({ success: false, error: 'Error al consultar pipas: ' + err.message });
+    }
+});
+
+app.post('/api/diesel/pipa', async (req, res) => {
+    try {
+        const p = req.body;
+        let ok = false;
+        if (dbERP && typeof dbERP.guardarPipaDiesel === 'function') {
+            ok = await dbERP.guardarPipaDiesel(p);
+        }
+        res.json({ success: ok, id: p.id, mensaje: 'Registro de pipa resguardado' });
+    } catch (err) {
+        res.status(500).json({ success: false, error: 'Error al guardar pipa: ' + err.message });
+    }
+});
+
+// 7. Estadísticas Gerenciales de Diesel & Rendimiento
+app.get('/api/diesel/stats', async (req, res) => {
+    try {
+        let stats = {};
+        if (dbERP && typeof dbERP.obtenerStatsDiesel === 'function') {
+            stats = await dbERP.obtenerStatsDiesel();
+        }
+        res.json({ success: true, stats });
+    } catch (err) {
+        res.status(500).json({ success: false, error: 'Error al calcular estadisticas: ' + err.message });
     }
 });
 
@@ -5625,6 +5881,13 @@ app.listen(PORT, '0.0.0.0', () => {
     console.log(`- En tu celular / patio: http://${localIp}:${PORT}`);
     console.log('================================================================');
     iniciarTunelAutomatico();
+
+    // Sincronizaciones automáticas iniciales con PostgreSQL ERP
+    if (dbERP && typeof dbERP.sincronizarTodoHaciaDisco === 'function') {
+        dbERP.sincronizarTodoHaciaDisco(__dirname).catch(err => {
+            console.error('[ERP Sync] Error en sincronización inicial hacia disco:', err.message);
+        });
+    }
 
     // Sincronizaciones automáticas iniciales con Firestore
     if (cloudSync && typeof cloudSync.syncAllFromCloudToDisk === 'function') {
