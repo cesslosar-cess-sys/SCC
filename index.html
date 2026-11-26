@@ -12072,28 +12072,28 @@
             if (!badgeIcono) return;
 
             if (usuarioActual.rol === 'ADMIN') {
-                badgeIcono.textContent = '<i class="fa-solid fa-user-shield text-amber-400"></i>';
+                badgeIcono.innerHTML = '<i class="fa-solid fa-user-shield text-amber-400"></i>';
                 badgeNombre.textContent = 'Administrador';
                 badgeSub.textContent = 'Control Total';
                 badgeSub.className = 'text-[8px] sm:text-[9px] text-amber-400 font-black leading-none';
                 btnAuth.textContent = 'Salir';
                 if (btnAdminPins) btnAdminPins.classList.remove('hidden');
             } else if (usuarioActual.rol === 'JEFE_TALLER') {
-                badgeIcono.textContent = '<i class="fa-solid fa-wrench text-slate-300"></i>';
+                badgeIcono.innerHTML = '<i class="fa-solid fa-wrench text-slate-300"></i>';
                 badgeNombre.textContent = 'Jefe de Taller';
                 badgeSub.textContent = 'Operativo Patio';
                 badgeSub.className = 'text-[8px] sm:text-[9px] text-emerald-400 font-bold leading-none';
                 btnAuth.textContent = 'Salir';
                 if (btnAdminPins) btnAdminPins.classList.add('hidden');
             } else if (usuarioActual.rol === 'FINANZAS') {
-                badgeIcono.textContent = '<i class="fa-solid fa-chart-pie text-blue-400"></i>';
+                badgeIcono.innerHTML = '<i class="fa-solid fa-chart-pie text-blue-400"></i>';
                 badgeNombre.textContent = 'Finanzas';
                 badgeSub.textContent = 'Costos & Análisis';
                 badgeSub.className = 'text-[8px] sm:text-[9px] text-blue-400 font-bold leading-none';
                 btnAuth.textContent = 'Salir';
                 if (btnAdminPins) btnAdminPins.classList.add('hidden');
             } else {
-                badgeIcono.textContent = '<i class="fa-solid fa-eye text-slate-400"></i>';
+                badgeIcono.innerHTML = '<i class="fa-solid fa-eye text-slate-400"></i>';
                 badgeNombre.textContent = 'Supervisión';
                 badgeSub.textContent = 'Solo Lectura';
                 badgeSub.className = 'text-[8px] sm:text-[9px] text-slate-400 font-bold leading-none';
