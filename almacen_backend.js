@@ -3660,10 +3660,15 @@ app.post('/api/entrada-masiva', (req, res) => {
       if (!item && parte) {
         item = findPart(parte);
       }
-      // 3. Buscar con coincidencia inteligente avanzada (SOLO EXACTA, NORMALIZADA o EQUIVALENCIA, NUNCA difusa)
+      // 3. Buscar con coincidencia inteligente avanzada (SOLO EXACTA, NORMALIZADA, EQUIVALENCIA o DESCRIPCIÓN EXACTA, NUNCA difusa)
       if (!item && (parte || p.descripcion)) {
         const matchRes = matchItemToCatalog(parte, p.descripcion, p.marca, null, false);
-        if (matchRes && matchRes.match && (matchRes.tipo === 'EXACTA' || matchRes.tipo === 'NORMALIZADA' || matchRes.tipo === 'EQUIVALENCIA')) {
+        if (matchRes && matchRes.match && (
+          matchRes.tipo === 'EXACTA' || 
+          matchRes.tipo === 'NORMALIZADA' || 
+          matchRes.tipo === 'EQUIVALENCIA' ||
+          matchRes.tipo === 'DESCRIPCION_EXACTA'
+        )) {
           item = matchRes.match;
         }
       }
@@ -3694,16 +3699,45 @@ app.post('/api/entrada-masiva', (req, res) => {
     const { equivalencias: itemEquivs, alias: itemAlias } = extractEquivalenciasAndAlias(p);
 
     if (!item) {
-      const safeId = (almId !== 'refacciones' ? `${almId}_` : '') + (parte || (isSrv ? `SRV_${Date.now()}_${procesados}` : `P_${Date.now()}_${procesados}`)).replace(/[^a-zA-Z0-9_-]/g, '_');
+      const parteUpper = parte.toUpperCase();
+      const genericCodes = ['S/N', 'SN', 'N/A', 'NA', 'SIN NUMERO', 'SIN PARTE', 'SIN CODIGO', 'GENERICA', 'GENERICO', ''];
+      const isGeneric = !parte || genericCodes.includes(parteUpper);
+
+      let finalParte = parte;
+      if (isGeneric) {
+        const nextNum = Object.keys(store.catalog).filter(k => k.startsWith('INT_') || k.startsWith('INT-') || k.startsWith('SN_')).length + 1 + procesados;
+        finalParte = `INT-${String(nextNum).padStart(4, '0')}`;
+      }
+
+      let baseId = (almId !== 'refacciones' ? `${almId}_` : '');
+      if (isGeneric) {
+        const cleanDesc = String(p.descripcion || 'PIEZA').trim().toUpperCase().replace(/[^A-Z0-9]/g, '_').slice(0, 30);
+        baseId += `part_${Date.now()}_${procesados}_${cleanDesc}`;
+      } else {
+        baseId += finalParte.replace(/[^a-zA-Z0-9_-]/g, '_');
+      }
+
+      let safeId = baseId;
+      let counter = 1;
+      while (store.catalog[safeId]) {
+        safeId = `${baseId}_${counter++}`;
+      }
+
+      const equivsFinales = [...itemEquivs];
+      if (isGeneric && parte && !equivsFinales.includes(parte)) {
+        equivsFinales.push(parte);
+      }
+
       item = {
         id: safeId,
         rack: isSrv ? 'SERVICIO' : (esPasoDirecto ? 'PASO DIRECTO' : (p.rack || 'Rack 1')),
         nivel: isSrv ? 'EXTERNO' : (esPasoDirecto ? (unidadDirecta ? `UNIDAD ${unidadDirecta}` : 'TALLER') : (p.nivel || 'Nivel 1')),
         descripcion: p.descripcion || (isSrv ? 'Servicio Externo' : 'Sin descripción'),
-        marca: p.marca || (isSrv ? 'SERVICIO' : 'GENERICA'),
-        numero_parte: parte || (isSrv ? `SRV-${Math.floor(100 + Math.random() * 900)}` : 'S/N'),
-        equivalencias: itemEquivs,
+        marca: p.marca || (isSrv ? 'SERVICIO' : (isGeneric ? 'A GRANEL / GENÉRICO' : 'GENÉRICA')),
+        numero_parte: isGeneric ? finalParte : parte,
+        equivalencias: equivsFinales,
         alias: itemAlias,
+        es_a_granel: isGeneric,
         unidad: isSrv ? 'SRV' : (p.unidad || 'PZ'),
         precio_unitario: costo,
         stock_inicial: 0,
