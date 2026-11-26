@@ -30,6 +30,15 @@ try {
   } catch (e2) {}
 }
 
+let dbERP = null;
+try {
+  dbERP = require('./database');
+} catch (e1) {
+  try {
+    dbERP = require('../database');
+  } catch (e2) {}
+}
+
 const app = express();
 const PORT = 3001;
 
@@ -548,6 +557,13 @@ function saveStore() {
     if (cloudSync && typeof cloudSync.pushAlmacenData === 'function') {
       cloudSync.pushAlmacenData(store).catch(err => {
         console.error('[CloudSync] Error sincronizando Almacén con Firestore:', err.message);
+      });
+    }
+
+    // Sincronización empresarial en tiempo real con Supabase PostgreSQL
+    if (dbERP && typeof dbERP.guardarAlmacenData === 'function') {
+      dbERP.guardarAlmacenData(store).catch(err => {
+        console.error('[dbERP] Error sincronizando Almacén con PostgreSQL:', err.message);
       });
     }
   } catch (e) {

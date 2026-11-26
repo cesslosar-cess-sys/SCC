@@ -1287,6 +1287,154 @@ async function obtenerStatsDiesel() {
     };
 }
 
+// -------------------------------------------------------------------------
+// 4. MÓDULO ALMACÉN Y CONTROL DE INVENTARIO
+// -------------------------------------------------------------------------
+async function obtenerAlmacenData() {
+    if (!isPostgresAvailable || !pool) return null;
+    try {
+        const client = await pool.connect();
+        try {
+            const catRes = await client.query('SELECT * FROM almacen_catalog ORDER BY id_pieza ASC;');
+            const catalog = {};
+            catRes.rows.forEach(r => {
+                catalog[r.id_pieza] = {
+                    id: r.id_pieza,
+                    numero_parte: r.numero_parte,
+                    descripcion: r.descripcion,
+                    marca: r.marca,
+                    stock_actual: Number(r.stock_actual) || 0,
+                    stock_minimo: Number(r.stock_minimo) || 0,
+                    rack: r.rack || '',
+                    nivel: r.nivel || '',
+                    precio_unitario: Number(r.precio_unitario) || 0,
+                    almacen: r.almacen || 'Almacén de Refacciones',
+                    almacen_id: r.almacen_id || 'refacciones',
+                    unidad: r.unidad_medida || 'PZ',
+                    ...(r.datos_extra || {})
+                };
+            });
+
+            const movRes = await client.query('SELECT * FROM almacen_movimientos ORDER BY timestamp ASC;');
+            const movimientos = movRes.rows.map(r => ({
+                id: r.id,
+                tipo: r.tipo || 'S',
+                folio: r.folio || '',
+                fecha: r.fecha || '',
+                hora: r.hora || '',
+                id_pieza: r.id_pieza,
+                numero_parte: r.numero_parte || '',
+                descripcion: r.descripcion || '',
+                marca: r.marca || '',
+                cantidad: Number(r.cantidad) || 1,
+                unidad_camion: r.unidad_camion || '',
+                unidad: r.unidad_camion || '',
+                solicitante: r.solicitante || '',
+                precio_unitario: Number(r.precio_unitario) || 0,
+                costo_total: Number(r.costo_total) || 0,
+                factura: r.factura || '',
+                proveedor: r.proveedor || '',
+                ubicacion: r.ubicacion || '',
+                motivo: r.motivo || '',
+                anulado: Boolean(r.anulado),
+                ...(r.datos_extra || {})
+            }));
+
+            const folRes = await client.query('SELECT * FROM almacen_folios_taller;');
+            const folios_taller = folRes.rows.map(r => ({
+                folio: r.folio,
+                unidad: r.unidad,
+                solicitante: r.solicitante,
+                motivo: r.motivo,
+                fecha: r.fecha,
+                hora: r.hora,
+                estado: r.estado
+            }));
+
+            return { catalog, movimientos, folios_taller };
+        } finally {
+            client.release();
+        }
+    } catch (e) {
+        console.error('[PostgreSQL obtenerAlmacenData Error]:', e.message);
+        return null;
+    }
+}
+
+async function guardarAlmacenData(almData) {
+    if (!isPostgresAvailable || !pool || !almData) return false;
+    try {
+        const client = await pool.connect();
+        try {
+            await client.query('BEGIN');
+            const catalog = almData.catalog || {};
+            for (const [idPieza, item] of Object.entries(catalog)) {
+                await client.query(`
+                    INSERT INTO almacen_catalog (
+                        id_pieza, numero_parte, descripcion, marca, stock_actual, stock_minimo,
+                        rack, nivel, precio_unitario, almacen, almacen_id, unidad_medida, datos_extra, updated_at
+                    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, CURRENT_TIMESTAMP)
+                    ON CONFLICT (id_pieza) DO UPDATE SET
+                        numero_parte = EXCLUDED.numero_parte,
+                        descripcion = EXCLUDED.descripcion,
+                        marca = EXCLUDED.marca,
+                        stock_actual = EXCLUDED.stock_actual,
+                        stock_minimo = EXCLUDED.stock_minimo,
+                        rack = EXCLUDED.rack,
+                        nivel = EXCLUDED.nivel,
+                        precio_unitario = EXCLUDED.precio_unitario,
+                        almacen = EXCLUDED.almacen,
+                        almacen_id = EXCLUDED.almacen_id,
+                        unidad_medida = EXCLUDED.unidad_medida,
+                        datos_extra = EXCLUDED.datos_extra,
+                        updated_at = CURRENT_TIMESTAMP;
+                `, [
+                    String(idPieza), String(item.numero_parte || ''), String(item.descripcion || ''), String(item.marca || ''),
+                    Number(item.stock_actual) || 0, Number(item.stock_minimo) || 0,
+                    String(item.rack || ''), String(item.nivel || ''), Number(item.precio_unitario) || 0,
+                    String(item.almacen || 'Almacén de Refacciones'), String(item.almacen_id || 'refacciones'),
+                    String(item.unidad || item.unidad_medida || 'PZ'), JSON.stringify(item)
+                ]);
+            }
+
+            const movs = almData.movimientos || almData.salidas || [];
+            for (const m of movs) {
+                const pu = Number(m.costo_unitario || m.precio_unitario) || 0;
+                const tot = Number(m.costo_total !== undefined ? m.costo_total : (m.total_costo || (m.cantidad * pu))) || 0;
+                await client.query(`
+                    INSERT INTO almacen_movimientos (
+                        id, tipo, folio, fecha, hora, id_pieza, numero_parte, descripcion, marca,
+                        cantidad, unidad_camion, solicitante, precio_unitario, costo_total, factura,
+                        proveedor, ubicacion, motivo, anulado, datos_extra
+                    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20)
+                    ON CONFLICT (id) DO UPDATE SET
+                        anulado = EXCLUDED.anulado,
+                        costo_total = EXCLUDED.costo_total,
+                        precio_unitario = EXCLUDED.precio_unitario,
+                        motivo = EXCLUDED.motivo,
+                        solicitante = EXCLUDED.solicitante;
+                `, [
+                    String(m.id), String(m.tipo || 'S'), String(m.folio || ''), String(m.fecha || ''), String(m.hora || ''),
+                    String(m.id_pieza || ''), String(m.numero_parte || ''), String(m.descripcion || ''), String(m.marca || ''),
+                    Number(m.cantidad) || 1, String(m.unidad_camion || m.unidad || ''), String(m.solicitante || ''),
+                    pu, tot, String(m.factura || ''), String(m.proveedor || ''), String(m.ubicacion || ''), String(m.motivo || ''),
+                    Boolean(m.anulado), JSON.stringify(m)
+                ]);
+            }
+            await client.query('COMMIT');
+            return true;
+        } catch (e) {
+            await client.query('ROLLBACK');
+            throw e;
+        } finally {
+            client.release();
+        }
+    } catch (e) {
+        console.error('[PostgreSQL guardarAlmacenData Error]:', e.message);
+        return false;
+    }
+}
+
 // SINCRONIZACIÓN INVERSA (POSTGRESQL -> DISCO LOCAL PARA COMPATIBILIDAD 100%)
 async function sincronizarTodoHaciaDisco(rootDir = __dirname) {
     if (!isPostgresAvailable || !pool) return false;
@@ -1306,6 +1454,18 @@ async function sincronizarTodoHaciaDisco(rootDir = __dirname) {
             const limpios = rescates.filter(r => String(r.unidad).trim() !== '75');
             fs.writeFileSync(path.join(rootDir, 'taller_rescates.json'), JSON.stringify(limpios, null, 2), 'utf8');
             console.log(`[ERP Sync] ${limpios.length} rescates carreteros actualizados desde PostgreSQL a disco local.`);
+        }
+        const alm = await obtenerAlmacenData();
+        if (alm && alm.catalog && Object.keys(alm.catalog).length > 0) {
+            const fPath = path.join(rootDir, 'almacen_datos.json');
+            let existing = {};
+            if (fs.existsSync(fPath)) {
+                try { existing = JSON.parse(fs.readFileSync(fPath, 'utf8')); } catch(e) {}
+            }
+            const combined = { ...existing, catalog: alm.catalog, movimientos: alm.movimientos };
+            if (alm.folios_taller && alm.folios_taller.length > 0) combined.folios_taller = alm.folios_taller;
+            fs.writeFileSync(fPath, JSON.stringify(combined, null, 2), 'utf8');
+            console.log(`[ERP Sync] Almacén (${Object.keys(alm.catalog).length} productos, ${alm.movimientos.length} movs) sincronizado desde PostgreSQL.`);
         }
         return true;
     } catch(e) {
@@ -1345,6 +1505,9 @@ module.exports = {
     guardarRescatesTaller,
     guardarRescateTaller,
     eliminarRescateTaller,
+    // Almacén
+    obtenerAlmacenData,
+    guardarAlmacenData,
     // Diésel & Rendimientos
     obtenerRegistrosDiesel,
     guardarRegistroDiesel,

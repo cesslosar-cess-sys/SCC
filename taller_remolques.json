@@ -1,5 +1,35 @@
 [
   {
+    "id": "595",
+    "tipo": "Caja Seca 53'",
+    "marca": "",
+    "anio": "",
+    "placas": "",
+    "estado": "listo",
+    "sistema": "Suspensión / Bolsas",
+    "defecto": "Ajuste de balatas\nBolsa de pernos de carrito dañada\nCalibracion de llantas",
+    "reporte": "Ajuste de balatas\nBolsa de pernos de carrito dañada\nCalibracion de llantas",
+    "mecanico": "Juan Santillan",
+    "costo": 0,
+    "sucursal": "Apodaca",
+    "folio_almacen": "4126",
+    "fecha": "2026-11-25",
+    "fechaIngreso": "25/11/2026",
+    "costo_refacciones": 0,
+    "costo_preventivo": 0,
+    "costo_correctivo": 0,
+    "piezas": [],
+    "tipo_procedimiento": "correctivo",
+    "historial": [
+      {
+        "fecha": "26/11/2026 04:59 p.m.",
+        "evento": "Sincronizacion Almacen: 0 piezas (0 MXN) [Prev: $0 | Corr: $0]",
+        "tipo": "almacen_sync",
+        "autor": "Guardar Todo"
+      }
+    ]
+  },
+  {
     "id": "26-LA-4V",
     "tipo": "Plataforma / Remolque 53",
     "marca": "CESS",
@@ -31,7 +61,8 @@
         "solicitante": "Martin Alvarado",
         "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-11-03"
+        "fecha_recepcion": "2026-11-03",
+        "hora_recepcion": "09:08:58 a.m."
       },
       {
         "id": "mov_1793804811022_0",
@@ -47,13 +78,14 @@
         "solicitante": "MARTIN ALVARADO",
         "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-11-03"
+        "fecha_recepcion": "2026-11-03",
+        "hora_recepcion": "09:06:51 a.m."
       },
       {
         "id": "mov_1793804772076_0",
         "id_pieza": "part_1793804772076_0_5552",
         "numero_parte": "4707",
-        "descripcion": "BALATA 4707",
+        "descripcion": "BALATA 4707 ",
         "marca": "GENERICA",
         "cantidad": 4,
         "unidad_medida": "PZA",
@@ -62,8 +94,9 @@
         "folio_almacen": "4069",
         "solicitante": "MARTIN ALVARADO",
         "estado": "RECIBIDA_TALLER",
-        "tipo_trabajo": "preventivo",
-        "fecha_recepcion": "2026-11-03"
+        "tipo_trabajo": "correctivo",
+        "fecha_recepcion": "2026-11-03",
+        "hora_recepcion": "09:06:12 a.m."
       },
       {
         "id": "mov_1793804498421_525",
@@ -79,7 +112,8 @@
         "solicitante": "Martin Alvarado",
         "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-11-03"
+        "fecha_recepcion": "2026-11-03",
+        "hora_recepcion": "09:01:38 a.m."
       },
       {
         "id": "mov_1793804402760_674",
@@ -95,7 +129,8 @@
         "solicitante": "Martin Alvarado",
         "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-11-03"
+        "fecha_recepcion": "2026-11-03",
+        "hora_recepcion": "09:00:02 a.m."
       },
       {
         "id": "mov_1793804156700_404",
@@ -111,11 +146,21 @@
         "solicitante": "Martin Alvarado",
         "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-11-03"
+        "fecha_recepcion": "2026-11-03",
+        "hora_recepcion": "08:55:56 a.m."
       }
     ],
-    "costo_preventivo": 1120,
-    "costo_correctivo": 30765.54
+    "costo_preventivo": 0,
+    "costo_correctivo": 31885.54,
+    "tipo_procedimiento": "correctivo",
+    "historial": [
+      {
+        "fecha": "26/11/2026 04:59 p.m.",
+        "evento": "Sincronizacion Almacen: 6 piezas (31,885.54 MXN) [Prev: $0 | Corr: $31,885.54]",
+        "tipo": "almacen_sync",
+        "autor": "Guardar Todo"
+      }
+    ]
   },
   {
     "id": "34808",
@@ -149,7 +194,8 @@
         "solicitante": "Martin Alvarado",
         "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-11-09"
+        "fecha_recepcion": "2026-11-09",
+        "hora_recepcion": "03:05:11 p.m."
       },
       {
         "id": "mov_1794355119681_848",
@@ -165,7 +211,8 @@
         "solicitante": "Martin Alvarado",
         "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-11-10"
+        "fecha_recepcion": "2026-11-10",
+        "hora_recepcion": "05:58:39 p.m."
       },
       {
         "id": "mov_1794355004568_322",
@@ -181,7 +228,8 @@
         "solicitante": "Jose Guerra",
         "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-11-10"
+        "fecha_recepcion": "2026-11-10",
+        "hora_recepcion": "05:56:44 p.m."
       },
       {
         "id": "mov_1794354422184_0_9090",
@@ -197,7 +245,8 @@
         "solicitante": "JEFE DE TALLER",
         "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-11-10"
+        "fecha_recepcion": "2026-11-10",
+        "hora_recepcion": "05:47:02 p.m."
       },
       {
         "id": "mov_1794354172855_398",
@@ -213,11 +262,21 @@
         "solicitante": "Jose Guerra",
         "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-11-10"
+        "fecha_recepcion": "2026-11-10",
+        "hora_recepcion": "05:42:52 p.m."
       }
     ],
     "costo_preventivo": 0,
-    "costo_correctivo": 2932.89
+    "costo_correctivo": 2932.89,
+    "tipo_procedimiento": "correctivo",
+    "historial": [
+      {
+        "fecha": "26/11/2026 04:59 p.m.",
+        "evento": "Sincronizacion Almacen: 5 piezas (2,932.89 MXN) [Prev: $0 | Corr: $2,932.89]",
+        "tipo": "almacen_sync",
+        "autor": "Guardar Todo"
+      }
+    ]
   },
   {
     "id": "12354",
@@ -251,11 +310,21 @@
         "solicitante": "MARTIN ALVARADO",
         "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-11-19"
+        "fecha_recepcion": "2026-11-19",
+        "hora_recepcion": "09:16:14 p.m."
       }
     ],
     "costo_preventivo": 0,
-    "costo_correctivo": 1209.92
+    "costo_correctivo": 1209.92,
+    "tipo_procedimiento": "correctivo",
+    "historial": [
+      {
+        "fecha": "26/11/2026 04:59 p.m.",
+        "evento": "Sincronizacion Almacen: 1 piezas (1,209.92 MXN) [Prev: $0 | Corr: $1,209.92]",
+        "tipo": "almacen_sync",
+        "autor": "Guardar Todo"
+      }
+    ]
   },
   {
     "id": "3132601",
@@ -268,13 +337,166 @@
     "defecto": "Instalacion de boster doble T30 para frenos",
     "reporte": "Instalacion de boster doble T30 para frenos",
     "mecanico": "Martin Alvarado",
-    "costo": 1050,
-    "costo_refacciones": 1050,
+    "costo": 16407.32,
+    "costo_refacciones": 16407.32,
     "sucursal": "Apodaca",
     "folio_almacen": "4115",
     "fechaIngreso": "2026-11-19",
     "fecha": "2026-11-19",
     "piezas": [
+      {
+        "id": "mov_1795651411470_0_8690",
+        "id_pieza": "59935002",
+        "numero_parte": "59935002",
+        "descripcion": "VALVULA NIVELADORA SUSPENSIÓN DELANTERA",
+        "marca": "HENDRIKSON",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 900,
+        "costo_total": 900,
+        "folio_almacen": "4115",
+        "solicitante": "MARTIN ALVARADO",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "correctivo",
+        "fecha_recepcion": "2026-11-25",
+        "hora_recepcion": "12:03:31 a.m."
+      },
+      {
+        "id": "mov_1795649493697_966",
+        "id_pieza": "95122401",
+        "numero_parte": "95122401",
+        "descripcion": "CAJA DE DIRECCION HIDRÁULICA DE SERVICIO PESADO CASCADIA",
+        "marca": "S/N",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 8500,
+        "costo_total": 8500,
+        "folio_almacen": "4115",
+        "solicitante": "Martin Alvarado",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "preventivo",
+        "fecha_recepcion": "2026-11-25",
+        "hora_recepcion": "11:31:33 p.m."
+      },
+      {
+        "id": "mov_1795648233213_152",
+        "id_pieza": "CB210661",
+        "numero_parte": "CB210661",
+        "descripcion": "BALERO DE CENTRO CARDAN / SOPORTE CARDAN",
+        "marca": "MERITOR",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 1717,
+        "costo_total": 1717,
+        "folio_almacen": "4115",
+        "solicitante": "Martin Alvarado",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "correctivo",
+        "fecha_recepcion": "2026-11-25",
+        "hora_recepcion": "11:10:33 p.m."
+      },
+      {
+        "id": "mov_1795647563108_0_5966",
+        "id_pieza": "JUNTA___EMPAQUE_MAZA_835",
+        "numero_parte": "JUNTA___EMPAQUE_MAZA_835",
+        "descripcion": "JUNTA / EMPAQUE MAZA EJE DELANTERA 6 BARRENOS",
+        "marca": "FRENZEL",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 25.2,
+        "costo_total": 25.2,
+        "folio_almacen": "4115",
+        "solicitante": "MARTIN ALVARADO",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "correctivo",
+        "fecha_recepcion": "2026-11-25",
+        "hora_recepcion": "10:59:23 p.m."
+      },
+      {
+        "id": "mov_1795646636301_4_9475",
+        "id_pieza": "part_1793135203117_5_1784",
+        "numero_parte": "P551063",
+        "descripcion": "FILTRO DE COMBUSTIBLE",
+        "marca": "DONALDSON",
+        "cantidad": 1,
+        "unidad_medida": "PZA",
+        "precio_unitario": 1439.98,
+        "costo_total": 1439.98,
+        "folio_almacen": "4115",
+        "solicitante": "MARTIN ALVARADO",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "preventivo",
+        "fecha_recepcion": "2026-11-25",
+        "hora_recepcion": "10:43:56 p.m."
+      },
+      {
+        "id": "mov_1795646636301_3_2862",
+        "id_pieza": "FS19915",
+        "numero_parte": "FS19915",
+        "descripcion": "FILTRO SEPARADOR",
+        "marca": "FLEETGUARD",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 593.8,
+        "costo_total": 593.8,
+        "folio_almacen": "4115",
+        "solicitante": "MARTIN ALVARADO",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "preventivo",
+        "fecha_recepcion": "2026-11-25",
+        "hora_recepcion": "10:43:56 p.m."
+      },
+      {
+        "id": "mov_1795646636301_2_2435",
+        "id_pieza": "part_1793135203117_6_5796",
+        "numero_parte": "P551005",
+        "descripcion": "FILTRO DE ACEITE",
+        "marca": "DONALDSON",
+        "cantidad": 1,
+        "unidad_medida": "PZA",
+        "precio_unitario": 479.76,
+        "costo_total": 479.76,
+        "folio_almacen": "4115",
+        "solicitante": "MARTIN ALVARADO",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "preventivo",
+        "fecha_recepcion": "2026-11-25",
+        "hora_recepcion": "10:43:56 p.m."
+      },
+      {
+        "id": "mov_1795646636301_1_6973",
+        "id_pieza": "P618478",
+        "numero_parte": "P618478",
+        "descripcion": "FILTRO DE AIRE PRIMARIO",
+        "marca": "DONALDSON",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 1447.03,
+        "costo_total": 1447.03,
+        "folio_almacen": "4115",
+        "solicitante": "MARTIN ALVARADO",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "preventivo",
+        "fecha_recepcion": "2026-11-25",
+        "hora_recepcion": "10:43:56 p.m."
+      },
+      {
+        "id": "mov_1795646636301_0_8803",
+        "id_pieza": "AF26235",
+        "numero_parte": "AF26235",
+        "descripcion": "FILTRO DE AIRE DE CABINA",
+        "marca": "FLEETGUARD",
+        "cantidad": 1,
+        "unidad_medida": "PZ",
+        "precio_unitario": 254.55,
+        "costo_total": 254.55,
+        "folio_almacen": "4115",
+        "solicitante": "MARTIN ALVARADO",
+        "estado": "RECIBIDA_TALLER",
+        "tipo_trabajo": "preventivo",
+        "fecha_recepcion": "2026-11-25",
+        "hora_recepcion": "10:43:56 p.m."
+      },
       {
         "id": "mov_1795129594681_0_7415",
         "id_pieza": "NT3030",
@@ -289,11 +511,21 @@
         "solicitante": "MARTIN ALVARADO",
         "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-11-19"
+        "fecha_recepcion": "2026-11-19",
+        "hora_recepcion": "11:06:34 p.m."
       }
     ],
-    "costo_preventivo": 0,
-    "costo_correctivo": 1050
+    "costo_preventivo": 12715.12,
+    "costo_correctivo": 3692.2,
+    "tipo_procedimiento": "mixto",
+    "historial": [
+      {
+        "fecha": "26/11/2026 04:59 p.m.",
+        "evento": "Sincronizacion Almacen: 10 piezas (16,407.32 MXN) [Prev: $12,715.12 | Corr: $3,692.2]",
+        "tipo": "almacen_sync",
+        "autor": "Guardar Todo"
+      }
+    ]
   },
   {
     "id": "3G830",
@@ -327,11 +559,21 @@
         "solicitante": "ALEXIS GUERRA",
         "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-10-22"
+        "fecha_recepcion": "2026-10-22",
+        "hora_recepcion": "12:00:58 p.m."
       }
     ],
     "costo_preventivo": 0,
-    "costo_correctivo": 420
+    "costo_correctivo": 420,
+    "tipo_procedimiento": "correctivo",
+    "historial": [
+      {
+        "fecha": "26/11/2026 04:59 p.m.",
+        "evento": "Sincronizacion Almacen: 1 piezas (420 MXN) [Prev: $0 | Corr: $420]",
+        "tipo": "almacen_sync",
+        "autor": "Guardar Todo"
+      }
+    ]
   },
   {
     "id": "565",
@@ -365,10 +607,20 @@
         "solicitante": "Juan Santillan",
         "estado": "RECIBIDA_TALLER",
         "tipo_trabajo": "correctivo",
-        "fecha_recepcion": "2026-10-13"
+        "fecha_recepcion": "2026-10-13",
+        "hora_recepcion": "04:23:55 p.m."
       }
     ],
     "costo_preventivo": 0,
-    "costo_correctivo": 42
+    "costo_correctivo": 42,
+    "tipo_procedimiento": "correctivo",
+    "historial": [
+      {
+        "fecha": "26/11/2026 04:59 p.m.",
+        "evento": "Sincronizacion Almacen: 1 piezas (42 MXN) [Prev: $0 | Corr: $42]",
+        "tipo": "almacen_sync",
+        "autor": "Guardar Todo"
+      }
+    ]
   }
 ]

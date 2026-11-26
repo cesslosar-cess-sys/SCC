@@ -109,6 +109,10 @@ const COLL = 'cess_cloud_database';
 const CHUNK_SIZE = 150;
 
 function isCloudEnabled() {
+  // Si PostgreSQL (Supabase) está configurado como persistencia principal, omitir Firebase Firestore
+  if (process.env.DATABASE_URL || process.env.PG_CONNECTION_STRING) {
+    return false;
+  }
   if (!isInitialized) initFirebase();
   return Boolean(db);
 }

@@ -731,6 +731,13 @@ function saveAlmacenData(data) {
                 console.error(' [CloudSync] Error sincronizando Almacén con Firestore:', e.message);
             });
         }
+
+        // Sincronización empresarial en tiempo real con Supabase PostgreSQL
+        if (dbERP && typeof dbERP.guardarAlmacenData === 'function') {
+            dbERP.guardarAlmacenData(data).catch(e => {
+                console.error(' [dbERP] Error sincronizando Almacén con PostgreSQL:', e.message);
+            });
+        }
         return true;
     } catch (e) {
         console.error('Error guardando almacen_datos.json:', e);
@@ -3998,102 +4005,112 @@ app.post('/api/unidad/:id/sincronizar-almacen', (req, res) => {
 
 // --- CONSULTAR FOLIOS DISPONIBLES O EXISTENTES EN ALMACÉN PARA UNA UNIDAD O GENERAL ---
 app.get('/api/almacen/folios-disponibles', (req, res) => {
-    const uTarget = String(req.query.unidad || '').trim().toUpperCase();
-    const uClean = uTarget.replace(/^0+/, '');
+    try {
+        const uTarget = String(req.query.unidad || '').trim().toUpperCase();
+        const uClean = uTarget.replace(/^0+/, '');
 
-    const almacenData = getAlmacenData();
-    const movimientos = almacenData.movimientos || [];
-    const catalog = almacenData.catalog || {};
-    const foliosTaller = almacenData.folios_taller || [];
+        const almacenData = getAlmacenData() || {};
+        const movimientos = Array.isArray(almacenData.movimientos) ? almacenData.movimientos : [];
+        const catalog = (almacenData.catalog && typeof almacenData.catalog === 'object') ? almacenData.catalog : {};
+        const foliosTaller = Array.isArray(almacenData.folios_taller) ? almacenData.folios_taller : [];
 
-    const foliosMap = new Map();
+        const foliosMap = new Map();
 
-    movimientos.forEach(m => {
-        if (m.anulado || (m.tipo && m.tipo !== 'S' && m.tipo !== 'E/S')) return;
-        const fol = String(m.folio || '').trim();
-        if (!fol) return;
+        movimientos.forEach(m => {
+            if (!m || m.anulado || (m.tipo && m.tipo !== 'S' && m.tipo !== 'E/S')) return;
+            const fol = String(m.folio || '').trim();
+            if (!fol) return;
 
-        const mU = String(m.unidad_camion || '').trim().toUpperCase();
-        const mUClean = mU.replace(/^0+/, '');
-        const coincideUnidad = !uTarget || (mU && (mU === uTarget || (uClean && mUClean === uClean)));
+            const mU = String(m.unidad_camion || '').trim().toUpperCase();
+            const mUClean = mU.replace(/^0+/, '');
+            const coincideUnidad = !uTarget || (mU && (mU === uTarget || (uClean && mUClean === uClean)));
 
-        if (!foliosMap.has(fol)) {
-            foliosMap.set(fol, {
-                folio: fol,
-                unidad: m.unidad_camion || '',
-                coincide_unidad: Boolean(coincideUnidad),
-                count: 0,
-                costo_total: 0,
-                costoTotal: 0,
-                fecha: m.fecha || '',
-                solicitante: m.solicitante || '',
-                items: []
+            if (!foliosMap.has(fol)) {
+                foliosMap.set(fol, {
+                    folio: fol,
+                    unidad: m.unidad_camion || '',
+                    coincide_unidad: Boolean(coincideUnidad),
+                    count: 0,
+                    costo_total: 0,
+                    costoTotal: 0,
+                    fecha: m.fecha || '',
+                    solicitante: m.solicitante || '',
+                    items: []
+                });
+            }
+
+            const fObj = foliosMap.get(fol);
+            const pu = getPiezaPrecioUnitario(m, catalog);
+            const cant = Number(m.cantidad) || 1;
+            const total = pu * cant;
+
+            fObj.count += cant;
+            fObj.costo_total += total;
+            fObj.costoTotal += total;
+            if (m.fecha && (!fObj.fecha || m.fecha > fObj.fecha)) fObj.fecha = m.fecha;
+            if (m.solicitante && !fObj.solicitante) fObj.solicitante = m.solicitante;
+            if (coincideUnidad) fObj.coincide_unidad = true;
+            if (!fObj.unidad && m.unidad_camion) fObj.unidad = m.unidad_camion;
+
+            fObj.items.push({
+                id_pieza: m.id_pieza,
+                descripcion: m.descripcion || 'Refacción',
+                numero_parte: m.numero_parte || '',
+                cantidad: cant,
+                precio_unitario: pu,
+                costo_total: total
             });
+        });
+
+        foliosTaller.forEach(ft => {
+            if (!ft) return;
+            const fol = String(ft.folio || '').trim();
+            if (!fol) return;
+            const ftU = String(ft.unidad || '').trim().toUpperCase();
+            const ftUClean = ftU.replace(/^0+/, '');
+            const coincideUnidad = !uTarget || (ftU && (ftU === uTarget || (uClean && ftUClean === uClean)));
+
+            if (!foliosMap.has(fol)) {
+                foliosMap.set(fol, {
+                    folio: fol,
+                    unidad: ft.unidad || '',
+                    coincide_unidad: Boolean(coincideUnidad),
+                    count: 0,
+                    costo_total: 0,
+                    costoTotal: 0,
+                    fecha: ft.fecha || '',
+                    solicitante: ft.solicitante || '',
+                    motivo: ft.motivo || '',
+                    items: []
+                });
+            }
+        });
+
+        let lista = Array.from(foliosMap.values());
+        if (uTarget) {
+            lista.sort((a, b) => {
+                if (a.coincide_unidad && !b.coincide_unidad) return -1;
+                if (!a.coincide_unidad && b.coincide_unidad) return 1;
+                return (b.fecha || '').localeCompare(a.fecha || '');
+            });
+        } else {
+            lista.sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''));
         }
 
-        const fObj = foliosMap.get(fol);
-        const pu = getPiezaPrecioUnitario(m, catalog);
-        const cant = Number(m.cantidad) || 1;
-        const total = pu * cant;
-
-        fObj.count += cant;
-        fObj.costo_total += total;
-        fObj.costoTotal += total;
-        if (m.fecha && (!fObj.fecha || m.fecha > fObj.fecha)) fObj.fecha = m.fecha;
-        if (m.solicitante && !fObj.solicitante) fObj.solicitante = m.solicitante;
-        if (coincideUnidad) fObj.coincide_unidad = true;
-        if (!fObj.unidad && m.unidad_camion) fObj.unidad = m.unidad_camion;
-
-        fObj.items.push({
-            id_pieza: m.id_pieza,
-            descripcion: m.descripcion || 'Refacción',
-            numero_parte: m.numero_parte || '',
-            cantidad: cant,
-            precio_unitario: pu,
-            costo_total: total
+        res.json({
+            success: true,
+            unidad_consultada: uTarget || null,
+            total: lista.length,
+            folios: lista.slice(0, 30)
         });
-    });
-
-    foliosTaller.forEach(ft => {
-        const fol = String(ft.folio || '').trim();
-        if (!fol) return;
-        const ftU = String(ft.unidad || '').trim().toUpperCase();
-        const ftUClean = ftU.replace(/^0+/, '');
-        const coincideUnidad = !uTarget || (ftU && (ftU === uTarget || (uClean && ftUClean === uClean)));
-
-        if (!foliosMap.has(fol)) {
-            foliosMap.set(fol, {
-                folio: fol,
-                unidad: ft.unidad || '',
-                coincide_unidad: Boolean(coincideUnidad),
-                count: 0,
-                costo_total: 0,
-                costoTotal: 0,
-                fecha: ft.fecha || '',
-                solicitante: ft.solicitante || '',
-                motivo: ft.motivo || '',
-                items: []
-            });
-        }
-    });
-
-    let lista = Array.from(foliosMap.values());
-    if (uTarget) {
-        lista.sort((a, b) => {
-            if (a.coincide_unidad && !b.coincide_unidad) return -1;
-            if (!a.coincide_unidad && b.coincide_unidad) return 1;
-            return (b.fecha || '').localeCompare(a.fecha || '');
+    } catch (err) {
+        console.error('Error en /api/almacen/folios-disponibles:', err.message);
+        res.json({
+            success: false,
+            error: err.message,
+            folios: []
         });
-    } else {
-        lista.sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''));
     }
-
-    res.json({
-        success: true,
-        unidad_consultada: uTarget || null,
-        total: lista.length,
-        folios: lista.slice(0, 30)
-    });
 });
 
 // --- SINCRONIZACIÓN DIRECTA DE ALMACÉN COMPLETO A TALLER ---
