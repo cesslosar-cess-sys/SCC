@@ -4299,8 +4299,14 @@ app.post('/api/almacen/restaurar-respaldo', (req, res) => {
     if (Array.isArray(backupData.movimientos)) {
       store.movimientos = backupData.movimientos;
     }
+    if (Array.isArray(backupData.facturas_procesadas)) {
+      store.facturas_procesadas = backupData.facturas_procesadas;
+    }
     if (Array.isArray(backupData.facturas_registradas)) {
       store.facturas_registradas = backupData.facturas_registradas;
+    }
+    if (backupData.folios_taller && typeof backupData.folios_taller === 'object') {
+      store.folios_taller = { ...store.folios_taller, ...backupData.folios_taller };
     }
     if (Array.isArray(backupData.almacenes)) {
       store.almacenes = backupData.almacenes;

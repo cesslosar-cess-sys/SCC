@@ -144,15 +144,17 @@ const ALMACEN_GUARDIAN_SNIPPET = `
       if (url.includes('/api/bitacora') && method === 'GET') {
         const clone = response.clone();
         clone.json().then(data => {
-          if (Array.isArray(data)) {
-            handleServerMovimientos(data);
+          const list = Array.isArray(data) ? data : (data && Array.isArray(data.movimientos) ? data.movimientos : null);
+          if (list && list.length > 0) {
+            handleServerMovimientos(list);
           }
         }).catch(() => {});
       } else if (url.includes('/api/inventory') && method === 'GET') {
         const clone = response.clone();
         clone.json().then(data => {
           if (data && typeof data === 'object') {
-            try { localStorage.setItem(VAULT_CAT_KEY, JSON.stringify(data)); } catch(e) {}
+            const cat = data.catalog || data.items || data;
+            try { localStorage.setItem(VAULT_CAT_KEY, JSON.stringify(cat)); } catch(e) {}
           }
         }).catch(() => {});
       }
