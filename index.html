@@ -4613,7 +4613,8 @@
                         const su = mapa.get(key);
 
                         // Si localmente cambiamos de estado recientemente y aún no se refleja en el servidor, respetar el estado local
-                        if (lu.estadoTimestamp && (!su.estadoTimestamp || lu.estadoTimestamp > su.estadoTimestamp)) {
+                        const esCambioLocalMuyReciente = lu.estadoTimestamp && (Date.now() - lu.estadoTimestamp < 20000);
+                        if (esCambioLocalMuyReciente && (!su.estadoTimestamp || lu.estadoTimestamp > su.estadoTimestamp)) {
                             su.estado = lu.estado;
                             su.estadoTimestamp = lu.estadoTimestamp;
                         }
@@ -4692,7 +4693,8 @@
                 if (res.ok) {
                     const json = await res.json();
                     if (json.data && Array.isArray(json.data)) {
-                        fusionarUnidadesInteligente(json.data);
+                        try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+                        baseDatos = json.data;
                         sanitizarBaseDatos();
                         guardarDatosLocales(false);
                         if (vistaActual === 'tablero') renderizarTablero();
@@ -4714,7 +4716,8 @@
                 if (res.ok) {
                     const json = await res.json();
                     if (json.data && Array.isArray(json.data)) {
-                        fusionarUnidadesInteligente(json.data);
+                        try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+                        baseDatos = json.data;
                         sanitizarBaseDatos();
                         guardarDatosLocales(false);
                         renderizarTablero();
