@@ -1199,33 +1199,15 @@ function saveUnidades(incomingUnidades, autor = 'Sistema') {
 
     const archivadasSet = new Set(archivadas.map(a => String(a.id).trim().toUpperCase()));
 
-    // DETECTAR Y ARCHIVAR UNIDADES RETIRADAS/LIBERADAS POR EL USUARIO:
-    const incomingKeys = new Set(incomingUnidades.map(u => u && u.id ? String(u.id).trim().toUpperCase() : ''));
+    // PROTECCIÓN MULTIUSUARIO: Inicializar mapa con las unidades actuales activas en disco
+    const mapa = new Map();
     actualesEnDisco.forEach(oldU => {
         if (!oldU || !oldU.id) return;
         const k = String(oldU.id).trim().toUpperCase();
-        if (!incomingKeys.has(k)) {
-            // El usuario retiró o liberó esta unidad: se resguarda su expediente clínico completo en archivadas
-            const yaArch = archivadas.findIndex(a => String(a.id).trim().toUpperCase() === k);
-            if (yaArch === -1) {
-                archivadas.unshift({
-                    ...oldU,
-                    archivada: true,
-                    fecha_salida: oldU.fecha_salida || new Date().toLocaleDateString('es-MX'),
-                    hora_salida: oldU.hora_salida || new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
-                    motivo_salida: oldU.motivo_salida || 'Retirada del tablero activo / Liberada'
-                });
-                archivadasModificadas = true;
-            }
+        if (!archivadasSet.has(k)) {
+            mapa.set(k, { ...oldU, archivada: false });
         }
     });
-
-    if (archivadasModificadas) {
-        saveUnidadesArchivadas(archivadas);
-    }
-
-    // EL TABLERO ACTIVO CONTIENE EXCLUSIVAMENTE LAS UNIDADES ACTIVAS (NO SE RESUCITAN UNIDADES RETIRADAS)
-    const mapa = new Map();
 
     // 2. Fusionar con las unidades que envía el usuario que guarda
     incomingUnidades.forEach(inU => {
@@ -1568,9 +1550,19 @@ app.post('/api/jornada/movimiento', (req, res) => {
 });
 
 // 3. Obtener todas las unidades (Consulta de lectura pura, sin re-escrituras)
-app.get('/api/unidades', (req, res) => {
+app.get('/api/unidades', async (req, res) => {
     getJornadaActual(); // valida medianoche si aplica
-    const unidades = getUnidades();
+    let unidades = [];
+    if (dbERP && typeof dbERP.obtenerUnidadesTaller === 'function') {
+        try {
+            unidades = await dbERP.obtenerUnidadesTaller();
+        } catch(e) {
+            console.warn('[Server] Error leyendo unidades desde PostgreSQL:', e.message);
+        }
+    }
+    if (!unidades || unidades.length === 0) {
+        unidades = getUnidades();
+    }
     res.json({ success: true, count: unidades.length, data: unidades, dataTimestamp: ultimaMarcaTiempoDatos });
 });
 

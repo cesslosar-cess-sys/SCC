@@ -613,16 +613,7 @@ async function guardarUnidadesTaller(unidades) {
                         JSON.stringify(u.avances || []), JSON.stringify(u.piezas || []), JSON.stringify(u.historial || [])
                     ]);
                 }
-                // Si la lista de unidades activas es válida y no vacía, marcar como archivadas en PostgreSQL
-                // cualquier unidad que ya no esté en la lista activa (evita que unidades liberadas o borradas resuciten)
-                if (unidades.length > 0) {
-                    const activeIds = unidades.map(u => String(u.id).trim());
-                    await client.query(`
-                        UPDATE taller_unidades
-                        SET archivada = true, updated_at = CURRENT_TIMESTAMP
-                        WHERE id != ALL($1) AND archivada = false;
-                    `, [activeIds]);
-                }
+                // Actualización segura de unidades activas sin sobreescritura destructiva
                 await client.query('COMMIT');
                 return true;
             } catch (err) {
@@ -716,15 +707,7 @@ async function guardarRemolquesTaller(remolques) {
                         r.fecha || null, r.fechaIngreso || null, JSON.stringify(r.piezas || [])
                     ]);
                 }
-                // Marcar como archivados en PostgreSQL cualquier remolque que ya no esté en la lista activa
-                if (remolques.length > 0) {
-                    const activeRemIds = remolques.map(r => String(r.id).trim());
-                    await client.query(`
-                        UPDATE taller_remolques
-                        SET archivado = true, updated_at = CURRENT_TIMESTAMP
-                        WHERE id != ALL($1) AND (archivado = false OR archivado IS NULL);
-                    `, [activeRemIds]);
-                }
+                // Actualización segura de remolques activos sin sobreescritura destructiva
                 await client.query('COMMIT');
                 return true;
             } catch (err) {
