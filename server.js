@@ -1199,14 +1199,33 @@ function saveUnidades(incomingUnidades, autor = 'Sistema') {
 
     const archivadasSet = new Set(archivadas.map(a => String(a.id).trim().toUpperCase()));
 
-    // FUSIÓN MULTIUSUARIO INTELIGENTE:
-    // 1. Inicializar con las unidades actuales en disco (para no perder el trabajo del otro usuario)
-    const mapa = new Map();
-    actualesEnDisco.forEach(u => {
-        if (u && u.id && !archivadasSet.has(String(u.id).trim().toUpperCase())) {
-            mapa.set(String(u.id).trim().toUpperCase(), { ...u });
+    // DETECTAR Y ARCHIVAR UNIDADES RETIRADAS/LIBERADAS POR EL USUARIO:
+    const incomingKeys = new Set(incomingUnidades.map(u => u && u.id ? String(u.id).trim().toUpperCase() : ''));
+    actualesEnDisco.forEach(oldU => {
+        if (!oldU || !oldU.id) return;
+        const k = String(oldU.id).trim().toUpperCase();
+        if (!incomingKeys.has(k)) {
+            // El usuario retiró o liberó esta unidad: se resguarda su expediente clínico completo en archivadas
+            const yaArch = archivadas.findIndex(a => String(a.id).trim().toUpperCase() === k);
+            if (yaArch === -1) {
+                archivadas.unshift({
+                    ...oldU,
+                    archivada: true,
+                    fecha_salida: oldU.fecha_salida || new Date().toLocaleDateString('es-MX'),
+                    hora_salida: oldU.hora_salida || new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
+                    motivo_salida: oldU.motivo_salida || 'Retirada del tablero activo / Liberada'
+                });
+                archivadasModificadas = true;
+            }
         }
     });
+
+    if (archivadasModificadas) {
+        saveUnidadesArchivadas(archivadas);
+    }
+
+    // EL TABLERO ACTIVO CONTIENE EXCLUSIVAMENTE LAS UNIDADES ACTIVAS (NO SE RESUCITAN UNIDADES RETIRADAS)
+    const mapa = new Map();
 
     // 2. Fusionar con las unidades que envía el usuario que guarda
     incomingUnidades.forEach(inU => {
@@ -1773,8 +1792,16 @@ app.get('/api/unidad/:id/historial-diario', (req, res) => {
 
 
 // --- 6.5 GESTIÓN DE SALIDA A VIAJE Y UNIDADES ARCHIVADAS ---
-app.get('/api/unidades/archivadas', (req, res) => {
-    const archivadas = getUnidadesArchivadas();
+app.get('/api/unidades/archivadas', async (req, res) => {
+    let archivadas = [];
+    if (dbERP && typeof dbERP.obtenerUnidadesArchivadasTaller === 'function') {
+        try {
+            archivadas = await dbERP.obtenerUnidadesArchivadasTaller();
+        } catch(e) {}
+    }
+    if (!archivadas || archivadas.length === 0) {
+        archivadas = getUnidadesArchivadas();
+    }
     res.json({ success: true, count: archivadas.length, archivadas });
 });
 
@@ -1866,6 +1893,11 @@ app.post('/api/unidad/:id/liberar', (req, res) => {
     }
 
     // Retirar del tablero activo
+    // Actualizar inmediatamente en PostgreSQL como archivada
+    if (dbERP && dbERP.pool && dbERP.isPostgresAvailable) {
+        dbERP.pool.query('UPDATE taller_unidades SET archivada = true, updated_at = CURRENT_TIMESTAMP WHERE id = $1', [unitId]).catch(e => console.error('[Liberar DB Error]:', e.message));
+    }
+
     unidades.splice(idx, 1);
     saveUnidades(unidades);
 
@@ -5215,6 +5247,9 @@ app.post('/api/remolques/:id/liberar', (req, res) => {
 
     r.archivado = true;
     r.fecha_liberacion = fechaSalida;
+    if (dbERP && dbERP.pool && dbERP.isPostgresAvailable) {
+        dbERP.pool.query('UPDATE taller_remolques SET archivado = true, updated_at = CURRENT_TIMESTAMP WHERE id = $1', [remId]).catch(e => console.error('[Liberar Remolque DB Error]:', e.message));
+    }
     r.hora_liberacion = horaSalida;
     r.motivo_salida = motivo || 'Liberado para patio / viaje';
     r.notas_salida = notas || '';
@@ -6168,6 +6203,21 @@ app.post('/api/cloud/setup-key', async (req, res) => {
         });
     } catch(e) {
         res.status(500).json({ error: e.message });
+    }
+});
+
+// RECARGA MANUAL DESDE POSTGRESQL A DISCO EN CALIENTE
+app.get('/api/erp/recargar-desde-postgres', async (req, res) => {
+    try {
+        if (dbERP && typeof dbERP.sincronizarTodoHaciaDisco === 'function') {
+            await dbERP.sincronizarTodoHaciaDisco(__dirname);
+            const unidades = getUnidades();
+            broadcastSSE('units_updated', { units: unidades, autor: 'Recarga PostgreSQL', count: unidades.length });
+            return res.json({ success: true, count: unidades.length, data: unidades });
+        }
+        res.status(503).json({ success: false, error: 'dbERP no disponible' });
+    } catch(e) {
+        res.status(500).json({ success: false, error: e.message });
     }
 });
 

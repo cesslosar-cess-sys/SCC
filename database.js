@@ -613,6 +613,16 @@ async function guardarUnidadesTaller(unidades) {
                         JSON.stringify(u.avances || []), JSON.stringify(u.piezas || []), JSON.stringify(u.historial || [])
                     ]);
                 }
+                // Si la lista de unidades activas es válida y no vacía, marcar como archivadas en PostgreSQL
+                // cualquier unidad que ya no esté en la lista activa (evita que unidades liberadas o borradas resuciten)
+                if (unidades.length > 0) {
+                    const activeIds = unidades.map(u => String(u.id).trim());
+                    await client.query(`
+                        UPDATE taller_unidades
+                        SET archivada = true, updated_at = CURRENT_TIMESTAMP
+                        WHERE id != ALL($1) AND archivada = false;
+                    `, [activeIds]);
+                }
                 await client.query('COMMIT');
                 return true;
             } catch (err) {
@@ -630,7 +640,7 @@ async function guardarUnidadesTaller(unidades) {
 async function obtenerRemolquesTaller() {
     if (isPostgresAvailable && pool) {
         try {
-            const res = await pool.query('SELECT * FROM taller_remolques ORDER BY id ASC;');
+            const res = await pool.query('SELECT * FROM taller_remolques WHERE archivado = false OR archivado IS NULL ORDER BY id ASC;');
             if (res.rows.length > 0) {
                 return res.rows.map(r => ({
                     id: r.id,
@@ -705,6 +715,15 @@ async function guardarRemolquesTaller(remolques) {
                         Number(r.costo) || 0, Number(r.costo_refacciones) || 0, r.sucursal || 'Apodaca', r.folio_almacen || null,
                         r.fecha || null, r.fechaIngreso || null, JSON.stringify(r.piezas || [])
                     ]);
+                }
+                // Marcar como archivados en PostgreSQL cualquier remolque que ya no esté en la lista activa
+                if (remolques.length > 0) {
+                    const activeRemIds = remolques.map(r => String(r.id).trim());
+                    await client.query(`
+                        UPDATE taller_remolques
+                        SET archivado = true, updated_at = CURRENT_TIMESTAMP
+                        WHERE id != ALL($1) AND (archivado = false OR archivado IS NULL);
+                    `, [activeRemIds]);
                 }
                 await client.query('COMMIT');
                 return true;
@@ -1449,6 +1468,41 @@ async function sincronizarTodoHaciaDisco(rootDir = __dirname) {
             fs.writeFileSync(path.join(rootDir, 'taller_remolques.json'), JSON.stringify(remolques, null, 2), 'utf8');
             console.log(`[ERP Sync] ${remolques.length} remolques actualizados desde PostgreSQL a disco local.`);
         }
+        // Descargar también unidades archivadas desde PostgreSQL a disco local
+        try {
+            const archRes = await pool.query('SELECT * FROM taller_unidades WHERE archivada = true ORDER BY updated_at DESC;');
+            if (archRes && archRes.rows) {
+                const archList = archRes.rows.map(r => ({
+                    id: r.id,
+                    sucursal: r.sucursal,
+                    estado: r.estado,
+                    defecto: r.defecto,
+                    reporte: r.reporte,
+                    notas: r.notas,
+                    costo: Number(r.costo) || 0,
+                    costo_refacciones: Number(r.costo_refacciones) || 0,
+                    costo_preventivo: Number(r.costo_preventivo) || 0,
+                    costo_correctivo: Number(r.costo_correctivo) || 0,
+                    tipo_procedimiento: r.tipo_procedimiento,
+                    folio_almacen: r.folio_almacen,
+                    fecha_ingreso: r.fecha_ingreso,
+                    fecha_salida: r.fecha_salida || '',
+                    hora_salida: r.hora_salida || '',
+                    motivo_salida: r.motivo_salida || 'Salida de taller / Asignada a viaje',
+                    notas_salida: r.notas_salida || '',
+                    km_salida: r.km_salida || null,
+                    archivada: true,
+                    avances: r.avances || [],
+                    piezas: r.piezas || [],
+                    historial: r.historial || []
+                }));
+                fs.writeFileSync(path.join(rootDir, 'taller_unidades_archivadas.json'), JSON.stringify(archList, null, 2), 'utf8');
+                console.log(`[ERP Sync] ${archList.length} unidades archivadas descargadas desde PostgreSQL.`);
+            }
+        } catch (eArch) {
+            console.warn('[ERP Sync] Error al descargar archivadas:', eArch.message);
+        }
+
         const rescates = await obtenerRescatesTaller();
         if (Array.isArray(rescates) && rescates.length > 0) {
             const limpios = rescates.filter(r => String(r.unidad).trim() !== '75');
@@ -1490,6 +1544,49 @@ async function init() {
 // Ejecutar init al requerir
 init().catch(err => console.error('[Database Init Error]:', err));
 
+
+// OBTENER UNIDADES ARCHIVADAS / LIBERADAS CON EXPEDIENTE CLÍNICO COMPLETO
+async function obtenerUnidadesArchivadasTaller() {
+    if (isPostgresAvailable && pool) {
+        try {
+            const res = await pool.query('SELECT * FROM taller_unidades WHERE archivada = true ORDER BY updated_at DESC;');
+            if (res.rows.length > 0) {
+                return res.rows.map(r => ({
+                    id: r.id,
+                    sucursal: r.sucursal,
+                    estado: r.estado,
+                    defecto: r.defecto,
+                    reporte: r.reporte,
+                    notas: r.notas,
+                    costo: Number(r.costo) || 0,
+                    costo_refacciones: Number(r.costo_refacciones) || 0,
+                    costo_preventivo: Number(r.costo_preventivo) || 0,
+                    costo_correctivo: Number(r.costo_correctivo) || 0,
+                    tipo_procedimiento: r.tipo_procedimiento,
+                    folio_almacen: r.folio_almacen,
+                    fecha_ingreso: r.fecha_ingreso,
+                    fecha_salida: r.fecha_salida || '',
+                    hora_salida: r.hora_salida || '',
+                    motivo_salida: r.motivo_salida || 'Salida de taller / Asignada a viaje',
+                    notas_salida: r.notas_salida || '',
+                    km_salida: r.km_salida || null,
+                    archivada: true,
+                    avances: r.avances || [],
+                    piezas: r.piezas || [],
+                    historial: r.historial || []
+                }));
+            }
+        } catch (e) {
+            console.warn('[PostgreSQL Read Archivadas Error]:', e.message);
+        }
+    }
+    try {
+        const f = path.join(__dirname, 'taller_unidades_archivadas.json');
+        if (fs.existsSync(f)) return JSON.parse(fs.readFileSync(f, 'utf8'));
+    } catch(e) {}
+    return [];
+}
+
 module.exports = {
     pool,
     isPostgresAvailable: () => isPostgresAvailable,
@@ -1498,6 +1595,7 @@ module.exports = {
     sincronizarTodoHaciaDisco,
     // Taller
     obtenerUnidadesTaller,
+  obtenerUnidadesArchivadasTaller,
     guardarUnidadesTaller,
     obtenerRemolquesTaller,
     guardarRemolquesTaller,

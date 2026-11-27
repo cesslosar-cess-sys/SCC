@@ -4596,9 +4596,9 @@
                     const key = String(lu.id).trim();
 
                     if (!mapa.has(key)) {
-                        // Si la unidad fue recién agregada o reincorporada localmente, conservarla y forzar envío al servidor
-                        const estaLiberada = (cacheUnidadesLiberadas || []).some(lib => String(lib.id).trim() === key);
-                        if (!estaLiberada && !lu.archivada) {
+                        // REGLA DE ORO: Si el servidor no tiene la unidad, se respeta la verdad del servidor (fue liberada, archivada o retirada)
+                        // Solo conservarla si fue recién creada en este mismo dispositivo en los últimos 60 segundos
+                        if (lu._nuevaLocal && lu.timestampCreacion && (Date.now() - lu.timestampCreacion < 60000)) {
                             mapa.set(key, lu);
                             fetch(`/api/unidad/${encodeURIComponent(lu.id)}`, {
                                 method: 'POST',
