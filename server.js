@@ -2182,22 +2182,64 @@ app.get('/api/bitacoras', (req, res) => {
 
 // 9. Consultar Bitácora por Fecha Específica (Hoy o Pasado)
 app.get('/api/bitacora/fecha/:fecha', (req, res) => {
-    const fecha = String(req.params.fecha).trim();
+    const rawFecha = String(req.params.fecha).trim();
+    const fecha = (rawFecha === 'HOY' || !rawFecha) ? getFechaActualISO() : rawFecha;
     const bitacoras = getBitacoras();
-    const encontrada = bitacoras.find(b => b.fecha === fecha);
+    let encontrada = bitacoras.find(b => b.fecha === fecha);
+
+    // Obtener movimientos de almacén enriquecidos para esta fecha
+    let almMovs = [];
+    try {
+        const alm = getAlmacenData();
+        almMovs = (alm.movimientos || []).filter(m => {
+            const mFecha = m.fecha || (m.timestamp ? m.timestamp.slice(0, 10) : '');
+            return mFecha === fecha;
+        }).map(m => ({
+            id: m.id || ('alm_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4)),
+            hora: m.hora || (m.timestamp ? m.timestamp.slice(11, 19) : '12:00:00'),
+            unidad_id: m.unidad_camion || m.unidad || (m.tipo === 'E' ? 'PROVEEDOR' : 'ALMACÉN'),
+            tipo: m.tipo === 'E' ? 'entrada_almacen' : (m.tipo === 'S' ? 'salida_almacen' : (m.tipo === 'AJUSTE' ? 'ajuste_almacen' : 'almacen')),
+            tipo_original: m.tipo,
+            folio: m.folio || m.factura || '',
+            numero_parte: m.numero_parte || m.articulo || '',
+            cantidad: m.cantidad || 1,
+            descripcion: m.tipo === 'E'
+                ? `ENTRADA Factura ${m.factura || m.folio || 'S/N'}: ${m.cantidad} pz de ${m.numero_parte || ''} (${m.descripcion || ''}) - Proveedor: ${m.proveedor || 'N/A'}`
+                : (m.tipo === 'S'
+                    ? `SALIDA Folio ${m.folio || 'S/N'}: ${m.cantidad} pz de ${m.numero_parte || ''} (${m.descripcion || ''}) para Unidad ${m.unidad_camion || m.unidad || 'General'}`
+                    : `AJUSTE Inventario: ${m.cantidad} pz de ${m.numero_parte || ''} (${m.descripcion || ''})`),
+            autor: m.solicitante || m.entregado_por || 'Almacén Central',
+            proveedor: m.proveedor || '',
+            fuente: 'almacen',
+            timestamp: m.timestamp || (`${fecha}T${m.hora || '12:00:00'}`)
+        }));
+    } catch (e) {
+        console.error('Error obteniendo movimientos de almacén para bitácora:', e.message);
+    }
 
     if (encontrada) {
-        return res.json({ success: true, encontrada: true, es_en_curso: false, data: encontrada });
+        const copiaEncontrada = JSON.parse(JSON.stringify(encontrada));
+        const idsExistentes = new Set((copiaEncontrada.movimientos || []).map(m => m.id));
+        const nuevosAlm = almMovs.filter(m => !idsExistentes.has(m.id));
+        copiaEncontrada.movimientos = [...(copiaEncontrada.movimientos || []), ...nuevosAlm].sort((a,b) => String(a.hora||'').localeCompare(String(b.hora||'')));
+        copiaEncontrada.total_movimientos_almacen = almMovs.length;
+        return res.json({ success: true, encontrada: true, es_en_curso: false, data: copiaEncontrada });
     }
 
     const jornada = getJornadaActual();
-    if (jornada.fecha === fecha) {
+    const esHoy = (jornada.fecha === fecha || fecha === getFechaActualISO());
+    if (esHoy) {
         const unidades = getUnidades();
         const counts = { total: unidades.length, mayor: 0, proceso: 0, listo: 0, costo_acumulado: 0 };
         unidades.forEach(u => {
             if (counts[u.estado] !== undefined) counts[u.estado]++;
             counts.costo_acumulado += (Number(u.costo) || 0);
         });
+
+        const jMovs = jornada.movimientos || [];
+        const idsExistentes = new Set(jMovs.map(m => m.id));
+        const nuevosAlm = almMovs.filter(m => !idsExistentes.has(m.id));
+        const movsCombinados = [...jMovs, ...nuevosAlm].sort((a,b) => String(a.hora||'').localeCompare(String(b.hora||'')));
 
         return res.json({
             success: true,
@@ -2208,10 +2250,11 @@ app.get('/api/bitacora/fecha/:fecha', (req, res) => {
                 fecha,
                 hora: 'EN CURSO',
                 titulo: `Bitácora de Hoy (En Vivo) - ${formatearFechaTitulo(fecha)}`,
-                responsable: 'Jornada activa en patio',
+                responsable: 'Jornada activa en patio & Almacén Central',
                 resumen: counts,
-                notas_cierre: 'Jornada abierta. Cierre automático programado para las 12:00 AM (Medianoche).',
-                movimientos: jornada.movimientos || [],
+                notas_cierre: 'Jornada abierta. Trazabilidad integrada de Taller y Almacén en tiempo real.',
+                total_movimientos_almacen: almMovs.length,
+                movimientos: movsCombinados,
                 unidades: unidades.map(u => ({
                     id: u.id,
                     sucursal: u.sucursal,
@@ -2222,6 +2265,26 @@ app.get('/api/bitacora/fecha/:fecha', (req, res) => {
                     costo: u.costo,
                     fechaRefaccion: u.fechaRefaccion
                 }))
+            }
+        });
+    }
+
+    if (almMovs.length > 0) {
+        return res.json({
+            success: true,
+            encontrada: true,
+            es_en_curso: false,
+            data: {
+                id: `alm_${fecha}`,
+                fecha,
+                hora: '23:59:59',
+                titulo: `Bitácora de Movimientos - ${formatearFechaTitulo(fecha)}`,
+                responsable: 'Almacén Central',
+                resumen: { total: 0, mayor: 0, proceso: 0, listo: 0, costo_acumulado: 0 },
+                notas_cierre: 'Movimientos de almacén registrados para esta jornada.',
+                total_movimientos_almacen: almMovs.length,
+                movimientos: almMovs,
+                unidades: []
             }
         });
     }

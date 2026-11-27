@@ -6662,23 +6662,62 @@
 
             let movsHtml = '';
             if (movimientos.length > 0) {
+                const totalEntradas = movimientos.filter(m => m.tipo === 'entrada_almacen' || m.tipo_original === 'E').length;
+                const totalSalidas = movimientos.filter(m => m.tipo === 'salida_almacen' || m.tipo_original === 'S').length;
+                const totalTaller = movimientos.length - totalEntradas - totalSalidas;
+
                 movsHtml = `
-                    <div class="bg-[#1E1E1E] border border-[#3A3D42] rounded-2xl p-4 shadow-xl flex flex-col gap-2.5">
-                        <h4 class="text-xs font-black uppercase text-slate-400 tracking-wider flex items-center gap-2">
-                            <i class="fa-solid fa-list-check text-[#C59B27]"></i> Registro de Movimientos del Día (${movimientos.length})
-                        </h4>
-                        <div class="flex flex-col gap-2 max-h-56 overflow-y-auto custom-scroll pr-1">
-                            ${movimientos.map(m => `
-                                <div class="bg-[#141518] p-2.5 rounded-xl border border-[#3A3D42] flex justify-between items-center text-xs">
-                                    <div class="flex items-center gap-2">
-                                        <span class="font-mono text-[#DFB743] font-bold text-[11px]">${m.hora}</span>
-                                        <span class="font-bold text-white">${m.unidad_id !== 'TODAS' ? 'Unidad ' + m.unidad_id + ':' : ''}</span>
-                                        <span class="text-slate-300">${m.descripcion}</span>
-                                    </div>
-                                    <span class="text-[10px] text-slate-500 font-mono">${m.autor || 'Taller'}</span>
-                                </div>
-                            `).join('')}
+                    <div class="bg-[#1E1E1E] border border-[#3A3D42] rounded-2xl p-4 shadow-xl flex flex-col gap-3">
+                        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[#3A3D42]/60 pb-2.5">
+                            <div class="flex items-center gap-2">
+                                <h4 class="text-xs font-black uppercase text-white tracking-wider flex items-center gap-2">
+                                    <i class="fa-solid fa-list-check text-[#C59B27]"></i> Movimientos del Día (${movimientos.length})
+                                </h4>
+                                <span class="text-[10px] bg-emerald-950/80 text-emerald-300 border border-emerald-600/40 px-2 py-0.5 rounded font-bold">${totalEntradas} Entradas</span>
+                                <span class="text-[10px] bg-amber-950/80 text-amber-300 border border-amber-600/40 px-2 py-0.5 rounded font-bold">${totalSalidas} Salidas</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button type="button" onclick="window.open('/almacen', '_blank')" class="text-xs bg-[#282A2E] hover:bg-[#3A3D42] text-[#C59B27] border border-[#3A3D42] px-2.5 py-1 rounded-lg font-bold flex items-center gap-1.5 transition shadow-sm">
+                                    <i class="fa-solid fa-boxes-stacked"></i> Abrir Almacén Central
+                                </button>
+                            </div>
                         </div>
+
+                        <!-- Lista con Trazabilidad Completa -->
+                        <div class="flex flex-col gap-2 max-h-[32rem] overflow-y-auto custom-scroll pr-1">
+                            ${movimientos.map(m => {
+                                let badgeHtml = '<span class="px-2 py-0.5 rounded font-bold text-[10px] bg-blue-950 text-blue-300 border border-blue-600/40 shrink-0"><i class="fa-solid fa-wrench mr-1"></i>TALLER</span>';
+                                if (m.tipo === 'entrada_almacen' || m.tipo_original === 'E') {
+                                    badgeHtml = '<span class="px-2 py-0.5 rounded font-black text-[10px] bg-emerald-950 text-emerald-300 border border-emerald-500/60 shrink-0"><i class="fa-solid fa-arrow-down mr-1"></i>ENTRADA ALMACÉN</span>';
+                                } else if (m.tipo === 'salida_almacen' || m.tipo_original === 'S') {
+                                    badgeHtml = '<span class="px-2 py-0.5 rounded font-black text-[10px] bg-amber-950 text-amber-300 border border-amber-500/60 shrink-0"><i class="fa-solid fa-arrow-up mr-1"></i>SALIDA ALMACÉN</span>';
+                                } else if (m.tipo === 'ajuste_almacen' || m.tipo_original === 'AJUSTE') {
+                                    badgeHtml = '<span class="px-2 py-0.5 rounded font-black text-[10px] bg-purple-950 text-purple-300 border border-purple-500/60 shrink-0"><i class="fa-solid fa-sliders mr-1"></i>AJUSTE INVENTARIO</span>';
+                                }
+
+                                return `
+                                    <div class="bg-[#141518] p-3 rounded-xl border border-[#3A3D42] hover:border-[#C59B27]/40 transition flex flex-col sm:flex-row justify-between sm:items-center gap-2 text-xs shadow-sm">
+                                        <div class="flex items-start sm:items-center gap-2.5 flex-wrap flex-1">
+                                            ${badgeHtml}
+                                            <span class="font-mono text-[#DFB743] font-bold text-[11px] shrink-0">${m.hora}</span>
+                                            ${m.unidad_id && m.unidad_id !== 'TODAS' && m.unidad_id !== 'ALMACÉN' && m.unidad_id !== 'PROVEEDOR' ? `<span class="font-black text-white font-mono px-1.5 py-0.5 bg-[#282A2E] rounded border border-[#3A3D42] shrink-0">Unidad ${m.unidad_id}</span>` : ''}
+                                            <span class="text-slate-200 font-medium">${m.descripcion}</span>
+                                        </div>
+                                        <div class="flex items-center gap-2 shrink-0 text-slate-400 font-mono text-[10px] justify-end">
+                                            <span>${m.autor || 'Sistema'}</span>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            } else {
+                movsHtml = `
+                    <div class="bg-[#1E1E1E] border border-dashed border-[#3A3D42] rounded-2xl p-6 text-center flex flex-col items-center gap-2">
+                        <i class="fa-solid fa-inbox text-slate-500 text-2xl"></i>
+                        <p class="text-xs text-slate-300 font-bold">Sin movimientos registrados para esta jornada.</p>
+                        <p class="text-[11px] text-slate-500">Cualquier entrada o salida de almacén o movimiento de taller de esta fecha aparecerá aquí.</p>
                     </div>
                 `;
             }
