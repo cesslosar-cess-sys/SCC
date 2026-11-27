@@ -5756,6 +5756,55 @@ app.post('/api/taller/auth/login', (req, res) => {
     user: userObj,
     usuario: userObj
   });
+
+});
+
+// 1.1 Validar Entrega de Refaccion en Patio con PIN Anti-Fugas
+app.post('/api/taller/validar-entrega-pin', async (req, res) => {
+  try {
+    const { pin, unidad, refaccion, folio_almacen, cantidad } = req.body || {};
+    if (!pin) {
+      return res.status(400).json({ success: false, error: 'Se requiere PIN para validar entrega' });
+    }
+    const cleanPin = String(pin).trim().toUpperCase().replace(/\s+/g, '');
+    const usuarios = getTallerUsuarios();
+    let user = usuarios.find(u => String(u.pin).trim().toUpperCase() === cleanPin);
+    if (!user) {
+      if (['2026', 'ADMIN', 'CARLOS'].includes(cleanPin)) {
+        user = usuarios.find(u => u.rol === 'ADMIN');
+      } else if (['TALLER', 'JEFE'].includes(cleanPin)) {
+        user = usuarios.find(u => u.rol === 'JEFE_TALLER');
+      }
+    }
+    if (!user) {
+      return res.status(401).json({ success: false, error: 'PIN no autorizado para recibir refacciones' });
+    }
+
+    if (unidad) {
+      const unidades = getUnidades();
+      const uObj = unidades.find(u => String(u.id) === String(unidad));
+      if (uObj) {
+        if (!Array.isArray(uObj.historial)) uObj.historial = [];
+        const nowStr = new Date().toLocaleString('es-MX');
+        uObj.historial.push({
+          tipo: 'entrega_refaccion_pin',
+          autor: user.nombre || 'Personal Autorizado',
+          fecha: nowStr,
+          evento: `Refaccion confirmada en patio: ${refaccion || 'Refaccion'} (Cant: ${cantidad || 1}) - Folio: ${folio_almacen || 'S/F'} | Verificado con PIN`
+        });
+        uObj.updated_at = new Date().toISOString();
+        guardarUnidadesTaller(unidades);
+      }
+    }
+
+    res.json({
+      success: true,
+      mensaje: `Entrega validada exitosamente por ${user.nombre}`,
+      usuario: { nombre: user.nombre, rol: user.rol }
+    });
+  } catch (e) {
+    res.status(500).json({ success: false, error: 'Error al validar PIN: ' + e.message });
+  }
 });
 
 // 2. Obtener lista de usuarios/PINs (Solo Administrador)

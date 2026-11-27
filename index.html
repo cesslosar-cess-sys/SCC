@@ -271,6 +271,10 @@
                 </button>
 
                 <!-- BOTÓN NUEVA UNIDAD (DESKTOP) -->
+                <button onclick="abrirModoPatio()" class="px-2.5 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1.5 bg-[#282A2E] hover:bg-[#3A3D42] text-amber-400 border border-amber-400/40 shadow transition active:scale-95" title="Abrir Modo Patio Táctil y Dictado">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+                    <span class="hidden sm:inline">Modo Patio</span>
+                </button>
                 <button onclick="abrirModalNuevaUnidad()" class="hidden sm:flex bg-[#282A2E] hover:bg-[#3A3D42] text-white border border-[#3A3D42] px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold shadow items-center gap-1.5 transition">
                     <i class="fa-solid fa-plus text-[#C59B27]"></i> <span>Nueva Unidad</span>
                 </button>
@@ -8832,6 +8836,10 @@
          DOCK DE NAVEGACIÓN INFERIOR NATIVO PARA SMARTPHONES (ESTILO iOS / PWA)
          ========================================================================= -->
     <nav id="mobile-bottom-dock" class="md:hidden fixed bottom-0 inset-x-0 bg-[#1E1E1E]/95 backdrop-blur-md border-t border-[#3A3D42] z-40 px-2 py-1 flex items-center justify-around shadow-2xl pb-[calc(0.4rem+env(safe-area-inset-bottom))]">
+        <button onclick="abrirModoPatio()" id="dock-btn-patio" class="dock-btn flex-1 flex flex-col items-center gap-0.5 py-1 text-slate-400 transition active:scale-95">
+            <i class="fa-solid fa-mobile-screen-button text-base text-amber-400"></i>
+            <span class="text-[10px] font-black tracking-tight">Modo Patio</span>
+        </button>
         <button onclick="cambiarVistaPrincipal('tablero')" id="dock-btn-tablero" class="dock-btn flex-1 flex flex-col items-center gap-0.5 py-1 text-[#DFB743] transition active:scale-95">
             <i class="fa-solid fa-table-columns text-base"></i>
             <span class="text-[10px] font-black tracking-tight">Taller</span>
@@ -8956,6 +8964,162 @@
             </button>
         </div>
     </div>
+
+    <!-- ======================================================== -->
+    <!-- MODAL ESPECIAL: MODO PATIO TÁCTIL & DICTADO CESS -->
+    <!-- ======================================================== -->
+    <div id="modal-modo-patio" class="fixed inset-0 bg-black/95 backdrop-blur-md hidden flex flex-col z-50 p-3 sm:p-6 overflow-y-auto">
+        <div class="max-w-2xl w-full mx-auto bg-[#1E1E1E] border-2 border-[#C59B27]/60 rounded-3xl p-4 sm:p-6 flex flex-col gap-5 shadow-2xl">
+            <!-- Header Modal Patio -->
+            <div class="flex items-center justify-between border-b border-[#3A3D42] pb-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-amber-400/20 text-amber-400 flex items-center justify-center text-lg border border-amber-400/30">
+                        <i class="fa-solid fa-mobile-screen-button"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base sm:text-lg font-black text-white flex items-center gap-2">
+                            Modo Patio Táctil CESS
+                            <span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 uppercase">Uso Rudo</span>
+                        </h3>
+                        <p class="text-xs text-slate-400">Captura táctil inmediata para mecánicos y supervisores de patio.</p>
+                    </div>
+                </div>
+                <button onclick="cerrarModoPatio()" class="w-9 h-9 rounded-xl bg-[#282A2E] hover:bg-[#3A3D42] text-slate-300 hover:text-white flex items-center justify-center transition border border-[#3A3D42]" title="Cerrar Modo Patio">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Paso 1: Seleccionar Unidad en Patio -->
+            <div class="flex flex-col gap-2">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-black text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                        <i class="fa-solid fa-truck text-[#C59B27]"></i> 1. Selecciona la Unidad en Patio:
+                    </span>
+                    <span id="patio-conteo-unidades" class="text-[11px] text-slate-400 font-mono">0 unidades activas</span>
+                </div>
+                <!-- Grid de Chips Táctiles de Unidad -->
+                <div id="patio-grid-unidades" class="flex flex-wrap gap-2 max-h-40 overflow-y-auto p-2 bg-[#141518] rounded-2xl border border-[#3A3D42]">
+                    <!-- Generado dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Tarjeta de Unidad Seleccionada -->
+            <div id="patio-unidad-card" class="bg-[#141518] p-3.5 rounded-2xl border border-[#3A3D42] flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <span id="patio-card-id" class="w-12 h-12 rounded-2xl bg-[#C59B27] text-black font-black text-lg flex items-center justify-center shadow-lg">--</span>
+                    <div>
+                        <span id="patio-card-defecto" class="text-xs font-bold text-white block">Selecciona una unidad arriba</span>
+                        <span id="patio-card-sub" class="text-[11px] text-slate-400 block mt-0.5">Terminal Apodaca • Estatus: --</span>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <span id="patio-card-costo" class="text-xs font-mono font-bold text-emerald-400 block">$0 MXN</span>
+                    <span class="text-[9px] text-slate-500 uppercase">Gasto actual</span>
+                </div>
+            </div>
+
+            <!-- Paso 2: Dos Acciones Táctiles Principales -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <!-- Botón Acción 1: Dictar Avance -->
+                <button type="button" onclick="mostrarSeccionPatio('dictado')" id="btn-tab-patio-dictado" class="p-3.5 rounded-2xl bg-[#C59B27] text-black font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition active:scale-95">
+                    <i class="fa-solid fa-microphone text-base"></i>
+                    <span>Dictar Avance por Voz</span>
+                </button>
+
+                <!-- Botón Acción 2: Confirmar Entrega Refacción con PIN -->
+                <button type="button" onclick="mostrarSeccionPatio('entrega')" id="btn-tab-patio-entrega" class="p-3.5 rounded-2xl bg-[#282A2E] text-slate-300 hover:text-white border border-[#3A3D42] font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition active:scale-95">
+                    <i class="fa-solid fa-shield-halved text-base text-emerald-400"></i>
+                    <span>Confirmar Entrega (PIN)</span>
+                </button>
+            </div>
+
+            <!-- SECCIÓN 1: PANEL DE DICTADO POR VOZ -->
+            <div id="seccion-patio-dictado" class="flex flex-col gap-3 bg-[#141518] p-4 rounded-2xl border border-[#3A3D42]">
+                <div class="flex items-center justify-between border-b border-[#3A3D42] pb-2">
+                    <span class="text-xs font-bold text-white flex items-center gap-1.5">
+                        <i class="fa-solid fa-microphone text-[#C59B27]"></i> Grabación de Avance / Reparación
+                    </span>
+                    <span id="patio-dictado-status" class="text-[11px] font-mono text-slate-400">Micrófono listo</span>
+                </div>
+
+                <!-- Botón Gigante de Micrófono -->
+                <div class="flex flex-col items-center justify-center py-3">
+                    <button type="button" id="btn-patio-mic-gigante" onclick="toggleDictadoPatio()" class="w-20 h-20 rounded-full bg-[#C59B27] hover:bg-[#dfb743] text-black text-3xl flex items-center justify-center shadow-xl shadow-[#C59B27]/30 transition active:scale-95 relative">
+                        <i class="fa-solid fa-microphone"></i>
+                        <span id="patio-mic-pulse" class="absolute inset-0 rounded-full border-4 border-[#C59B27] animate-ping hidden"></span>
+                    </button>
+                    <span id="patio-mic-label" class="text-xs font-bold text-slate-300 mt-2">Toca para hablar</span>
+                </div>
+
+                <!-- Caja de Transcripción en Vivo -->
+                <textarea id="patio-dictado-texto" rows="3" placeholder="Habla con naturalidad: 'Unidad 77, se terminó el cambio de boster, se purgaron líneas y quedó lista para viaje'..." class="w-full bg-[#1E1E1E] border border-[#3A3D42] focus:border-[#C59B27] rounded-xl p-3 text-xs text-white outline-none resize-none"></textarea>
+
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="mejorarDictadoPatioIA()" id="btn-patio-ia" class="flex-1 bg-[#282A2E] hover:bg-[#3A3D42] text-amber-400 border border-[#3A3D42] py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition">
+                        <i class="fa-solid fa-wand-magic-sparkles text-xs"></i> <span>Estructurar con IA</span>
+                    </button>
+                    <button type="button" onclick="guardarAvancePatioDirecto()" class="flex-1 btn-cess-gold py-2.5 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 shadow transition">
+                        <i class="fa-solid fa-check"></i> <span>Guardar Avance</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 2: PANEL DE CONFIRMACIÓN ANTI-FUGAS CON PIN -->
+            <div id="seccion-patio-entrega" class="flex flex-col gap-3 bg-[#141518] p-4 rounded-2xl border border-emerald-500/30 hidden">
+                <div class="flex items-center justify-between border-b border-[#3A3D42] pb-2">
+                    <span class="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
+                        <i class="fa-solid fa-shield-halved"></i> Control Anti-Fugas: Validación con PIN
+                    </span>
+                    <span class="text-[10px] text-slate-400 uppercase tracking-wider font-mono">Firma Digital</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                    <div>
+                        <label class="text-[10px] text-slate-400 font-bold block mb-1">Refacción Entregada:</label>
+                        <input type="text" id="patio-pin-refaccion" placeholder="Ej: Válvula QR1 / Filtro aceite" class="w-full bg-[#1E1E1E] border border-[#3A3D42] focus:border-emerald-500 rounded-xl px-3 py-2 text-xs text-white outline-none">
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-slate-400 font-bold block mb-1">Folio / Factura (Opcional):</label>
+                        <input type="text" id="patio-pin-folio" placeholder="Ej: 4115 / F-3705" class="w-full bg-[#1E1E1E] border border-[#3A3D42] focus:border-emerald-500 rounded-xl px-3 py-2 text-xs text-white outline-none">
+                    </div>
+                </div>
+
+                <!-- Pantalla del PIN (4 puntos) -->
+                <div class="flex flex-col items-center justify-center py-2">
+                    <span class="text-[11px] font-bold text-slate-400 mb-2">Ingresa tu PIN personal de 4 dígitos:</span>
+                    <div class="flex items-center gap-3">
+                        <div id="patio-pin-dot-1" class="w-4 h-4 rounded-full border-2 border-slate-500 bg-transparent transition"></div>
+                        <div id="patio-pin-dot-2" class="w-4 h-4 rounded-full border-2 border-slate-500 bg-transparent transition"></div>
+                        <div id="patio-pin-dot-3" class="w-4 h-4 rounded-full border-2 border-slate-500 bg-transparent transition"></div>
+                        <div id="patio-pin-dot-4" class="w-4 h-4 rounded-full border-2 border-slate-500 bg-transparent transition"></div>
+                    </div>
+                </div>
+
+                <!-- Teclado Numérico Táctil en Pantalla (0-9) -->
+                <div class="grid grid-cols-3 gap-2 max-w-xs mx-auto w-full">
+                    <button type="button" onclick="teclearPinPatio('1')" class="h-12 rounded-xl bg-[#282A2E] hover:bg-[#3A3D42] active:bg-[#C59B27] active:text-black text-white font-black text-lg flex items-center justify-center transition shadow">1</button>
+                    <button type="button" onclick="teclearPinPatio('2')" class="h-12 rounded-xl bg-[#282A2E] hover:bg-[#3A3D42] active:bg-[#C59B27] active:text-black text-white font-black text-lg flex items-center justify-center transition shadow">2</button>
+                    <button type="button" onclick="teclearPinPatio('3')" class="h-12 rounded-xl bg-[#282A2E] hover:bg-[#3A3D42] active:bg-[#C59B27] active:text-black text-white font-black text-lg flex items-center justify-center transition shadow">3</button>
+                    <button type="button" onclick="teclearPinPatio('4')" class="h-12 rounded-xl bg-[#282A2E] hover:bg-[#3A3D42] active:bg-[#C59B27] active:text-black text-white font-black text-lg flex items-center justify-center transition shadow">4</button>
+                    <button type="button" onclick="teclearPinPatio('5')" class="h-12 rounded-xl bg-[#282A2E] hover:bg-[#3A3D42] active:bg-[#C59B27] active:text-black text-white font-black text-lg flex items-center justify-center transition shadow">5</button>
+                    <button type="button" onclick="teclearPinPatio('6')" class="h-12 rounded-xl bg-[#282A2E] hover:bg-[#3A3D42] active:bg-[#C59B27] active:text-black text-white font-black text-lg flex items-center justify-center transition shadow">6</button>
+                    <button type="button" onclick="teclearPinPatio('7')" class="h-12 rounded-xl bg-[#282A2E] hover:bg-[#3A3D42] active:bg-[#C59B27] active:text-black text-white font-black text-lg flex items-center justify-center transition shadow">7</button>
+                    <button type="button" onclick="teclearPinPatio('8')" class="h-12 rounded-xl bg-[#282A2E] hover:bg-[#3A3D42] active:bg-[#C59B27] active:text-black text-white font-black text-lg flex items-center justify-center transition shadow">8</button>
+                    <button type="button" onclick="teclearPinPatio('9')" class="h-12 rounded-xl bg-[#282A2E] hover:bg-[#3A3D42] active:bg-[#C59B27] active:text-black text-white font-black text-lg flex items-center justify-center transition shadow">9</button>
+                    <button type="button" onclick="limpiarPinPatio()" class="h-12 rounded-xl bg-red-950/40 text-red-400 border border-red-500/30 hover:bg-red-900/50 font-bold text-xs flex items-center justify-center transition">C</button>
+                    <button type="button" onclick="teclearPinPatio('0')" class="h-12 rounded-xl bg-[#282A2E] hover:bg-[#3A3D42] active:bg-[#C59B27] active:text-black text-white font-black text-lg flex items-center justify-center transition shadow">0</button>
+                    <button type="button" onclick="borrarUltimoPinPatio()" class="h-12 rounded-xl bg-[#282A2E] hover:bg-[#3A3D42] text-slate-300 font-bold text-sm flex items-center justify-center transition">
+                        <i class="fa-solid fa-delete-left"></i>
+                    </button>
+                </div>
+
+                <button type="button" onclick="confirmarEntregaConPinPatio()" id="btn-confirmar-pin-patio" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs sm:text-sm py-3 rounded-xl shadow-lg transition flex items-center justify-center gap-2 mt-2">
+                    <i class="fa-solid fa-lock text-xs"></i> <span>Validar PIN y Firmar Entrega</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
 </body>`);
         }
 
@@ -13405,6 +13569,329 @@ window.addEventListener('DOMContentLoaded', inicializarAplicacion);
             }
         }
 
-    </script>
+    
+
+        // =========================================================================
+        // CONTROLADOR MODO PATIO TÁCTIL & DICTADO POR VOZ INTELIGENTE
+        // =========================================================================
+        let unidadPatioSeleccionada = null;
+        let pinPatioActual = '';
+        let recognitionPatio = null;
+        let grabacionPatioActiva = false;
+
+        function abrirModoPatio() {
+            const modal = document.getElementById('modal-modo-patio');
+            if (!modal) return;
+            modal.classList.remove('hidden');
+
+            renderizarGridUnidadesPatio();
+            mostrarSeccionPatio('dictado');
+        }
+
+        function cerrarModoPatio() {
+            detenerDictadoPatio();
+            const modal = document.getElementById('modal-modo-patio');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function renderizarGridUnidadesPatio() {
+            const grid = document.getElementById('patio-grid-unidades');
+            const conteo = document.getElementById('patio-conteo-unidades');
+            if (!grid) return;
+
+            // Filtrar unidades de la base de datos
+            const activas = (baseDatos || []).filter(u => !u.archivada);
+            if (conteo) conteo.textContent = `${activas.length} unidades activas`;
+
+            if (activas.length === 0) {
+                grid.innerHTML = '<span class="text-xs text-slate-500 p-2">No hay unidades registradas</span>';
+                return;
+            }
+
+            // Si no hay unidad seleccionada, seleccionar la primera
+            if (!unidadPatioSeleccionada && activas.length > 0) {
+                unidadPatioSeleccionada = activas[0];
+            }
+
+            grid.innerHTML = activas.map(u => {
+                const sel = unidadPatioSeleccionada && String(unidadPatioSeleccionada.id) === String(u.id);
+                const bgClass = sel ? 'bg-[#C59B27] text-black font-black border-[#C59B27]' : (u.estado === 'mayor' ? 'bg-red-950/40 text-red-300 border-red-500/30' : (u.estado === 'listo' ? 'bg-emerald-950/30 text-emerald-300 border-emerald-500/30' : 'bg-[#1E1E1E] text-slate-300 border-[#3A3D42]'));
+                return `
+                    <button type="button" onclick="seleccionarUnidadPatio('${u.id}')" class="px-3.5 py-2 rounded-xl border text-xs sm:text-sm font-bold flex items-center gap-1.5 transition active:scale-95 ${bgClass}">
+                        <span>Unidad ${u.id}</span>
+                        <span class="text-[9px] uppercase opacity-75">(${u.sucursal || 'Apodaca'})</span>
+                    </button>
+                `;
+            }).join('');
+
+            actualizarTarjetaUnidadPatio();
+        }
+
+        function seleccionarUnidadPatio(id) {
+            const u = (baseDatos || []).find(x => String(x.id) === String(id));
+            if (!u) return;
+            unidadPatioSeleccionada = u;
+            renderizarGridUnidadesPatio();
+        }
+
+        function actualizarTarjetaUnidadPatio() {
+            if (!unidadPatioSeleccionada) return;
+            const u = unidadPatioSeleccionada;
+            const elId = document.getElementById('patio-card-id');
+            const elDef = document.getElementById('patio-card-defecto');
+            const elSub = document.getElementById('patio-card-sub');
+            const elCosto = document.getElementById('patio-card-costo');
+
+            if (elId) elId.textContent = u.id;
+            if (elDef) elDef.textContent = u.defecto || u.reporte || 'En mantenimiento en patio';
+            if (elSub) elSub.innerHTML = `${u.sucursal || 'Apodaca'} &bull; Estatus: <b class="text-amber-400 uppercase">${u.estado || 'proceso'}</b>`;
+            if (elCosto) elCosto.textContent = `$${(Number(u.costo) || 0).toLocaleString('es-MX')} MXN`;
+        }
+
+        function mostrarSeccionPatio(seccion) {
+            const secDic = document.getElementById('seccion-patio-dictado');
+            const secEnt = document.getElementById('seccion-patio-entrega');
+            const btnDic = document.getElementById('btn-tab-patio-dictado');
+            const btnEnt = document.getElementById('btn-tab-patio-entrega');
+
+            if (seccion === 'dictado') {
+                if (secDic) secDic.classList.remove('hidden');
+                if (secEnt) secEnt.classList.add('hidden');
+                if (btnDic) btnDic.className = 'p-3.5 rounded-2xl bg-[#C59B27] text-black font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition active:scale-95';
+                if (btnEnt) btnEnt.className = 'p-3.5 rounded-2xl bg-[#282A2E] text-slate-300 hover:text-white border border-[#3A3D42] font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition active:scale-95';
+            } else {
+                if (secDic) secDic.classList.add('hidden');
+                if (secEnt) secEnt.classList.remove('hidden');
+                if (btnDic) btnDic.className = 'p-3.5 rounded-2xl bg-[#282A2E] text-slate-300 hover:text-white border border-[#3A3D42] font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition active:scale-95';
+                if (btnEnt) btnEnt.className = 'p-3.5 rounded-2xl bg-emerald-600 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition active:scale-95';
+            }
+        }
+
+        // --- DICTADO POR VOZ PATIO ---
+        function toggleDictadoPatio() {
+            if (grabacionPatioActiva) {
+                detenerDictadoPatio();
+            } else {
+                iniciarDictadoPatio();
+            }
+        }
+
+        function iniciarDictadoPatio() {
+            if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+                alert('Tu navegador no soporta reconocimiento de voz nativo. Por favor usa Google Chrome.');
+                return;
+            }
+            const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognitionPatio = new SpeechRec();
+            recognitionPatio.lang = 'es-MX';
+            recognitionPatio.continuous = true;
+            recognitionPatio.interimResults = true;
+
+            const txtArea = document.getElementById('patio-dictado-texto');
+            const pulse = document.getElementById('patio-mic-pulse');
+            const label = document.getElementById('patio-mic-label');
+            const status = document.getElementById('patio-dictado-status');
+
+            recognitionPatio.onstart = () => {
+                grabacionPatioActiva = true;
+                if (pulse) pulse.classList.remove('hidden');
+                if (label) label.textContent = 'Escuchando... Toca para detener';
+                if (status) status.textContent = 'Grabando voz...';
+            };
+
+            recognitionPatio.onresult = (e) => {
+                let interim = '';
+                let final = '';
+                for (let i = e.resultIndex; i < e.results.length; ++i) {
+                    if (e.results[i].isFinal) {
+                        final += e.results[i][0].transcript;
+                    } else {
+                        interim += e.results[i][0].transcript;
+                    }
+                }
+                if (txtArea) {
+                    txtArea.value = (txtArea.value ? txtArea.value + ' ' : '') + (final || interim);
+                }
+            };
+
+            recognitionPatio.onerror = (e) => {
+                detenerDictadoPatio();
+            };
+
+            recognitionPatio.onend = () => {
+                detenerDictadoPatio();
+            };
+
+            recognitionPatio.start();
+        }
+
+        function detenerDictadoPatio() {
+            grabacionPatioActiva = false;
+            if (recognitionPatio) {
+                try { recognitionPatio.stop(); } catch(e) {}
+                recognitionPatio = null;
+            }
+            const pulse = document.getElementById('patio-mic-pulse');
+            const label = document.getElementById('patio-mic-label');
+            const status = document.getElementById('patio-dictado-status');
+            if (pulse) pulse.classList.add('hidden');
+            if (label) label.textContent = 'Toca para hablar';
+            if (status) status.textContent = 'Micrófono en pausa';
+        }
+
+        async function guardarAvancePatioDirecto() {
+            if (!unidadPatioSeleccionada) {
+                alert('Selecciona una unidad primero.');
+                return;
+            }
+            const txtArea = document.getElementById('patio-dictado-texto');
+            const texto = txtArea ? txtArea.value.trim() : '';
+            if (!texto) {
+                alert('Ingresa o dicta el avance de la unidad.');
+                return;
+            }
+
+            try {
+                const res = await fetch(`/api/unidad/${encodeURIComponent(unidadPatioSeleccionada.id)}/avance`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        porcentaje: 50,
+                        texto: texto,
+                        mecanico: usuarioActual ? usuarioActual.nombre : 'Mecánico en Patio'
+                    })
+                });
+                const data = await res.json();
+                if (data.success || res.ok) {
+                    mostrarToast('Avance registrado exitosamente en patio', 'success');
+                    if (txtArea) txtArea.value = '';
+                    cerrarModoPatio();
+                    if (typeof cargarTablero === 'function') cargarTablero();
+                } else {
+                    alert('Error guardando avance: ' + (data.error || 'Desconocido'));
+                }
+            } catch(e) {
+                alert('Error al conectar con servidor: ' + e.message);
+            }
+        }
+
+        async function mejorarDictadoPatioIA() {
+            const txtArea = document.getElementById('patio-dictado-texto');
+            const texto = txtArea ? txtArea.value.trim() : '';
+            if (!texto) {
+                alert('Dicta o escribe primero el texto para mejorarlo con IA.');
+                return;
+            }
+            const btnIA = document.getElementById('btn-patio-ia');
+            const origText = btnIA ? btnIA.innerHTML : '';
+            if (btnIA) btnIA.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Analizando...';
+
+            try {
+                const res = await fetch('/api/ia/procesar-dictado', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        transcript: texto,
+                        unitId: unidadPatioSeleccionada ? unidadPatioSeleccionada.id : null
+                    })
+                });
+                const data = await res.json();
+                if (data.redaccionTecnica) {
+                    txtArea.value = data.redaccionTecnica;
+                    mostrarToast('Redacción técnica mejorada con IA', 'info');
+                }
+            } catch(e) {
+                alert('Error al procesar con IA: ' + e.message);
+            } finally {
+                if (btnIA) btnIA.innerHTML = origText;
+            }
+        }
+
+        // --- PIN DE ENTREGA ANTI-FUGAS PATIO ---
+        function teclearPinPatio(dig) {
+            if (pinPatioActual.length >= 4) return;
+            pinPatioActual += String(dig);
+            actualizarDotsPinPatio();
+        }
+
+        function borrarUltimoPinPatio() {
+            if (pinPatioActual.length > 0) {
+                pinPatioActual = pinPatioActual.slice(0, -1);
+                actualizarDotsPinPatio();
+            }
+        }
+
+        function limpiarPinPatio() {
+            pinPatioActual = '';
+            actualizarDotsPinPatio();
+        }
+
+        function actualizarDotsPinPatio() {
+            for (let i = 1; i <= 4; i++) {
+                const dot = document.getElementById(`patio-pin-dot-${i}`);
+                if (dot) {
+                    if (pinPatioActual.length >= i) {
+                        dot.className = 'w-4 h-4 rounded-full border-2 border-emerald-400 bg-emerald-400 transition';
+                    } else {
+                        dot.className = 'w-4 h-4 rounded-full border-2 border-slate-500 bg-transparent transition';
+                    }
+                }
+            }
+        }
+
+        async function confirmarEntregaConPinPatio() {
+            if (!unidadPatioSeleccionada) {
+                alert('Selecciona la unidad que recibe la refacción.');
+                return;
+            }
+            if (pinPatioActual.length !== 4) {
+                alert('Ingresa el PIN de 4 dígitos.');
+                return;
+            }
+            const refaccion = (document.getElementById('patio-pin-refaccion')?.value || '').trim();
+            const folio = (document.getElementById('patio-pin-folio')?.value || '').trim();
+
+            if (!refaccion) {
+                alert('Ingresa el nombre o código de la refacción entregada.');
+                return;
+            }
+
+            const btn = document.getElementById('btn-confirmar-pin-patio');
+            const orig = btn ? btn.innerHTML : '';
+            if (btn) btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Validando...';
+
+            try {
+                const res = await fetch('/api/taller/validar-entrega-pin', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        pin: pinPatioActual,
+                        unidad: unidadPatioSeleccionada.id,
+                        refaccion: refaccion,
+                        folio_almacen: folio,
+                        cantidad: 1
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    mostrarToast(`Entrega validada con PIN: ${data.mensaje}`, 'success');
+                    limpiarPinPatio();
+                    if (document.getElementById('patio-pin-refaccion')) document.getElementById('patio-pin-refaccion').value = '';
+                    if (document.getElementById('patio-pin-folio')) document.getElementById('patio-pin-folio').value = '';
+                    cerrarModoPatio();
+                    if (typeof cargarTablero === 'function') cargarTablero();
+                } else {
+                    alert('Error de validación: ' + (data.error || 'PIN no autorizado'));
+                    limpiarPinPatio();
+                }
+            } catch(e) {
+                alert('Error al validar PIN: ' + e.message);
+                limpiarPinPatio();
+            } finally {
+                if (btn) btn.innerHTML = orig;
+            }
+        }
+
+</script>
 </body>
 </html>
