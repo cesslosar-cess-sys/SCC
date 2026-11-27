@@ -2511,6 +2511,166 @@ app.post('/api/almacen/ordenes/:id/recibir', (req, res) => {
     }
 });
 
+// =========================================================================
+// TORRE DE CONTROL EJECUTIVA - DIRECCIÓN Y DUEÑO DE TRANSPORTES
+// =========================================================================
+app.get('/api/torre-control', async (req, res) => {
+    try {
+        const unidades = getUnidades();
+        const totalUnidades = unidades.length;
+
+        let rodando = 0;
+        let detenidas = 0;
+        let costoTotalMes = 0;
+        let costoPreventivo = 0;
+        let costoCorrectivo = 0;
+        const unidadesEstancadas = [];
+        const now = new Date();
+
+        unidades.forEach(u => {
+            const costoUnit = Number(u.costo) || 0;
+            costoTotalMes += costoUnit;
+            costoPreventivo += Number(u.costo_preventivo) || 0;
+            costoCorrectivo += Number(u.costo_correctivo) || 0;
+
+            const estado = (u.estado || '').toLowerCase();
+            if (estado === 'listo') {
+                rodando++;
+            } else {
+                detenidas++;
+                let diasEnTaller = 0;
+                if (u.fecha_ingreso) {
+                    const fIngreso = new Date(u.fecha_ingreso);
+                    if (!isNaN(fIngreso.getTime())) {
+                        diasEnTaller = Math.max(0, Math.floor((now - fIngreso) / (1000 * 60 * 60 * 24)));
+                    }
+                }
+                if (diasEnTaller >= 3 || estado === 'mayor') {
+                    unidadesEstancadas.push({
+                        id: u.id,
+                        sucursal: u.sucursal || 'Apodaca',
+                        estado: u.estado,
+                        defecto: u.defecto || u.reporte || 'En reparación',
+                        dias: diasEnTaller,
+                        costo: costoUnit,
+                        folio_almacen: u.folio_almacen || ''
+                    });
+                }
+            }
+        });
+
+        unidadesEstancadas.sort((a, b) => b.dias - a.dias);
+
+        const disponibilidadPorcentaje = totalUnidades > 0 ? Number(((rodando / totalUnidades) * 100).toFixed(1)) : 100;
+        const fleteDiarioEstimadoPorUnidad = 15000; // $15,000 MXN ingreso promedio diario de tracto en ruta
+        const perdidaDiariaEstimada = detenidas * fleteDiarioEstimadoPorUnidad;
+
+        const top5Costosas = [...unidades]
+            .map(u => ({ id: u.id, costo: Number(u.costo) || 0, defecto: u.defecto || '', estado: u.estado }))
+            .sort((a, b) => b.costo - a.costo)
+            .slice(0, 5);
+
+        // Stats de Diésel
+        let dieselStats = {
+            km_totales: 0,
+            litros_totales: 0,
+            rend_fisico_promedio: 0,
+            costo_diesel_total: 0,
+            litros_ralenti_total: 0,
+            costo_ralenti_total: 0,
+            alertas: []
+        };
+
+        if (dbERP && typeof dbERP.obtenerStatsDiesel === 'function') {
+            try {
+                const ds = await dbERP.obtenerStatsDiesel();
+                dieselStats = { ...dieselStats, ...ds };
+            } catch (e) {}
+        }
+
+        if (dbERP && dbERP.pool) {
+            try {
+                const resAlertas = await dbERP.pool.query(`
+                    SELECT unidad, operador, ruta, km_recorridos, real_total as litros, rend_fisico, fecha
+                    FROM diesel_registros_rendimiento
+                    WHERE rend_fisico > 0 AND rend_fisico < 2.0
+                    ORDER BY fecha DESC LIMIT 5;
+                `);
+                dieselStats.alertas = resAlertas.rows || [];
+            } catch (e) {}
+        }
+
+        // Rescates
+        let rescates = [];
+        if (dbERP && typeof dbERP.obtenerRescatesTaller === 'function') {
+            try {
+                rescates = await dbERP.obtenerRescatesTaller();
+            } catch (e) {
+                rescates = [];
+            }
+        }
+        if (!rescates || rescates.length === 0) {
+            rescates = getRescates();
+        }
+        rescates = (rescates || []).filter(r => String(r.unidad).trim() !== '75');
+        const rescatesActivos = rescates.filter(r => (r.estado || r.estatus || '').toUpperCase() !== 'CONCLUIDO');
+        let costoRescatesTotal = 0;
+        rescates.forEach(r => { costoRescatesTotal += Number(r.costo || r.costo_total) || 0; });
+
+        // Preventivos
+        let preventivosData = { vencidos: 0, vigentes: 0, proximos: 0, unidadesVencidas: [] };
+        const prevCache = getPreventivosData();
+        const pList = prevCache.preventivos || [];
+        const vencidas = [];
+        pList.forEach(p => {
+            const est = (p.estatus || '').toUpperCase();
+            if (est === 'VENCIDO') {
+                preventivosData.vencidos++;
+                vencidas.push({
+                    unidad: p.unidad,
+                    km_actual: p.km_actual,
+                    km_vencido: Math.abs(p.diferencia_km || 0),
+                    servicio: p.proximo_servicio || 'Mantenimiento Preventivo'
+                });
+            } else if (est === 'PROXIMO' || est === 'PRÓXIMO') {
+                preventivosData.proximos++;
+            } else {
+                preventivosData.vigentes++;
+            }
+        });
+        preventivosData.unidadesVencidas = vencidas.sort((a, b) => b.km_vencido - a.km_vencido).slice(0, 5);
+
+        res.json({
+            success: true,
+            timestamp: new Date().toISOString(),
+            flota: {
+                total: totalUnidades,
+                rodando,
+                detenidas,
+                disponibilidad_porcentaje: disponibilidadPorcentaje,
+                perdida_diaria_estimada: perdidaDiariaEstimada,
+                unidades_estancadas: unidadesEstancadas
+            },
+            financiero: {
+                inversion_total: costoTotalMes,
+                costo_preventivo: costoPreventivo,
+                costo_correctivo: costoCorrectivo,
+                top_unidades: top5Costosas
+            },
+            diesel: dieselStats,
+            preventivos: preventivosData,
+            rescates: {
+                total: rescates.length,
+                activos: rescatesActivos.length,
+                costo_total: costoRescatesTotal,
+                ultimos: rescates.slice(0, 3)
+            }
+        });
+    } catch (err) {
+        res.status(500).json({ success: false, error: 'Error en Torre de Control: ' + err.message });
+    }
+});
+
 // 13.3 Métricas y Analítica Gerencial para Toma de Decisiones
 app.get('/api/analitica/resumen', (req, res) => {
     try {
