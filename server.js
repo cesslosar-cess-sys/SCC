@@ -5988,7 +5988,18 @@ app.listen(PORT, '0.0.0.0', () => {
 
     // Sincronizaciones automáticas iniciales con PostgreSQL ERP
     if (dbERP && typeof dbERP.sincronizarTodoHaciaDisco === 'function') {
-        dbERP.sincronizarTodoHaciaDisco(__dirname).catch(err => {
+        dbERP.sincronizarTodoHaciaDisco(__dirname).then(() => {
+            console.log('[ERP Sync] Datos descargados desde PostgreSQL a disco.');
+            if (almacenAppModule && typeof almacenAppModule.reloadStore === 'function') {
+                almacenAppModule.reloadStore();
+                console.log('[ERP Sync] Almacén reloadStore ejecutado con éxito.');
+            }
+            if (almacenAppModule && typeof almacenAppModule.syncFromDatabase === 'function') {
+                almacenAppModule.syncFromDatabase().then(() => {
+                    console.log('[ERP Sync] Almacén sincronizado con PostgreSQL con éxito.');
+                });
+            }
+        }).catch(err => {
             console.error('[ERP Sync] Error en sincronización inicial hacia disco:', err.message);
         });
     }

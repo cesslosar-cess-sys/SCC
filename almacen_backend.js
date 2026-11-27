@@ -534,6 +534,36 @@ function loadStore() {
       console.error('Error leyendo base de datos local:', e);
     }
   }
+
+  // Sincronizar inmediatamente desde PostgreSQL Supabase si está disponible
+  if (dbERP && typeof dbERP.obtenerAlmacenData === 'function') {
+    syncFromDatabase().catch(err => {
+      console.error('[Almacen DB Init Error]:', err.message);
+    });
+  }
+}
+
+async function syncFromDatabase() {
+  if (dbERP && typeof dbERP.obtenerAlmacenData === 'function') {
+    try {
+      const alm = await dbERP.obtenerAlmacenData();
+      if (alm && alm.catalog && Object.keys(alm.catalog).length > 0) {
+        store.catalog = { ...store.catalog, ...alm.catalog };
+        if (Array.isArray(alm.movimientos) && alm.movimientos.length >= (store.movimientos ? store.movimientos.length : 0)) {
+          store.movimientos = alm.movimientos;
+        }
+        if (Array.isArray(alm.folios_taller) && alm.folios_taller.length > 0) {
+          store.folios_taller = alm.folios_taller;
+        }
+        ensureAlmacenes();
+        console.log(`[Almacen DB Sync] Sincronizado en tiempo real desde Supabase: ${Object.keys(store.catalog).length} productos, ${store.movimientos.length} movimientos.`);
+        return true;
+      }
+    } catch (e) {
+      console.error('[Almacen DB Sync Error]:', e.message);
+    }
+  }
+  return false;
 }
 
 function saveStore() {
@@ -1651,7 +1681,12 @@ app.post('/api/sync-excel', (req, res) => {
 });
 
 // 4. Catálogo de inventario con existencias y almacenes
-app.get('/api/inventory', (req, res) => {
+app.get('/api/inventory', async (req, res) => {
+  if (dbERP && typeof dbERP.obtenerAlmacenData === 'function') {
+    if (!store.catalog || Object.keys(store.catalog).length < 878) {
+      await syncFromDatabase();
+    }
+  }
   ensureAlmacenes();
   const items = Object.values(store.catalog);
   res.json({
@@ -4108,9 +4143,14 @@ app.delete('/api/productos/:id', (req, res) => {
 
 
 // 8. Bitácora de movimientos (con filtros)
-app.get('/api/bitacora', (req, res) => {
+app.get('/api/bitacora', async (req, res) => {
+  if (dbERP && typeof dbERP.obtenerAlmacenData === 'function') {
+    if (!store.movimientos || store.movimientos.length < 698) {
+      await syncFromDatabase();
+    }
+  }
   const { fecha, tipo, unidad, busqueda } = req.query;
-  let list = store.movimientos;
+  let list = store.movimientos || [];
 
   if (fecha) {
     list = list.filter(m => m.fecha === fecha);
@@ -7282,6 +7322,7 @@ if (require.main === module) {
 }
 
 app.reloadStore = loadStore;
+app.syncFromDatabase = syncFromDatabase;
 app.getStore = () => store;
 
 module.exports = app;
